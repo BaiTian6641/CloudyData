@@ -67,6 +67,8 @@ class VegaRendererHost(
         val palette: List<Int>,
         val widthDp: Float,
         val heightDp: Float,
+        val showGridlines: Boolean,
+        val showValueLabels: Boolean,
     )
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -141,13 +143,18 @@ class VegaRendererHost(
         palette: List<Int>,
         widthDp: Float = 640f,
         heightDp: Float = 320f,
+        showGridlines: Boolean = true,
+        showValueLabels: Boolean = false,
     ) {
         require(chartId.length in 1..128) { "invalid chart id" }
         require(revision >= 0) { "invalid revision" }
         require(values.size in 1..MAX_PROBE_VALUES) { "value count out of bounds" }
         require(palette.isNotEmpty()) { "palette is empty" }
         require(widthDp >= 160f && heightDp >= 120f) { "renderer surface is too small" }
-        val request = PendingSpec(chartId, revision, values, dark, palette, widthDp, heightDp)
+        val request = PendingSpec(
+            chartId, revision, values, dark, palette, widthDp, heightDp,
+            showGridlines, showValueLabels,
+        )
         if (!ready) {
             pendingSpec = request
             return
@@ -161,7 +168,18 @@ class VegaRendererHost(
             .put("type", "ApplyChartSpec")
             .put("chartId", request.chartId)
             .put("revision", request.revision)
-            .put("spec", barSpec(request.values, request.dark, request.palette, request.widthDp, request.heightDp))
+            .put(
+                "spec",
+                barSpec(
+                    request.values,
+                    request.dark,
+                    request.palette,
+                    request.widthDp,
+                    request.heightDp,
+                    request.showGridlines,
+                    request.showValueLabels,
+                ),
+            )
         lastChartId = request.chartId
         lastRevision = request.revision
         mainHandler.post {
@@ -255,6 +273,8 @@ class VegaRendererHost(
         palette: List<Int>,
         widthDp: Float,
         heightDp: Float,
+        showGridlines: Boolean,
+        showValueLabels: Boolean,
     ): JSONObject {
         val rows = JSONArray()
         values.forEach { (label, value) ->
@@ -318,29 +338,53 @@ class VegaRendererHost(
                             .put("labelFontSize", 12)
                             .put("domainColor", gridColor)
                             .put("tickColor", gridColor)
-                            .put("grid", true)
+                            .put("grid", showGridlines)
                             .put("gridColor", gridColor),
                     ),
             )
             .put(
                 "marks",
-                JSONArray().put(
-                    JSONObject()
-                        .put("type", "rect")
-                        .put("from", JSONObject().put("data", "table"))
-                        .put(
-                            "encode",
-                            JSONObject().put(
-                                "enter",
-                                JSONObject()
-                                    .put("x", JSONObject().put("scale", "x").put("field", "label"))
-                                    .put("width", JSONObject().put("scale", "x").put("band", 1))
-                                    .put("y", JSONObject().put("scale", "y").put("field", "value"))
-                                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
-                                    .put("fill", JSONObject().put("scale", "color").put("field", "label")),
+                JSONArray()
+                    .put(
+                        JSONObject()
+                            .put("type", "rect")
+                            .put("from", JSONObject().put("data", "table"))
+                            .put(
+                                "encode",
+                                JSONObject().put(
+                                    "enter",
+                                    JSONObject()
+                                        .put("x", JSONObject().put("scale", "x").put("field", "label"))
+                                        .put("width", JSONObject().put("scale", "x").put("band", 1))
+                                        .put("y", JSONObject().put("scale", "y").put("field", "value"))
+                                        .put("y2", JSONObject().put("scale", "y").put("value", 0))
+                                        .put("fill", JSONObject().put("scale", "color").put("field", "label")),
+                                ),
                             ),
-                        ),
-                ),
+                    )
+                    .apply {
+                        if (showValueLabels) {
+                            put(
+                                JSONObject()
+                                    .put("type", "text")
+                                    .put("from", JSONObject().put("data", "table"))
+                                    .put(
+                                        "encode",
+                                        JSONObject().put(
+                                            "enter",
+                                            JSONObject()
+                                                .put("x", JSONObject().put("scale", "x").put("field", "label").put("band", 0.5))
+                                                .put("y", JSONObject().put("scale", "y").put("field", "value").put("offset", -6))
+                                                .put("text", JSONObject().put("field", "value"))
+                                                .put("align", JSONObject().put("value", "center"))
+                                                .put("baseline", JSONObject().put("value", "bottom"))
+                                                .put("fill", JSONObject().put("value", textColor))
+                                                .put("fontSize", JSONObject().put("value", 11)),
+                                        ),
+                                    ),
+                            )
+                        }
+                    },
             )
     }
 

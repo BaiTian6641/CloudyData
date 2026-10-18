@@ -576,3 +576,41 @@ Exact library versions and feature gates are selected and locked in S00/S01. A n
 | Scope never converges | Repeated redesigns or “almost complete” parity claims | Atomic catalogs, bounded tickets, gate-driven releases, explicit blocked rows and change records. |
 
 The next implementation task is the S01 probe suite after S00 baseline setup. Prove one real import → typed query → native chart/grid → save/reopen path and its failure behavior before extending the workbench across the full capability catalog.
+
+## 13. Addendum — ChartSpec customization and layering contract (2026-10-18)
+
+**Authority:** owner direction dated 2026-10-18; refines §5, §7 and S11.
+
+`ChartSpec` must be a versioned typed document, not raw Vega JSON. It carries:
+
+- chart family and variant, facets/small multiples and page/playback state;
+- ordered mark layers (stable layer ID, mark type, encodings, axis ownership);
+- data/semantic references (field/placement IDs, aggregation/date level,
+  filters, sort, missing/empty-member policy, bins, stacking/normalization);
+- scales/axes (continuous/categorical, domain/range, zero baseline, log/reverse,
+  ticks, gridlines, dual/synchronized axes, titles/units);
+- titles/subtitle/caption, legend, labels, annotations, reference analysis,
+  tooltip field selections and formatting;
+- category-key → palette-version mapping, missing-value treatment and
+  highlight/selection styling;
+- layout/size/fit/zoom/padding/border/background and export intent;
+- interaction declarations and the result stamp/revision they apply to.
+
+The semantic layer owns aggregation, grain, filter stages, binning, stacking,
+domain completion and totals. The renderer positions marks and draws the scene;
+it must never silently reaggregate, re-filter, change a scale domain or substitute
+a different chart family. If a requested customization is unsupported, the UI
+reports it and preserves the previous accepted spec.
+
+Customizations are undoable workbook commands with stable identity. Appearance
+changes may adjust paired colors through a declared palette mapping but must not
+change category meaning or trigger a data recalculation. Exact values and
+formatted labels remain separate: display rounding cannot alter calculation,
+tooltip or export precision.
+
+Every chart family/variant and customization control has an atomic row in
+`parity/chart-catalog.yaml`. Acceptance requires the native surface, exact
+data/grain fixtures, selection/inspection, save/reopen, keyboard access,
+accessible summary/table and, where claimed, export evidence. Rendering a
+synthetic gallery entry is not acceptance. The offline renderer remains bounded
+to generated specs and has no SQL, file, credential or network authority.

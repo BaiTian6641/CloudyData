@@ -32,6 +32,8 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.UploadFile
+import androidx.compose.material.icons.filled.Undo
+import androidx.compose.material.icons.filled.Redo
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -49,6 +51,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.foundation.focusable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -99,6 +111,9 @@ fun WorkbookScreen(
     var showInspector by rememberSaveable(workbookId) { mutableStateOf(false) }
     var showFieldsDialog by rememberSaveable(workbookId) { mutableStateOf(false) }
     var showRenameDialog by rememberSaveable(workbookId) { mutableStateOf(false) }
+    var showPalette by rememberSaveable(workbookId) { mutableStateOf(false) }
+    var showChartSettings by rememberSaveable(workbookId) { mutableStateOf(false) }
+    val rootFocusRequester = remember { FocusRequester() }
 
     val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) viewModel.inspectCsv(uri)
@@ -121,11 +136,34 @@ fun WorkbookScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        runCatching { rootFocusRequester.requestFocus() }
+    }
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.canvas)
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .focusRequester(rootFocusRequester)
+            .focusable()
+            .onPreviewKeyEvent { event ->
+                if (event.type == KeyEventType.KeyDown && event.isCtrlPressed) {
+                    when {
+                        event.isShiftPressed && event.key == Key.P -> {
+                            showPalette = true
+                            true
+                        }
+                        !event.isShiftPressed && event.key == Key.S -> {
+                            viewModel.saveNow()
+                            true
+                        }
+                        else -> false
+                    }
+                } else {
+                    false
+                }
+            },
     ) {
         val windowWidth = maxWidth
         val compact = windowWidth < 720.dp
@@ -182,6 +220,8 @@ fun WorkbookScreen(
                     importLauncher.launch(arrayOf("*/*"))
                 },
                 onAddSheet = viewModel::addWorksheet,
+                onUndo = viewModel::undo,
+                onRedo = viewModel::redo,
                 onToggleInspector = { showInspector = !showInspector },
                 inspectorOpen = showInspector,
             )
@@ -254,6 +294,7 @@ fun WorkbookScreen(
                                 onAggregation = viewModel::setAggregation,
                                 onMarkType = viewModel::setMarkType,
                                 onSortDescending = viewModel::setSortDescending,
+                                onChartSettings = { showChartSettings = true },
                                 onRetry = viewModel::retryQuery,
                                 onCancelQuery = viewModel::cancelQuery,
                                 onImport = {
@@ -348,6 +389,38 @@ fun WorkbookScreen(
         }
     }
 
+    if (showPalette) {
+        val commands = buildList {
+            add(PaletteCommand("Save workbook", "Ctrl+S", viewModel::saveNow))
+            if (state.canUndo) add(PaletteCommand("Undo", "Ctrl+Z", viewModel::undo))
+            if (state.canRedo) add(PaletteCommand("Redo", "Ctrl+Shift+Z", viewModel::redo))
+            add(PaletteCommand("Import or replace data") { importLauncher.launch(arrayOf("*/*")) })
+            add(PaletteCommand("New worksheet", run = viewModel::addWorksheet))
+            add(PaletteCommand("Rename workbook") { showRenameDialog = true })
+            add(PaletteCommand("Chart settings") { showChartSettings = true })
+            add(PaletteCommand("Toggle inspector") { showInspector = !showInspector })
+            if (state.query is WorksheetQueryState.Failed) {
+                add(PaletteCommand("Retry query") { viewModel.retryQuery() })
+            }
+            add(PaletteCommand("Back to Home", run = onBack))
+        }
+        CommandPalette(commands = commands, onDismiss = { showPalette = false })
+    }
+
+    if (showChartSettings) {
+        val sheet = document?.worksheets?.firstOrNull { it.id == resolvedTab }
+        if (sheet != null) {
+            ChartSettingsDialog(
+                sheet = sheet,
+                onDismiss = { showChartSettings = false },
+                onApply = { title, gridlines, labels ->
+                    viewModel.updateChartSettings(title, gridlines, labels)
+                    showChartSettings = false
+                },
+            )
+        }
+    }
+
     if (showRenameDialog) {
         RenameWorkbookDialog(
             current = document?.name ?: "",
@@ -381,12 +454,16 @@ private fun WorkbookToolbar(
     onRename: () -> Unit,
     onImport: () -> Unit,
     onAddSheet: () -> Unit,
+    onUndo: () -> Unit,
+    onRedo: () -> Unit,
     onToggleInspector: () -> Unit,
     inspectorOpen: Boolean,
 ) {
     val colors = LocalCloudyColors.current
     CloudyToolbar {
         CloudyIconButton(Icons.Default.ArrowBack, "Back to Home", onBack)
+        CloudyIconButton(Icons.Default.Undo, "Undo", onUndo, enabled = state.canUndo)
+        CloudyIconButton(Icons.Default.Redo, "Redo", onRedo, enabled = state.canRedo)
         Column(Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(

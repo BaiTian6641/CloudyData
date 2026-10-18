@@ -1,0 +1,181 @@
+# Chart family and customization catalog (seed).
+# Statuses describe the current implementation, not the design destination.
+catalog: chart
+schema_version: 1
+reference_profile: pending_no_licensed_tableau
+design_contract: docs/design/chart-grammar-and-customization.md
+inventory_complete: false
+status_counts:
+  partial: 2
+  not_started: 22
+families:
+  - id: CH01
+    family: Bar
+    variants: [vertical, horizontal, grouped, stacked, 100_percent]
+    encodings: [rows, columns, measure, color, label, detail, size]
+    customizations: [aggregation, sort, axis_title, axis_range, zero_baseline, gridlines, legend, labels, color, tooltip]
+    owning_stages: S06, S11
+    status: partial
+    note: Vertical bar only. Chart title, gridline visibility and value labels are persisted; grouping/stacking/horizontal/legend/tooltip remain absent.
+  - id: CH02
+    family: Line
+    variants: [single, multi_series, stepped, curved, markers]
+    encodings: [x, y, color, path, detail]
+    customizations: [axis_range, gridlines, legend, line_style, markers, labels, tooltip]
+    owning_stages: S06, S11
+    status: not_started
+  - id: CH03
+    family: Area
+    variants: [single, stacked, 100_percent]
+    status: not_started
+  - id: CH04
+    family: Combo / dual axis
+    variants: [bar_line, dual_measure, synchronized]
+    status: not_started
+  - id: CH05
+    family: Scatter
+    variants: [single, multi_series, sized]
+    status: not_started
+  - id: CH06
+    family: Text table
+    variants: [flat, crosstab, subtotals, grand_totals]
+    status: partial
+    note: Two-column aggregate table only; no pivoted headers or totals.
+  - id: CH07
+    family: Highlight table / heat map
+    status: not_started
+  - id: CH08
+    family: Pie / donut
+    status: not_started
+  - id: CH09
+    family: Treemap
+    status: not_started
+  - id: CH10
+    family: Bubble / packed bubbles
+    status: not_started
+  - id: CH11
+    family: Histogram
+    status: not_started
+  - id: CH12
+    family: Box plot
+    status: not_started
+  - id: CH13
+    family: Gantt / timeline
+    status: not_started
+  - id: CH14
+    family: Bullet
+    status: not_started
+  - id: CH15
+    family: Waterfall
+    status: not_started
+  - id: CH16
+    family: Pareto
+    status: not_started
+  - id: CH17
+    family: Funnel
+    status: not_started
+  - id: CH18
+    family: Map — symbol
+    status: not_started
+  - id: CH19
+    family: Map — filled
+    status: not_started
+  - id: CH20
+    family: Map — path / polygon
+    status: not_started
+  - id: CH21
+    family: Facets / small multiples
+    status: not_started
+  - id: CH22
+    family: Density / hexbin
+    status: not_started
+  - id: CH23
+    family: Reference analysis overlay
+    variants: [line, band, distribution, trend, forecast, cluster]
+    status: not_started
+  - id: CH24
+    family: Annotation and mark layers
+    status: not_started
+customization_status_counts:
+  partial: 10
+  not_started: 7
+customization:
+  - id: CUST01
+    area: Data and view
+    controls: [aggregation, disaggregation, date_level, filter_scope, top_n, sort, missing_values, bins, facets]
+    status: partial
+    note: Fixed aggregate selector and sort direction only.
+  - id: CUST02
+    area: Titles
+    controls: [chart_title, subtitle, caption, axis_titles, units, legend_title]
+    status: partial
+    note: A persisted chart title override exists; subtitle/caption/axis-title/unit/legend-title editors do not.
+  - id: CUST03
+    area: Axes and scales
+    controls: [range, zero_baseline, log, reverse, ticks, dual_axis, synchronize]
+    status: partial
+    note: Automatic zero-baseline linear axes only.
+  - id: CUST04
+    area: Gridlines and dividers
+    controls: [major_gridlines, minor_gridlines, color, width, row_dividers, column_dividers]
+    status: partial
+    note: Value-axis major gridlines can be shown/hidden; styling, minor grids and crosstab dividers are absent.
+  - id: CUST05
+    area: Legend
+    controls: [show_hide, position, orientation, title, mark_sample, interactive]
+    status: not_started
+  - id: CUST06
+    area: Labels
+    controls: [show_hide, field, position, font, format, collision_policy]
+    status: partial
+    note: Numeric value labels can be shown above bars; field selection/position/font/format/collision policy are absent.
+  - id: CUST07
+    area: Color and palette
+    controls: [categorical, sequential, diverging, custom, opacity, stable_category_key, missing_pattern]
+    status: partial
+    note: Auto categorical hash mapping; no custom/sequential/diverging controls or persisted mapping.
+  - id: CUST08
+    area: Marks and lines
+    controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]
+    status: not_started
+  - id: CUST09
+    area: Layers and dual axis
+    controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]
+    status: not_started
+  - id: CUST10
+    area: Reference and statistics
+    controls: [reference_line, reference_band, distribution, trend, forecast, cluster, confidence]
+    status: not_started
+  - id: CUST11
+    area: Annotations
+    controls: [mark_annotation, point_annotation, region_annotation, text]
+    status: not_started
+  - id: CUST12
+    area: Tooltips
+    controls: [fields, format, show_hide, bounded_values]
+    status: not_started
+    note: Exact values are available in the table and inspector; no chart tooltip.
+  - id: CUST13
+    area: Selection and inspect
+    controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
+    status: partial
+    note: Table row selection and exact inspector only; chart marks are not selectable.
+  - id: CUST14
+    area: Layout and export
+    controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]
+    status: partial
+    note: Live size and fit only; no persisted geometry or visual export.
+  - id: CUST15
+    area: Accessibility
+    controls: [native_summary, data_table, keyboard_exploration, focus_exit, screen_reader]
+    status: partial
+    note: Native summary/table exists; chart keyboard/TalkBack traversal is not tested.
+  - id: CUST16
+    area: Number and date formatting
+    controls: [number_format, date_format, units, display_rounding, exact_values]
+    status: partial
+    note: Display formatting is separate from exact values, but no workbook format controls.
+  - id: CUST17
+    area: Pages and playback
+    controls: [page_field, step, play, speed, trail]
+    status: not_started

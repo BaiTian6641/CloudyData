@@ -1,57 +1,76 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<testsuites tests="14" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-18T21:58:33" hostname="localhost">
-  <testsuite name="io.github.baitian6641.cloudydata.CancellationTest" tests="1" failures="0" errors="0" skipped="0" time="0.153" timestamp="2026-10-18T21:58:33" hostname="localhost">
+<testsuites tests="18" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-18T22:09:12" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.CancellationTest" tests="1" failures="0" errors="0" skipped="0" time="0.149" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="interruptStopsExpensiveQueryAndConnectionRemainsUsable" classname="io.github.baitian6641.cloudydata.CancellationTest" time="0.153" />
+    <testcase name="interruptStopsExpensiveQueryAndConnectionRemainsUsable" classname="io.github.baitian6641.cloudydata.CancellationTest" time="0.149" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.DisplayPreferencesTest" tests="2" failures="0" errors="0" skipped="0" time="0.022" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.ChartSettingsPersistenceTest" tests="1" failures="0" errors="0" skipped="0" time="0.009" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="explicitChoicesPersistAcrossStoreInstances" classname="io.github.baitian6641.cloudydata.DisplayPreferencesTest" time="0.019" />
-    <testcase name="invalidStoredValuesFallBackWithoutDeletingEvidence" classname="io.github.baitian6641.cloudydata.DisplayPreferencesTest" time="0.003" />
+    <testcase name="chartCustomizationSurvivesSaveAndReopenWithDefaultsForOldDocuments" classname="io.github.baitian6641.cloudydata.ChartSettingsPersistenceTest" time="0.009" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.EngineSmokeTest" tests="4" failures="0" errors="0" skipped="0" time="0.201" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.CommandPaletteTest" tests="2" failures="0" errors="0" skipped="0" time="17.629" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="typedInt64DecimalTimestampAndUnicodeRoundTrip" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.017" />
-    <testcase name="csvImportPublishesVerifiedSnapshotAndReopens" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.069" />
-    <testcase name="worksheetAggregationUsesExactDecimalSum" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.060" />
-    <testcase name="decimalAndBigIntSurviveCsvQuery" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.055" />
+    <testcase name="paletteOpensRunsSettingsAndClosesWithEscape" classname="io.github.baitian6641.cloudydata.CommandPaletteTest" time="8.785" />
+    <testcase name="capturePaletteForReview" classname="io.github.baitian6641.cloudydata.CommandPaletteTest" time="8.844" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" tests="1" failures="0" errors="0" skipped="0" time="0.028" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.DisplayPreferencesTest" tests="2" failures="0" errors="0" skipped="0" time="0.190" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="publishCsvForSafPickerReview" classname="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" time="0.028" />
+    <testcase name="explicitChoicesPersistAcrossStoreInstances" classname="io.github.baitian6641.cloudydata.DisplayPreferencesTest" time="0.028" />
+    <testcase name="invalidStoredValuesFallBackWithoutDeletingEvidence" classname="io.github.baitian6641.cloudydata.DisplayPreferencesTest" time="0.162" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.RecoveryTest" tests="3" failures="0" errors="0" skipped="0" time="0.279" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.EngineSmokeTest" tests="4" failures="0" errors="0" skipped="0" time="0.402" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="preparedOperationIsDiscardedWithoutTouchingAcceptedData" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.084" />
-    <testcase name="publishedMetadataKeepsCommittedDataAndCleansOperation" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.100" />
-    <testcase name="interruptedCommitRestoresPreviousSnapshotAndRemovesOperation" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.095" />
+    <testcase name="typedInt64DecimalTimestampAndUnicodeRoundTrip" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.048" />
+    <testcase name="csvImportPublishesVerifiedSnapshotAndReopens" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.168" />
+    <testcase name="worksheetAggregationUsesExactDecimalSum" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.097" />
+    <testcase name="decimalAndBigIntSurviveCsvQuery" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.089" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.VegaRendererProbeTest" tests="1" failures="0" errors="0" skipped="0" time="2.002" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" tests="1" failures="0" errors="0" skipped="0" time="0.026" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="packagedVegaRendersTrustedBarSpecOffline" classname="io.github.baitian6641.cloudydata.VegaRendererProbeTest" time="2.002" />
+    <testcase name="publishCsvForSafPickerReview" classname="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" time="0.026" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.WindowProbeTest" tests="1" failures="0" errors="0" skipped="0" time="2.059" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.RecoveryTest" tests="3" failures="0" errors="0" skipped="0" time="0.464" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="requestedBoundsAndSecondInstanceAreObservable" classname="io.github.baitian6641.cloudydata.WindowProbeTest" time="2.059" />
+    <testcase name="preparedOperationIsDiscardedWithoutTouchingAcceptedData" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.073" />
+    <testcase name="publishedMetadataKeepsCommittedDataAndCleansOperation" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.264" />
+    <testcase name="interruptedCommitRestoresPreviousSnapshotAndRemovesOperation" classname="io.github.baitian6641.cloudydata.RecoveryTest" time="0.127" />
   </testsuite>
-  <testsuite name="io.github.baitian6641.cloudydata.WorkloadProbeTest" tests="1" failures="0" errors="0" skipped="0" time="0.001" timestamp="2026-10-18T21:58:33" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.ShortcutIntentTest" tests="1" failures="0" errors="0" skipped="0" time="2.464" timestamp="2026-10-18T22:09:12" hostname="localhost">
     <properties>
       <property name="device" value="emulator-5580" />
     </properties>
-    <testcase name="millionRowImportAndGroupedQueryPreserveTotals" classname="io.github.baitian6641.cloudydata.WorkloadProbeTest" time="0.001" />
+    <testcase name="workbookIntentOpensDocumentAndCtrlSCommitsSave" classname="io.github.baitian6641.cloudydata.ShortcutIntentTest" time="2.464" />
+  </testsuite>
+  <testsuite name="io.github.baitian6641.cloudydata.VegaRendererProbeTest" tests="1" failures="0" errors="0" skipped="0" time="1.292" timestamp="2026-10-18T22:09:12" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5580" />
+    </properties>
+    <testcase name="packagedVegaRendersTrustedBarSpecOffline" classname="io.github.baitian6641.cloudydata.VegaRendererProbeTest" time="1.292" />
+  </testsuite>
+  <testsuite name="io.github.baitian6641.cloudydata.WindowProbeTest" tests="1" failures="0" errors="0" skipped="0" time="1.502" timestamp="2026-10-18T22:09:12" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5580" />
+    </properties>
+    <testcase name="requestedBoundsAndSecondInstanceAreObservable" classname="io.github.baitian6641.cloudydata.WindowProbeTest" time="1.502" />
+  </testsuite>
+  <testsuite name="io.github.baitian6641.cloudydata.WorkloadProbeTest" tests="1" failures="0" errors="0" skipped="0" time="0.002" timestamp="2026-10-18T22:09:12" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5580" />
+    </properties>
+    <testcase name="millionRowImportAndGroupedQueryPreserveTotals" classname="io.github.baitian6641.cloudydata.WorkloadProbeTest" time="0.002" />
   </testsuite>
 </testsuites>

@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits `ac94960`, `604a3a7`, `6de478e`, `309ccf1`, plus the pending
-worksheet-renderer/settings commit; remote push not performed/authorized in this session.
+**Source:** commits through `b6d4bb3`, plus the pending command-history/chart-customization
+commit; remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; early R1 vertical slice.
 
 ## What works (verified)
@@ -33,12 +33,18 @@ unless stated otherwise.
   process restart, apply to open windows through app-level state, and expose
   real selected semantics. Invalid stored values fall back without deleting
   evidence.
+- Command palette (Ctrl+Shift+P, Ctrl+N, Ctrl+F), context commands, Ctrl+S and
+  bounded undo/redo are real and tested; the palette runs Settings and closes
+  with Escape on both devices.
+- Chart title, gridline visibility and value labels are persisted per worksheet
+  and survive reopen; the bar renderer receives the presentation flags without
+  rerunning SQL.
 - Native interrupt returns `EngineException("INTERRUPT Error: Interrupted!")` and
   the connection remains usable; the worksheet has a Cancel action whose UI path
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings documented). JVM tests: 5/5. Instrumentation: 14/14
+- Lint: 0 errors (warnings documented). JVM tests: 8/8. Instrumentation: 18/18
   on each target (the 1M workload probe is a no-op on the emulator by design).
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -85,18 +91,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S02 desktop command surface.**
+**S11.C0 incremental — line mark and axis/legend customization.**
 
-- Files: `CloudyDataApp`, `MainActivity`, shell components, a command registry.
-- Action: add a real command palette and keyboard shortcuts for New/Open?/Save,
-  rename, add worksheet, import, settings and focus traversal; keep menu/palette
-  routes for every command. Do not add a working "Open" unless package open is
-  implemented.
-- Acceptance: Ctrl+S saves the open workbook, Ctrl+Shift+P opens the palette,
-  F6 moves focus between panes, Escape restores focus; conflict-tested on the
-  physical Googlebook keyboard and exposed with accessible names. Record actual
-  key events and screenshots.
-- Then: S01.7 renderer lifecycle/death completion and S03 coordinator.
+- Files: `WorksheetView.kt`, `VegaChart.kt`, `VegaRendererHost.kt`, chart
+  catalog/model, renderer assets, tests.
+- Action: add a Line mark with date/categorical x, multiple series by color,
+  missing-value policy, axis title/range/zero/log/reverse controls, gridline
+  styling and a legend. Persist every control; do not let the renderer
+  reaggregate. Add a per-family fixture and save/reopen/selection evidence.
+- Acceptance: exact data/grain fixture, visible axis/legend/grid customization,
+  unsupported states explained, native summary/table, renderer offline/typed
+  boundary unchanged, and catalog rows moved only with evidence.
+- Then: S01.7 renderer-lifecycle completion and S03 cross-window coordinator.
 
 - Files: `renderer-web/` host/bridge, `VegaRendererHost.kt` and a bounded
   instrumentation probe.

@@ -448,3 +448,47 @@ File 03 defines staged releases. S22 produces a capability report with the exact
 If a feasibility experiment forces a different engine, renderer or deployment route, preserve this product contract, record the evidence and change the implementation decision through an ADR. A limitation may delay a requirement or require an explicitly approved scope change; it does not erase the requirement automatically.
 
 **Next action for the coding agent:** read all three files, inspect the actual repository and canonical design assets, then execute S00 followed by the bounded S01 feasibility packet. Do not start by generating the whole interface or by installing a server BI dashboard and calling it the product.
+
+## 10. Addendum — visualization grammar and chart customization (2026-10-18)
+
+**Authority:** explicit owner direction dated 2026-10-18. This addendum expands
+F34/F36/F38/F40/F41 and S06/S11; it does not complete them or claim parity.
+
+The chart surface is not a gallery of fixed pictures. Every applicable chart
+type must be documented and implemented as a typed, editable specification over
+the current MarkTable, with a persisted customization surface and an accessible
+native equivalent. The full design contract is
+[`docs/design/chart-grammar-and-customization.md`](../design/chart-grammar-and-customization.md);
+the atomic implementation catalog is
+[`parity/chart-catalog.yaml`](../../parity/chart-catalog.yaml).
+
+The inventory to cover includes at minimum:
+
+- comparison: vertical/horizontal bar, grouped/stacked/100% bars, bullet,
+  waterfall, Pareto, funnel;
+- trend/time: line (including stepped and multi-series), area/stacked area,
+  combo and dual-axis, Gantt/timeline;
+- distribution: histogram, box plot, density/hexbin where cataloged;
+- relationship: scatter, bubble/packed bubble, highlight table/heat map;
+- part-to-whole: pie/donut, treemap;
+- tabular: text table and crosstab with subtotals/grand totals;
+- geographic: symbol, filled, path and polygon maps;
+- overlays: reference lines/bands/distributions, trend, forecast and cluster,
+  annotations and mark layers;
+- composition: facets/small multiples, pages/playback and multiple measures.
+
+Customization must explicitly cover, where applicable: chart/subtitle/caption
+and axis/legend titles; units and number/date formats; aggregation,
+disaggregation and date levels; filters, top N, sort and missing/empty members;
+axes (range, zero baseline, log/reverse, ticks, gridlines, dual/synchronized);
+line style/interpolation/markers/width; mark color/size/shape/opacity/borders;
+stacking/normalization; layers and per-layer marks/axes; legends; data labels;
+categorical/sequential/diverging/custom palettes and stable category identity;
+tooltips; reference lines/bands/trends/annotations; selection/highlight/drill;
+layout/fit/zoom/padding/borders; and export/print.
+
+No control may be shown without its real operation. A chart is accepted only
+with data/grain fixtures, exact values, saved/reopened state, selection and
+keyboard access, and an accessible table/summary. The current slice implements
+only a table mark and a bar mark subset; all remaining rows stay partial or
+`not_started` in the catalog.

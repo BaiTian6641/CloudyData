@@ -126,3 +126,20 @@ short active handoff is `docs/execution-state.md`.
   device, 0 failures.
 - Settings radio rows expose `checkable/checked` semantics; physical TalkBack,
   keyboard traversal, large text and cross-window preference changes remain open.
+
+## 2026-10-18 — chart customization, palette and command history
+
+- Added the owner-directed chart-family/customization contract to all three plan
+  files plus `docs/design/chart-grammar-and-customization.md` and
+  `parity/chart-catalog.yaml` (24 families, 17 customization areas).
+- Implemented persisted chart title, major-gridline visibility and bar value
+  labels; the Vega spec regenerates from the saved worksheet state without
+  rerunning SQL. Manual device walkthrough and reopen verified the behavior.
+- Added a context command palette with Ctrl+Shift+P on Home and Workbook,
+  Ctrl+N/Ctrl+F on Home, Ctrl+S on Workbook, and context-specific commands.
+  UiAutomator tests run Settings and verify Escape dismissal on both devices.
+- Added bounded pure `WorkbookHistory` with undo/redo, redo invalidation and
+  import reset; toolbar/palette expose real enabled states. Manual Sum→Average
+  undo/redo restored the expected results.
+- The current chart inventory remains bar/table only; every other family and
+  most customization areas are explicitly `not_started`/`partial`.

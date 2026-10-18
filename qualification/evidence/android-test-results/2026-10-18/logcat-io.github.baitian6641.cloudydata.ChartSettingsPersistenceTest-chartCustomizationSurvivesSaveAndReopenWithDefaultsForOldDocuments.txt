@@ -1,0 +1,2 @@
+10-18 17:08:53.479  7908  7921 I TestRunner: started: chartCustomizationSurvivesSaveAndReopenWithDefaultsForOldDocuments(io.github.baitian6641.cloudydata.ChartSettingsPersistenceTest)
+10-18 17:08:53.512  7908  7921 I TestRunner: finished: chartCustomizationSurvivesSaveAndReopenWithDefaultsForOldDocuments(io.github.baitian6641.cloudydata.ChartSettingsPersistenceTest)

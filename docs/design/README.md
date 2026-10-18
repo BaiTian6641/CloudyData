@@ -15,7 +15,8 @@ The interface should feel calm at first glance and precise during work: pale min
 5. [Interaction](interaction.md): focus, keyboard, pointer, IME, errors, and reconnect. Read the [desktop terminal interaction contract](desktop-terminal-interaction-contract.md) for clipboard, shortcuts, selection and per-surface acceptance.
 6. [Screen specifications](screen-specs.md): both products and important edge states.
 7. [Accessibility](accessibility.md): contrast pairs, input access, scaling, and test gates.
-8. [Implementation mapping](implementation-map.md): native components, renderer boundary, and token ownership.
+8. [Chart grammar and customization](chart-grammar-and-customization.md): chart families, layering, axes/grids/titles/labels/legends/colors, and acceptance.
+9. [Implementation mapping](implementation-map.md): native components, renderer boundary, and token ownership.
 9. [Desktop workflow refinement](desktop-workflows.md): integrated SFTP/drop, X11 windows, protocol profiles, USB enrollment and performance diagnostics.
 
 Canonical values live in [tokens.json](../../shared/design-system/tokens.json). The [specimen](preview.html) is an offline, interactive design study with synthetic data. It demonstrates Console/Desktop, light/dark, comfortable/compact density, connection states, an inspector, and a command palette. It does not connect to hosts, stream video, or execute commands.

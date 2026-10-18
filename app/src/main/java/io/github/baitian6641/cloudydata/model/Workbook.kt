@@ -96,6 +96,9 @@ data class WorksheetDef(
     val aggregation: Aggregation,
     val markType: MarkType,
     val sortDescending: Boolean,
+    val chartTitle: String? = null,
+    val showGridlines: Boolean = true,
+    val showValueLabels: Boolean = false,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("id", id)
@@ -105,6 +108,9 @@ data class WorksheetDef(
         .put("aggregation", aggregation.name)
         .put("markType", markType.name)
         .put("sortDescending", sortDescending)
+        .put("chartTitle", chartTitle ?: JSONObject.NULL)
+        .put("showGridlines", showGridlines)
+        .put("showValueLabels", showValueLabels)
 
     companion object {
         fun fromJson(json: JSONObject): WorksheetDef = WorksheetDef(
@@ -115,6 +121,9 @@ data class WorksheetDef(
             aggregation = Aggregation.valueOf(json.getString("aggregation")),
             markType = MarkType.valueOf(json.getString("markType")),
             sortDescending = json.getBoolean("sortDescending"),
+            chartTitle = if (json.isNull("chartTitle")) null else json.getString("chartTitle"),
+            showGridlines = json.optBoolean("showGridlines", true),
+            showValueLabels = json.optBoolean("showValueLabels", false),
         )
     }
 }

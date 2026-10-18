@@ -15,6 +15,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
+import io.github.baitian6641.cloudydata.model.WorkbookHistory
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import java.util.UUID
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,8 @@ data class WorkbookUiState(
     val engineVersion: String? = null,
     val engineError: String? = null,
     val recoveryMessages: List<String> = emptyList(),
+    val canUndo: Boolean = false,
+    val canRedo: Boolean = false,
 )
 
 class WorkbookViewModel(
@@ -72,6 +75,7 @@ class WorkbookViewModel(
     private val importService = CsvImportService(application, store)
     private val saveMutex = Mutex()
     private var engine: DuckDbEngine? = null
+    private var history: WorkbookHistory? = null
     private var queryGeneration = 0L
 
     init {
@@ -95,6 +99,7 @@ class WorkbookViewModel(
             try {
                 val recovery = withContext(Dispatchers.IO) { importService.reconcile(workbookId) }
                 val document = withContext(Dispatchers.IO) { store.load(workbookId) }
+                history = WorkbookHistory(document)
                 _state.update {
                     it.copy(
                         loading = false,
@@ -102,6 +107,8 @@ class WorkbookViewModel(
                         loadError = null,
                         save = SaveState.Saved,
                         recoveryMessages = recovery.messages,
+                        canUndo = false,
+                        canRedo = false,
                     )
                 }
                 val error = ensureEngine()
@@ -149,7 +156,18 @@ class WorkbookViewModel(
             runCatching {
                 withContext(Dispatchers.IO) { importService.apply(document, pending) }
             }.onSuccess { saved ->
-                _state.update { it.copy(document = saved, import = ImportUiState.Idle, save = SaveState.Saved) }
+                // Import/replace is a source-side effect; it is not replayed by
+                // undo. Start a fresh history for the published snapshot.
+                history = WorkbookHistory(saved)
+                _state.update {
+                    it.copy(
+                        document = saved,
+                        import = ImportUiState.Idle,
+                        save = SaveState.Saved,
+                        canUndo = false,
+                        canRedo = false,
+                    )
+                }
                 autoPlace(snapshotColumns = saved.snapshot?.columns.orEmpty())
                 refreshQuery()
             }.onFailure { error ->
@@ -208,6 +226,40 @@ class WorkbookViewModel(
         updateActiveSheet { it.copy(sortDescending = descending) }
     }
 
+    fun updateChartSettings(title: String?, showGridlines: Boolean, showValueLabels: Boolean) {
+        // Presentation-only change: persist and recompose without rerunning SQL.
+        mutateDocument { document ->
+            val active = document.activeWorksheet ?: return@mutateDocument document
+            document.copy(
+                worksheets = document.worksheets.map {
+                    if (it.id != active.id) it else it.copy(
+                        chartTitle = title?.trim()?.takeIf { value -> value.isNotEmpty() },
+                        showGridlines = showGridlines,
+                        showValueLabels = showValueLabels,
+                    )
+                },
+            )
+        }
+    }
+
+    fun undo() {
+        val restored = history?.undo() ?: return
+        _state.update {
+            it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
+        }
+        persistLatest()
+        refreshQuery()
+    }
+
+    fun redo() {
+        val restored = history?.redo() ?: return
+        _state.update {
+            it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
+        }
+        persistLatest()
+        refreshQuery()
+    }
+
     fun retryQuery() {
         refreshQuery()
     }
@@ -227,9 +279,7 @@ class WorkbookViewModel(
     fun renameWorkbook(name: String) {
         val trimmed = name.trim()
         if (trimmed.isEmpty()) return
-        val document = _state.value.document ?: return
-        _state.update { it.copy(document = document.copy(name = trimmed)) }
-        persistLatest()
+        mutateDocument { it.copy(name = trimmed) }
     }
 
     fun addWorksheet() {
@@ -243,17 +293,19 @@ class WorkbookViewModel(
             markType = MarkType.TABLE,
             sortDescending = true,
         )
-        _state.update {
-            it.copy(document = document.copy(worksheets = document.worksheets + sheet, activeWorksheetId = sheet.id))
+        mutateDocument {
+            it.copy(worksheets = it.worksheets + sheet, activeWorksheetId = sheet.id)
         }
-        persistLatest()
         refreshQuery()
     }
 
     fun selectWorksheet(id: String) {
         val document = _state.value.document ?: return
         if (document.activeWorksheetId == id) return
-        _state.update { it.copy(document = document.copy(activeWorksheetId = id)) }
+        // Active-tab state is not an undoable analytical command.
+        val updated = history?.replaceCurrent { it.copy(activeWorksheetId = id) }
+            ?: document.copy(activeWorksheetId = id)
+        _state.update { it.copy(document = updated) }
         persistLatest()
         refreshQuery()
     }
@@ -264,26 +316,39 @@ class WorkbookViewModel(
         if (sheet.rowFieldId != null || sheet.measureFieldId != null) return
         val dimension = snapshotColumns.firstOrNull { it.role == io.github.baitian6641.cloudydata.model.FieldRole.DIMENSION }
         val measure = snapshotColumns.firstOrNull { it.role == io.github.baitian6641.cloudydata.model.FieldRole.MEASURE }
-        val updated = current.worksheets.map {
-            if (it.id != sheet.id) it else it.copy(
-                rowFieldId = dimension?.id,
-                measureFieldId = measure?.id,
-                markType = if (measure != null) MarkType.BAR else MarkType.TABLE,
+        mutateDocument { document ->
+            document.copy(
+                worksheets = document.worksheets.map {
+                    if (it.id != sheet.id) it else it.copy(
+                        rowFieldId = dimension?.id,
+                        measureFieldId = measure?.id,
+                        markType = if (measure != null) MarkType.BAR else MarkType.TABLE,
+                    )
+                },
             )
         }
-        _state.update { it.copy(document = current.copy(worksheets = updated)) }
-        persistLatest()
     }
 
     private fun updateActiveSheet(transform: (WorksheetDef) -> WorksheetDef) {
-        val document = _state.value.document ?: return
-        val active = document.activeWorksheet ?: return
-        val updated = document.copy(
-            worksheets = document.worksheets.map { if (it.id == active.id) transform(it) else it },
-        )
-        _state.update { it.copy(document = updated) }
-        persistLatest()
+        mutateDocument { document ->
+            val active = document.activeWorksheet ?: return@mutateDocument document
+            document.copy(
+                worksheets = document.worksheets.map { if (it.id == active.id) transform(it) else it },
+            )
+        }
         refreshQuery()
+    }
+
+    private fun mutateDocument(transform: (WorkbookDocument) -> WorkbookDocument) {
+        val updated = history?.apply(transform) ?: return
+        _state.update {
+            it.copy(
+                document = updated,
+                canUndo = history?.canUndo == true,
+                canRedo = history?.canRedo == true,
+            )
+        }
+        persistLatest()
     }
 
     private fun persistLatest() {
@@ -303,6 +368,7 @@ class WorkbookViewModel(
                     val latest = _state.value.document
                     _state.update {
                         if (it.document?.revision == current.revision) {
+                            history?.adoptSavedRevision(saved)
                             it.copy(document = saved, save = SaveState.Saved)
                         } else {
                             it.copy(save = SaveState.Saving)

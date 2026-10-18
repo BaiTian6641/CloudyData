@@ -799,3 +799,34 @@ The 18 supplied design documents are mapped as CD01–CD18 in file 01. Their ref
 Give the coding agent all three files together, the original Cloudy design documents, and the actual repository. If available, include the canonical token source and a Googlebook device profile. Ask it to execute **S00 → S01**, then demonstrate the real R1 analytical journey.
 
 The first review should answer four concrete questions: which native architecture passed; which device/build was observed; whether tiny numerical and durability fixtures passed; and what exact task is ready next. That provides a reliable starting point for the longer parity program.
+
+## 11. Addendum — chart-family and customization acceptance (2026-10-18)
+
+**Authority:** owner direction dated 2026-10-18; expands S06/S11 without
+completing either stage.
+
+S06 must implement the initial table/bar/line/scatter subset with real placement,
+aggregation, sorting, exact inspection and save/reopen. S11 must close the
+chart-family and customization matrix in
+`parity/chart-catalog.yaml` and
+[`docs/design/chart-grammar-and-customization.md`](../design/chart-grammar-and-customization.md),
+including at minimum:
+
+- bar variants, line/area, combo/dual axis, scatter, crosstab/text table,
+  highlight table, pie/donut, treemap, bubble, histogram, box, Gantt, bullet,
+  waterfall, Pareto, funnel, symbol/filled/path maps, facets/small multiples and
+  reference/statistical overlays;
+- titles/subtitle/caption, axis titles/units, ranges/zero/log/reverse, ticks and
+  gridlines, legend, labels, line style/markers, color/size/shape/opacity,
+  layers, stacking, tooltips, annotations, reference analysis, layout/export and
+  number/date formats;
+- stable category identity, explicit missing/empty handling, exact-vs-formatted
+  values and a native accessible summary/table for every plot.
+
+Each chart family needs a per-family fixture with its correct grain,
+aggregation, filtering, null/missing behavior, selection and save/reopen test.
+Customization controls need focused tests for persistence, undo/redo and
+no-silent-data-change. The catalog must record unimplemented variants/controls
+as `not_started` or `partial`; do not replace the gallery, weaken a fixture or
+hide a control to declare S11 complete. Renderer integration must preserve the
+S01.7 CSP/origin/network boundary and the native accessible equivalent.

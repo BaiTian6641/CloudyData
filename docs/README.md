@@ -14,7 +14,10 @@ Read in this order:
    host-centric home documents are **not** Cloudy Data requirements. Only the
    applicable Cloudy principles, tokens, layout, component, interaction,
    accessibility and implementation guidance are reused.
-5. `decisions/` — accepted project decisions, including explicit amendments and
+5. `design/chart-grammar-and-customization.md` — owner-directed chart family,
+   layering, axis/grid/title/legend/label/color and export contract; atomic
+   status is in `parity/chart-catalog.yaml`.
+6. `decisions/` — accepted project decisions, including explicit amendments and
    qualification limits.
 
 ## Supplied design files (title → actual path → applicable scope)

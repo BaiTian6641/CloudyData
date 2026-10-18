@@ -20,6 +20,9 @@ and the x86_64 API 37 emulator, the debug app can:
   table/bar mark, and query DuckDB locally;
 - inspect exact values, formatted values and the generated SQL;
 - save workbook metadata atomically and reopen the workbook;
+- use a native command palette (Ctrl+Shift+P), Ctrl+S, and bounded undo/redo;
+- customize the bar chart's title, gridline visibility and value labels, saved
+  with the worksheet and restored after reopen;
 - choose persisted System/Light/Dark appearance and Comfortable/Standard/
   Compact pointer density from a real Settings screen (applied to the workbook
   bar mark as well);
@@ -101,9 +104,10 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- No product integration of the Vega renderer; no renderer-death/resize/
-  selection/export qualification; no Arrow IPC transfer; no query service
-  process, virtualized million-row grid, multiwindow conflict handling,
+- The Vega renderer covers only the bar mark; renderer-death/matched-resize/
+  chart-selection/export and the full chart-family/customization catalog remain
+  incomplete. No Arrow IPC transfer; no query service process, virtualized
+  million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.
 - The import path is bounded to 512 MiB and cannot be cancelled once staging

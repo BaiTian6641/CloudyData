@@ -82,6 +82,7 @@ fun WorksheetView(
     onAggregation: (Aggregation) -> Unit,
     onMarkType: (MarkType) -> Unit,
     onSortDescending: (Boolean) -> Unit,
+    onChartSettings: () -> Unit,
     onRetry: () -> Unit,
     onCancelQuery: () -> Unit,
     onImport: () -> Unit,
@@ -172,6 +173,7 @@ fun WorksheetView(
                 MarkChoice("Table", sheet.markType == MarkType.TABLE) { onMarkType(MarkType.TABLE) }
                 MarkChoice("Bar", sheet.markType == MarkType.BAR) { onMarkType(MarkType.BAR) }
                 Spacer(Modifier.weight(1f))
+                CloudyTextButton("Chart settings", onChartSettings)
                 CloudyTextButton(
                     text = if (sheet.sortDescending) "Sort descending" else "Sort ascending",
                     onClick = { onSortDescending(!sheet.sortDescending) },
@@ -205,6 +207,9 @@ fun WorksheetView(
                         onSelectRow = onSelectRow,
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
                         chartId = "sheet-${sheet.id}",
+                        title = sheet.chartTitle?.takeIf { it.isNotBlank() } ?: chartTitle(current),
+                        showGridlines = sheet.showGridlines,
+                        showValueLabels = sheet.showValueLabels,
                     )
                     CloudyDivider()
                 }
@@ -450,6 +455,7 @@ internal fun NativeBarChartCard(
     selectedRowIndex: Int,
     onSelectRow: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    title: String = chartTitle(result),
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
@@ -466,10 +472,12 @@ internal fun NativeBarChartCard(
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                chartTitle(result),
+                title,
                 style = MaterialTheme.typography.labelLarge,
                 color = colors.textPrimary,
                 modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             if (rows.size > visible.size) {
                 CloudyBadge("${visible.size} of ${rows.size} categories", tone = CloudyBadgeTone.Warning)

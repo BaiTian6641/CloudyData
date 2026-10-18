@@ -51,12 +51,15 @@ fun VegaBarChartCard(
     onSelectRow: (Int) -> Unit,
     modifier: Modifier = Modifier,
     chartId: String = "worksheet-bar",
+    title: String = chartTitle(result),
+    showGridlines: Boolean = true,
+    showValueLabels: Boolean = false,
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
     val chartData = remember(result) { chartValues(result) }
     if (chartData == null) {
-        NativeBarChartCard(result, selectedRowIndex, onSelectRow, modifier)
+        NativeBarChartCard(result, selectedRowIndex, onSelectRow, modifier, title)
         return
     }
     val dark = colors.canvas.luminance() < 0.5f
@@ -74,10 +77,12 @@ fun VegaBarChartCard(
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                chartTitle(result),
+                title,
                 style = MaterialTheme.typography.labelLarge,
                 color = colors.textPrimary,
                 modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
             )
             if (rendererError != null) {
                 CloudyBadge("Native fallback", tone = CloudyBadgeTone.Warning)
@@ -101,7 +106,7 @@ fun VegaBarChartCard(
                 color = colors.warning,
             )
             Box(Modifier.weight(1f).fillMaxWidth()) {
-                NativeBarChartCard(result, selectedRowIndex, onSelectRow, Modifier.fillMaxSize())
+                NativeBarChartCard(result, selectedRowIndex, onSelectRow, Modifier.fillMaxSize(), title)
             }
         } else {
             Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -177,7 +182,7 @@ fun VegaBarChartCard(
         }
     }
 
-    LaunchedEffect(hostSerial, rendererReady, dark, viewSize, chartData) {
+    LaunchedEffect(hostSerial, rendererReady, dark, viewSize, chartData, showGridlines, showValueLabels) {
         if (!rendererReady || viewSize.width < 32 || viewSize.height < 32) return@LaunchedEffect
         val widthDp = with(localDensity) { viewSize.width.toDp().value }
         val heightDp = with(localDensity) { viewSize.height.toDp().value }
@@ -190,6 +195,8 @@ fun VegaBarChartCard(
             palette = palette.map { it.toInt() },
             widthDp = widthDp,
             heightDp = heightDp,
+            showGridlines = showGridlines,
+            showValueLabels = showValueLabels,
         )
     }
 }

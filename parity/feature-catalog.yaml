@@ -6,8 +6,8 @@ generated_from: docs/plans/Cloudy_Data_01_Product_and_Design_Contract.md
 reference_profile: pending_no_licensed_tableau
 atomic_inventory_complete: false
 status_counts:
-  not_started: 61
-  partial: 11
+  not_started: 59
+  partial: 13
 features:
   - id: F01
     family: "Workbooks and data-source documents"
@@ -314,7 +314,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Text/table and bar views work; line/scatter/area/treemap/pie/box/dual-axis and other families are absent."
+    note: "Text/table and vertical bar only; title/gridline/value-label customization exists. Other families and variants are tracked in parity/chart-catalog.yaml."
   - id: F35
     family: "Crosstabs and totals"
     outcome: "Pivoted row/column headers, subtotals and grand totals computed at the correct grain; copy/export respects selection and exact values."
@@ -329,10 +329,10 @@ features:
     outcome: "Continuous/categorical axes, dual axes, synchronization where valid, reversal, log constraints, ticks, reference domains and independent display formatting."
     owning_stages: "S11"
     reference_release: pending
-    status: not_started
+    status: partial
     tests: []
     evidence: []
-    note: "Seed family only; no atomic inventory or evidence yet."
+    note: "Automatic linear zero-baseline axes and field-derived axis titles only; range/log/reverse/ticks/dual axes are not implemented."
   - id: F37
     family: "Sorting"
     outcome: "Manual, field, aggregate, nested and tie-breaking rules; header sort and table-calculation sort remain explicit."
@@ -347,10 +347,10 @@ features:
     outcome: "Titles, captions, units, number/date formatting, labels, legends, borders, annotations and reusable workbook themes."
     owning_stages: "S06, S11"
     reference_release: pending
-    status: not_started
+    status: partial
     tests: []
     evidence: []
-    note: "Seed family only; no atomic inventory or evidence yet."
+    note: "Persisted chart title and value-label visibility are implemented; captions/units/formatting/legends/borders/annotations/themes are pending."
   - id: F39
     family: "Selection and inspect data"
     outcome: "Click, additive/range/rectangle/lasso where relevant, keep/exclude, drill and View Data; stable mark identity maps to authorized rows."

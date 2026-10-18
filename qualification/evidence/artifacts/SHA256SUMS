@@ -1,3 +1,9 @@
+34c04c68392165064eb0e223961296b7fb8254662b33ed271af4187fe7bda148  qualification/evidence/artifacts/2026-10-18-chart-customized-ui.xml
+97eafd5c5aa512ea91503683350dc5c09edc2c2feb99e531bf944accaa88818f  qualification/evidence/artifacts/2026-10-18-chart-customized.png
+aeeac6cf1698ca784949adfba2c20f93743e65dba4a3d0c4f454211b3358b4eb  qualification/evidence/artifacts/2026-10-18-chart-reopened-ui.xml
+1b2afc549d67c6d9e332bd5f24ac6a532ccd2eda75504b8b4fb5f137dcbb6802  qualification/evidence/artifacts/2026-10-18-chart-reopened.png
+9fb7687d7756468e22030b793fd1e129f9da6244adb933e764d27ffc4b7eb757  qualification/evidence/artifacts/2026-10-18-chart-settings-dialog.png
+208a4b53b371e223ff33cbd82badfbeec226d89ef1b138ad742f0d5efe9a2dc7  qualification/evidence/artifacts/2026-10-18-command-palette.png
 c2d0859b6bf472422138b9a2eebd87e8ccad7322acf8e66fc80d62f4dc12de3d  qualification/evidence/artifacts/2026-10-18-home-ui.xml
 f45f8024951932032ac21f285c0a22a7ae3620e86a79821adfc11f9148065257  qualification/evidence/artifacts/2026-10-18-home.png
 ec7adeb6df09e23701cb043048437941d1dca781ba9b7a841a87a09bca81863d  qualification/evidence/artifacts/2026-10-18-import-dialog-ui.xml
@@ -14,7 +20,7 @@ a380cc4cd036874125a3ae257251d6abc9c33c2f835e6a9957f5b0a4e18aeefb  qualification/
 8c668bdc5b68c3543538b422195d2936e6634633d406d20405b4606f528b175f  qualification/evidence/artifacts/2026-10-18-worksheet-ui.xml
 5c81ad9c8fcf005b89869b57d6d4027eaeec4f89ec1f5b9ce127e96e277d6df4  qualification/evidence/artifacts/2026-10-18-worksheet-vega-ui.xml
 d43fcdf8effbc35a53a25f8726d81a4fd15d11e878c9e116d5b859537d3a8899  qualification/evidence/artifacts/2026-10-18-worksheet-vega.png
-7440bc143e184ea498ea5a294edb52e7cceb85d781c786fbf2162d6f7fd607b2  app/build/outputs/apk/debug/app-debug.apk
+ac2a2c39f9281f94d7e7a9b7c4111a17e58eee27fd9c723a23644a87a2f93908  app/build/outputs/apk/debug/app-debug.apk
 4483cf9be4f478c38ebb8293063634b8fabf3e2675eff3f3571105afbdc03e2f  app/src/main/assets/renderer/host.js
 6d64d34b0c990f66a54ac197318001247fe3266834e4713ef810fabfbee4490f  app/src/main/assets/renderer/index.html
 e56200ab496a55553d2800ec4e24e6022b51089596314433f640101cc96fdb2b  app/src/main/assets/renderer/renderer.css

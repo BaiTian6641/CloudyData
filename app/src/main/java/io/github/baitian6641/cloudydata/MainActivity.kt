@@ -21,13 +21,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val app = application as CloudyDataApp
         val store = app.workbookStore
+        val requestedWorkbookId = intent.getStringExtra(EXTRA_WORKBOOK_ID)
         setContent {
             val preferences by app.displayPreferences.state.collectAsStateWithLifecycle()
             CloudyTheme(
                 appearance = preferences.appearance,
                 density = preferences.density,
             ) {
-                var openWorkbookId by rememberSaveable { mutableStateOf<String?>(null) }
+                var openWorkbookId by rememberSaveable {
+                    mutableStateOf<String?>(requestedWorkbookId)
+                }
                 var showSettings by rememberSaveable { mutableStateOf(false) }
                 BackHandler(enabled = openWorkbookId != null || showSettings) {
                     if (openWorkbookId != null) openWorkbookId = null else showSettings = false
@@ -50,5 +53,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_WORKBOOK_ID = "io.github.baitian6641.cloudydata.extra.WORKBOOK_ID"
     }
 }

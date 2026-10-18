@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.layout.WindowInsets
@@ -89,7 +99,10 @@ fun HomeScreen(
     var section by rememberSaveable { mutableStateOf(HomeSection.Recents) }
     var reloadToken by remember { mutableIntStateOf(0) }
     var showNewDialog by rememberSaveable { mutableStateOf(false) }
+    var showPalette by rememberSaveable { mutableStateOf(false) }
     var narrowNavOpen by remember { mutableStateOf(false) }
+    val rootFocusRequester = remember { FocusRequester() }
+    val searchFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(reloadToken) {
         runCatching {
@@ -115,11 +128,38 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        runCatching { rootFocusRequester.requestFocus() }
+    }
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.canvas)
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .focusRequester(rootFocusRequester)
+            .focusable()
+            .onPreviewKeyEvent { event ->
+                if (event.type == KeyEventType.KeyDown && event.isCtrlPressed) {
+                    when {
+                        event.isShiftPressed && event.key == Key.P -> {
+                            showPalette = true
+                            true
+                        }
+                        !event.isShiftPressed && event.key == Key.N -> {
+                            showNewDialog = true
+                            true
+                        }
+                        !event.isShiftPressed && event.key == Key.F -> {
+                            runCatching { searchFocusRequester.requestFocus() }
+                            true
+                        }
+                        else -> false
+                    }
+                } else {
+                    false
+                }
+            },
     ) {
         val windowWidth = maxWidth
         val showNavigation = windowWidth >= 600.dp
@@ -191,6 +231,7 @@ fun HomeScreen(
                                 value = search,
                                 onValueChange = { search = it },
                                 label = "Search workbooks",
+                                modifier = Modifier.focusRequester(searchFocusRequester),
                             )
                         }
                     }
@@ -273,6 +314,20 @@ fun HomeScreen(
                 }
             },
         )
+    }
+
+    if (showPalette) {
+        val commands = buildList {
+            add(PaletteCommand("New workbook", "Ctrl+N") { showNewDialog = true })
+            add(PaletteCommand("Open settings") { onSettings() })
+            add(PaletteCommand("Show recents") { section = HomeSection.Recents })
+            add(PaletteCommand("Show favorites") { section = HomeSection.Favorites })
+            add(PaletteCommand("Show all workbooks") { section = HomeSection.All })
+            add(PaletteCommand("Focus search", "Ctrl+F") {
+                runCatching { searchFocusRequester.requestFocus() }
+            })
+        }
+        CommandPalette(commands = commands, onDismiss = { showPalette = false })
     }
 
     if (narrowNavOpen) {
