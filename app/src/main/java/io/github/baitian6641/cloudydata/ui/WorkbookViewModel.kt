@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.engine.DuckDbEngine
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
@@ -214,29 +215,45 @@ class WorkbookViewModel(
         updateActiveSheet { it.copy(measureFieldId = null) }
     }
 
+    fun setSeriesField(field: FieldDef) {
+        updateActiveSheet { it.copy(seriesFieldId = field.id) }
+    }
+
+    fun clearSeriesField() {
+        updateActiveSheet { it.copy(seriesFieldId = null) }
+    }
+
     fun setAggregation(aggregation: Aggregation) {
         updateActiveSheet { it.copy(aggregation = aggregation) }
     }
 
     fun setMarkType(markType: MarkType) {
-        updateActiveSheet { it.copy(markType = markType) }
+        updateActiveSheet { sheet ->
+            if (markType == MarkType.LINE) {
+                sheet.copy(markType = markType)
+            } else {
+                // Color is a Line series channel in this build; switching away
+                // clears it instead of silently querying an unused column.
+                sheet.copy(
+                    markType = markType,
+                    seriesFieldId = null,
+                    chart = sheet.chart.copy(logScale = false),
+                )
+            }
+        }
     }
 
     fun setSortDescending(descending: Boolean) {
         updateActiveSheet { it.copy(sortDescending = descending) }
     }
 
-    fun updateChartSettings(title: String?, showGridlines: Boolean, showValueLabels: Boolean) {
+    fun updateChartSettings(options: ChartOptions) {
         // Presentation-only change: persist and recompose without rerunning SQL.
         mutateDocument { document ->
             val active = document.activeWorksheet ?: return@mutateDocument document
             document.copy(
                 worksheets = document.worksheets.map {
-                    if (it.id != active.id) it else it.copy(
-                        chartTitle = title?.trim()?.takeIf { value -> value.isNotEmpty() },
-                        showGridlines = showGridlines,
-                        showValueLabels = showValueLabels,
-                    )
+                    if (it.id != active.id) it else it.copy(chart = options)
                 },
             )
         }

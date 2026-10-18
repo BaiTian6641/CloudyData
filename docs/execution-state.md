@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits through `7bbc315`; remote push not performed/authorized in
-this session.
+**Source:** commits through `67a60eb`, plus the pending S11.C0 line-chart
+increment; remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -23,15 +23,21 @@ unless stated otherwise.
   row count.
 - Workbook create, atomic metadata save, process-restart reopen, and local
   worksheet query.
-- Rows/Values placements, aggregate selection (SUM verified; others available),
-  provisional Table/Bar marks, chart/table, row selection, exact-value inspector,
-  generated SQL display.
+- Rows/Values/Line-Color placements, aggregate selection (SUM verified; others
+  available), Table/Bar/Line marks, chart/table, row selection, exact-value
+  inspector, generated SQL display.
+- Typed `ChartSpec` and multi-series line rendering with facet-separated series,
+  observed-gap handling, truncation refusal, chart/X/Y/legend titles, Y
+  range/zero/log/reverse, gridlines, value labels and bottom/right legend.
+- Workbook format v2 with nested chart options and v1 read migration; no legacy
+  dual-write, and future versions are rejected before migration.
 - Home recents/favorites/all filters; favorite toggle code exists but is not yet
   tested.
-- Offline Vega 6.4.0 + CSP interpreter host renders a trusted two-bar spec from
-  packaged assets on both targets; screen/SVG content, no external request,
+- Offline Vega 6.4.0 + CSP interpreter host renders trusted bar and multi-series
+  line specs from packaged assets; screen/SVG content, no external request,
   native accessible summary and origin-validated messages are observed. The
-  worksheet Bar mark uses the host with an explicit native fallback and summary.
+  worksheet Bar and Line marks use the host with an explicit native/table
+  fallback and summary.
 - System/Light/Dark and Comfortable/Standard/Compact settings persist across a
   process restart, apply to open windows through app-level state, and expose
   real selected semantics. Invalid stored values fall back without deleting
@@ -39,16 +45,17 @@ unless stated otherwise.
 - Command palette (Ctrl+Shift+P, Ctrl+N, Ctrl+F), context commands, Ctrl+S and
   bounded undo/redo are real and tested; the palette runs Settings and closes
   with Escape on both devices.
-- Chart title, gridline visibility and value labels are persisted per worksheet
-  and survive reopen; the bar renderer receives the presentation flags without
-  rerunning SQL.
+- Chart/X/Y/legend titles, gridline visibility, value labels, Y range,
+  zero/log/reverse and legend position are persisted per worksheet and survive
+  reopen; presentation changes do not rerun SQL.
 - Native interrupt returns `EngineException("INTERRUPT Error: Interrupted!")` and
   the connection remains usable; the worksheet has a Cancel action whose UI path
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 8/8. Instrumentation: 18/18
-  on each target (the 1M workload probe is a no-op on the emulator by design).
+- Lint: 0 errors (warnings documented). JVM tests: 18/18. Emulator instrumentation:
+  27/27, 0 failures. The physical Googlebook was removed by the owner; new
+  line-chart evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -60,6 +67,8 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s01-native-engine.md`
 - `qualification/evidence/2026-10-18-s01-import-and-worksheet.md`
 - `qualification/evidence/2026-10-18-token-contrast.md`
+- `qualification/evidence/2026-10-18-s11-line-chart.md`
+- `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
 
@@ -76,49 +85,43 @@ unless stated otherwise.
   process; cross-window/conflict behavior is not implemented or tested.
 - The chart's label-hash category colors are stable only for unchanged labels;
   no persisted palette map exists.
-- The Vega host renders the worksheet Bar mark with a native fallback and table
-  selection equivalent; renderer death, matched resize/input runs, chart
-  selection, export, focus/TalkBack and memory limits are unverified.
+- Renderer death, matched resize/input runs, chart selection, export,
+  focus/TalkBack and memory limits are unverified. The native summary/table is
+  the current accessible equivalent.
 
 ## Not implemented / blocked
 
-- S01.4 cancellation/interruption/worker death, S01.5 receipt recovery, S01.6
-  Arrow IPC, S01.7 offline Vega, S01.8 million-row virtualized grid, S01.10
-  multiwindow, S01.11 16 KiB runtime.
-- Vega/renderer host, query service process, Arrow transport, room metadata,
-  coordinator/history/undo, formula parser, LOD/filters, relationships, totals,
-  table calculations, dashboards, connectors, export, Tableau interoperability.
+- S01.6 Arrow IPC, S01.8 million-row virtualized grid, S01.10 multiwindow,
+  S01.11 16 KiB runtime. S01.4 has a native interrupt probe and UI action but no
+  worker/process-death qualification; S01.5 covers constructed recovery states,
+  not real process kills; S01.7 has an offline bar/line probe but no renderer
+  death/matched-resize/selection/export qualification.
+- Query service process, Arrow transport, Room metadata, cross-window
+  coordinator/conflict handling, formula parser, LOD/filters, relationships,
+  totals, table calculations, dashboards, connectors, export, Tableau
+  interoperability. A bounded undo/redo history exists; full command-journal
+  durability does not.
 - 16 KiB runtime device and licensed Tableau reference are unavailable.
 - Canonical upstream token source, generator history and platform-rule-zero are
   absent. Tokens remain provisional.
 
 ## Next exact task
 
-**S11.C0 incremental — line mark and axis/legend customization.**
+**S01.7 renderer lifecycle completion (emulator-first).**
 
-- Files: `WorksheetView.kt`, `VegaChart.kt`, `VegaRendererHost.kt`, chart
-  catalog/model, renderer assets, tests.
-- Action: add a Line mark with date/categorical x, multiple series by color,
-  missing-value policy, axis title/range/zero/log/reverse controls, gridline
-  styling and a legend. Persist every control; do not let the renderer
-  reaggregate. Add a per-family fixture and save/reopen/selection evidence.
-- Acceptance: exact data/grain fixture, visible axis/legend/grid customization,
-  unsupported states explained, native summary/table, renderer offline/typed
-  boundary unchanged, and catalog rows moved only with evidence.
-- Then: S01.7 renderer-lifecycle completion and S03 cross-window coordinator.
-
-- Files: `renderer-web/` host/bridge, `VegaRendererHost.kt` and a bounded
-  instrumentation probe.
-- Action: add a repeated renderer-death/recreate probe (or force renderer
-  termination through a supported mechanism), live resize/pixel mapping,
-  selection-intent round trip with stale-revision rejection, and an explicit
-  export/availability decision. Keep `blockNetworkLoads` and origin checks.
-- Acceptance: no false completion after renderer death; a fresh renderer can
-  replay accepted workbook state; late/old intents are rejected; actual
-  screenshot/asset evidence at two window sizes; unchanged native accessible
-  summary remains available.
-- If renderer death cannot be forced safely, record the blocker and move to S06
-  native worksheet integration only after the missing gate is explicit.
+- Files: `renderer/VegaRendererHost.kt`, `renderer-web/` host, debug probe,
+  instrumentation tests.
+- Action: force or observe renderer termination through a supported mechanism;
+  create a fresh renderer and replay the accepted `ChartSpec`; test matched
+  resize and a stale/selection-intent path with revision rejection. If
+  termination cannot be forced safely, record the blocker and keep the gate
+  partial rather than claiming a pass.
+- Acceptance: no false render completion after death; fresh host renders the
+  current spec; stale intents are discarded; no network/origin regression;
+  native summary/table remains available. Emulator evidence only unless the
+  physical device returns.
+- Then: next chart family/customization increment (scatter or area) and
+  S03 coordinator/window revision work.
 
 ## Protected context
 

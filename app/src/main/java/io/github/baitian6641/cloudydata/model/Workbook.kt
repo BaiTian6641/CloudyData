@@ -20,6 +20,62 @@ enum class Aggregation { SUM, AVG, MIN, MAX, COUNT, COUNT_DISTINCT, NONE }
 
 enum class MarkType { TABLE, BAR, LINE }
 
+enum class LegendPosition { BOTTOM, RIGHT }
+
+data class ChartOptions(
+    val title: String? = null,
+    val showGridlines: Boolean = true,
+    val showValueLabels: Boolean = false,
+    val xAxisTitle: String? = null,
+    val yAxisTitle: String? = null,
+    val seriesTitle: String? = null,
+    val yMin: Double? = null,
+    val yMax: Double? = null,
+    val zeroBaseline: Boolean = true,
+    val logScale: Boolean = false,
+    val reverseY: Boolean = false,
+    val legendVisible: Boolean = true,
+    val legendPosition: LegendPosition = LegendPosition.BOTTOM,
+) {
+    fun toJson(): JSONObject = JSONObject()
+        .put("version", VERSION)
+        .put("title", title ?: JSONObject.NULL)
+        .put("showGridlines", showGridlines)
+        .put("showValueLabels", showValueLabels)
+        .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
+        .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
+        .put("seriesTitle", seriesTitle ?: JSONObject.NULL)
+        .put("yMin", yMin ?: JSONObject.NULL)
+        .put("yMax", yMax ?: JSONObject.NULL)
+        .put("zeroBaseline", zeroBaseline)
+        .put("logScale", logScale)
+        .put("reverseY", reverseY)
+        .put("legendVisible", legendVisible)
+        .put("legendPosition", legendPosition.name)
+
+    companion object {
+        const val VERSION = 1
+
+        fun fromJson(json: JSONObject): ChartOptions = ChartOptions(
+            title = if (json.isNull("title")) null else json.optString("title").takeIf { it.isNotEmpty() },
+            showGridlines = json.optBoolean("showGridlines", true),
+            showValueLabels = json.optBoolean("showValueLabels", false),
+            xAxisTitle = if (json.isNull("xAxisTitle")) null else json.optString("xAxisTitle").takeIf { it.isNotEmpty() },
+            yAxisTitle = if (json.isNull("yAxisTitle")) null else json.optString("yAxisTitle").takeIf { it.isNotEmpty() },
+            seriesTitle = if (json.isNull("seriesTitle")) null else json.optString("seriesTitle").takeIf { it.isNotEmpty() },
+            yMin = if (json.isNull("yMin")) null else json.optDouble("yMin"),
+            yMax = if (json.isNull("yMax")) null else json.optDouble("yMax"),
+            zeroBaseline = json.optBoolean("zeroBaseline", true),
+            logScale = json.optBoolean("logScale", false),
+            reverseY = json.optBoolean("reverseY", false),
+            legendVisible = json.optBoolean("legendVisible", true),
+            legendPosition = runCatching {
+                LegendPosition.valueOf(json.optString("legendPosition", LegendPosition.BOTTOM.name))
+            }.getOrDefault(LegendPosition.BOTTOM),
+        )
+    }
+}
+
 data class FieldDef(
     val id: String,
     val name: String,
@@ -96,9 +152,8 @@ data class WorksheetDef(
     val aggregation: Aggregation,
     val markType: MarkType,
     val sortDescending: Boolean,
-    val chartTitle: String? = null,
-    val showGridlines: Boolean = true,
-    val showValueLabels: Boolean = false,
+    val seriesFieldId: String? = null,
+    val chart: ChartOptions = ChartOptions(),
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("id", id)
@@ -108,23 +163,31 @@ data class WorksheetDef(
         .put("aggregation", aggregation.name)
         .put("markType", markType.name)
         .put("sortDescending", sortDescending)
-        .put("chartTitle", chartTitle ?: JSONObject.NULL)
-        .put("showGridlines", showGridlines)
-        .put("showValueLabels", showValueLabels)
+        .put("seriesFieldId", seriesFieldId ?: JSONObject.NULL)
+        .put("chart", chart.toJson())
 
     companion object {
-        fun fromJson(json: JSONObject): WorksheetDef = WorksheetDef(
-            id = json.getString("id"),
+        fun fromJson(json: JSONObject): WorksheetDef {
+            val markType = MarkType.valueOf(json.getString("markType"))
+            val parsedChart = json.optJSONObject("chart")?.let { ChartOptions.fromJson(it) }
+                ?: ChartOptions(
+                    title = if (json.isNull("chartTitle")) null else json.optString("chartTitle").takeIf { it.isNotEmpty() },
+                    showGridlines = json.optBoolean("showGridlines", true),
+                    showValueLabels = json.optBoolean("showValueLabels", false),
+                )
+            return WorksheetDef(
+                id = json.getString("id"),
             name = json.getString("name"),
             rowFieldId = if (json.isNull("rowFieldId")) null else json.getString("rowFieldId"),
             measureFieldId = if (json.isNull("measureFieldId")) null else json.getString("measureFieldId"),
             aggregation = Aggregation.valueOf(json.getString("aggregation")),
-            markType = MarkType.valueOf(json.getString("markType")),
-            sortDescending = json.getBoolean("sortDescending"),
-            chartTitle = if (json.isNull("chartTitle")) null else json.getString("chartTitle"),
-            showGridlines = json.optBoolean("showGridlines", true),
-            showValueLabels = json.optBoolean("showValueLabels", false),
-        )
+                markType = markType,
+                sortDescending = json.getBoolean("sortDescending"),
+                seriesFieldId = if (json.isNull("seriesFieldId")) null else json.optString("seriesFieldId").takeIf { it.isNotEmpty() },
+                // Log/legend line settings must not make a bar document unrenderable.
+                chart = if (markType == MarkType.LINE) parsedChart else parsedChart.copy(logScale = false),
+            )
+        }
     }
 }
 
@@ -158,7 +221,7 @@ data class WorkbookDocument(
         .put("tags", JSONArray(tags))
 
     companion object {
-        const val CURRENT_FORMAT_VERSION = 1
+        const val CURRENT_FORMAT_VERSION = 2
 
         fun fromJson(json: JSONObject): WorkbookDocument {
             val version = json.getInt("formatVersion")
@@ -167,7 +230,9 @@ data class WorkbookDocument(
             }
             val sheetsJson = json.getJSONArray("worksheets")
             return WorkbookDocument(
-                formatVersion = version,
+                // Normalize accepted v1 documents to the current shape so a
+                // subsequent save cannot write new options under format v1.
+                formatVersion = CURRENT_FORMAT_VERSION,
                 id = json.getString("id"),
                 name = json.getString("name"),
                 revision = json.getLong("revision"),

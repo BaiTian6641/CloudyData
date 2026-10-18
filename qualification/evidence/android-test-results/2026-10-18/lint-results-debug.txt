@@ -1,4 +1,4 @@
-/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:128: Warning: addWebMessageListener should only be called if the feature WEB_MESSAGE_LISTENER is present; to check call androidx.webkit.WebViewFeature#isFeatureSupported [RequiresFeature]
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:125: Warning: addWebMessageListener should only be called if the feature WEB_MESSAGE_LISTENER is present; to check call androidx.webkit.WebViewFeature#isFeatureSupported [RequiresFeature]
         WebViewCompat.addWebMessageListener(
         ^
 
@@ -6,10 +6,10 @@
    Some APIs require optional features to be present. This check makes sure
    that calls to these APIs are surrounded by a check which enforces this.
 
-/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:96: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:93: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
         view.webViewClient = object : WebViewClientCompat() {
                                       ~~~~~~~~~~~~~~~~~~~~~
-/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:96: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:93: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
         view.webViewClient = object : WebViewClientCompat() {
                                       ~~~~~~~~~~~~~~~~~~~~~
 

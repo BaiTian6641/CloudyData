@@ -100,10 +100,14 @@ fun WorkbookInspector(
         if (result != null && selectedRowIndex >= 0 && selectedRowIndex < result.result.rows.size) {
             val row = result.result.rows[selectedRowIndex]
             InspectorSection("Selected row")
+            val hasSeriesColumn = result.hasSeriesColumn
+            val valueColumn = result.valueColumnIndex
             result.result.columns.forEachIndexed { index, column ->
                 val label = when {
                     result.rowField != null && index == 0 -> result.rowField.name
-                    result.measureField != null && index == 1 -> "${aggregationName(result.aggregation)} of ${result.measureField.name}"
+                    hasSeriesColumn && index == 1 -> result.seriesField?.name ?: column.name
+                    result.measureField != null && index == valueColumn ->
+                        "${aggregationName(result.aggregation)} of ${result.measureField.name}"
                     else -> column.name
                 }
                 InspectorRow(label, displayValue(row.getOrNull(index)), exact = exactValueText(row.getOrNull(index)))

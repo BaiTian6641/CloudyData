@@ -9,6 +9,8 @@ f45f8024951932032ac21f285c0a22a7ae3620e86a79821adfc11f9148065257  qualification/
 ec7adeb6df09e23701cb043048437941d1dca781ba9b7a841a87a09bca81863d  qualification/evidence/artifacts/2026-10-18-import-dialog-ui.xml
 959f8db7397dc53ab7dc5e33d3502efab29c1db4a36d6b019a27e86b32378723  qualification/evidence/artifacts/2026-10-18-import-dialog.png
 f559630b9c059bee7257d2fdc9924db49d2b74a4a4ac2dc10a7787428b418b3a  qualification/evidence/artifacts/2026-10-18-inspector.png
+ccc58e4767d5a2bacab5b1cb968729ba1ada13ab7d956bbc913dbed081a5c5e6  qualification/evidence/artifacts/2026-10-18-line-chart-emulator-ui.xml
+7f0de807464d1dd6cd13f9316f45cbebe412e18a05421d7ed671b25902ea2aa6  qualification/evidence/artifacts/2026-10-18-line-chart-emulator.png
 8cb9b2f9fa08ab02097c96262b88b41cc51eb0ff8d32303f5e09be9ef3ebcb44  qualification/evidence/artifacts/2026-10-18-reopen.png
 a380cc4cd036874125a3ae257251d6abc9c33c2f835e6a9957f5b0a4e18aeefb  qualification/evidence/artifacts/2026-10-18-settings-dark-compact.png
 325203fa4e25f6a04f50d9f9590634932f0310d068c9781b8e9f72b9642407f9  qualification/evidence/artifacts/2026-10-18-settings-light.png
@@ -20,7 +22,7 @@ a380cc4cd036874125a3ae257251d6abc9c33c2f835e6a9957f5b0a4e18aeefb  qualification/
 8c668bdc5b68c3543538b422195d2936e6634633d406d20405b4606f528b175f  qualification/evidence/artifacts/2026-10-18-worksheet-ui.xml
 5c81ad9c8fcf005b89869b57d6d4027eaeec4f89ec1f5b9ce127e96e277d6df4  qualification/evidence/artifacts/2026-10-18-worksheet-vega-ui.xml
 d43fcdf8effbc35a53a25f8726d81a4fd15d11e878c9e116d5b859537d3a8899  qualification/evidence/artifacts/2026-10-18-worksheet-vega.png
-ac2a2c39f9281f94d7e7a9b7c4111a17e58eee27fd9c723a23644a87a2f93908  app/build/outputs/apk/debug/app-debug.apk
+991d833505a43b96bd67e8305322189ae80864e58ad09450e39428497c0a12fd  app/build/outputs/apk/debug/app-debug.apk
 4483cf9be4f478c38ebb8293063634b8fabf3e2675eff3f3571105afbdc03e2f  app/src/main/assets/renderer/host.js
 6d64d34b0c990f66a54ac197318001247fe3266834e4713ef810fabfbee4490f  app/src/main/assets/renderer/index.html
 e56200ab496a55553d2800ec4e24e6022b51089596314433f640101cc96fdb2b  app/src/main/assets/renderer/renderer.css
@@ -28,3 +30,5 @@ ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/a
 8f6a3587cf8d4f42c7e08120e3eb05d067e746d554e39d2dcf52acc0bd5ba28f  app/src/main/assets/renderer/vega.min.js
 31f461972a3c89f4ede587e4040909b87b0ce24762eb85f76a929150ba49da77  app/src/main/jniLibs/arm64-v8a/libduckdb.so
 63f7f0c60f42b8438288150b5e199484d77e048c4dca9951c2c696860134b0fe  app/src/main/jniLibs/x86_64/libduckdb.so
+444353014313edf0653d7d20b6225efc88f599afe8da1379089df32c07fa4646  fixtures/csv/chart_line_series.csv
+e50ff4abdf7c0381b19f8772766fc68f911f9ed73e192f06687f428b1586249a  fixtures/expected/chart_line_series.md

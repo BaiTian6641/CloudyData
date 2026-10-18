@@ -143,3 +143,34 @@ short active handoff is `docs/execution-state.md`.
   undo/redo restored the expected results.
 - The current chart inventory remains bar/table only; every other family and
   most customization areas are explicitly `not_started`/`partial`.
+
+## 2026-10-18 — line chart, typed IR and emulator-first qualification
+
+- The owner requested emulator-first build/validation and removed the physical
+  Googlebook for the remainder of the session. All new line-chart validation was
+  performed on `emulator-5580`; no new physical-only claim is made.
+- Added typed `ChartSpec` and `ChartOptions` (nested workbook format v2), a
+  multi-series line query, series-aware table/inspector mapping, and persisted
+  chart/X/Y/legend titles, Y range, zero/log/reverse, gridlines, labels and
+  legend position.
+- First full emulator `am instrument` run failed when UiAutomation was not
+  connected in CommandPaletteTest. CommandPaletteTest alone then passed (2/2)
+  and a full rerun passed 24/24, so the failure is retained as a transient
+  automation-environment event rather than a product result.
+- First faceted line render showed axes/legend but no lines: the Vega group
+  facet had `clip:true` with no width/height, clipping all child marks. Adding
+  explicit width/height signals produced two visible series paths.
+- Independent scout review prompted: v2 migration without legacy dual write,
+  2001-row truncation probe/refusal, defined/null gaps, facet grouping (not
+  `detail`), removal of clamp, bar log/legend restrictions, payload limits,
+  series-column table/inspector labels, and mark-switch cleanup.
+- Emulator manual flow: imported six-row two-series fixture, set event_date on
+  Rows, value on Values, series on Color, Line mark; set titles, Y 0–40, right
+  legend; observed North 10/20/30 and South 1/2/4, no March South point; saved,
+  force-stopped, reopened and confirmed the same chart and exact table.
+- Independent reviewer findings were fixed: explicit Y range now disables Vega
+zero/nice expansion; series-aware table/inspector mapping uses the actual query
+shape; line-only log/legend controls are gated/normalized for bars; the probe
+asserts real line marks; 2000/2001 boundary and document-level v1 migration are
+tested in the final run.
+Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.

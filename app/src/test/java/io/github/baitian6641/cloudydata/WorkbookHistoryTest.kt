@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata
 
+import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorkbookHistory
 import io.github.baitian6641.cloudydata.model.WorksheetDef
@@ -57,6 +58,20 @@ class WorkbookHistoryTest {
         while (history.undo() != null) undos++
         assertEquals(3, undos)
         assertEquals("Edit 3", history.current.name)
+    }
+
+    @Test
+    fun chartOptionsParticipateInUndoRedoWithoutRequery() {
+        val base = document()
+        val history = WorkbookHistory(base)
+        val changed = history.apply { doc ->
+            doc.copy(
+                worksheets = listOf(doc.worksheets.single().copy(chart = ChartOptions(title = "Custom"))),
+            )
+        }
+        assertEquals("Custom", changed.worksheets.single().chart.title)
+        assertEquals(null, history.undo()?.worksheets?.single()?.chart?.title)
+        assertEquals("Custom", history.redo()?.worksheets?.single()?.chart?.title)
     }
 
     @Test

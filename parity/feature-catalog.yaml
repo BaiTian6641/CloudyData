@@ -287,7 +287,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Rows and Values placements with aggregation/date-free fields, removal and mark switch are functional. Filters, Pages, Measure Names/Values, drag equivalents and multi-placement editing are pending."
+    note: "Rows, Values and Line Color placements, aggregation, removal and mark switching are functional. Filters, Pages, Measure Names/Values, drag equivalents and multi-placement editing are pending."
   - id: F32
     family: "Marks and layers"
     outcome: "Color, size, shape, label, detail, tooltip and path; multiple mark layers and per-layer overrides remain inspectable."
@@ -314,7 +314,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Text/table and vertical bar only; title/gridline/value-label customization exists. Other families and variants are tracked in parity/chart-catalog.yaml."
+    note: "Text/table, vertical bar and multi-series line exist. Line includes typed multi-series grouping, axis titles/range/zero/log/reverse, gridlines, value labels, legend position and observed-gap handling. Other families remain in parity/chart-catalog.yaml."
   - id: F35
     family: "Crosstabs and totals"
     outcome: "Pivoted row/column headers, subtotals and grand totals computed at the correct grain; copy/export respects selection and exact values."
@@ -332,7 +332,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Automatic linear zero-baseline axes and field-derived axis titles only; range/log/reverse/ticks/dual axes are not implemented."
+    note: "Bar/line Y range, zero baseline, log (validated positive), reverse and X/Y titles are implemented. Tick counts, temporal axes, dual axes and synchronization remain pending."
   - id: F37
     family: "Sorting"
     outcome: "Manual, field, aggregate, nested and tie-breaking rules; header sort and table-calculation sort remain explicit."
@@ -350,7 +350,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Persisted chart title and value-label visibility are implemented; captions/units/formatting/legends/borders/annotations/themes are pending."
+    note: "Persisted chart, axis and legend titles, gridline visibility, value labels and line legend position are implemented; captions/units/axis formatting/borders/annotations/themes remain pending."
   - id: F39
     family: "Selection and inspect data"
     outcome: "Click, additive/range/rectangle/lasso where relevant, keep/exclude, drill and View Data; stable mark identity maps to authorized rows."

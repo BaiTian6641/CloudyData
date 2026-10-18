@@ -1,0 +1,231 @@
+package io.github.baitian6641.cloudydata.chart
+
+import io.github.baitian6641.cloudydata.engine.WorksheetResult
+import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.valueAsDouble
+import java.util.LinkedHashMap
+
+/**
+ * Converts a typed query result into a typed visual specification. All
+ * aggregation, grouping and absence behavior is already fixed by the query; this
+ * builder only shapes observed rows for rendering. It never invents absent
+ * domain members or converts NULL to zero.
+ */
+object ChartSpecBuilder {
+    const val MAX_BAR_CATEGORIES = 24
+    const val MAX_LINE_POINTS = 2000
+
+    fun build(
+        chartId: String,
+        revision: Long,
+        result: WorksheetResult,
+        options: ChartOptions,
+        derivedTitle: String,
+    ): ChartSpec {
+        require(chartId.length in 1..128) { "invalid chart id" }
+        require(revision >= 0) { "invalid revision" }
+        if (result.result.truncated) {
+            throw ChartSpecException(
+                "The result exceeded the chart row limit. The chart is not drawn from a partial result; use the table.",
+            )
+        }
+        validateAxisOptions(options)
+        return if (result.markType == MarkType.LINE) {
+            buildLine(chartId, revision, result, options, derivedTitle)
+        } else {
+            buildBar(chartId, revision, result, options, derivedTitle)
+        }
+    }
+
+    private fun buildBar(
+        chartId: String,
+        revision: Long,
+        result: WorksheetResult,
+        options: ChartOptions,
+        derivedTitle: String,
+    ): ChartSpec {
+        if (result.seriesField != null) {
+            throw ChartSpecException("Color series is only available for Line marks in this build.")
+        }
+        if (options.logScale) {
+            throw ChartSpecException("A logarithmic value axis is only available for Line marks in this build.")
+        }
+        val rows = result.result.rows
+        if (rows.size > MAX_BAR_CATEGORIES) {
+            throw ChartSpecException(
+                "Bar chart supports at most $MAX_BAR_CATEGORIES categories; use the table or aggregate further.",
+            )
+        }
+        val valueColumn = if (result.rowField != null) 1 else 0
+        val labelColumn = if (result.rowField != null) 0 else null
+        val points = rows.mapIndexed { index, row ->
+            val raw = row.getOrNull(valueColumn)
+            val y = raw?.let { valueAsDouble(it) }
+            if (raw != null && y == null) throw ChartSpecException("Bar value for row ${index + 1} is not numeric.")
+            if (y != null && !y.isFinite()) throw ChartSpecException("Bar value for row ${index + 1} is not finite.")
+            ChartPoint(
+                x = labelColumn?.let { display(row.getOrNull(it)) } ?: "Total",
+                xOrder = index,
+                series = "Values",
+                y = y,
+                exactY = raw?.toString(),
+                defined = y != null,
+                sourceRowIndex = index,
+            )
+        }
+        if (points.none { it.defined }) throw ChartSpecException("The current view has no numeric marks.")
+        validateYDomain(options, points.mapNotNull { it.y })
+        val yTitle = options.yAxisTitle
+            ?: result.measureField?.let { "${aggregationLabel(result.aggregation)} of ${it.name}" }
+            ?: "Value"
+        return ChartSpec(
+            chartId = chartId,
+            revision = revision,
+            kind = ChartKind.BAR,
+            title = options.title ?: derivedTitle,
+            xAxis = AxisSpec(
+                title = options.xAxisTitle ?: result.rowField?.name ?: "View",
+                reverse = false,
+            ),
+            yAxis = axisFor(options, yTitle),
+            gridlines = GridlineSpec(options.showGridlines),
+            // Category color legends are intentionally deferred until grouped
+            // bar semantics exist; the legend control applies to line series.
+            legend = LegendSpec(false, options.legendPosition, null),
+            labels = LabelSpec(options.showValueLabels),
+            series = listOf(ChartSeries("Values", points)),
+            rowCount = rows.size,
+            truncated = result.result.truncated,
+        )
+    }
+
+    private fun buildLine(
+        chartId: String,
+        revision: Long,
+        result: WorksheetResult,
+        options: ChartOptions,
+        derivedTitle: String,
+    ): ChartSpec {
+        val rowField = result.rowField
+            ?: throw ChartSpecException("Line marks require a dimension on Rows.")
+        val measure = result.measureField
+            ?: throw ChartSpecException("Line marks require a measure on Values.")
+        if (result.aggregation == Aggregation.NONE) {
+            throw ChartSpecException("Line marks require an aggregate; raw-value lines are not implemented.")
+        }
+        if (result.result.rows.size > MAX_LINE_POINTS) {
+            throw ChartSpecException(
+                "Line chart supports at most $MAX_LINE_POINTS observed points; narrow the view or aggregate further.",
+            )
+        }
+        val hasSeries = result.seriesField != null
+        if (result.seriesField != null) {
+            if (result.seriesField.id == rowField.id) {
+                throw ChartSpecException("Color series must be a different field from the Rows dimension.")
+            }
+            if (result.seriesField.role != io.github.baitian6641.cloudydata.model.FieldRole.DIMENSION) {
+                throw ChartSpecException("Color series must be a dimension.")
+            }
+        }
+        val xColumn = 0
+        val seriesColumn = if (hasSeries) 1 else null
+        val valueColumn = if (hasSeries) 2 else 1
+        val xOrder = LinkedHashMap<String, Int>()
+        val grouped = LinkedHashMap<String, MutableList<ChartPoint>>()
+        result.result.rows.forEachIndexed { rowIndex, row ->
+            val x = display(row.getOrNull(xColumn))
+            val order = xOrder.getOrPut(x) { xOrder.size }
+            val series = seriesColumn?.let { display(row.getOrNull(it)) } ?: measure.name
+            val raw = row.getOrNull(valueColumn)
+            val y = raw?.let { valueAsDouble(it) }
+            if (raw != null && y == null) throw ChartSpecException("Line value for $x is not numeric.")
+            if (y != null && !y.isFinite()) throw ChartSpecException("Line value for $x is not finite.")
+            grouped.getOrPut(series) { mutableListOf() }.add(
+                ChartPoint(
+                    x = x,
+                    xOrder = order,
+                    series = series,
+                    y = y,
+                    exactY = raw?.toString(),
+                    defined = y != null,
+                    sourceRowIndex = rowIndex,
+                ),
+            )
+        }
+        if (grouped.isEmpty()) throw ChartSpecException("The current view has no line points.")
+        validateYDomain(options, grouped.values.flatten().mapNotNull { it.y })
+        if (grouped.values.flatten().none { it.defined }) {
+            throw ChartSpecException("The current view has no numeric line points.")
+        }
+        val series = grouped.map { (key, points) -> ChartSeries(key, points.sortedBy { it.xOrder }) }
+        val yTitle = options.yAxisTitle ?: "${aggregationLabel(result.aggregation)} of ${measure.name}"
+        return ChartSpec(
+            chartId = chartId,
+            revision = revision,
+            kind = ChartKind.LINE,
+            title = options.title ?: derivedTitle,
+            xAxis = AxisSpec(
+                title = options.xAxisTitle ?: rowField.name,
+                reverse = false,
+            ),
+            yAxis = axisFor(options, yTitle),
+            gridlines = GridlineSpec(options.showGridlines),
+            legend = LegendSpec(
+                visible = options.legendVisible && series.size > 1,
+                position = options.legendPosition,
+                title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
+            ),
+            labels = LabelSpec(options.showValueLabels),
+            series = series,
+            rowCount = result.result.rows.size,
+            truncated = result.result.truncated,
+            missingPolicy = MissingPolicy.CONNECT_OBSERVED,
+        )
+    }
+
+    private fun axisFor(options: ChartOptions, title: String): AxisSpec = AxisSpec(
+        title = title,
+        min = options.yMin,
+        max = options.yMax,
+        zero = options.zeroBaseline && !options.logScale,
+        log = options.logScale,
+        reverse = options.reverseY,
+    )
+
+    private fun validateAxisOptions(options: ChartOptions) {
+        val min = options.yMin
+        val max = options.yMax
+        if (min != null && !min.isFinite()) throw ChartSpecException("Y minimum must be finite.")
+        if (max != null && !max.isFinite()) throw ChartSpecException("Y maximum must be finite.")
+        if (min != null && max != null && min >= max) {
+            throw ChartSpecException("Y minimum must be less than Y maximum.")
+        }
+        if (options.logScale) {
+            if (min != null && min <= 0.0) throw ChartSpecException("A log Y minimum must be greater than zero.")
+            if (max != null && max <= 0.0) throw ChartSpecException("A log Y maximum must be greater than zero.")
+        }
+    }
+
+    private fun validateYDomain(options: ChartOptions, values: List<Double>) {
+        if (options.logScale && values.any { it <= 0.0 }) {
+            throw ChartSpecException("A logarithmic Y axis requires every value to be greater than zero.")
+        }
+    }
+
+    private fun display(value: Any?): String = when (value) {
+        null -> "NULL"
+        else -> value.toString()
+    }
+
+    private fun aggregationLabel(aggregation: Aggregation): String = when (aggregation) {
+        Aggregation.SUM -> "Sum"
+        Aggregation.AVG -> "Average"
+        Aggregation.MIN -> "Minimum"
+        Aggregation.MAX -> "Maximum"
+        Aggregation.COUNT -> "Count"
+        Aggregation.COUNT_DISTINCT -> "Distinct count"
+        Aggregation.NONE -> "Value"
+    }
+}

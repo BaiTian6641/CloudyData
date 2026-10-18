@@ -6,8 +6,8 @@ reference_profile: pending_no_licensed_tableau
 design_contract: docs/design/chart-grammar-and-customization.md
 inventory_complete: false
 status_counts:
-  partial: 2
-  not_started: 22
+  partial: 3
+  not_started: 21
 families:
   - id: CH01
     family: Bar
@@ -21,9 +21,10 @@ families:
     family: Line
     variants: [single, multi_series, stepped, curved, markers]
     encodings: [x, y, color, path, detail]
-    customizations: [axis_range, gridlines, legend, line_style, markers, labels, tooltip]
+    customizations: [axis_range, zero_baseline, log, reverse, axis_titles, gridlines, legend, labels, color, line_style, markers, tooltip]
     owning_stages: S06, S11
-    status: not_started
+    status: partial
+    note: Multi-series line with semantic grouping, observed-point order, 2000-point truncation refusal, missing-value gaps, axis titles/range/zero/log/reverse, gridlines, value labels, right/bottom legend and save/reopen. Interpolation/marker styling, temporal axis, dual axes, chart selection and export are pending.
   - id: CH03
     family: Area
     variants: [single, stacked, 100_percent]
@@ -97,8 +98,8 @@ families:
     family: Annotation and mark layers
     status: not_started
 customization_status_counts:
-  partial: 10
-  not_started: 7
+  partial: 12
+  not_started: 5
 customization:
   - id: CUST01
     area: Data and view
@@ -109,12 +110,12 @@ customization:
     area: Titles
     controls: [chart_title, subtitle, caption, axis_titles, units, legend_title]
     status: partial
-    note: A persisted chart title override exists; subtitle/caption/axis-title/unit/legend-title editors do not.
+    note: Persisted chart, X/Y-axis and legend titles exist. Subtitle, caption, units and axis-title placement are pending.
   - id: CUST03
     area: Axes and scales
     controls: [range, zero_baseline, log, reverse, ticks, dual_axis, synchronize]
     status: partial
-    note: Automatic zero-baseline linear axes only.
+    note: Y range, zero baseline, log (positive-value validation), reverse and X/Y titles are implemented. Tick counts, dual axes, synchronization and temporal x scaling are pending.
   - id: CUST04
     area: Gridlines and dividers
     controls: [major_gridlines, minor_gridlines, color, width, row_dividers, column_dividers]
@@ -123,7 +124,8 @@ customization:
   - id: CUST05
     area: Legend
     controls: [show_hide, position, orientation, title, mark_sample, interactive]
-    status: not_started
+    status: partial
+    note: Multi-series line legend with show/hide, bottom/right position and title exists. Interactive filtering and custom mark samples are pending.
   - id: CUST06
     area: Labels
     controls: [show_hide, field, position, font, format, collision_policy]
@@ -137,7 +139,8 @@ customization:
   - id: CUST08
     area: Marks and lines
     controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]
-    status: not_started
+    status: partial
+    note: Linear line, 2 dp stroke and automatic observed-point markers up to 200 points; style/interpolation/marker controls are pending.
   - id: CUST09
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]

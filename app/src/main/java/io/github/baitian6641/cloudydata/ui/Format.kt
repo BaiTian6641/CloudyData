@@ -47,13 +47,3 @@ fun exactValueText(value: Any?): String = when (value) {
     is ByteArray -> value.joinToString(" ") { "%02X".format(it) }
     else -> value.toString()
 }
-
-fun valueAsDouble(value: Any?): Double? = when (value) {
-    is Long -> value.toDouble()
-    is Int -> value.toDouble()
-    is Double -> value
-    is Float -> value.toDouble()
-    is BigDecimal -> value.toDouble()
-    is String -> value.toDoubleOrNull()
-    else -> null
-}

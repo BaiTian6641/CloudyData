@@ -67,6 +67,7 @@ import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorksheetDef
+import io.github.baitian6641.cloudydata.model.valueAsDouble
 
 @Composable
 fun WorksheetView(
@@ -77,8 +78,10 @@ fun WorksheetView(
     onSelectRow: (Int) -> Unit,
     onSetRowField: (FieldDef) -> Unit,
     onSetMeasureField: (FieldDef) -> Unit,
+    onSetSeriesField: (FieldDef) -> Unit,
     onClearRowField: () -> Unit,
     onClearMeasureField: () -> Unit,
+    onClearSeriesField: () -> Unit,
     onAggregation: (Aggregation) -> Unit,
     onMarkType: (MarkType) -> Unit,
     onSortDescending: (Boolean) -> Unit,
@@ -95,6 +98,7 @@ fun WorksheetView(
     val columns = snapshot?.columns.orEmpty()
     val rowField = sheet.rowFieldId?.let { id -> columns.firstOrNull { it.id == id } }
     val measureField = sheet.measureFieldId?.let { id -> columns.firstOrNull { it.id == id } }
+    val seriesField = sheet.seriesFieldId?.let { id -> columns.firstOrNull { it.id == id } }
 
     val ready = (queryState as? WorksheetQueryState.Ready)?.result
     val previous = when (queryState) {
@@ -159,6 +163,16 @@ fun WorksheetView(
                 aggregation = sheet.aggregation,
                 onAggregation = onAggregation,
             )
+            if (sheet.markType == MarkType.LINE) {
+                ShelfRow(
+                    label = "Color",
+                    field = seriesField,
+                    emptyHint = "Add a series (optional)",
+                    fields = columns.filter { it.role == FieldRole.DIMENSION && it.id != sheet.rowFieldId },
+                    onSelect = onSetSeriesField,
+                    onClear = onClearSeriesField,
+                )
+            }
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -172,12 +186,15 @@ fun WorksheetView(
                 )
                 MarkChoice("Table", sheet.markType == MarkType.TABLE) { onMarkType(MarkType.TABLE) }
                 MarkChoice("Bar", sheet.markType == MarkType.BAR) { onMarkType(MarkType.BAR) }
+                MarkChoice("Line", sheet.markType == MarkType.LINE) { onMarkType(MarkType.LINE) }
                 Spacer(Modifier.weight(1f))
                 CloudyTextButton("Chart settings", onChartSettings)
-                CloudyTextButton(
-                    text = if (sheet.sortDescending) "Sort descending" else "Sort ascending",
-                    onClick = { onSortDescending(!sheet.sortDescending) },
-                )
+                if (sheet.markType != MarkType.LINE) {
+                    CloudyTextButton(
+                        text = if (sheet.sortDescending) "Sort descending" else "Sort ascending",
+                        onClick = { onSortDescending(!sheet.sortDescending) },
+                    )
+                }
             }
         }
         CloudyDivider()
@@ -200,16 +217,16 @@ fun WorksheetView(
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
             val chartHeight = if (maxHeight < 420.dp) 0.dp else minOf(300.dp, maxHeight * 0.48f)
             Column(Modifier.fillMaxSize()) {
-                if (sheet.markType == MarkType.BAR && current != null && chartHeight > 0.dp) {
-                    VegaBarChartCard(
+                if ((sheet.markType == MarkType.BAR || sheet.markType == MarkType.LINE) &&
+                    current != null && chartHeight > 0.dp) {
+                    VegaChartCard(
                         result = current,
+                        options = sheet.chart,
                         selectedRowIndex = selectedRowIndex,
                         onSelectRow = onSelectRow,
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
                         chartId = "sheet-${sheet.id}",
-                        title = sheet.chartTitle?.takeIf { it.isNotBlank() } ?: chartTitle(current),
-                        showGridlines = sheet.showGridlines,
-                        showValueLabels = sheet.showValueLabels,
+                        title = sheet.chart.title?.takeIf { it.isNotBlank() } ?: chartTitle(current),
                     )
                     CloudyDivider()
                 }
@@ -574,6 +591,8 @@ private fun ResultTable(
     val density = LocalCloudyDensity.current
     val engineResult = result.result
     val columns = engineResult.columns
+    val hasSeriesColumn = result.hasSeriesColumn
+    val valueColumn = result.valueColumnIndex
     val horizontal = rememberScrollState()
     Column(modifier.background(colors.surface)) {
         Row(
@@ -588,7 +607,8 @@ private fun ResultTable(
                 Text(
                     when {
                         result.rowField != null && index == 0 -> result.rowField.name
-                        result.measureField != null && index == 1 ->
+                        hasSeriesColumn && index == 1 -> result.seriesField?.name ?: column.name
+                        result.measureField != null && index == valueColumn ->
                             "${aggregationLabel(result.aggregation)} of ${result.measureField.name}"
                         else -> column.name
                     },
@@ -625,10 +645,10 @@ private fun ResultTable(
                         Text(
                             displayValue(value),
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = if (columnIndex == row.lastIndex) FontWeight.Medium else FontWeight.Normal,
+                                fontWeight = if (columnIndex == valueColumn) FontWeight.Medium else FontWeight.Normal,
                             ),
                             color = if (value == null) colors.textSecondary else colors.textPrimary,
-                            textAlign = if (columnIndex > 0) TextAlign.End else TextAlign.Start,
+                            textAlign = if (columnIndex == valueColumn) TextAlign.End else TextAlign.Start,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.width(tableColumnWidth(columnIndex, row.size)).padding(horizontal = 4.dp),
@@ -657,7 +677,13 @@ private const val MAX_CHART_BARS = 24
 
 internal fun chartTitle(result: WorksheetResult): String {
     val measure = result.measureField?.name
-    return if (measure != null) "${aggregationLabel(result.aggregation)} of $measure by ${result.rowField?.name ?: "view"}" else "Rows by ${result.rowField?.name ?: "view"}"
+    val dimension = result.rowField?.name ?: "view"
+    return when {
+        measure != null && result.seriesField != null ->
+            "${aggregationLabel(result.aggregation)} of $measure by $dimension and ${result.seriesField.name}"
+        measure != null -> "${aggregationLabel(result.aggregation)} of $measure by $dimension"
+        else -> "Rows by $dimension"
+    }
 }
 
 private fun aggregationLabel(aggregation: Aggregation): String = when (aggregation) {

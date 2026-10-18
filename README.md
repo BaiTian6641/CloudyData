@@ -17,7 +17,10 @@ and the x86_64 API 37 emulator, the debug app can:
   `BIGINT` exact across JNI, and preserve Unicode/timestamp values;
 - write and verify a local Parquet snapshot plus the original source copy;
 - place a dimension and measure on Rows/Values, choose an aggregation and a
-  table/bar mark, and query DuckDB locally;
+  table/bar/line mark, and query DuckDB locally;
+- add an optional Color series to a line, with persisted chart/axis/legend
+  titles, Y range, zero/log/reverse, gridlines, value labels and a right/bottom
+  legend;
 - inspect exact values, formatted values and the generated SQL;
 - save workbook metadata atomically and reopen the workbook;
 - use a native command palette (Ctrl+Shift+P), Ctrl+S, and bounded undo/redo;
@@ -30,8 +33,9 @@ and the x86_64 API 37 emulator, the debug app can:
   with the CSP interpreter, draw a trusted two-bar spec with no network access,
   and show a native accessible summary.
 
-The worksheet Bar mark now uses the qualified offline Vega host for up to 24
-nonnegative categories, with a native fallback and a native accessible summary.
+The worksheet Bar and multi-series Line marks use the qualified offline Vega host
+with a native fallback/table and a native accessible summary. Line results refuse
+silent truncation, preserve observed gaps, and never synthesize absent members.
 Chart selection, renderer death, export and matched resize/input remain
 unqualified; the table is the exact-value surface. The bounded offline Vega
 renderer required by the architecture has **not** been integrated, so S01.7 and

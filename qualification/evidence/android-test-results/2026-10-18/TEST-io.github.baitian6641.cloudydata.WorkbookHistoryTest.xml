@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.baitian6641.cloudydata.WorkbookHistoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-18T22:48:09.048Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.005">
+  <properties/>
+  <testcase name="resetDropsHistoryAndSourceEffectsAreNotReplayed" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.002"/>
+  <testcase name="undoRedoRestoresDocumentStateAndClearsRedoOnNewEdit" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.0"/>
+  <testcase name="chartOptionsParticipateInUndoRedoWithoutRequery" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.0"/>
+  <testcase name="historyIsBounded" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

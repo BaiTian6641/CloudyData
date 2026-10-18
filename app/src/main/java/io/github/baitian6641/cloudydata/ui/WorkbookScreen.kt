@@ -289,8 +289,10 @@ fun WorkbookScreen(
                                 onSelectRow = { index -> selectedRowIndex = index; selectedFieldId = null },
                                 onSetRowField = viewModel::setRowField,
                                 onSetMeasureField = viewModel::setMeasureField,
+                                onSetSeriesField = viewModel::setSeriesField,
                                 onClearRowField = viewModel::clearRowField,
                                 onClearMeasureField = viewModel::clearMeasureField,
+                                onClearSeriesField = viewModel::clearSeriesField,
                                 onAggregation = viewModel::setAggregation,
                                 onMarkType = viewModel::setMarkType,
                                 onSortDescending = viewModel::setSortDescending,
@@ -413,8 +415,8 @@ fun WorkbookScreen(
             ChartSettingsDialog(
                 sheet = sheet,
                 onDismiss = { showChartSettings = false },
-                onApply = { title, gridlines, labels ->
-                    viewModel.updateChartSettings(title, gridlines, labels)
+                onApply = { options ->
+                    viewModel.updateChartSettings(options)
                     showChartSettings = false
                 },
             )

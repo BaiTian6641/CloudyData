@@ -14,6 +14,7 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import io.github.baitian6641.cloudydata.BuildConfig
+import io.github.baitian6641.cloudydata.chart.ChartSpec
 import java.io.ByteArrayInputStream
 import org.json.JSONArray
 import org.json.JSONObject
@@ -60,15 +61,11 @@ class VegaRendererHost(
     private var lastRevision: Long = -1
 
     private data class PendingSpec(
-        val chartId: String,
-        val revision: Long,
-        val values: List<Pair<String, Double>>,
+        val spec: ChartSpec,
         val dark: Boolean,
         val palette: List<Int>,
         val widthDp: Float,
         val heightDp: Float,
-        val showGridlines: Boolean,
-        val showValueLabels: Boolean,
     )
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -135,26 +132,21 @@ class VegaRendererHost(
         view.loadUrl("https://$ASSET_DOMAIN/assets/renderer/index.html")
     }
 
-    fun applyBarSpec(
-        chartId: String,
-        revision: Long,
-        values: List<Pair<String, Double>>,
+    fun applyChartSpec(
+        spec: ChartSpec,
         dark: Boolean,
         palette: List<Int>,
         widthDp: Float = 640f,
         heightDp: Float = 320f,
-        showGridlines: Boolean = true,
-        showValueLabels: Boolean = false,
     ) {
-        require(chartId.length in 1..128) { "invalid chart id" }
-        require(revision >= 0) { "invalid revision" }
-        require(values.size in 1..MAX_PROBE_VALUES) { "value count out of bounds" }
+        require(spec.chartId.length in 1..128) { "invalid chart id" }
+        require(spec.revision >= 0) { "invalid revision" }
+        require(spec.series.isNotEmpty()) { "chart has no series" }
+        require(spec.version == ChartSpec.SPEC_VERSION) { "unsupported chart spec version" }
+        require(spec.pointCount in 1..MAX_CHART_POINTS) { "chart point count out of bounds" }
         require(palette.isNotEmpty()) { "palette is empty" }
         require(widthDp >= 160f && heightDp >= 120f) { "renderer surface is too small" }
-        val request = PendingSpec(
-            chartId, revision, values, dark, palette, widthDp, heightDp,
-            showGridlines, showValueLabels,
-        )
+        val request = PendingSpec(spec, dark, palette, widthDp, heightDp)
         if (!ready) {
             pendingSpec = request
             return
@@ -164,24 +156,33 @@ class VegaRendererHost(
 
     private fun dispatch(request: PendingSpec) {
         val view = webView ?: error("renderer is not initialized")
+        val specJson = try {
+            VegaSpecBuilder.build(
+                request.spec,
+                request.dark,
+                request.palette,
+                request.widthDp,
+                request.heightDp,
+            )
+        } catch (error: Throwable) {
+            listener.onRendererError("spec_rejected", error.message ?: "Chart specification was rejected.")
+            return
+        }
         val message = JSONObject()
             .put("type", "ApplyChartSpec")
-            .put("chartId", request.chartId)
-            .put("revision", request.revision)
-            .put(
-                "spec",
-                barSpec(
-                    request.values,
-                    request.dark,
-                    request.palette,
-                    request.widthDp,
-                    request.heightDp,
-                    request.showGridlines,
-                    request.showValueLabels,
-                ),
+            .put("chartId", request.spec.chartId)
+            .put("revision", request.spec.revision)
+            .put("specVersion", request.spec.version)
+            .put("spec", specJson)
+        if (message.toString().length > MAX_SPEC_CHARS) {
+            listener.onRendererError(
+                "spec_too_large",
+                "The chart specification exceeds the bounded renderer payload.",
             )
-        lastChartId = request.chartId
-        lastRevision = request.revision
+            return
+        }
+        lastChartId = request.spec.chartId
+        lastRevision = request.spec.revision
         mainHandler.post {
             if (!disposed && webView === view) {
                 view.evaluateJavascript(
@@ -267,127 +268,6 @@ class VegaRendererHost(
         }
     }
 
-    private fun barSpec(
-        values: List<Pair<String, Double>>,
-        dark: Boolean,
-        palette: List<Int>,
-        widthDp: Float,
-        heightDp: Float,
-        showGridlines: Boolean,
-        showValueLabels: Boolean,
-    ): JSONObject {
-        val rows = JSONArray()
-        values.forEach { (label, value) ->
-            rows.put(JSONObject().put("label", label).put("value", value))
-        }
-        val textColor = if (dark) "#E1EBED" else "#182427"
-        val gridColor = if (dark) "#35515A" else "#D3DFE2"
-        val colorScale = JSONObject()
-            .put("name", "color")
-            .put("type", "ordinal")
-            .put("domain", JSONObject().put("data", "table").put("field", "label"))
-            .put(
-                "range",
-                JSONArray(palette.map { "#%06X".format(0xFFFFFF and it) }),
-            )
-        return JSONObject()
-            .put("\$schema", "https://vega.github.io/schema/vega/v6.json")
-            .put("width", widthDp)
-            .put("height", heightDp)
-            .put("padding", 8)
-            .put("data", JSONArray().put(JSONObject().put("name", "table").put("values", rows)))
-            .put(
-                "scales",
-                JSONArray()
-                    .put(
-                        JSONObject()
-                            .put("name", "x")
-                            .put("type", "band")
-                            .put("domain", JSONObject().put("data", "table").put("field", "label"))
-                            .put("range", "width")
-                            .put("paddingInner", 0.2),
-                    )
-                    .put(
-                        JSONObject()
-                            .put("name", "y")
-                            .put("type", "linear")
-                            .put("domain", JSONObject().put("data", "table").put("field", "value"))
-                            .put("range", "height")
-                            .put("nice", true)
-                            .put("zero", true),
-                    )
-                    .put(colorScale),
-            )
-            .put(
-                "axes",
-                JSONArray()
-                    .put(
-                        JSONObject()
-                            .put("orient", "bottom")
-                            .put("scale", "x")
-                            .put("labelColor", textColor)
-                            .put("labelFontSize", 12)
-                            .put("domainColor", gridColor)
-                            .put("tickColor", gridColor),
-                    )
-                    .put(
-                        JSONObject()
-                            .put("orient", "left")
-                            .put("scale", "y")
-                            .put("labelColor", textColor)
-                            .put("labelFontSize", 12)
-                            .put("domainColor", gridColor)
-                            .put("tickColor", gridColor)
-                            .put("grid", showGridlines)
-                            .put("gridColor", gridColor),
-                    ),
-            )
-            .put(
-                "marks",
-                JSONArray()
-                    .put(
-                        JSONObject()
-                            .put("type", "rect")
-                            .put("from", JSONObject().put("data", "table"))
-                            .put(
-                                "encode",
-                                JSONObject().put(
-                                    "enter",
-                                    JSONObject()
-                                        .put("x", JSONObject().put("scale", "x").put("field", "label"))
-                                        .put("width", JSONObject().put("scale", "x").put("band", 1))
-                                        .put("y", JSONObject().put("scale", "y").put("field", "value"))
-                                        .put("y2", JSONObject().put("scale", "y").put("value", 0))
-                                        .put("fill", JSONObject().put("scale", "color").put("field", "label")),
-                                ),
-                            ),
-                    )
-                    .apply {
-                        if (showValueLabels) {
-                            put(
-                                JSONObject()
-                                    .put("type", "text")
-                                    .put("from", JSONObject().put("data", "table"))
-                                    .put(
-                                        "encode",
-                                        JSONObject().put(
-                                            "enter",
-                                            JSONObject()
-                                                .put("x", JSONObject().put("scale", "x").put("field", "label").put("band", 0.5))
-                                                .put("y", JSONObject().put("scale", "y").put("field", "value").put("offset", -6))
-                                                .put("text", JSONObject().put("field", "value"))
-                                                .put("align", JSONObject().put("value", "center"))
-                                                .put("baseline", JSONObject().put("value", "bottom"))
-                                                .put("fill", JSONObject().put("value", textColor))
-                                                .put("fontSize", JSONObject().put("value", 11)),
-                                        ),
-                                    ),
-                            )
-                        }
-                    },
-            )
-    }
-
     private fun blockedResponse(reason: String): WebResourceResponse {
         return WebResourceResponse(
             "text/plain",
@@ -402,7 +282,8 @@ class VegaRendererHost(
     companion object {
         const val ASSET_DOMAIN = "appassets.androidplatform.net"
         const val BRIDGE_NAME = "CloudyBridge"
-        const val MAX_PROBE_VALUES = 24
+        const val MAX_CHART_POINTS = 2000
         const val MAX_MESSAGE_CHARS = 64 * 1024
+        const val MAX_SPEC_CHARS = 512 * 1024
     }
 }

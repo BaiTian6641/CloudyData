@@ -169,11 +169,19 @@ catalog must list the missing controls explicitly.
 
 ## 5. Current implementation boundary
 
-The current worksheet supports a table mark and a provisional/qualified bar mark
-with aggregation, sort direction, a categorical cloud palette, axis titles
-generated from fields, a native accessible summary and table selection. It does
-not yet expose chart titles/subtitles in the workbook, gridline toggles, axis
-range/log/reverse, labels, legends, layers, dual axis, reference lines,
-annotations, tooltips, export or the other chart families. Those remain
+The current worksheet supports a table mark, a bar mark, and a multi-series line
+mark. The bar/line workbook options now include chart title, X/Y-axis and legend
+titles, Y range, zero baseline, logarithmic/reversed Y, gridline visibility,
+value labels, legend visibility/position and a stable Color series. Line rows are
+grouped by the semantic query before rendering, observed NULLs are gaps rather
+than zeros, absent members are not synthesized, and a truncated result is never
+drawn as a partial line. The renderer is still a bounded offline Vega surface;
+the native summary/table remains the exact-value and accessible equivalent.
+
+The following remain absent or partial: bars variants (grouped/stacked/100%/
+horizontal), the other chart families, subtitle/caption/units, tick and grid
+styling, custom/interactive legend behavior, line style/interpolation controls,
+temporal x scales, layers/dual axes, reference analysis, annotations, tooltips,
+chart selection, export and the full responsive/input matrix. Those rows remain
 `not_started` or `partial` in `parity/chart-catalog.yaml`; this document does not
 promote them.

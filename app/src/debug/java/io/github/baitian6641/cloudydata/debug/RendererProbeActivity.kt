@@ -9,6 +9,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import io.github.baitian6641.cloudydata.chart.AxisSpec
+import io.github.baitian6641.cloudydata.chart.ChartKind
+import io.github.baitian6641.cloudydata.chart.ChartPoint
+import io.github.baitian6641.cloudydata.chart.ChartSeries
+import io.github.baitian6641.cloudydata.chart.ChartSpec
+import io.github.baitian6641.cloudydata.chart.GridlineSpec
+import io.github.baitian6641.cloudydata.chart.LabelSpec
+import io.github.baitian6641.cloudydata.chart.LegendSpec
+import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -22,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class RendererProbeActivity : Activity(), VegaRendererHost.Listener {
     private lateinit var host: VegaRendererHost
     private lateinit var status: TextView
+    private val probeKind: String by lazy { intent.getStringExtra(EXTRA_PROBE_KIND) ?: "bar" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +73,64 @@ class RendererProbeActivity : Activity(), VegaRendererHost.Listener {
                 finishWithError("interpreter_unavailable", "The CSP interpreter was not exposed.")
                 return@runOnUiThread
             }
-            host.applyBarSpec(
-                chartId = "probe-chart",
-                revision = 1,
-                values = listOf("A" to 40.0, "B" to 60.0),
+            val spec = if (probeKind == "line") {
+                ChartSpec(
+                    chartId = "probe-line",
+                    revision = 1,
+                    kind = ChartKind.LINE,
+                    title = "Regional sales",
+                    xAxis = AxisSpec("Month"),
+                    yAxis = AxisSpec("Sales", min = 0.0, max = 40.0),
+                    gridlines = GridlineSpec(true),
+                    legend = LegendSpec(true, LegendPosition.RIGHT, "Region"),
+                    labels = LabelSpec(true),
+                    series = listOf(
+                        ChartSeries(
+                            "North",
+                            listOf(
+                                point("2026-01-01", 10.0, "North", 0),
+                                point("2026-02-01", 20.0, "North", 1),
+                                point("2026-03-01", 30.0, "North", 2),
+                            ),
+                        ),
+                        ChartSeries(
+                            "South",
+                            listOf(
+                                point("2026-01-01", 1.0, "South", 0),
+                                point("2026-02-01", 2.0, "South", 1),
+                                point("2026-04-01", 4.0, "South", 3),
+                            ),
+                        ),
+                    ),
+                    rowCount = 6,
+                    truncated = false,
+                )
+            } else {
+                ChartSpec(
+                    chartId = "probe-chart",
+                    revision = 1,
+                    kind = ChartKind.BAR,
+                    title = "Regional sales",
+                    xAxis = AxisSpec("Region"),
+                    yAxis = AxisSpec("Sales"),
+                    gridlines = GridlineSpec(true),
+                    legend = LegendSpec(true, LegendPosition.BOTTOM, "Region"),
+                    labels = LabelSpec(false),
+                    series = listOf(
+                        ChartSeries(
+                            "Values",
+                            listOf(
+                                point("A", 40.0, "Values", 0),
+                                point("B", 60.0, "Values", 1),
+                            ),
+                        ),
+                    ),
+                    rowCount = 2,
+                    truncated = false,
+                )
+            }
+            host.applyChartSpec(
+                spec = spec,
                 dark = false,
                 palette = listOf(0x006A6A, 0x3559C7),
                 widthDp = 640f,
@@ -130,6 +194,20 @@ class RendererProbeActivity : Activity(), VegaRendererHost.Listener {
     override fun onDestroy() {
         if (::host.isInitialized) host.dispose()
         super.onDestroy()
+    }
+
+    private fun point(x: String, y: Double, series: String, order: Int) = ChartPoint(
+        x = x,
+        xOrder = order,
+        series = series,
+        y = y,
+        exactY = y.toString(),
+        defined = true,
+        sourceRowIndex = order,
+    )
+
+    companion object {
+        const val EXTRA_PROBE_KIND = "probe_kind"
     }
 }
 
