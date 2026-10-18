@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="5" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-18T21:36:16" hostname="localhost">
+  <testsuite name="io.github.baitian6641.cloudydata.EngineSmokeTest" tests="4" failures="0" errors="0" skipped="0" time="0.127" timestamp="2026-10-18T21:36:16" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5580" />
+    </properties>
+    <testcase name="typedInt64DecimalTimestampAndUnicodeRoundTrip" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.003" />
+    <testcase name="csvImportPublishesVerifiedSnapshotAndReopens" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.053" />
+    <testcase name="worksheetAggregationUsesExactDecimalSum" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.035" />
+    <testcase name="decimalAndBigIntSurviveCsvQuery" classname="io.github.baitian6641.cloudydata.EngineSmokeTest" time="0.036" />
+  </testsuite>
+  <testsuite name="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" tests="1" failures="0" errors="0" skipped="0" time="0.011" timestamp="2026-10-18T21:36:16" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5580" />
+    </properties>
+    <testcase name="publishCsvForSafPickerReview" classname="io.github.baitian6641.cloudydata.MediaStoreFixtureTest" time="0.011" />
+  </testsuite>
+</testsuites>

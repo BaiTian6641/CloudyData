@@ -1,0 +1,5 @@
+id,name,amount,note
+00123,"Alpha, Inc.",10.10,"line one
+line two"
+00124,"Quote ""inside""",0.20,
+00125,Beta,0.30,plain

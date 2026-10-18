@@ -1,0 +1,74 @@
+# Function parity catalog (seed).
+# The current slice has no formula parser; entries below describe the query
+# builder's aggregate vocabulary and the work required for a typed function
+# manifest. A name in this file is not an implemented formula function.
+catalog: function
+schema_version: 1
+reference_profile: pending_no_licensed_tableau
+manifest_complete: false
+implementation_note: >-
+  Formula/function work begins in S08. The present UI offers a fixed aggregate
+  selector; formulas and arbitrary function calls are not accepted.
+functions:
+  - name: SUM
+    scope: aggregate
+    status: verified
+    lowering: duckdb_sum
+    tests: [Q02-csv-decimal-sum]
+    evidence: qualification/evidence/2026-10-18-s01-import-and-worksheet.md
+    notes: Exact DECIMAL SUM verified on arm64 device and x86_64 emulator.
+  - name: AVG
+    scope: aggregate
+    status: implemented_unverified
+    lowering: duckdb_avg
+    tests: []
+    notes: Available in the aggregate selector; no dedicated numeric conformance case yet.
+  - name: MIN
+    scope: aggregate
+    status: implemented_unverified
+    lowering: duckdb_min
+    tests: []
+  - name: MAX
+    scope: aggregate
+    status: implemented_unverified
+    lowering: duckdb_max
+    tests: []
+  - name: COUNT
+    scope: aggregate
+    status: implemented_unverified
+    lowering: duckdb_count_non_null
+    tests: []
+    notes: COUNT(field) counts non-NULL values; row-count behavior is not yet separately cataloged.
+  - name: COUNTD
+    scope: aggregate
+    status: implemented_unverified
+    lowering: duckdb_count_distinct
+    alias: COUNT_DISTINCT
+    tests: []
+    notes: Q09 distinct-count grain cases are not implemented.
+  - name: ATTR
+    scope: aggregate
+    status: not_started
+    notes: Typed ambiguity semantics are required; no SQL shortcut is accepted.
+  - name: ZN
+    scope: row
+    status: not_started
+    notes: Must replace observed NULL without creating absent domain members (Q13).
+  - name: INDEX
+    scope: table
+    status: not_started
+  - name: LOOKUP
+    scope: table
+    status: not_started
+  - name: RUNNING_SUM
+    scope: table
+    status: not_started
+  - name: WINDOW_AVG
+    scope: table
+    status: not_started
+  - name: MODEL_PERCENTILE
+    scope: analytical
+    status: not_started
+  - name: MODEL_QUANTILE
+    scope: analytical
+    status: not_started

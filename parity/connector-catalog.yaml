@@ -1,0 +1,67 @@
+# Connector catalog (seed). Expand named drivers/authentication/modes in S00/S15.
+catalog: connector
+schema_version: 1
+reference_profile: pending_no_licensed_tableau
+inventory_complete: false
+connectors:
+  - id: csv-local
+    name: Delimited text (CSV)
+    execution_modes: [local_native]
+    query_modes: [extract]
+    authentication: [system_document_picker]
+    status: verified
+    capabilities:
+      bounded_preview: true
+      exact_int64: true
+      exact_plain_decimal: true
+      unicode_utf8: true
+      cancellation: false
+      locale_options: false
+      per_field_override: false
+    tests: [Q01-csv-fields, Q02-exact-values]
+    evidence: qualification/evidence/2026-10-18-s01-import-and-worksheet.md
+    limits: >-
+      Verified with small UTF-8 comma-separated fixtures on the pinned arm64
+      device and x86_64 emulator. Delimiter/encoding/locale options, rejected-row
+      reporting, large-file performance and cancellation are not qualified.
+  - id: parquet-snapshot
+    name: Local Parquet snapshot (internal)
+    execution_modes: [local_native]
+    query_modes: [local_snapshot]
+    authentication: []
+    status: partial
+    tests: [Q02-exact-values]
+    notes: Read by DuckDB for worksheet queries; not exposed as a user import connector yet.
+  - id: tsv-local
+    name: Tab-separated text
+    execution_modes: [local_native]
+    query_modes: [extract]
+    authentication: [system_document_picker]
+    status: not_started
+    notes: The importer currently assumes comma-delimited input.
+  - id: json-local
+    name: JSON/NDJSON
+    status: not_started
+    notes: JSON extension is linked, but no import workflow or nested-type policy exists.
+  - id: xlsx-local
+    name: Excel workbook
+    status: not_started
+    notes: No Android-qualified Excel parser is pinned.
+  - id: sqlite-local
+    name: SQLite database
+    status: not_started
+    notes: Requires a read-only source policy and extension/parser qualification.
+  - id: postgresql
+    name: PostgreSQL
+    status: not_started
+    notes: Android driver support unverified; connector-service lane is not built.
+  - id: mysql
+    name: MySQL/MariaDB
+    status: not_started
+  - id: snowflake
+    name: Snowflake
+    status: not_started
+  - id: tableau-hyper
+    name: Tableau Hyper extract
+    status: not_started
+    notes: Native Android Hyper support is not assumed. Separate interoperability track.

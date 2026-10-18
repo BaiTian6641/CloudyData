@@ -1,0 +1,659 @@
+# Generated baseline from docs/plans/Cloudy_Data_01_Product_and_Design_Contract.md.
+# F01-F72 are seed families, not an atomic parity inventory. Expand before any parity claim.
+catalog: feature
+schema_version: 1
+generated_from: docs/plans/Cloudy_Data_01_Product_and_Design_Contract.md
+reference_profile: pending_no_licensed_tableau
+atomic_inventory_complete: false
+status_counts:
+  not_started: 61
+  partial: 11
+features:
+  - id: F01
+    family: "Workbooks and data-source documents"
+    outcome: "Create, open, duplicate, rename, save, recover, and reuse data sources with stable identity and visible dirty state."
+    owning_stages: "S03, S16"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Local workbooks can be created, saved atomically and reopened. Duplicate, rename view, recovery draft, reusable data-source documents and tracked dirty state beyond revision/save status are pending."
+  - id: F02
+    family: "Connection catalog"
+    outcome: "Browse/search named connectors; display authentication, supported modes, execution location, and actual capability."
+    owning_stages: "S04, S15"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F03
+    family: "File data"
+    outcome: "Import CSV/TSV, Parquet, JSON/NDJSON, Excel, SQLite, and Arrow through qualified parsers; inspect options and conversion failures."
+    owning_stages: "S04, S14"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "CSV import through SAF is verified on the pinned device/emulator, including bounded preview and schema inspection. TSV, Parquet, JSON/NDJSON, Excel, SQLite and Arrow ingestion are not exposed."
+  - id: F04
+    family: "Types and import interpretation"
+    outcome: "Override inferred types, locale, delimiters, headers, encoding and date parsing; preserve identifiers, decimals, NULL and rejected-row evidence."
+    owning_stages: "S04, S05"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Leading-zero identifiers remain text, plain decimal text is imported as exact DECIMAL, Unicode/timestamp and escaped CSV fields survive. Per-field override, locale/delimiter/encoding controls and rejected-row evidence are pending."
+  - id: F05
+    family: "Profiling and metadata"
+    outcome: "Row counts, sample/full distinction, nulls, distributions, schema changes, aliases, descriptions, and stable field IDs."
+    owning_stages: "S04, S05, S14"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Imported row count, field names/types and source provenance are visible. Profiling, distributions, aliases, descriptions, schema drift and full/sample distinction are pending."
+  - id: F06
+    family: "Live and extract operation"
+    outcome: "Choose an eligible source mode; show snapshot time, cache/staleness, source identity and pushdown limits; offline cached work remains truthful."
+    owning_stages: "S04, S15"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F07
+    family: "Refresh"
+    outcome: "Full and qualified incremental refresh, cancellation, schema reconciliation, scheduling location, and prior-version recovery."
+    owning_stages: "S14, S15, S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F08
+    family: "Reproducible preparation"
+    outcome: "Rename, select, cast, split, replace, trim, filter, pivot/unpivot, aggregate, deduplicate, join and union through an ordered transform graph."
+    owning_stages: "S14"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F09
+    family: "Physical joins and custom queries"
+    outcome: "Inner/left/right/full and supported conditions with preview, NULL behavior and intentional row multiplication; custom SQL and supported result-producing stored procedures have separate trust/connector gates."
+    owning_stages: "S07, S15"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F10
+    family: "Unions"
+    outcome: "Manual and pattern-based append, column mapping, schema reconciliation, source provenance and repeatable refresh."
+    owning_stages: "S07, S14"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F11
+    family: "Logical relationships"
+    outcome: "Preserve table grain, query only needed tables, distinguish relationships from fixed physical joins, and verify unmatched/many-to-many behavior."
+    owning_stages: "S07"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F12
+    family: "Multiple facts and shared dimensions"
+    outcome: "Aggregate facts at their correct grains before combining; handle unrelated dimensions and ambiguous paths explicitly."
+    owning_stages: "S07"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F13
+    family: "Data blending and cross-source analysis"
+    outcome: "Define primary/secondary sources, linking fields, aggregation and unsupported cases; never substitute a raw cross-source join silently."
+    owning_stages: "S07, S15"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F14
+    family: "Source replacement and reuse"
+    outcome: "Replace a source with field mapping, dependency repair, impact preview and reversible commit; retain broken references visibly."
+    owning_stages: "S14"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F15
+    family: "Data pane and organization"
+    outcome: "Search, folders, aliases, hidden fields, hierarchies, default properties and dependency discovery."
+    owning_stages: "S05, S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F16
+    family: "Field roles"
+    outcome: "Dimensions/measures and discrete/continuous are independent properties; dates have explicit date-part and date-value behavior."
+    owning_stages: "S05, S06"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F17
+    family: "Aggregations"
+    outcome: "SUM/AVG/MIN/MAX/COUNT/COUNTD/ATTR, median/percentiles and variance families as cataloged; all-null and empty input semantics are defined."
+    owning_stages: "S05, S08"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "SUM is verified on exact decimals; AVG/MIN/MAX/COUNT/COUNTD exist in the query builder but lack dedicated conformance evidence. Median/percentiles/variance are absent."
+  - id: F18
+    family: "Calculated fields"
+    outcome: "Typed formula editor with autocomplete, syntax locations, dependency cycles, error explanations, references by ID, and explicit Apply."
+    owning_stages: "S08"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F19
+    family: "Function coverage"
+    outcome: "Inventory all applicable numeric, string, logical, date, conversion, aggregate, spatial and analytical functions, including MODEL_PERCENTILE/MODEL_QUANTILE and connector restrictions."
+    owning_stages: "S08, S12, S13, S18"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F20
+    family: "Calculation level"
+    outcome: "Distinguish row, aggregate, LOD, table and external calculations; reject invalid aggregate/nonaggregate mixing."
+    owning_stages: "S08, S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F21
+    family: "Level of detail"
+    outcome: "FIXED, INCLUDE, EXCLUDE, table-scoped and nested cases, reaggregation and multi-table scope with differential fixtures."
+    owning_stages: "S08"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F22
+    family: "Evaluation order"
+    outcome: "Source/extract filters, context, LOD, dimension/measure filters and table-calculation filters follow the recorded semantics."
+    owning_stages: "S08, S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F23
+    family: "Filter controls"
+    outcome: "Members, ranges, relative dates, wildcard/condition, top/bottom, exclusions, all/relevant values, scope across worksheets and null controls."
+    owning_stages: "S08, S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F24
+    family: "Context filtering"
+    outcome: "Explicit context membership and visible performance/state consequences; context changes invalidate the appropriate caches."
+    owning_stages: "S08"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F25
+    family: "Time and calendars"
+    outcome: "Date parts/values, fiscal calendars, week start, locale, time zone, DST and relative-date clock rules are persisted."
+    owning_stages: "S05, S08"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F26
+    family: "Table calculations"
+    outcome: "Running/moving totals, differences, percentages, ranks, lookup, window functions, compound calculations and partition restarts."
+    owning_stages: "S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F27
+    family: "Addressing and partitioning"
+    outcome: "Persist dimension order, calculation direction, sort, restart and nesting; support a inspectable computation table."
+    owning_stages: "S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F28
+    family: "Bins and domain completion"
+    outcome: "Create bins; distinguish zero, explicit NULL and absent members; densify only by explicit view semantics."
+    owning_stages: "S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F29
+    family: "Groups and sets"
+    outcome: "Manual/dynamic groups and sets, combined sets, membership labels, sets as filters/encodings and action-driven updates."
+    owning_stages: "S09, S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F30
+    family: "Parameters"
+    outcome: "Typed scalar parameters, allowed values/ranges, controls, dynamic refresh behavior and parameter actions; no SQL text substitution."
+    owning_stages: "S09, S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F31
+    family: "Shelves and field placements"
+    outcome: "Rows, Columns, Filters, Pages, Measure Names/Measure Values, and Aggregate Measures on/off; drag/keyboard editing, undo, Pages stepping/playback and mark-history settings."
+    owning_stages: "S06, S09, S11"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Rows and Values placements with aggregation/date-free fields, removal and mark switch are functional. Filters, Pages, Measure Names/Values, drag equivalents and multi-placement editing are pending."
+  - id: F32
+    family: "Marks and layers"
+    outcome: "Color, size, shape, label, detail, tooltip and path; multiple mark layers and per-layer overrides remain inspectable."
+    owning_stages: "S06, S11"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Table and provisional bar marks consume a typed result; color is automatic and stable only by label hash. Color/size/shape/label/tooltip/detail/path channels and layers are absent."
+  - id: F33
+    family: "Facets and drilling"
+    outcome: "Multiple row/column dimensions, panes, nested headers, hierarchy expand/collapse and small multiples preserve context."
+    owning_stages: "S06, S11"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F34
+    family: "Chart vocabulary"
+    outcome: "Bars, stacked/normalized bars, lines, area, scatter, text tables, heat/highlight tables, treemaps, pie, bubbles, histogram, box, Gantt, bullet, combo and supported density views."
+    owning_stages: "S06, S11, S12, S13"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Text/table and bar views work; line/scatter/area/treemap/pie/box/dual-axis and other families are absent."
+  - id: F35
+    family: "Crosstabs and totals"
+    outcome: "Pivoted row/column headers, subtotals and grand totals computed at the correct grain; copy/export respects selection and exact values."
+    owning_stages: "S06, S09"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "A two-column aggregate table with correct SUM at the queried grain works. Pivoted headers, subtotals/grand totals, copy/export scope and crosstab formatting are pending."
+  - id: F36
+    family: "Axes and scales"
+    outcome: "Continuous/categorical axes, dual axes, synchronization where valid, reversal, log constraints, ticks, reference domains and independent display formatting."
+    owning_stages: "S11"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F37
+    family: "Sorting"
+    outcome: "Manual, field, aggregate, nested and tie-breaking rules; header sort and table-calculation sort remain explicit."
+    owning_stages: "S06, S09"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F38
+    family: "Formatting and annotation"
+    outcome: "Titles, captions, units, number/date formatting, labels, legends, borders, annotations and reusable workbook themes."
+    owning_stages: "S06, S11"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F39
+    family: "Selection and inspect data"
+    outcome: "Click, additive/range/rectangle/lasso where relevant, keep/exclude, drill and View Data; stable mark identity maps to authorized rows."
+    owning_stages: "S06, S10, S11"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Table rows and chart bars are selectable with an exact-value inspector. Keep/exclude, additive/range/lasso, drill and View Data are pending."
+  - id: F40
+    family: "Tooltips"
+    outcome: "Typed text and fields, formatting, selection context, and bounded viz-in-tooltip; no executable dataset HTML."
+    owning_stages: "S11"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F41
+    family: "Suggested charts"
+    outcome: "Recommend valid chart forms from field roles and cardinality; show why a choice is unavailable and preserve the resulting editable specification."
+    owning_stages: "S06, S11"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F42
+    family: "Dashboard composition"
+    outcome: "Nested horizontal/vertical containers, tiled and floating items, alignment, size, padding, z-order, undo and keyboard movement."
+    owning_stages: "S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F43
+    family: "Layout variants"
+    outcome: "Fixed, range and automatic sizing, plus desktop authoring of desktop/tablet/phone dashboard output variants; preserve each variant and reveal overflow without requiring a phone app UI."
+    owning_stages: "S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F44
+    family: "Filter and highlight actions"
+    outcome: "Select/hover/menu triggers, field mapping, scope and clear-selection behavior; highlight changes presentation without silently filtering totals."
+    owning_stages: "S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F45
+    family: "Other actions"
+    outcome: "Parameter/set changes, sheet navigation, URL actions, and deterministic action ordering with cycle prevention."
+    owning_stages: "S10"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F46
+    family: "Dashboard objects"
+    outcome: "Text, images, legends, filter/parameter controls, navigation/export buttons, dynamic zone visibility, isolated web objects and extensions with real capability states."
+    owning_stages: "S10, S21"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F47
+    family: "Stories"
+    outcome: "Ordered story points with captions, view/filter state, updates, navigation and export; distinguish stories from retired natural-language Data Stories."
+    owning_stages: "S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F48
+    family: "Presentation windows"
+    outcome: "Open a dashboard/story in its own native window; explicit present/fullscreen command, recoverable navigation and predictable close semantics."
+    owning_stages: "S10, S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F49
+    family: "Geographic roles and locations"
+    outcome: "Latitude/longitude, recognized geographic fields, disambiguation, unknown-location handling, custom geocoding and optional tile providers."
+    owning_stages: "S12"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F50
+    family: "Map composition"
+    outcome: "Symbol/filled maps, layers, polygons/lines/paths, extents, legends, selection and offline behavior."
+    owning_stages: "S12"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F51
+    family: "Spatial data and calculations"
+    outcome: "Qualified spatial formats, CRS handling, transformations, distance/area and spatial joins; separate geometry semantics from base-map rendering."
+    owning_stages: "S12"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F52
+    family: "Reference analysis"
+    outcome: "Reference lines/bands/distributions and supported trend fits, scope, confidence options and model descriptions."
+    owning_stages: "S11, S13"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F53
+    family: "Descriptive statistics"
+    outcome: "Histograms, box plots, quantiles, distribution summaries and exact sample/population conventions."
+    owning_stages: "S13"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F54
+    family: "Forecasting"
+    outcome: "Pinned exponential-smoothing families/options, model selection, seasonality/horizon, missing-data treatment, interval rules, diagnostics and persisted model/version; generic forecasting alone does not pass."
+    owning_stages: "S13"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F55
+    family: "Clustering"
+    outcome: "Pinned algorithm, initialization, scaling, feature selection, stopping, automatic cluster-count selection, null/unclustered handling, membership stability and interpretation."
+    owning_stages: "S13"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F56
+    family: "Explain results"
+    outcome: "Show contributing data, calculation context, lineage and applicable Explain Data diagnostics; generic summaries do not replace those behaviors, and association does not establish causation."
+    owning_stages: "S13, S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F57
+    family: "Analytical extensions"
+    outcome: "Explicit configured Python/R or other analytical service, typed inputs/outputs, row-order contract, versioning, errors and execution policy."
+    owning_stages: "S18"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F58
+    family: "Tabular export"
+    outcome: "CSV/TSV and qualified XLSX/Arrow/Parquet export of underlying, summary or selected data with clear scope and exact values."
+    owning_stages: "S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F59
+    family: "Visual export"
+    outcome: "PNG, SVG where the visual supports vectors, and PDF with consistent fonts, filters, legends, size and provenance."
+    owning_stages: "S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F60
+    family: "Print and accessible delivery"
+    outcome: "Multi-page dashboard/story print, qualified PowerPoint output, page controls and accessible companion tables/descriptions; label rasterized or unsupported output elements."
+    owning_stages: "S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F61
+    family: "Portable sharing"
+    outcome: "Portable workbook/data-source packages, assets, dependency manifest, missing-source rebind and version migration."
+    owning_stages: "S03, S16"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F62
+    family: "Tableau workbook migration"
+    outcome: "Versioned `.twb/.twbx/.tds/.tdsx` importer with a conversion report, original preserved, unknown constructs retained as evidence and no false round-trip claim."
+    owning_stages: "S17"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F63
+    family: "Hyper interoperability"
+    outcome: "Qualified `.hyper` read/write through supported environments and a tested adapter; Android support is not assumed."
+    owning_stages: "S17, S18"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F64
+    family: "Editing history and windows"
+    outcome: "Transactional commands, undo/redo, autosave recovery, multiple views/documents, conflict handling and stable window ownership."
+    owning_stages: "S03, all authoring stages"
+    reference_release: pending
+    status: partial
+    tests: []
+    evidence: []
+    note: "Atomic workbook.json save and reopen work; save failures are reported. Undo/redo, autosave recovery, command journal, multiwindow revision conflicts and window ownership are pending."
+  - id: F65
+    family: "Publishing"
+    outcome: "Publish workbook/data-source revisions to the Cloudy service, with preview, destination, version, permissions and rollback."
+    owning_stages: "S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F66
+    family: "Identity and access"
+    outcome: "Authentication, role/object permissions, row-level policy and export controls enforced at the service query boundary."
+    owning_stages: "S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F67
+    family: "Managed refresh and delivery"
+    outcome: "Durable schedules, subscriptions/alerts as cataloged, retries, identities, logs and missed-run recovery on the service."
+    owning_stages: "S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F68
+    family: "Catalog and lineage"
+    outcome: "Searchable assets, owners, certifications, source-to-field-to-view lineage and dependency/impact analysis."
+    owning_stages: "S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F69
+    family: "Collaboration"
+    outcome: "Comments, permissions, revision history, review/publish workflow and conflict-safe edits; real-time editing only after a distinct concurrency gate."
+    owning_stages: "S20"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F70
+    family: "Embedding and extension APIs"
+    outcome: "Versioned read/render/action APIs and isolated extension contracts; document unsupported Tableau-specific API compatibility."
+    owning_stages: "S20, S21"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F71
+    family: "Administration"
+    outcome: "Audit events, job/resource management, health, backups, restore, upgrades and tenancy boundaries."
+    owning_stages: "S20, S22"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."
+  - id: F72
+    family: "Configured intelligence"
+    outcome: "Current applicable Tableau-style assisted authoring/explanations/metrics, with explicit service configuration, data scope and review before consequential changes."
+    owning_stages: "S21"
+    reference_release: pending
+    status: not_started
+    tests: []
+    evidence: []
+    note: "Seed family only; no atomic inventory or evidence yet."

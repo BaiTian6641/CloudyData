@@ -1,0 +1,28 @@
+# Gradle and Android build outputs
+.gradle/
+build/
+**/build/
+app/.cxx/
+.cxx/
+local.properties
+*.hprof
+
+# Generated native dependencies (rebuilt by tools/build_duckdb_android.sh)
+third_party/
+app/src/main/jniLibs/
+qualification/artifacts/*.apk
+qualification/artifacts/*.aab
+qualification/artifacts/*.so
+
+# IDE and OS files
+.idea/
+*.iml
+.DS_Store
+*.swp
+
+# Signing and credentials
+*.jks
+*.keystore
+keystore.properties
+.env
+.env.*
