@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Cloudy renderer</title>
+  <link rel="stylesheet" href="renderer.css">
+</head>
+<body>
+  <main id="root">
+    <div id="view" role="img" aria-label="Chart rendered from the current worksheet result"></div>
+  </main>
+  <script src="vega.min.js"></script>
+  <script src="vega-interpreter.js"></script>
+  <script src="host.js"></script>
+</body>
+</html>

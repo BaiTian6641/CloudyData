@@ -19,9 +19,13 @@ and the x86_64 API 37 emulator, the debug app can:
 - place a dimension and measure on Rows/Values, choose an aggregation and a
   provisional table/bar mark, and query DuckDB locally;
 - inspect exact values, formatted values and the generated SQL;
-- save workbook metadata atomically and reopen the workbook.
+- save workbook metadata atomically and reopen the workbook;
+- load a debug-only offline Vega 6.4.0 renderer from packaged assets, evaluate
+  with the CSP interpreter, draw a trusted two-bar spec with no network access,
+  and show a native accessible summary.
 
-The chart is a native provisional bar/table surface. The bounded offline Vega
+The product worksheet chart is still a native provisional bar/table surface; the
+Vega host is qualified only as a probe. The bounded offline Vega
 renderer required by the architecture has **not** been integrated, so S01.7 and
 the visual-grammar stages are not complete. `docs/execution-state.md` records the
 exact verified/pending boundary.
@@ -92,8 +96,9 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- No Vega/Vega-Lite renderer, Arrow IPC transfer, query service process,
-  cancellation, virtualized million-row grid, multiwindow conflict handling,
+- No product integration of the Vega renderer; no renderer-death/resize/
+  selection/export qualification; no Arrow IPC transfer; no query service
+  process, virtualized million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.
 - The import path is bounded to 512 MiB and cannot be cancelled once staging

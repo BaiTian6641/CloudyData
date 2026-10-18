@@ -81,3 +81,23 @@ short active handoff is `docs/execution-state.md`.
   inspect 4.7 s, apply 2.8 s, grouped SUM/COUNT query 7 ms, exact totals.
 - The full instrumentation suite now has 11 tests per device, 0 failures. The
   workload test is a no-op on the emulator and reports that in logcat.
+
+## 2026-10-18 — offline Vega host probe
+
+- Built a deterministic asset pipeline around Vega 6.4.0 and
+  vega-interpreter 2.3.2, both pinned by registry tarball hash. The interpreter
+  is shipped only as an ES module; transformed it into a verified UMD-style
+  global without a bundler and without enabling the Function-constructor
+  expression path.
+- Added a restricted WebView host: packaged app-asset origin, CSP with no
+  connect/object sources, `blockNetworkLoads=true`, non-asset request refusal,
+  navigation refusal, origin-restricted WebMessageListener, typed message
+  validation, exact chart revision checks, and renderer-death callback.
+- First probe failed because `vega.expressionInterpreter` is an object, not a
+  function; the readiness check rejected it. Corrected the capability check.
+- Probe renders a trusted A/B bar spec on the physical arm64 Googlebook and the
+  x86_64 emulator. Test observes Vega 6.4.0, two data values, non-empty scene
+  and SVG, zero external requests and a native accessible summary. The product
+  worksheet still uses the provisional native chart.
+- Renderer death, live resize, selection/export, focus/TalkBack and memory limits
+  remain open.

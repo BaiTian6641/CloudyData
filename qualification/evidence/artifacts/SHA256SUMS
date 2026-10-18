@@ -7,3 +7,10 @@ c2d0859b6bf472422138b9a2eebd87e8ccad7322acf8e66fc80d62f4dc12de3d  qualification/
 ec7adeb6df09e23701cb043048437941d1dca781ba9b7a841a87a09bca81863d  qualification/evidence/artifacts/2026-10-18-import-dialog-ui.xml
 8c668bdc5b68c3543538b422195d2936e6634633d406d20405b4606f528b175f  qualification/evidence/artifacts/2026-10-18-worksheet-ui.xml
 dc59b843dca925491fb1617a61d71e53caa75ef2c928e4d33543b5f45353b659  app/build/outputs/apk/debug/app-debug.apk
+4483cf9be4f478c38ebb8293063634b8fabf3e2675eff3f3571105afbdc03e2f  app/src/main/assets/renderer/host.js
+6d64d34b0c990f66a54ac197318001247fe3266834e4713ef810fabfbee4490f  app/src/main/assets/renderer/index.html
+382fa52a676dfca2d57a403ec2a113dedd9d93dcf96ee20cbb20f5dcea4addb7  app/src/main/assets/renderer/renderer.css
+ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
+8f6a3587cf8d4f42c7e08120e3eb05d067e746d554e39d2dcf52acc0bd5ba28f  app/src/main/assets/renderer/vega.min.js
+5f3a7fc720099c94d950ac878be214ce7251ce5640e2459aee5ee28f39ee589e  qualification/evidence/artifacts/2026-10-18-vega-probe.png
+138ef100467f77737fd493d1b24b02d8edffb6c6f375c4a4452bc0a54e3825d5  qualification/evidence/artifacts/2026-10-18-vega-probe-ui.xml

@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits `ac94960` and `604a3a7`, plus the pending S01 probe commit;
-remote push not performed/authorized in this session.
+**Source:** commits `ac94960`, `604a3a7`, `6de478e`, plus the pending Vega-host
+commit; remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; early R1 vertical slice.
 
 ## What works (verified)
@@ -25,12 +25,15 @@ unless stated otherwise.
   generated SQL display.
 - Home recents/favorites/all filters; favorite toggle code exists but is not yet
   tested.
+- Offline Vega 6.4.0 + CSP interpreter host renders a trusted two-bar spec from
+  packaged assets on both targets; screen/SVG content, no external request,
+  native accessible summary and origin-validated messages are observed.
 - Native interrupt returns `EngineException("INTERRUPT Error: Interrupted!")` and
   the connection remains usable; the worksheet has a Cancel action whose UI path
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors. JVM tests: 5/5. Instrumentation: 11/11 on each target (the 1M
+- Lint: 0 errors. JVM tests: 5/5. Instrumentation: 12/12 on each target (the 1M
   workload probe is a no-op on the emulator by design).
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -59,6 +62,8 @@ unless stated otherwise.
   process; cross-window/conflict behavior is not implemented or tested.
 - The chart's label-hash category colors are stable only for unchanged labels;
   no persisted palette map exists.
+- The Vega host is not the product chart; renderer death, live resize, selection,
+  export, focus/TalkBack and memory limits are unverified.
 
 ## Not implemented / blocked
 
@@ -74,21 +79,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S01.7 — bounded offline Vega renderer probe.**
+**Finish S01.7 renderer lifecycle qualification.**
 
-- Files: new `renderer-web/` assets/HTML/JS, an Android WebView host boundary,
-  and an instrumentation probe; preserve the existing native provisional chart
-  until the renderer is qualified.
-- Action: pin Vega and its CSP-compatible interpreter, load them only from a
-  dedicated app-asset origin with no CDN/network fallback, render a trusted
-  bar-chart spec from Q06 data, and capture `Ready`/`RenderComplete`/renderer
-  death behavior.
-- Acceptance: no network request; generated spec only; origin/message checks;
-  native accessible summary/table remains available; export/selection gaps
-  explicitly recorded. A compile or screenshot of a non-native surface is not a
-  pass.
-- Alternative if renderer work is blocked: S01.8 paged 1M-row grid, keeping the
-  result-transfer limitation explicit.
+- Files: `renderer-web/` host/bridge, `VegaRendererHost.kt` and a bounded
+  instrumentation probe.
+- Action: add a repeated renderer-death/recreate probe (or force renderer
+  termination through a supported mechanism), live resize/pixel mapping,
+  selection-intent round trip with stale-revision rejection, and an explicit
+  export/availability decision. Keep `blockNetworkLoads` and origin checks.
+- Acceptance: no false completion after renderer death; a fresh renderer can
+  replay accepted workbook state; late/old intents are rejected; actual
+  screenshot/asset evidence at two window sizes; unchanged native accessible
+  summary remains available.
+- If renderer death cannot be forced safely, record the blocker and move to S06
+  native worksheet integration only after the missing gate is explicit.
 
 ## Protected context
 
