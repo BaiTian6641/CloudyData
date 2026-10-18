@@ -77,6 +77,7 @@ private enum class HomeSection(val label: String, val icon: ImageVector) {
 fun HomeScreen(
     store: WorkbookStore,
     onOpenWorkbook: (String) -> Unit,
+    onSettings: () -> Unit,
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
@@ -128,6 +129,7 @@ fun HomeScreen(
                     section = section,
                     onSection = { section = it },
                     workbooks = workbooks,
+                    onSettings = onSettings,
                     modifier = Modifier
                         .width(if (windowWidth >= 960.dp) 224.dp else 192.dp)
                         .fillMaxHeight(),
@@ -303,6 +305,7 @@ private fun HomeNavigation(
     section: HomeSection,
     onSection: (HomeSection) -> Unit,
     workbooks: List<WorkbookSummary>,
+    onSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalCloudyColors.current
@@ -358,11 +361,11 @@ private fun HomeNavigation(
         )
         Spacer(Modifier.weight(1f))
         CloudyDivider(Modifier.padding(vertical = density.spaceSmall))
-        Text(
-            "Settings and help are added with their real operations; this build has no inactive navigation entries.",
-            style = MaterialTheme.typography.labelSmall,
-            color = colors.textSecondary,
-            modifier = Modifier.padding(horizontal = 8.dp),
+        CloudyNavRow(
+            text = "Settings",
+            selected = false,
+            icon = Icons.Default.Home,
+            onClick = onSettings,
         )
     }
 }

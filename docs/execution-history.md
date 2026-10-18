@@ -101,3 +101,28 @@ short active handoff is `docs/execution-state.md`.
   worksheet still uses the provisional native chart.
 - Renderer death, live resize, selection/export, focus/TalkBack and memory limits
   remain open.
+
+## 2026-10-18 — worksheet Vega integration
+
+- Embedded `VegaRendererHost` in the worksheet Bar mark with a live size in dp,
+  Cloudy categorical colors, chart-id/revision matching and a native fallback for
+  renderer failure, nonnumeric/negative values or more than 24 categories.
+- Superseded render completions are now ignored rather than surfaced as
+  renderer errors. Table selection remains the exact-value access path.
+- Physical device run shows the `Offline Vega` badge, two-color A/B bars and the
+  native summary alongside the exact-value table. No renderer console errors
+  were observed.
+
+## 2026-10-18 — settings and persisted presentation
+
+- Replaced the Home placeholder with a real Settings route. Implemented
+  app-level System/Light/Dark and Comfortable/Standard/Compact preferences with
+  explicit SharedPreferences commit results, safe fallback for invalid values,
+  and one observable state stream for open windows.
+- Bound the app theme and density to the store. Switching to Dark/Compact
+  recomposed the UI without reloading the workbook or rerunning a query.
+- Two preference tests cover persistence across store instances and non-
+  destructive invalid-value fallback. Full instrumentation suite: 14 tests per
+  device, 0 failures.
+- Settings radio rows expose `checkable/checked` semantics; physical TalkBack,
+  keyboard traversal, large text and cross-window preference changes remain open.

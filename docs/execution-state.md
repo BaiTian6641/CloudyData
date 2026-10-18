@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits `ac94960`, `604a3a7`, `6de478e`, plus the pending Vega-host
-commit; remote push not performed/authorized in this session.
+**Source:** commits `ac94960`, `604a3a7`, `6de478e`, `309ccf1`, plus the pending
+worksheet-renderer/settings commit; remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; early R1 vertical slice.
 
 ## What works (verified)
@@ -27,14 +27,19 @@ unless stated otherwise.
   tested.
 - Offline Vega 6.4.0 + CSP interpreter host renders a trusted two-bar spec from
   packaged assets on both targets; screen/SVG content, no external request,
-  native accessible summary and origin-validated messages are observed.
+  native accessible summary and origin-validated messages are observed. The
+  worksheet Bar mark uses the host with an explicit native fallback and summary.
+- System/Light/Dark and Comfortable/Standard/Compact settings persist across a
+  process restart, apply to open windows through app-level state, and expose
+  real selected semantics. Invalid stored values fall back without deleting
+  evidence.
 - Native interrupt returns `EngineException("INTERRUPT Error: Interrupted!")` and
   the connection remains usable; the worksheet has a Cancel action whose UI path
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors. JVM tests: 5/5. Instrumentation: 12/12 on each target (the 1M
-  workload probe is a no-op on the emulator by design).
+- Lint: 0 errors (5 warnings documented). JVM tests: 5/5. Instrumentation: 14/14
+  on each target (the 1M workload probe is a no-op on the emulator by design).
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -62,8 +67,9 @@ unless stated otherwise.
   process; cross-window/conflict behavior is not implemented or tested.
 - The chart's label-hash category colors are stable only for unchanged labels;
   no persisted palette map exists.
-- The Vega host is not the product chart; renderer death, live resize, selection,
-  export, focus/TalkBack and memory limits are unverified.
+- The Vega host renders the worksheet Bar mark with a native fallback and table
+  selection equivalent; renderer death, matched resize/input runs, chart
+  selection, export, focus/TalkBack and memory limits are unverified.
 
 ## Not implemented / blocked
 
@@ -79,7 +85,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**Finish S01.7 renderer lifecycle qualification.**
+**S02 desktop command surface.**
+
+- Files: `CloudyDataApp`, `MainActivity`, shell components, a command registry.
+- Action: add a real command palette and keyboard shortcuts for New/Open?/Save,
+  rename, add worksheet, import, settings and focus traversal; keep menu/palette
+  routes for every command. Do not add a working "Open" unless package open is
+  implemented.
+- Acceptance: Ctrl+S saves the open workbook, Ctrl+Shift+P opens the palette,
+  F6 moves focus between panes, Escape restores focus; conflict-tested on the
+  physical Googlebook keyboard and exposed with accessible names. Record actual
+  key events and screenshots.
+- Then: S01.7 renderer lifecycle/death completion and S03 coordinator.
 
 - Files: `renderer-web/` host/bridge, `VegaRendererHost.kt` and a bounded
   instrumentation probe.

@@ -1,3 +1,29 @@
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:126: Warning: addWebMessageListener should only be called if the feature WEB_MESSAGE_LISTENER is present; to check call androidx.webkit.WebViewFeature#isFeatureSupported [RequiresFeature]
+        WebViewCompat.addWebMessageListener(
+        ^
+
+   Explanation for issues of type "RequiresFeature":
+   Some APIs require optional features to be present. This check makes sure
+   that calls to these APIs are surrounded by a check which enforces this.
+
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:94: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+        view.webViewClient = object : WebViewClientCompat() {
+                                      ~~~~~~~~~~~~~~~~~~~~~
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:94: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+        view.webViewClient = object : WebViewClientCompat() {
+                                      ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "MissingOnRenderProcessGone":
+   If a WebView's render process is shut down, the app will crash unless the
+   WebViewClient implements onRenderProcessGone and returns true. It is highly
+   recommended to handle this callback.
+
+   https://developer.android.com/develop/ui/views/layout/webapps/handle-termination
+
+   Vendor: Android Open Source Project
+   Identifier: androidx.webkit
+   Feedback: https://issuetracker.google.com/issues/new?component=460423
+
 /home/polar/CloudyData/gradle/libs.versions.toml:3: Warning: A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.10 is available: 2.4.21 [NewerVersionAvailable]
 kotlin = "2.2.10"
          ~~~~~~~~
@@ -21,4 +47,4 @@ kotlin = "2.2.10"
    where the version qualifier is less than or equal to the minSdkVersion,
    where the contents should be merged into the best folder.
 
-0 errors, 2 warnings
+0 errors, 5 warnings

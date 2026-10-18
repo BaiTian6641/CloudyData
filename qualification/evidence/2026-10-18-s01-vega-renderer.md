@@ -6,8 +6,8 @@
 death recovery, selection, resize, export and integration are not verified
 **Platforms:** HP Googlebook 14 (arm64, API 37, WebView 149.0.7827.5) and API 37
 x86_64 emulator
-**Surface:** debug-only `RendererProbeActivity`; the product worksheet still uses
-the provisional native chart
+**Surface:** debug-only `RendererProbeActivity` plus the worksheet bar mark; the
+native chart remains the fallback
 
 ## Pinned assets
 
@@ -61,12 +61,30 @@ recorded. The test does not assert an exact pixel result.
 two-color bar chart and the native accessible summary. The surrounding
 application windows are unrelated; the probe surface is the Cloudy Data window.
 
+## Worksheet integration
+
+The worksheet's Bar mark now embeds this host for at most 24 nonnegative
+categories, passes the observed window size in dp and the Cloudy categorical
+palette, and keeps the exact-value table plus a native text summary. A native bar
+chart remains the explicit fallback for renderer errors, nonnumeric/negative
+values, more than 24 categories, or interpreter failure. The chart is not a
+selection surface yet; table-row selection is the native equivalent.
+
+Observed on the physical Googlebook: `Offline Vega` badge, `A = 40`, `B = 60`,
+rendered two-color bars, and `Query ready`; screenshot
+`2026-10-18-worksheet-vega.png`. The product chart's superseded render
+completions are discarded by chart-id/revision matching; they are no longer
+treated as a renderer error.
+
 ## Limits
 
 - No renderer-process death, repeated restart or memory measurement.
-- No live resize, external display, selection/hover/context menu, tooltip,
-  export, print or focus/TalkBack test.
+- No external display; resize is exercised indirectly by the live window layout
+  but not as a matched input/geometry test.
+- No chart selection/hover/context menu, tooltip, export, print or focus/TalkBack
+  test; table selection is the accepted native equivalent for now.
 - Native summary is present, but semantic traversal of the WebView has not been
   tested with TalkBack.
-- The product chart is not integrated with this host yet.
+- Product integration covers only the bar mark. Mark-type/table/line integration
+  remains pending.
 - No imported or user-authored Vega specification is accepted.

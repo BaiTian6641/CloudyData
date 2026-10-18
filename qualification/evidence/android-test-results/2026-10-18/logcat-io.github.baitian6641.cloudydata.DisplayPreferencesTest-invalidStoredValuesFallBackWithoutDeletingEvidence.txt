@@ -1,0 +1,2 @@
+10-18 16:58:31.953  1168  1207 I TestRunner: started: invalidStoredValuesFallBackWithoutDeletingEvidence(io.github.baitian6641.cloudydata.DisplayPreferencesTest)
+10-18 16:58:31.955  1168  1207 I TestRunner: finished: invalidStoredValuesFallBackWithoutDeletingEvidence(io.github.baitian6641.cloudydata.DisplayPreferencesTest)

@@ -196,14 +196,15 @@ fun WorksheetView(
         }
 
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
-            val chartHeight = if (maxHeight < 420.dp) 0.dp else minOf(260.dp, maxHeight * 0.42f)
+            val chartHeight = if (maxHeight < 420.dp) 0.dp else minOf(300.dp, maxHeight * 0.48f)
             Column(Modifier.fillMaxSize()) {
                 if (sheet.markType == MarkType.BAR && current != null && chartHeight > 0.dp) {
-                    BarChartCard(
+                    VegaBarChartCard(
                         result = current,
                         selectedRowIndex = selectedRowIndex,
                         onSelectRow = onSelectRow,
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
+                        chartId = "sheet-${sheet.id}",
                     )
                     CloudyDivider()
                 }
@@ -444,7 +445,7 @@ private fun QueryNotice(
 }
 
 @Composable
-private fun BarChartCard(
+internal fun NativeBarChartCard(
     result: WorksheetResult,
     selectedRowIndex: Int,
     onSelectRow: (Int) -> Unit,
@@ -646,7 +647,7 @@ private fun tableColumnWidth(index: Int, count: Int) = if (count <= 2) {
 
 private const val MAX_CHART_BARS = 24
 
-private fun chartTitle(result: WorksheetResult): String {
+internal fun chartTitle(result: WorksheetResult): String {
     val measure = result.measureField?.name
     return if (measure != null) "${aggregationLabel(result.aggregation)} of $measure by ${result.rowField?.name ?: "view"}" else "Rows by ${result.rowField?.name ?: "view"}"
 }

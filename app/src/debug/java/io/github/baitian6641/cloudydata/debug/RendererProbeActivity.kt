@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata.debug
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Debug-only qualification surface for the bounded renderer. It is not part of
  * the shipped application's navigation and does not own workbook state.
  */
+@SuppressLint("SetTextI18n")
 class RendererProbeActivity : Activity(), VegaRendererHost.Listener {
     private lateinit var host: VegaRendererHost
     private lateinit var status: TextView
@@ -67,6 +69,8 @@ class RendererProbeActivity : Activity(), VegaRendererHost.Listener {
                 values = listOf("A" to 40.0, "B" to 60.0),
                 dark = false,
                 palette = listOf(0x006A6A, 0x3559C7),
+                widthDp = 640f,
+                heightDp = 320f,
             )
         }
     }

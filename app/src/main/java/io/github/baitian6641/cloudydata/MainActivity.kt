@@ -9,37 +9,43 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import io.github.baitian6641.cloudydata.design.CloudyAppearance
-import io.github.baitian6641.cloudydata.design.CloudyDensity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.baitian6641.cloudydata.design.CloudyTheme
 import io.github.baitian6641.cloudydata.ui.HomeScreen
+import io.github.baitian6641.cloudydata.ui.SettingsScreen
 import io.github.baitian6641.cloudydata.ui.WorkbookScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val store = (application as CloudyDataApp).workbookStore
+        val app = application as CloudyDataApp
+        val store = app.workbookStore
         setContent {
+            val preferences by app.displayPreferences.state.collectAsStateWithLifecycle()
             CloudyTheme(
-                appearance = CloudyAppearance.System,
-                density = CloudyDensity.Comfortable,
+                appearance = preferences.appearance,
+                density = preferences.density,
             ) {
                 var openWorkbookId by rememberSaveable { mutableStateOf<String?>(null) }
-                BackHandler(enabled = openWorkbookId != null) {
-                    openWorkbookId = null
+                var showSettings by rememberSaveable { mutableStateOf(false) }
+                BackHandler(enabled = openWorkbookId != null || showSettings) {
+                    if (openWorkbookId != null) openWorkbookId = null else showSettings = false
                 }
-                val currentId = openWorkbookId
-                if (currentId == null) {
-                    HomeScreen(
+                when {
+                    showSettings -> SettingsScreen(
+                        store = app.displayPreferences,
+                        onBack = { showSettings = false },
+                    )
+                    openWorkbookId != null -> WorkbookScreen(
+                        store = store,
+                        workbookId = openWorkbookId!!,
+                        onBack = { openWorkbookId = null },
+                    )
+                    else -> HomeScreen(
                         store = store,
                         onOpenWorkbook = { openWorkbookId = it },
-                    )
-                } else {
-                    WorkbookScreen(
-                        store = store,
-                        workbookId = currentId,
-                        onBack = { openWorkbookId = null },
+                        onSettings = { showSettings = true },
                     )
                 }
             }

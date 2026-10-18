@@ -54,8 +54,20 @@ class VegaRendererHost(
 
     private var disposed = false
     private var initialized = false
+    private var ready = false
+    private var pendingSpec: PendingSpec? = null
     private var lastChartId: String? = null
     private var lastRevision: Long = -1
+
+    private data class PendingSpec(
+        val chartId: String,
+        val revision: Long,
+        val values: List<Pair<String, Double>>,
+        val dark: Boolean,
+        val palette: List<Int>,
+        val widthDp: Float,
+        val heightDp: Float,
+    )
 
     @SuppressLint("SetJavaScriptEnabled")
     fun initialize() {
@@ -127,19 +139,31 @@ class VegaRendererHost(
         values: List<Pair<String, Double>>,
         dark: Boolean,
         palette: List<Int>,
+        widthDp: Float = 640f,
+        heightDp: Float = 320f,
     ) {
         require(chartId.length in 1..128) { "invalid chart id" }
         require(revision >= 0) { "invalid revision" }
         require(values.size in 1..MAX_PROBE_VALUES) { "value count out of bounds" }
         require(palette.isNotEmpty()) { "palette is empty" }
+        require(widthDp >= 160f && heightDp >= 120f) { "renderer surface is too small" }
+        val request = PendingSpec(chartId, revision, values, dark, palette, widthDp, heightDp)
+        if (!ready) {
+            pendingSpec = request
+            return
+        }
+        dispatch(request)
+    }
+
+    private fun dispatch(request: PendingSpec) {
         val view = webView ?: error("renderer is not initialized")
         val message = JSONObject()
             .put("type", "ApplyChartSpec")
-            .put("chartId", chartId)
-            .put("revision", revision)
-            .put("spec", barSpec(values, dark, palette))
-        lastChartId = chartId
-        lastRevision = revision
+            .put("chartId", request.chartId)
+            .put("revision", request.revision)
+            .put("spec", barSpec(request.values, request.dark, request.palette, request.widthDp, request.heightDp))
+        lastChartId = request.chartId
+        lastRevision = request.revision
         mainHandler.post {
             if (!disposed && webView === view) {
                 view.evaluateJavascript(
@@ -152,10 +176,14 @@ class VegaRendererHost(
 
     fun dispose() {
         disposed = true
+        ready = false
+        pendingSpec = null
         val view = webView ?: return
         webView = null
         mainHandler.post {
-            runCatching { WebViewCompat.removeWebMessageListener(view, BRIDGE_NAME) }
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+                runCatching { WebViewCompat.removeWebMessageListener(view, BRIDGE_NAME) }
+            }
             runCatching { view.stopLoading() }
             runCatching { view.loadUrl("about:blank") }
             runCatching { view.destroy() }
@@ -182,13 +210,19 @@ class VegaRendererHost(
                     listener.onRendererError("protocol_mismatch", "Renderer protocol version is unsupported.")
                     return
                 }
+                ready = true
                 listener.onReady(json.optString("vegaVersion"), json.optBoolean("interpreter", false))
+                pendingSpec?.let {
+                    pendingSpec = null
+                    dispatch(it)
+                }
             }
             "RenderComplete" -> {
                 val chartId = json.optString("chartId")
                 val revision = json.optLong("revision", -1)
                 if (chartId != lastChartId || revision != lastRevision) {
-                    listener.onRendererError("stale_render", "Renderer completion did not match the current chart revision.")
+                    // A superseded render is discarded without error; the current
+                    // request remains pending and will report its own completion.
                     return
                 }
                 val marksJson = json.optJSONObject("sceneMarks")
@@ -215,7 +249,13 @@ class VegaRendererHost(
         }
     }
 
-    private fun barSpec(values: List<Pair<String, Double>>, dark: Boolean, palette: List<Int>): JSONObject {
+    private fun barSpec(
+        values: List<Pair<String, Double>>,
+        dark: Boolean,
+        palette: List<Int>,
+        widthDp: Float,
+        heightDp: Float,
+    ): JSONObject {
         val rows = JSONArray()
         values.forEach { (label, value) ->
             rows.put(JSONObject().put("label", label).put("value", value))
@@ -232,8 +272,8 @@ class VegaRendererHost(
             )
         return JSONObject()
             .put("\$schema", "https://vega.github.io/schema/vega/v6.json")
-            .put("width", 640)
-            .put("height", 320)
+            .put("width", widthDp)
+            .put("height", heightDp)
             .put("padding", 8)
             .put("data", JSONArray().put(JSONObject().put("name", "table").put("values", rows)))
             .put(
@@ -266,6 +306,7 @@ class VegaRendererHost(
                             .put("orient", "bottom")
                             .put("scale", "x")
                             .put("labelColor", textColor)
+                            .put("labelFontSize", 12)
                             .put("domainColor", gridColor)
                             .put("tickColor", gridColor),
                     )
@@ -274,6 +315,7 @@ class VegaRendererHost(
                             .put("orient", "left")
                             .put("scale", "y")
                             .put("labelColor", textColor)
+                            .put("labelFontSize", 12)
                             .put("domainColor", gridColor)
                             .put("tickColor", gridColor)
                             .put("grid", true)

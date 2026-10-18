@@ -1,0 +1,8 @@
+10-18 16:58:31.933  1168  1207 I TestRunner: started: explicitChoicesPersistAcrossStoreInstances(io.github.baitian6641.cloudydata.DisplayPreferencesTest)
+10-18 16:58:31.935  1168  1207 D CompatChangeReporter: Compat change id reported: 418924588; UID 1010346; state: ENABLED
+10-18 16:58:31.945  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:58:31.945  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:58:31.945  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:58:31.945  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:58:31.949  4855  6338 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-18 16:58:31.951  1168  1207 I TestRunner: finished: explicitChoicesPersistAcrossStoreInstances(io.github.baitian6641.cloudydata.DisplayPreferencesTest)
