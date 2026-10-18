@@ -63,3 +63,21 @@ short active handoff is `docs/execution-state.md`.
   fixed the adaptive icon monochrome tag and used `mutableIntStateOf`. Remaining
   warnings are an intentionally pinned Kotlin plugin and the adaptive-icon
   folder qualifier.
+
+## 2026-10-18 — cancellation and recovery probes
+
+- Implemented import receipts around staged data, previous-file backup, atomic
+  file moves and metadata publication. Reconciliation restores the previous
+  snapshot when metadata does not name the proposed snapshot and keeps committed
+  data when it does.
+- Added `CancellationTest`: an expensive cross-join query was interrupted after
+  150 ms; DuckDB returned `INTERRUPT Error: Interrupted!` in ~2 ms and the same
+  connection answered `SELECT 42` afterward.
+- Added `WindowProbeTest`: physical requested launch bounds were ignored
+  (observed full 2880×1800 window); emulator honored 1200×900. Caption-bar insets
+  were unavailable/zero despite visible system captions. Two distinct app
+  activities were alive, but no document identity/coordination is implemented.
+- Added a physical-only 1M×12 import probe: 44.7 MB CSV, 9.3 MB Parquet,
+  inspect 4.7 s, apply 2.8 s, grouped SUM/COUNT query 7 ms, exact totals.
+- The full instrumentation suite now has 11 tests per device, 0 failures. The
+  workload test is a no-op on the emulator and reports that in logcat.

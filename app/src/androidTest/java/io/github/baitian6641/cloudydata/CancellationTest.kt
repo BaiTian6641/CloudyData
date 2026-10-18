@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata
 
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.engine.DuckDbEngine
 import io.github.baitian6641.cloudydata.engine.EngineException
@@ -43,6 +44,10 @@ class CancellationTest {
             )
             assertTrue("interrupt took too long: ${elapsedMs}ms", elapsedMs < 10_000)
 
+            Log.i(
+                "CloudyCancellation",
+                "interrupted=${failure!!.javaClass.simpleName} message=${failure!!.message} elapsedMs=$elapsedMs",
+            )
             val followUp = engine.execute("SELECT 42::BIGINT AS answer", maxRows = 1)
             assertEquals(42L, followUp.rows.single().single())
         }

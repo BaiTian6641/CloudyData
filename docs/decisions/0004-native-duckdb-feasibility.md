@@ -45,3 +45,11 @@ server.
 - Runtime support on a 16 KiB-page device.
 - DuckDB experimental-support stability or release approval.
 - Query service process containment or a security sandbox.
+
+## Amendment — 2026-10-18 cancellation probe
+
+A subsequent `CancellationTest` interrupted a running cross-join query and
+observed `EngineException("INTERRUPT Error: Interrupted!")` in ~2 ms; the same
+connection answered a follow-up query. This establishes the native interrupt
+path for one connection. It does not establish process death, Binder death,
+import interruption or lease cleanup.

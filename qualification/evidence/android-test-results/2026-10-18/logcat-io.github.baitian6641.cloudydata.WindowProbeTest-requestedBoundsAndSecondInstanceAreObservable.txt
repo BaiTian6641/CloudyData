@@ -1,0 +1,393 @@
+10-18 16:44:41.061 26396 26409 I TestRunner: started: requestedBoundsAndSecondInstanceAreObservable(io.github.baitian6641.cloudydata.WindowProbeTest)
+10-18 16:44:41.064  1737  2738 V GrammaticalInflectionUtils: AttributionSource: android.content.AttributionSource@c42f7027 does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 16:44:41.065  1737  2738 E CellBroadcastUtils: getDefaultCellBroadcastReceiverPackageName: no package found
+10-18 16:44:41.066  1563  1938 D SurfaceFlinger: setDesiredMode 4633222820299928834 {mode={fps=120.00 Hz, modePtr={id=0, vsyncRate=120.00 Hz, peakRefreshRate=120.00 Hz}}, emitEvent=false, force=false}
+10-18 16:44:41.066  4749  4749 D RecentsView: onTaskDisplayChanged: 1000137, new displayId = 0
+10-18 16:44:41.069  1531  4393 I PERFHAL-SERVICE: IVendorNotifier::notify hint=TOP_APP_CHANGED enabled=1 packageName=io.github.baitian6641.cloudydata pid=26396 fps=-1
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:com.android.vending
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:com.android.vending
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERF_APPCLASSIFIER: PERF_APPCLASSIFIER: getData() 195: DBQuery failed for appName:io.github.baitian6641.cloudydata
+10-18 16:44:41.069  1531  1545 E PERFHAL-LLLITE: PERFHAL-LLLITE: CheckOngoingLaunchScenario() 201: mBoostedPkgName is empty!
+10-18 16:44:41.069  1531  1545 E PERFHAL-LLLITE: PERFHAL-LLLITE: CheckOngoingLaunchScenario() 201: mBoostedPkgName is empty!
+10-18 16:44:41.069  3279  3293 I qt-service: appName: io.github.baitian6641.cloudydata type: 1 hint: 4099
+10-18 16:44:41.069  3279  3292 E Thermal-Lib: Thermal-Lib-Client:thermal_client_config_query: could not connect to socket
+10-18 16:44:41.069  3279  3292 I qt-service: setThermalConfig:1
+10-18 16:44:41.069  2591  2822 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.070  1737  2738 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.072 26396 26445 D vulkan  : searching for layers in '/data/app/~~L_mKcBfNtwOyE7lam0fsng==/io.github.baitian6641.cloudydata-Kk16m1DmZOFsoUd1W5a58w==/lib/arm64'
+10-18 16:44:41.072 26396 26445 D vulkan  : searching for layers in '/data/app/~~-HVlAZBrf-T0qoM_OlKSsA==/io.github.baitian6641.cloudydata.test-t7zIfLNK1RkJN8WjudA-eA==/base.apk!/lib/arm64-v8a'
+10-18 16:44:41.073 26396 26445 D vulkan  : searching for layers in '/data/app/~~L_mKcBfNtwOyE7lam0fsng==/io.github.baitian6641.cloudydata-Kk16m1DmZOFsoUd1W5a58w==/base.apk!/lib/arm64-v8a'
+10-18 16:44:41.073 26396 26445 E Adreno-GSL: <ioctl_kgsl_device_getinfo_ext:1781>: KGSL_PROP_GPU_SNAPSHOT_SIZE not available at build time
+10-18 16:44:41.075 26396 26445 I AdrenoVK-0: ===== BEGIN DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.075 26396 26445 I AdrenoVK-0: ===== END DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.075 26396 26445 E Adreno-GSL: <ioctl_kgsl_device_getinfo_ext:1781>: KGSL_PROP_GPU_SNAPSHOT_SIZE not available at build time
+10-18 16:44:41.075 26396 26445 I AdrenoVK-0: ===== BEGIN DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.075 26396 26445 I AdrenoVK-0: ===== END DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.076 26396 26445 D qdgralloc: Fetching IMapper5 from QtiMapper5
+10-18 16:44:41.077 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@21ed50d in: PRE_ON_CREATE
+10-18 16:44:41.080  1563  1563 D SurfaceFlinger: initiateModeChange 4633222820299928834 {mode={fps=120.00 Hz, modePtr={id=0, vsyncRate=120.00 Hz, peakRefreshRate=120.00 Hz}}, emitEvent=false, force=false}
+10-18 16:44:41.081  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.081  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:41.081  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.081  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:41.081  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 190] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 190] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 190] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.081  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 14 for display 55-0
+10-18 16:44:41.081  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 190] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 190] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.081  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 190] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.081  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.081  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 14 for display 55-0
+10-18 16:44:41.081  1508  1508 I SDM     : ToneMappingCore::inverse_lut3d_gamut_conversion_only():750 calling inverse_lut3d_gamut_conversion_only!
+10-18 16:44:41.081  1508  1508 I SDM     : ToneMappingCore::inverse_lut3d_gamut_conversion_only():752 input gamma is 0, blending space gamma is 3!
+10-18 16:44:41.082  1508  1508 I SDM     : ClstcAlgorithmAdapter::VigToneMap():1796 Checksum for layer 742 is: 7936318
+10-18 16:44:41.082  1508  1508 I drmhwc  : Setting active SDM config 0 for mode 2880x1800@120.000168
+10-18 16:44:41.082  1508  1508 I drmhwc  : IsSeamlessConfigChange: current 4 (group 0), target 0 (group 0), seamless: 1
+10-18 16:44:41.082  1508  1508 W SDM     : HWDeviceDRM::GetSupportedBitClkRate: Requested rate not supported: 0
+10-18 16:44:41.082  1508  1508 I SDM     : HWDeviceDRM::UpdateMixerAttributes: Mixer WxH 2880x1800-1 for Peripheral
+10-18 16:44:41.082  1508  1508 I Dpps    : DppsImpl::NotifyDppsUpdateFpsEvent():352 Invalid dpps_thread_created_ 1, server_ 0x0x0K
+10-18 16:44:41.082  1508  1508 I Dpps    : DppsImpl::DppsNotifyOps():204 DPPS is being initialized, ret -2
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: QUALCOMM build          : d19dedb9cd, I9ab34a0143
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Build Date              : 08/12/26
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Shader Compiler Version : E031.52.01.00
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Local Branch            : 
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Remote Branch           : refs/tags/AU_LINUX_ANDROID_COMPUTE.AL.2.0.00.00.00.000.021
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Remote Branch           : NONE
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Reconstruct Branch      : NOTHING
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Build Config            : C P 22.0.1 AArch64
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Driver Version          : 0886.6
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: PFP                     : 0x01511181
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: ME                      : 0x00000000
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Application Name    : android framework
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Process Name        : io.github.baitian6641.cloudydata
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Application Version : 0x00000000
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Engine Name         : android framework
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Engine Version      : 0x00000000
+10-18 16:44:41.084 26396 26445 I AdrenoVK-0: Api Version         : 0x00401000
+10-18 16:44:41.085  9927 10021 D WM-DelayedWorkTracker: Scheduling work 0f776d91-a8cc-4d88-a797-21b8c8e070bc
+10-18 16:44:41.085  9927 10021 D WM-GreedyScheduler: Starting work for 0f776d91-a8cc-4d88-a797-21b8c8e070bc
+10-18 16:44:41.087  4788  4788 I Finsky  : [2] SCH: job service start with id 9688.
+10-18 16:44:41.087  9927  9927 D WM-SystemJobService: onStartJob for WorkGenerationalId(workSpecId=0f776d91-a8cc-4d88-a797-21b8c8e070bc, generation=167)
+10-18 16:44:41.088  9927  9983 D WM-Processor: awu: processing WorkGenerationalId(workSpecId=0f776d91-a8cc-4d88-a797-21b8c8e070bc, generation=167)
+10-18 16:44:41.088 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@21ed50d in: CREATED
+10-18 16:44:41.088  9927  9983 D WM-Processor: Work WorkGenerationalId(workSpecId=0f776d91-a8cc-4d88-a797-21b8c8e070bc, generation=167) is already enqueued for processing
+10-18 16:44:41.088 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@21ed50d in: STARTED
+10-18 16:44:41.089  4788 24326 I Finsky  : [545] SCH: Satisfied jobs for 9688 are: 12-1
+10-18 16:44:41.089  4788 26449 I Finsky  : [563] SCH: Job 12-1 starting
+10-18 16:44:41.089  4788  4788 I Finsky  : [2] WM::SCH: Logging work start for 12-1
+10-18 16:44:41.089  4788  4788 I Finsky  : [2] [ContentSync] job started
+10-18 16:44:41.091  9927  9927 D WM-WorkerWrapper: Starting work for com.google.apps.tiktok.contrib.work.TikTokListenableWorker
+10-18 16:44:41.091  9927  9927 I SyncManagerImpl: #sync(). Running Synclets and scheduling next sync.
+10-18 16:44:41.092 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@21ed50d in: RESUMED
+10-18 16:44:41.093  9927  9983 I SyncManagerImpl: Running synclets: [NlmPresenceCheckSync]
+10-18 16:44:41.093  9927 11850 I SyncManagerImpl: Starting synclet: NlmPresenceCheckSync
+10-18 16:44:41.093  9927  9987 I PresenceCheckSynclet: Running PresenceCheckSynclet
+10-18 16:44:41.094  9927  9987 I BaseComponentStateRecei: hasAvailableAccounts: found 0 TikTok accounts
+10-18 16:44:41.094  9927  9987 I PresenceCheckSynclet: isFlagEnabled: true, isTargetAppInstalled: false, hasAccount: false
+10-18 16:44:41.094 26396 26396 D CompatChangeReporter: Compat change id reported: 418924588; UID 1010324; state: ENABLED
+10-18 16:44:41.095  9927  9987 I SyncManagerImpl: #sync() complete
+10-18 16:44:41.095  9927  9983 I SyncManagerImpl: Completed sync. Scheduling next wakeup
+10-18 16:44:41.095  9927  9983 I SyncWorkManagerPeriodic: Scheduling next periodic WorkManager workers
+10-18 16:44:41.095 26396 26396 D DesktopInputEventCompatProcessor: Touchscreen emulation is not enabled for the app
+10-18 16:44:41.095  9927  9987 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=0f776d91-a8cc-4d88-a797-21b8c8e070bc, class=com.google.apps.tiktok.contrib.work.TikTokListenableWorker, tags={ com.google.apps.tiktok.contrib.work.TikTokListenableWorker,com.google.apps.tiktok.sync.impl.workmanager.SyncPeriodicWorker,sync_constraint:none,TikTokWorker#com.google.apps.tiktok.sync.impl.workmanager.SyncPeriodicWorker } ]
+10-18 16:44:41.097  9927  9927 D WM-Processor: awu 0f776d91-a8cc-4d88-a797-21b8c8e070bc executed; reschedule = false
+10-18 16:44:41.097  9927  9927 D WM-SystemJobService: 0f776d91-a8cc-4d88-a797-21b8c8e070bc executed on JobScheduler
+10-18 16:44:41.097  4749  4749 D TopTaskTracker: handleTaskMovedToFront: TaskInfo{userId=10 taskId=1000137 effectiveUid=1010324 seqId=0 displayId=0 isRunning=true baseIntent=Intent { flg=0x18000000 cmp=io.github.baitian6641.cloudydata/.MainActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=69268418 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@4916de9} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{c9efa6e io.github.baitian6641.cloudydata.MainActivity} launchCookies=[] positionInParent=Point(120, 80) parentTaskId=1000002 isFocused=false isInteractive=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(120, 80 - 1320, 980) leafTaskBoundsFromOptions= true capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(120, 80 - 1320, 980) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}
+10-18 16:44:41.097  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2163
+10-18 16:44:41.097 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.097  9927  9935 W id.desktop.alai: Reducing the number of considered missed Gc histogram windows from 178 to 100
+10-18 16:44:41.098 26396 26453 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.098  9927  9987 D WM-GreedyScheduler: Cancelling work ID 0f776d91-a8cc-4d88-a797-21b8c8e070bc
+10-18 16:44:41.098 11714 11714 I cguj    : [hasSecondaryDisplayAndMainDisplayIsDisabled] Main display is ON [CONTEXT ratelimit_period="1 SECONDS" skipped=47 ]
+10-18 16:44:41.098  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.098 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.098 11714 11714 I bsuo    : (REDACTED) Setting floaty + banner max height to: %s (the maximumContentHeight is: %s, and the extraAllowedHeight is: %s)
+10-18 16:44:41.099  1737  2734 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.099  2591  2661 I Surface : Creating surface for consumer unnamed-2591-381 with slotExpansion=1 for 64 slots
+10-18 16:44:41.100  2591  2661 I Surface : Creating surface for consumer VRI[cloudydata]#358(BLAST Consumer)358 with slotExpansion=1 for 64 slots
+10-18 16:44:41.100  9927  9987 D WM-SystemJobScheduler: Scheduling work ID 0f776d91-a8cc-4d88-a797-21b8c8e070bc (com.google.apps.tiktok.contrib.work.TikTokListenableWorker), Job ID 485
+10-18 16:44:41.100  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: 341b0396-1c92-47ac-97e3-2dda2c55cbfc}. Requires device idle.
+10-18 16:44:41.100  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: d596f204-c814-41d1-bdbb-e5859e092c49}. Requires device idle.
+10-18 16:44:41.100  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: 2c8d70ca-c45a-48c8-869e-b6cff66ae218}. Requires device idle.
+10-18 16:44:41.100  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: cbcd1ad3-fb15-4998-bdc3-9d45c399edc1}. Requires device idle.
+10-18 16:44:41.101  9927  9987 D WM-SystemJobScheduler: Cancelling work ID c5a4c7e2-ea54-412a-b804-cff9962dc05b, Job ID 484
+10-18 16:44:41.101  4749  4771 D RecentTasksList: loadTasksInBackground - isDeviceLocked(10): false
+10-18 16:44:41.101  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2164
+10-18 16:44:41.101  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2164
+10-18 16:44:41.101  9927  9987 D WM-GreedyScheduler: Cancelling work ID c5a4c7e2-ea54-412a-b804-cff9962dc05b
+10-18 16:44:41.102  9927  9987 D WM-SystemJobScheduler: Scheduling work ID c5a4c7e2-ea54-412a-b804-cff9962dc05b (com.google.apps.tiktok.contrib.work.TikTokListenableWorker), Job ID 486
+10-18 16:44:41.103  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2164
+10-18 16:44:41.103  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: 341b0396-1c92-47ac-97e3-2dda2c55cbfc}. Requires device idle.
+10-18 16:44:41.103  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: d596f204-c814-41d1-bdbb-e5859e092c49}. Requires device idle.
+10-18 16:44:41.103  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: 2c8d70ca-c45a-48c8-869e-b6cff66ae218}. Requires device idle.
+10-18 16:44:41.103  9927  9987 D WM-GreedyScheduler: Ignoring {WorkSpec: cbcd1ad3-fb15-4998-bdc3-9d45c399edc1}. Requires device idle.
+10-18 16:44:41.104  9927 11850 I SyncWorkManagerPeriodic: Successfully scheduled next periodic workers
+10-18 16:44:41.107  4749  4749 D TopTaskTracker: handleTaskMovedToFront: TaskInfo{userId=10 taskId=1000137 effectiveUid=1010324 seqId=0 displayId=0 isRunning=true baseIntent=Intent { flg=0x18000000 cmp=io.github.baitian6641.cloudydata/.MainActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=69268420 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@4916de9} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{dc44f7a io.github.baitian6641.cloudydata.MainActivity} launchCookies=[] positionInParent=Point(120, 80) parentTaskId=1000002 isFocused=true isInteractive=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(120, 80 - 1320, 980) leafTaskBoundsFromOptions= true capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(120, 80 - 1320, 980) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}
+10-18 16:44:41.107  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2164
+10-18 16:44:41.108  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.110  2591  2646 D DesktopInputEventCompatProcessor: Touchscreen emulation is not enabled for the app
+10-18 16:44:41.111  2591  2821 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.111  1737  2921 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.113  4749  5478 V DesktopAppLaunchTransition: startAnimation: originalLaunchType=UNMINIMIZE, cujType=123
+10-18 16:44:41.113  1737  2829 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.113  1563  1987 E LayerState: Stripped attempt to set eTrustedOverlay in sanitize
+10-18 16:44:41.114  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2166
+10-18 16:44:41.114  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2166
+10-18 16:44:41.115  1508  1508 I SDM     : BackLightNitsFactoryIntfImp::CreateBackLightNitsIntf: Creating new BlToNits interfece
+10-18 16:44:41.115  1508  1508 W SDM     : BackLightNitsParserImp::ParseTopNode: file not found
+10-18 16:44:41.115  1508  1508 W SDM     : BackLightNitsParserImp::Init: ParseTopNode: ret -2
+10-18 16:44:41.115  1508  1508 W SDM     : BackLightNitsImp::Init: parser initialization failed due to missing XML, ret -2
+10-18 16:44:41.115  1508  1508 I SDM     : BackLightAdapterImp::Init: Missing backlight calib XML for BacklightNits, ret = -2
+10-18 16:44:41.115  1508  1508 I SDM     : HdrAlgorithm::SetDisplayInfo():406 failed to initialize bl interface
+10-18 16:44:41.115  1508  1508 I SDM     : ToneMapping::panel_HDMI_sink_load():47 panel's peak brightness isn't reasonable, should be in unit of nits. Default val is used!
+10-18 16:44:41.115  1508  1508 I SDM     : ToneMapping::panel_HDMI_sink_load():56 panel's black level is unreasonably high, should be in unit of nits. Default val is used!
+10-18 16:44:41.116  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.116  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 659 is: 503548
+10-18 16:44:41.116  1508  1508 I SDM     : ToneMappingCore::inverse_lut3d_gamut_conversion_only():750 calling inverse_lut3d_gamut_conversion_only!
+10-18 16:44:41.116  1508  1508 I SDM     : ToneMappingCore::inverse_lut3d_gamut_conversion_only():752 input gamma is 0, blending space gamma is 3!
+10-18 16:44:41.116  1508  1508 I SDM     : ClstcAlgorithmAdapter::VigToneMap():1796 Checksum for layer 658 is: 7936318
+10-18 16:44:41.116  4749  4770 W NavbarButtonsViewController: Skipping bubble bar location update.
+10-18 16:44:41.117 26396 26396 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@6107a15
+10-18 16:44:41.117  1531  1545 E PERFHAL-BOOSTCONFIG: PERFHAL-BOOSTCONFIG: GetBoostConfig() 2078: Not able to fetch object
+10-18 16:44:41.118 26396 26458 D WindowOnBackDispatcher: setOnBackInvokedCallbackInfo: android.app.Activity$$ExternalSyntheticLambda0@6107a15
+10-18 16:44:41.118  2591  2646 I Surface : Creating surface for consumer unnamed-2591-382 with slotExpansion=1 for 64 slots
+10-18 16:44:41.119  2591  2646 I Surface : Creating surface for consumer VRI[Caption of Task=1000137]#359(BLAST Consumer)359 with slotExpansion=1 for 64 slots
+10-18 16:44:41.120  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2166
+10-18 16:44:41.125  4749  4770 W NavbarButtonsViewController: Skipping bubble bar location update.
+10-18 16:44:41.125  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.126  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2167
+10-18 16:44:41.126  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2167
+10-18 16:44:41.166  2591  2603 W System  : A resource failed to call release. 
+10-18 16:44:41.166  2591  2603 W System  : A resource failed to call release. 
+10-18 16:44:41.167  2591  2603 W System  : A resource failed to call HardwareBuffer.close. 
+10-18 16:44:41.167 26396 26400 I 6641.cloudydata: Compiler allocated 5607KB to compile void android.view.ViewRootImpl.performTraversals(long)
+10-18 16:44:41.175 26396 26396 D VRI[MainActivity]: WindowInsets changed: 1200x900 
+10-18 16:44:41.217  4788  4788 I Finsky  : [2] App states replicator found 34 unowned apps
+10-18 16:44:41.218  4788  4913 I Finsky  : [59] Completed 0 account content syncs with 0 successful.
+10-18 16:44:41.218  4788  4788 I Finsky  : [2] [ContentSync] Installation state replication succeeded.
+10-18 16:44:41.218  4788  4788 I Finsky  : [2] SCH: jobFinished: 12-1. TimeElapsed: 129ms.
+10-18 16:44:41.218  4788  4788 I Finsky  : [2] WM::SCH: Logging work end for 12-1
+10-18 16:44:41.221  1737  2531 I Surface : Creating surface for consumer unnamed-1737-322 with slotExpansion=1 for 64 slots
+10-18 16:44:41.221  1737  2531 I Surface : Creating surface for consumer ImageReader-2073x1296f1m1-1737-315 with slotExpansion=1 for 64 slots
+10-18 16:44:41.221  1737  2531 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+10-18 16:44:41.222 26396 26396 I HWUI    : Using FreeType backend (prop=Auto)
+10-18 16:44:41.223  4788  4913 I Finsky  : [59] SCH: Scheduling phonesky job Id: 1-1337, CT: 1792338519727, Constraints: [{ L: 43195047, D: 86395047, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+10-18 16:44:41.223  4788  4913 I Finsky  : [59] SCH: Scheduling phonesky job Id: 34-30, CT: 1792338520450, Constraints: [{ L: 604800000, D: 2570976965, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+10-18 16:44:41.223  4788  4913 I Finsky  : [59] SCH: Scheduling phonesky job Id: 34-33, CT: 1792338520450, Constraints: [{ L: 58176834, D: 1354176834, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+10-18 16:44:41.226  4788  4914 I Finsky  : [60] SCH: Scheduling 1 system job(s)
+10-18 16:44:41.226  4788  4914 I Finsky  : [60] SCH: Scheduling system job Id: 9692, L: 21833548, D: 65033548, C: false, I: false, N: 1
+10-18 16:44:41.229  4788 26449 I Finsky  : [563] SCH: job service finished with id 9688.
+10-18 16:44:41.238  1737  2531 E ConsumerBase: [ImageReader-2073x1296f1m1-1737-315] abandonLocked: ConsumerBase is abandoned!
+10-18 16:44:41.242  1563  2361 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=1010324 pid=26396
+10-18 16:44:41.242  1563  2361 D libbinder.PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=1010324 => denied (205 us)
+10-18 16:44:41.242  1563  2361 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=1010324 pid=26396
+10-18 16:44:41.242  1563  2361 D libbinder.PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=1010324 => denied (61 us)
+10-18 16:44:41.242  1563  2361 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=1010324 pid=26396
+10-18 16:44:41.242  1563  2361 D libbinder.PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=1010324 => denied (40 us)
+10-18 16:44:41.242  1563  2361 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.READ_FRAME_BUFFER from uid=1010324 pid=26396
+10-18 16:44:41.242  1563  2361 D libbinder.PermissionCache: checking android.permission.READ_FRAME_BUFFER for uid=1010324 => denied (27 us)
+10-18 16:44:41.244 26396 26396 I Surface : Creating surface for consumer unnamed-26396-0 with slotExpansion=1 for 64 slots
+10-18 16:44:41.245 26396 26396 I Surface : Creating surface for consumer VRI[MainActivity]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+10-18 16:44:41.245  2591  2646 W WindowlessWindowManager: Unsupported overlapping resizes
+10-18 16:44:41.245 26396 26396 D VRI[MainActivity]: WindowInsets changed: mandatorySystemGestures:[0,65,0,0] 
+10-18 16:44:41.247  1737 10228 E Adreno-GSL: <ioctl_kgsl_device_getinfo_ext:1781>: KGSL_PROP_GPU_SNAPSHOT_SIZE not available at build time
+10-18 16:44:41.247  1737 10228 E Adreno-GSL: <ioctl_kgsl_device_getinfo_ext:1781>: KGSL_PROP_GPU_SNAPSHOT_SIZE not available at build time
+10-18 16:44:41.247  1737 10228 I AdrenoVK-0: ===== BEGIN DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.247  1737 10228 I AdrenoVK-0: ===== END DUMP OF OVERRIDDEN SETTINGS =====
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: QUALCOMM build          : d19dedb9cd, I9ab34a0143
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Build Date              : 08/12/26
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Shader Compiler Version : E031.52.01.00
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Local Branch            : 
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Remote Branch           : refs/tags/AU_LINUX_ANDROID_COMPUTE.AL.2.0.00.00.00.000.021
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Remote Branch           : NONE
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Reconstruct Branch      : NOTHING
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Build Config            : C P 22.0.1 AArch64
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Driver Version          : 0886.6
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: PFP                     : 0x01511181
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: ME                      : 0x00000000
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Application Name    : android framework
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Process Name        : system_server
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Application Version : 0x00000000
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Engine Name         : android framework
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Engine Version      : 0x00000000
+10-18 16:44:41.248  1737 10228 I AdrenoVK-0: Api Version         : 0x00401000
+10-18 16:44:41.250 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.250 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.250 11714 11714 I bsuo    : (REDACTED) Setting floaty + banner max height to: %s (the maximumContentHeight is: %s, and the extraAllowedHeight is: %s)
+10-18 16:44:41.266 26396 26445 I AdrenoUtils: <ReadGpuID:1443>: Reading chip ID through GSL
+10-18 16:44:41.269 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 0, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.269 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.278 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 0, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.278 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.282 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 0, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.282 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.285 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 0, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.285 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.288 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 0, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.288 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.290 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 6, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.290 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.293  1737  2921 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=1010324 pid=0
+10-18 16:44:41.293  1737  2921 D libbinder.PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=1010324 => denied (136 us)
+10-18 16:44:41.293 26396 26396 I 6641.cloudydata: hiddenapi: Accessing hidden method Landroid/os/SystemProperties;->addChangeCallback(Ljava/lang/Runnable;)V (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/compose/ui/platform/AndroidComposeView$Companion; (domain=app, TargetSdkVersion=37) using reflection: allowed
+10-18 16:44:41.293  1737  2921 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=1010324 pid=0
+10-18 16:44:41.293  1737  2921 D libbinder.PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=1010324 => denied (28 us)
+10-18 16:44:41.293  1737  2921 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=1010324 pid=0
+10-18 16:44:41.293  1737  2921 D libbinder.PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=1010324 => denied (18 us)
+10-18 16:44:41.294  1737  2921 W libbinder.ServiceManagerCppClient: Permission failure: android.permission.READ_FRAME_BUFFER from uid=1010324 pid=0
+10-18 16:44:41.294  1737  2921 D libbinder.PermissionCache: checking android.permission.READ_FRAME_BUFFER for uid=1010324 => denied (16 us)
+10-18 16:44:41.295  1737  1863 I ActivityTaskManager: Displayed io.github.baitian6641.cloudydata/.MainActivity for user 10: +231ms
+10-18 16:44:41.313  5784  5784 I SubtypeOperator: SubtypeOperator$1.onUnbindInput():43 
+10-18 16:44:41.314  5784  5784 I SubtypeOperator: SubtypeOperator$1.onBindInput():33 
+10-18 16:44:41.315  1737  2829 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.315  5784  5784 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2404 
+10-18 16:44:41.316  5784 26467 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():119 repeatCheckTimes = 0, locked = false
+10-18 16:44:41.316  5784  5784 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1552 onStartInput(EditorInfo{EditorInfo{packageName=io.github.baitian6641.cloudydata, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-18 16:44:41.316  5784  5784 I LatinInputMethodServiceBase: LatinInputMethodServiceBase.updateInputViewCoverNavigation():360 Update input view padding, isNavbarOverInputWindow=true, bottom inset=91
+10-18 16:44:41.317  5784 26471 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():119 repeatCheckTimes = 1, locked = false
+10-18 16:44:41.319  5784 26468 W GenAiPrivateInferenceAiCoreHandler: GenAiPrivateInferenceAiCoreHandler.checkDependencyStatus():685 AICore feature 703 not available.
+10-18 16:44:41.334 26396 26409 I CloudyWindowProbe: first requested=Rect(120, 80 - 1320, 980) observed=WindowObservation(widthPx=1200, heightPx=900, widthDp=738, heightDp=554, densityDpi=260, fontScale=1.0, systemBarsTop=0, captionTop=0, captionInsetsAvailable=false, imeBottom=0, decorWidth=1200, decorHeight=900)
+10-18 16:44:41.334 26396 26445 I AdrenoVK-0: Shader compilation failed because of failOnCompile flag. ShaderType: 6, process name: io.github.baitian6641.cloudydata
+10-18 16:44:41.334 26396 26445 D AdrenoVK-0: Graphics pipeline create failed because it requires link or compile. Process: io.github.baitian6641.cloudydata
+10-18 16:44:41.335  1737  2829 V GrammaticalInflectionUtils: AttributionSource: android.content.AttributionSource@c42f7027 does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 16:44:41.335  1737  2829 E CellBroadcastUtils: getDefaultCellBroadcastReceiverPackageName: no package found
+10-18 16:44:41.336  4749  4749 D RecentsView: onTaskDisplayChanged: 1000138, new displayId = 0
+10-18 16:44:41.342 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@d19de92 in: PRE_ON_CREATE
+10-18 16:44:41.342 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.342  4749  4749 D TopTaskTracker: handleTaskMovedToFront: TaskInfo{userId=10 taskId=1000138 effectiveUid=1010324 seqId=0 displayId=0 isRunning=true baseIntent=Intent { flg=0x18000000 cmp=io.github.baitian6641.cloudydata/.MainActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=69268688 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@ba0a918} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{77d7f71 io.github.baitian6641.cloudydata.MainActivity} launchCookies=[] positionInParent=Point(500, 220) parentTaskId=1000002 isFocused=false isInteractive=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(500, 220 - 1700, 1120) leafTaskBoundsFromOptions= true capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(500, 220 - 1700, 1120) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}
+10-18 16:44:41.342 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.342 11714 11714 I bsuo    : (REDACTED) Setting floaty + banner max height to: %s (the maximumContentHeight is: %s, and the extraAllowedHeight is: %s)
+10-18 16:44:41.343  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2167
+10-18 16:44:41.343  2591  2821 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.343 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@d19de92 in: CREATED
+10-18 16:44:41.343  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.343 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@d19de92 in: STARTED
+10-18 16:44:41.343 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@d19de92 in: RESUMED
+10-18 16:44:41.344 26396 26396 D DesktopInputEventCompatProcessor: Touchscreen emulation is not enabled for the app
+10-18 16:44:41.344  1737  2738 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.344 26396 26454 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.345  1737  2734 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.345  4749  4771 D RecentTasksList: loadTasksInBackground - isDeviceLocked(10): false
+10-18 16:44:41.345  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2168
+10-18 16:44:41.345  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2168
+10-18 16:44:41.352 26396 26396 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@b4dd7b7
+10-18 16:44:41.352 26396 26458 D WindowOnBackDispatcher: setOnBackInvokedCallbackInfo: android.app.Activity$$ExternalSyntheticLambda0@b4dd7b7
+10-18 16:44:41.353  2591  2661 I Surface : Creating surface for consumer unnamed-2591-383 with slotExpansion=1 for 64 slots
+10-18 16:44:41.353  2591  2661 I Surface : Creating surface for consumer VRI[cloudydata]#360(BLAST Consumer)360 with slotExpansion=1 for 64 slots
+10-18 16:44:41.356 26396 26396 D VRI[MainActivity]: WindowInsets changed: 1200x900 
+10-18 16:44:41.364  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2168
+10-18 16:44:41.364  4749  4749 D TopTaskTracker: handleTaskMovedToFront: TaskInfo{userId=10 taskId=1000138 effectiveUid=1010324 seqId=0 displayId=0 isRunning=true baseIntent=Intent { flg=0x18000000 cmp=io.github.baitian6641.cloudydata/.MainActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.MainActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=69268691 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@ba0a918} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{299a1ad io.github.baitian6641.cloudydata.MainActivity} launchCookies=[] positionInParent=Point(500, 220) parentTaskId=1000002 isFocused=true isInteractive=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(500, 220 - 1700, 1120) leafTaskBoundsFromOptions= true capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(500, 220 - 1700, 1120) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}
+10-18 16:44:41.364  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2168
+10-18 16:44:41.364  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.367  2591  2646 D DesktopInputEventCompatProcessor: Touchscreen emulation is not enabled for the app
+10-18 16:44:41.367  2591  2821 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+10-18 16:44:41.368  1737  2921 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.369  1737  2734 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.369  4749  5478 V DesktopAppLaunchTransition: startAnimation: originalLaunchType=UNMINIMIZE, cujType=123
+10-18 16:44:41.370  1563  1987 E LayerState: Stripped attempt to set eTrustedOverlay in sanitize
+10-18 16:44:41.370  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2168
+10-18 16:44:41.370  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: tried to reload while loading recents tasks
+10-18 16:44:41.371  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2170
+10-18 16:44:41.371  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2170
+10-18 16:44:41.371  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: reload recents tasks
+10-18 16:44:41.371  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.372  2591  2646 I Surface : Creating surface for consumer unnamed-2591-384 with slotExpansion=1 for 64 slots
+10-18 16:44:41.372  2591  2646 I Surface : Creating surface for consumer VRI[Caption of Task=1000138]#361(BLAST Consumer)361 with slotExpansion=1 for 64 slots
+10-18 16:44:41.374  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2171
+10-18 16:44:41.375  4749  4770 W NavbarButtonsViewController: Skipping bubble bar location update.
+10-18 16:44:41.375  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2171
+10-18 16:44:41.388 26396 26396 I Surface : Creating surface for consumer unnamed-26396-1 with slotExpansion=1 for 64 slots
+10-18 16:44:41.388 26396 26396 I Surface : Creating surface for consumer VRI[MainActivity]#1(BLAST Consumer)1 with slotExpansion=1 for 64 slots
+10-18 16:44:41.388 26396 26396 D VRI[MainActivity]: WindowInsets changed: mandatorySystemGestures:[0,65,0,0] 
+10-18 16:44:41.391 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.392 11714 11714 I bigp    : (REDACTED) bounds.height(): %s, height_threshold: %s, width: %s
+10-18 16:44:41.392 11714 11714 I bsuo    : (REDACTED) Setting floaty + banner max height to: %s (the maximumContentHeight is: %s, and the extraAllowedHeight is: %s)
+10-18 16:44:41.407  1737  1863 I ActivityTaskManager: Displayed io.github.baitian6641.cloudydata/.MainActivity for user 10: +72ms
+10-18 16:44:41.439  1737  2332 W InputChannel-JNI: Channel already disposed.
+10-18 16:44:41.439  5784  5784 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2404 
+10-18 16:44:41.440  5784  5784 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1552 onStartInput(EditorInfo{EditorInfo{packageName=io.github.baitian6641.cloudydata, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-18 16:44:41.440  5784  5784 I LatinInputMethodServiceBase: LatinInputMethodServiceBase.updateInputViewCoverNavigation():360 Update input view padding, isNavbarOverInputWindow=true, bottom inset=91
+10-18 16:44:41.440  5784 26480 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():119 repeatCheckTimes = 0, locked = false
+10-18 16:44:41.440  5784 26480 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():119 repeatCheckTimes = 1, locked = false
+10-18 16:44:41.463  2436  2439 I pixel-thermal: VIRTUAL-SKIN-FREQ:39 raw data: VIRTUAL-SKIN-FREQ:39000 ec-temp-ambient:38850 
+10-18 16:44:41.478  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:41.478  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:41.478  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:41.478  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:41.485  1737  2531 I Surface : Creating surface for consumer unnamed-1737-323 with slotExpansion=1 for 64 slots
+10-18 16:44:41.485  1737  2531 I Surface : Creating surface for consumer ImageReader-1200x900f1m1-1737-316 with slotExpansion=1 for 64 slots
+10-18 16:44:41.485  1737  2531 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+10-18 16:44:41.495  1737  2531 E ConsumerBase: [ImageReader-1200x900f1m1-1737-316] abandonLocked: ConsumerBase is abandoned!
+10-18 16:44:41.503 26396 26409 I CloudyWindowProbe: second observed=WindowObservation(widthPx=1200, heightPx=900, widthDp=738, heightDp=554, densityDpi=260, fontScale=1.0, systemBarsTop=0, captionTop=0, captionInsetsAvailable=false, imeBottom=0, decorWidth=1200, decorHeight=900)
+10-18 16:44:41.504 26396 26396 D LifecycleMonitor: Lifecycle status change: io.github.baitian6641.cloudydata.MainActivity@21ed50d in: PAUSED
+10-18 16:44:41.505 26396 26409 I TestRunner: finished: requestedBoundsAndSecondInstanceAreObservable(io.github.baitian6641.cloudydata.WindowProbeTest)

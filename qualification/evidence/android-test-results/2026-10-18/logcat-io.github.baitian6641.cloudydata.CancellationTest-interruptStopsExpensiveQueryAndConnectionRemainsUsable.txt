@@ -1,0 +1,34 @@
+10-18 16:45:13.724 26847 26860 I TestRunner: started: interruptStopsExpensiveQueryAndConnectionRemainsUsable(io.github.baitian6641.cloudydata.CancellationTest)
+10-18 16:45:13.737 26847 26860 D nativeloader: Load /data/app/~~vqvVulhgQ-RcsWzvcgqX5A==/io.github.baitian6641.cloudydata-xaPN6sX3GuPISZ-sULJylA==/base.apk!/lib/arm64-v8a/libduckdb.so using class loader ns clns-9 (caller=/data/app/~~vqvVulhgQ-RcsWzvcgqX5A==/io.github.baitian6641.cloudydata-xaPN6sX3GuPISZ-sULJylA==/base.apk!classes5.dex): ok
+10-18 16:45:13.738 26847 26860 D nativeloader: Load /data/app/~~vqvVulhgQ-RcsWzvcgqX5A==/io.github.baitian6641.cloudydata-xaPN6sX3GuPISZ-sULJylA==/base.apk!/lib/arm64-v8a/libcloudydb_jni.so using class loader ns clns-9 (caller=/data/app/~~vqvVulhgQ-RcsWzvcgqX5A==/io.github.baitian6641.cloudydata-xaPN6sX3GuPISZ-sULJylA==/base.apk!classes5.dex): ok
+10-18 16:45:13.741 26847 26847 W roidJUnitRunner: type=1400 audit(0.0:1842): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c70,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:45:13.741 26847 26847 W roidJUnitRunner: type=1400 audit(0.0:1843): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c70,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:45:13.741 26847 26847 W roidJUnitRunner: type=1400 audit(0.0:1844): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c70,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:45:13.741 26847 26847 W roidJUnitRunner: type=1400 audit(0.0:1845): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c70,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:45:13.790  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:45:13.790  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:45:13.790  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:45:13.790  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:45:13.797  4855 26813 I ProximityAuth: [RecentAppsMediator] Package added: (user=UserHandle{10}) io.github.baitian6641.cloudydata.test
+10-18 16:45:13.797  4855 26799 I Auth    : (REDACTED) [SupervisedAccountIntentOperation] onHandleIntent: %s
+10-18 16:45:13.797  4855 26816 I FontLog : (REDACTED) Package %s has no metadata
+10-18 16:45:13.798  4855 26822 I Dck     : (REDACTED) disableDckSupport: %s
+10-18 16:45:13.798  4855 26821 W AppInstallOperation: FDL Migration::InstallIntentOperation by FDL Module [CONTEXT service_id=77 ]
+10-18 16:45:13.799  4855 26819 I FraudProtectUtils: Not in testing population, skipping local test bank apps. [CONTEXT service_id=469 ]
+10-18 16:45:13.799  4855 26822 E Dck     : Could not get ProviderInfo when resolving the content provider authority. [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26822 I Dck     : Samsung Content Provider failed app verification [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26819 I FraudProtectUtils: (REDACTED) Latest bank app list size: %d, %s isBankApp: false
+10-18 16:45:13.799  4855 26819 I PackageInstallIntentOp: (REDACTED) Package %s is not a bank app. Skipping updates.
+10-18 16:45:13.799  4855 26822 I Dck     : [WirelessCapabilitiesFeatures] wccSysProp: 0 [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26822 I Dck     : [WirelessCapabilitiesFeatures] wccOverride: not set [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26822 I Dck     : (REDACTED) [WirelessCapabilitiesFeatures] returned wcc: %s
+10-18 16:45:13.799  4855 26822 I Dck     : Dck module condition - hasWccSupport: false [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26822 I Dck     : Dck module condition - downloadAllowed: false [CONTEXT service_id=289 ]
+10-18 16:45:13.799  4855 26822 I Dck     : Dck module not eligible for asynchronous downloading [CONTEXT service_id=289 ]
+10-18 16:45:13.800  4855 26820 I NearbyDiscovery: (REDACTED) processGrantSlicePermission: %s
+10-18 16:45:13.801 13314 26824 W GCM     : Unexpected forwarded intent: Intent { act=android.intent.action.PACKAGE_ADDED dat=package: flg=0x4000010 xflg=0x4 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) }
+10-18 16:45:13.803 13314 26824 W NetworkScheduler: Unexpected forwarded intent: Intent { act=android.intent.action.PACKAGE_ADDED dat=package: flg=0x4000010 xflg=0x4 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) }
+10-18 16:45:13.845  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:45:13.845  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:45:13.906 26847 26860 I CloudyCancellation: interrupted=EngineException message=INTERRUPT Error: Interrupted! elapsedMs=2
+10-18 16:45:13.914 26847 26860 I TestRunner: finished: interruptStopsExpensiveQueryAndConnectionRemainsUsable(io.github.baitian6641.cloudydata.CancellationTest)

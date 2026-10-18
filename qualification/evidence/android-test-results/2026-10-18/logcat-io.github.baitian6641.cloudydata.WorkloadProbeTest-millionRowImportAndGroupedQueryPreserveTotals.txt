@@ -1,0 +1,491 @@
+10-18 16:44:41.706 26396 26409 I TestRunner: started: millionRowImportAndGroupedQueryPreserveTotals(io.github.baitian6641.cloudydata.WorkloadProbeTest)
+10-18 16:44:41.711  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.711  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.712  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2181
+10-18 16:44:41.712  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.714  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2182
+10-18 16:44:41.714  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2182
+10-18 16:44:41.715  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:41.715  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:41.719  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.719  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.729  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.729  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.735  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.735  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.744  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.744  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.752  4749  4749 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 2182
+10-18 16:44:41.752  4749  4770 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 16:44:41.755  4749  4771 D PreloadThumbnailUseCase: Preloading thumbnails for task ids: [[id=1000124 windowingMode=5 user=10 lastActiveTime=66610189 lastFocusedTime=69268865] null, [id=1000120 windowingMode=5 user=10 lastActiveTime=66610188 lastFocusedTime=64930775] null, [id=1000122 windowingMode=5 user=10 lastActiveTime=66610188 lastFocusedTime=64250029] null, [id=1000126 windowingMode=1 user=10 lastActiveTime=66610238 lastFocusedTime=65797688] null, [id=1000125 windowingMode=5 user=10 lastActiveTime=65360069 lastFocusedTime=65086442] null, [id=1000081 windowingMode=5 user=10 lastActiveTime=64244161 lastFocusedTime=64243312] null, [id=1000042 windowingMode=5 user=10 lastActiveTime=64186248 lastFocusedTime=64186148] null]
+10-18 16:44:41.757  4749  4771 D RecentTasksList: getTasks - loadTasksInBackground: 2183
+10-18 16:44:41.757  4749  4749 D RecentTasksList: getTasks - updating mResultsUi: 2183
+10-18 16:44:41.760  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.760  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.777  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.777  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.792  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.792  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.818  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.818  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.842  5332  5332 D WM-SystemJobService: onStartJob for WorkGenerationalId(workSpecId=f268758d-f64a-4ebf-8d76-2889e6cb03d4, generation=0)
+10-18 16:44:41.843  5332  5429 D WM-Processor: awu: processing WorkGenerationalId(workSpecId=f268758d-f64a-4ebf-8d76-2889e6cb03d4, generation=0)
+10-18 16:44:41.844  5332  5332 D WM-WorkerWrapper: Starting work for com.google.apps.tiktok.contrib.work.TikTokListenableWorker
+10-18 16:44:41.844  5332  5332 I Loam/TriggeredContentUr: Started working with id: f268758d-f64a-4ebf-8d76-2889e6cb03d4
+10-18 16:44:41.844  5332  5332 I Loam/TriggeredContentUr: Number of unique triggered uris: 1, uniqueUris: [content://media/external_primary/file/791]
+10-18 16:44:41.849  5332  5408 I Loam/TriggeredContentUr: File is not supported: content://media/external_primary/file/791, skipping enqueueing
+10-18 16:44:41.849  5332  5408 I Loam/TriggeredContentUr: No files to enqueue.
+10-18 16:44:41.850  5332  5408 I Loam/TriggeredContentUr: Re-enqueued worker to listen for future changes.
+10-18 16:44:41.851  5332  5408 D WM-Processor: Processor cancelling f268758d-f64a-4ebf-8d76-2889e6cb03d4
+10-18 16:44:41.851  5332  5408 D WM-Processor: WorkerWrapper interrupted for f268758d-f64a-4ebf-8d76-2889e6cb03d4 (com.google.apps.tiktok.contrib.work.TikTokListenableWorker), reason: 1
+10-18 16:44:41.851  5332  5408 D WM-SystemJobScheduler: Cancelling work ID f268758d-f64a-4ebf-8d76-2889e6cb03d4, Job ID 1192
+10-18 16:44:41.851  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.851  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:41.852  5332  5408 D WM-GreedyScheduler: Cancelling work ID f268758d-f64a-4ebf-8d76-2889e6cb03d4
+10-18 16:44:41.852  5332  5332 D WM-SystemJobService: onStopJob for WorkGenerationalId(workSpecId=f268758d-f64a-4ebf-8d76-2889e6cb03d4, generation=0)
+10-18 16:44:41.854  5332  5408 W JobInfo : Requested important-while-foreground flag for job1195 is ignored and takes no effect
+10-18 16:44:41.854  5332  5408 D WM-SystemJobScheduler: Scheduling work ID 2c7565b1-73fb-47a6-be00-f32a5eddd459 (com.google.apps.tiktok.contrib.work.TikTokListenableWorker), Job ID 1195
+10-18 16:44:41.855  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: cc4e0f02-d745-4f42-85bc-a833cd1e3565}. Requires device idle.
+10-18 16:44:41.855  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: a397f4d3-bf00-4f2d-bbfa-d85af749b57f}. Requires device idle.
+10-18 16:44:41.855  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 44f23606-5e85-4dcd-8325-9bd3fbdac7eb}. Requires device idle.
+10-18 16:44:41.855  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 601fa09c-3169-4e6d-8f86-faa8bccec938}. Requires device idle.
+10-18 16:44:41.855  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 2c7565b1-73fb-47a6-be00-f32a5eddd459}. Requires ContentUri triggers.
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: Work [ id=f268758d-f64a-4ebf-8d76-2889e6cb03d4, class=com.google.apps.tiktok.contrib.work.TikTokListenableWorker, tags={ com.google.apps.tiktok.contrib.work.TikTokListenableWorker,TikTokWorker#com.google.android.desktop.alai.loam.app.contentobserver.TriggeredContentUriWorker } ] was cancelled
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: axx
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at awu.e(PG:5)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at qx.i(PG:129)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at u.run(PG:496)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at lp.a(PG:275)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at aob.w(PG:10)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at aob.o(PG:8)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at qx.j(PG:16)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at bbg.a(PG:437)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at lp.a(PG:62)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at avs.run(PG:479)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at axc.run(PG:79)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at eks.run(PG:7)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at hxp.run(PG:44)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at u.run(PG:340)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at java.lang.Thread.run(Thread.java:1571)
+10-18 16:44:41.855  5332  5408 I WM-WorkerWrapper: 	at emg.run(PG:61)
+10-18 16:44:41.855  5332  5408 D WM-WorkerWrapper: Status for f268758d-f64a-4ebf-8d76-2889e6cb03d4 is null ; not doing any work
+10-18 16:44:41.855  5332  5408 D WM-StopWorkRunnable: StopWorkRunnable for f268758d-f64a-4ebf-8d76-2889e6cb03d4; Processor.stopWork = false, reason: 1
+10-18 16:44:41.855  5332  5332 D WM-Processor: awu f268758d-f64a-4ebf-8d76-2889e6cb03d4 executed; reschedule = false
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Cancelling work ID f268758d-f64a-4ebf-8d76-2889e6cb03d4
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: cc4e0f02-d745-4f42-85bc-a833cd1e3565}. Requires device idle.
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: a397f4d3-bf00-4f2d-bbfa-d85af749b57f}. Requires device idle.
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 44f23606-5e85-4dcd-8325-9bd3fbdac7eb}. Requires device idle.
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 601fa09c-3169-4e6d-8f86-faa8bccec938}. Requires device idle.
+10-18 16:44:41.856  5332  5408 D WM-GreedyScheduler: Ignoring {WorkSpec: 2c7565b1-73fb-47a6-be00-f32a5eddd459}. Requires ContentUri triggers.
+10-18 16:44:41.865  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:41.901  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.901  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.901  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:41.901  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:41.901  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.901  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:41.901  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:41.901  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:41.901  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:41.901  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:42.068  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.068  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:42.068  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:42.068  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.068  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.068  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.068  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:42.068  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:42.069  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:42.069  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:42.078  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.078  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.078  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.078  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.078  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.078  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:42.078  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:42.078  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.078  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:42.079  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.079  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.079  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:42.079  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:42.079  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.079  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:42.079  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:42.079  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:42.079  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:42.079  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:42.237 26396 26401 W 6641.cloudydata: Cleared Reference was only reachable from finalizer (only reported once)
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian systemd[1]: cloudy-usbip-attach.service: Scheduled restart job, restart counter is at 20212.
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian systemd[1]: Started cloudy-usbip-attach.service - Cloudy USB/IP auto-attach (VHCI).
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian cloudy-vhci-attach[48152]: vhci_hcd is not present (/sys/devices/platform/vhci_hcd*)
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian cloudy-vhci-attach[48152]: run: sudo modprobe vhci-hcd
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian systemd[1]: cloudy-usbip-attach.service: Main process exited, code=exited, status=1/FAILURE
+10-18 16:44:42.283 19093 19286 I GuestLog:journald: Oct 18 21:44:41 debian systemd[1]: cloudy-usbip-attach.service: Failed with result 'exit-code'.
+10-18 16:44:42.601 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1816): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:42.601 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1817): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:42.601 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1818): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:42.601 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1819): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:42.754  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:42.754  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:42.754  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:42.754  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:42.795  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:42.795  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:42.829  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:42.829  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:42.829  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:42.854  4855 26342 I NearbyMediums: This GATT advertisement BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x30 0x46 0x34 0x31 0x11 0x32 0x71 0x9b 0x0f 0x2f 0xb0 0x26 0xa9 0x84 0x9b 0xbd 0x8f 0xc3 0xa8 0x4b 0x8d 0x0d ], deviceToken=[ 0x6e 0x8e ], rxAdvertisement=[ 0xa0 0x17 0x46 0x28 0x04 0xcb 0x0b 0xcc 0x3e 0xa4 0x9b 0xa0 0x3c 0x31 0x50 0xd9 0xda 0xe5 0x4b 0xf3 0x6c 0xbc 0x81 0x10 0x69 0x40 0xb8 0x15 0x82 0xce 0x7b 0xab 0xd8 0x54 0x84 0x15 0x05 0x67 0xff 0x1f 0x84 0x15 0x06 0x61 0xdf 0x07 0x84 0x15 0x04 0x67 0xff 0x1f 0x83 0x15 0x01 0x14 0x3c ] } is a Fast Advertisement and matched UUID 0000fef3-0000-1000-8000-00805f9b34fb in fastAdvertisementServiceUuids map with serviceID NearbySharing
+10-18 16:44:42.854  4855 26343 I NearbyConnections: Found BleAdvertisement [ 0x23 0x30 0x46 0x34 0x31 0x11 0x32 0x71 0x9b 0x0f 0x2f 0xb0 0x26 0xa9 0x84 0x9b 0xbd 0x8f 0xc3 0xa8 0x4b 0x8d 0x0d ] (with EndpointId 0F41 and EndpointInfo [ 0x32 0x71 0x9b 0x0f 0x2f 0xb0 0x26 0xa9 0x84 0x9b 0xbd 0x8f 0xc3 0xa8 0x4b 0x8d 0x0d ])
+10-18 16:44:42.857  1737  2738 W PackageInfo: Large parcel: size=47896 pkg=com.google.android.gms uid=1010185 perm=18128(95) reqPerm=20272(387) prevAllowSquashing=false
+10-18 16:44:42.857  4855 26343 I NearbyConnections: Unable to record discovered endpoint due to null currentDiscoveryPhase
+10-18 16:44:42.857  4855 26343 I NearbyConnections: ClientProxy(80467323 0p:com.google.android.gms.nearby.sharing) reporting onEndpointFound(0F41)
+10-18 16:44:42.857  4855 26343 I NearbyConnections: ClientProxy(80467323) reporting onEndpointDistanceChanged(0F41, UNKNOWN)
+10-18 16:44:42.858  4855 26343 I NearbySharing: NearbySharing Internal event EndpointDiscovered(endpointId=0F41)
+10-18 16:44:42.861  4855 26342 I NearbySharing: [NS_DISCOVERY] DiscoveryController reported Discovered(endpointId=0F41, metadata=DeviceMetadata(version=1, deviceType=1, deviceName=<redacted>, displayName=<redacted>, modelName=A024, imageUri=<redacted>, isSelfShare=true, isFamilyShare=false, isKnown=true, bluetoothMacAddress=<redacted>, vendorId=0, matchesLocalQrCode=false, devicePairingBindingIds=<redacted>))
+10-18 16:44:42.861  4855 26342 I NearbySharing: [NS_DEBUG] Dedupped: same shared credential for endpoint ID 0F41
+10-18 16:44:42.861  4855 26342 I NearbySharing: [NS_DEBUG] previous receiver info ReceiverInfo(endpointIds=[DiscoveryEndpoint(id=WKL5, origin=NEARBY_CONNECTIONS)], metadata=DeviceMetadata(version=1, deviceType=1, deviceName=<redacted>, displayName=<redacted>, modelName=A024, imageUri=<redacted>, isSelfShare=true, isFamilyShare=false, isKnown=true, bluetoothMacAddress=<redacted>, vendorId=0, matchesLocalQrCode=false, devicePairingBindingIds=<redacted>), state=Discovered)
+10-18 16:44:42.861  4855 26342 I NearbySharing: NearbySharing Internal event ReceiverEndpointMapping(endpointId=0F41, receiverId=5)
+10-18 16:44:42.862  4855 26487 I NearbySharing: SendProvider: SendManager event DistanceChanged(receiverId=5, distance=1, rangingData=null)
+10-18 16:44:42.862  4855 26341 I NearbySharing: ShareTargetDiscoveredCallback: onShareTargetDistanceChanged() with distance: 1, rangingData: null
+10-18 16:44:42.893  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:42.893  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:42.944  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:42.944  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:42.944  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:42.949  4855 26487 I NearbyMediums: Triggered instant on lost for service id : NearbySharing with hash [ 0x04 0xef 0x71 0xfb ]
+10-18 16:44:42.949  4855 26341 I NearbyConnections: Processing instant lost on BlePeripheral BlePeripheral{advertisement=BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x57 0x4b 0x4c 0x35 0x11 0x32 0x2c 0x64 0x8f 0x8e 0xa0 0x0c 0xef 0x49 0x86 0xcc 0x75 0x0c 0xb4 0xbe 0x8e 0xa9 ], deviceToken=[ 0x6e 0x8e ], rxAdvertisement=null }, dctAdvertisement=null, address=null, psm=0, deviceToken=<ByteString@ed29c6a size=2 contents="n\216">, isSecondProfile=false, rxInstantConnectionAdv=null}.
+10-18 16:44:42.949  4855 26341 I NearbyConnections: Remove entry from BleAdvertisementProcessor bleEndpoints.
+10-18 16:44:42.949  4855 26341 I NearbyConnections: Unable to record lost endpoint due to null currentDiscoveryPhase
+10-18 16:44:42.949  4855 26341 I NearbyConnections: ClientProxy(80467323) reporting onEndpointLost(WKL5)
+10-18 16:44:42.950  4855 26487 I NearbySharing: NearbySharing Internal event EndpointLost(endpointId=WKL5)
+10-18 16:44:42.950  4855 26341 I NearbySharing: [NS_DISCOVERY] DiscoveryController reported Lost(endpointId=WKL5)
+10-18 16:44:42.950  4855 26341 I NearbySharing: [NS_DEBUG] Can't find receiver with endpoint ID WKL5 with origin NEARBY_CONNECTIONS.
+10-18 16:44:42.964  4855  6338 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-18 16:44:43.005  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:43.005  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:43.026  4568  4568 I ContentProtectionServic: CP service destroyed
+10-18 16:44:43.066  1563  1938 D SurfaceFlinger: setDesiredMode 4633222820299928834 {mode={fps=30.00 Hz, modePtr={id=4, vsyncRate=30.00 Hz, peakRefreshRate=30.00 Hz}}, emitEvent=false, force=false}
+10-18 16:44:43.074  1563  1563 D SurfaceFlinger: initiateModeChange 4633222820299928834 {mode={fps=30.00 Hz, modePtr={id=4, vsyncRate=30.00 Hz, peakRefreshRate=30.00 Hz}}, emitEvent=false, force=false}
+10-18 16:44:43.077  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.077  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:43.077  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:43.077  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.077  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.077  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.077  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:43.077  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:43.078  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:43.078  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:43.084  1508  1508 I drmhwc  : Setting active SDM config 4 for mode 2880x1800@30.000042
+10-18 16:44:43.084  1508  1508 I drmhwc  : IsSeamlessConfigChange: current 0 (group 0), target 4 (group 0), seamless: 1
+10-18 16:44:43.084  1508  1508 W SDM     : HWDeviceDRM::GetSupportedBitClkRate: Requested rate not supported: 0
+10-18 16:44:43.084  1508  1508 I SDM     : HWDeviceDRM::UpdateMixerAttributes: Mixer WxH 2880x1800-1 for Peripheral
+10-18 16:44:43.085  1508  1508 I Dpps    : DppsImpl::NotifyDppsUpdateFpsEvent():352 Invalid dpps_thread_created_ 1, server_ 0x0x0K
+10-18 16:44:43.085  1508  1508 I Dpps    : DppsImpl::DppsNotifyOps():204 DPPS is being initialized, ret -2
+10-18 16:44:43.087  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.087  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:43.087  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:43.087  1508  1508 E SDM     : ScalarConfig::GetPipeScaleSettingsInfo: lib_scale_get_pipe_settings failed: status = 2
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: ====== Dual Config ======
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Optimization Mode: 0 ContentType: 2 InputFlags: 0x10 Delta_Phase_Horizontal: 0 Delta_Phase_Vertical: 0 Chroma_Site: 0 repeat_only: 15 CAC mode: 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: surf[W x H]: [2880 x 59] roi_in:[0 0 2880 1800] roi_out_dst_height: 1800
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Mixer ROI[X Y W H]: [0 0 0 0] LayerMixer WxH 0x0 
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: Panel Alignment [L T R B]: [0 0 0 0] min_width 0 min_height 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 0 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 1 ModuleType 3 roi_out_width : 1440 pipe_out_h_offset 1440
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 2 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpPipeInputParams: libscale path index 3 ModuleType 0 roi_out_width : 0 pipe_out_h_offset 0
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 1 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 0, top = 0, right = 1440, bottom = 1800
+10-18 16:44:43.087  1508  1508 D SDM     : ScalarConfig::DumpScalarIOConfig: Pipe 2 Src[w x h]:[2880 x 59] format = RGBA_8888_UBWC interlace = 0 hdr = 0 horz_deci = 0 vert_deci = 0 hw_sub_block = 2
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: src_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.087  1508  1508 I SDM     : RectUtils::LogI: dst_roi: left = 1440, top = 0, right = 2880, bottom = 1800
+10-18 16:44:43.087  1508  1508 W SDM     : ScalarConfig::ApplyScale: GetPipeSettingsInfo returned error=2
+10-18 16:44:43.087  1508  1508 E SDM     : ResourceAlloc::ConfigurePipeScaleData: ApplyScale failed for hw layer idx = 4 corresponding sdm layer idx = 13 for display 55-0
+10-18 16:44:43.088  1508  1508 I SDM     : BackLightNitsFactoryIntfImp::CreateBackLightNitsIntf: Creating new BlToNits interfece
+10-18 16:44:43.089  1508  1508 W SDM     : BackLightNitsParserImp::ParseTopNode: file not found
+10-18 16:44:43.089  1508  1508 W SDM     : BackLightNitsParserImp::Init: ParseTopNode: ret -2
+10-18 16:44:43.089  1508  1508 W SDM     : BackLightNitsImp::Init: parser initialization failed due to missing XML, ret -2
+10-18 16:44:43.089  1508  1508 I SDM     : BackLightAdapterImp::Init: Missing backlight calib XML for BacklightNits, ret = -2
+10-18 16:44:43.089  1508  1508 I SDM     : HdrAlgorithm::SetDisplayInfo():406 failed to initialize bl interface
+10-18 16:44:43.089  1508  1508 I SDM     : ToneMapping::panel_HDMI_sink_load():47 panel's peak brightness isn't reasonable, should be in unit of nits. Default val is used!
+10-18 16:44:43.089  1508  1508 I SDM     : ToneMapping::panel_HDMI_sink_load():56 panel's black level is unreasonably high, should be in unit of nits. Default val is used!
+10-18 16:44:43.090  1508  1508 I SDM     : ToneMapping::ToneMapping_1DLuts():418 applied sdrBrightnessRatio is 1.000000
+10-18 16:44:43.090  1508  1508 I SDM     : ClstcAlgorithmAdapter::DmaToneMap():1740 Checksum for layer 742 is: 503548
+10-18 16:44:43.155  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:43.890  4788  4913 I Finsky  : [59] AIM: AppInfoManager-Perf > Destroying AppInfoManager ...
+10-18 16:44:44.291  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:44.291  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:44.291  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:44.291  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:44.294  4855  6338 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-18 16:44:44.324  6376  6462 W ProxyAndroidLoggerBackend: Too many Flogger logs received before configuration. Dropping old logs.
+10-18 16:44:44.377  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:44.377  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:44.410  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:44.410  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:44.410  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:44.413  4855  6338 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-18 16:44:44.497  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:44.497  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:44.592  4788  4918 I Finsky  : [61] AIM: AppInfoManager-Perf > Destroying AppInfoManager ...
+10-18 16:44:44.647  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:44.704  1500  3828 E WifiHAL : handleResponse: Number of MLO links 2
+10-18 16:44:44.704  1500  3828 E libbinder.IPCThreadState: binder thread pool (1 threads) starved for 171 ms
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian systemd[1]: cloudy-usbip-attach.service: Scheduled restart job, restart counter is at 20213.
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian systemd[1]: Started cloudy-usbip-attach.service - Cloudy USB/IP auto-attach (VHCI).
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian cloudy-vhci-attach[48154]: vhci_hcd is not present (/sys/devices/platform/vhci_hcd*)
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian cloudy-vhci-attach[48154]: run: sudo modprobe vhci-hcd
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian systemd[1]: cloudy-usbip-attach.service: Main process exited, code=exited, status=1/FAILURE
+10-18 16:44:45.534 19093 19286 I GuestLog:journald: Oct 18 21:44:44 debian systemd[1]: cloudy-usbip-attach.service: Failed with result 'exit-code'.
+10-18 16:44:45.646  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:45.646  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:45.646  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:45.646  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:45.687  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:45.687  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:45.837  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:46.102  1737  2400 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 16:44:46.103  1737  2400 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 16:44:46.103  1737  2400 D InetDiagMessage: Destroyed live tcp sockets for uids={10103} in 3ms
+10-18 16:44:46.104  1737  2400 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 16:44:46.105  1737  2400 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 16:44:46.105  1737  2400 D InetDiagMessage: Destroyed live tcp sockets for uids={20103} in 2ms
+10-18 16:44:46.332 26396 26490 D ProfileInstaller: Installing profile for io.github.baitian6641.cloudydata
+10-18 16:44:46.463  2436  2439 I pixel-thermal: VIRTUAL-SKIN-FREQ:40 raw data: VIRTUAL-SKIN-FREQ:40000 ec-temp-ambient:39850 
+10-18 16:44:47.072  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:47.072  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:47.072  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:47.072  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:47.165  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:47.165  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:47.188  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:47.189  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:47.189  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:47.273 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1820): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:47.273 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1821): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:47.273 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1822): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:47.273 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1823): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:47.289  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:47.289  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:47.439  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:47.617  4788  4913 I Finsky  : [59] AIM: AppInfoManager-Perf > Destroying AppInfoManager ...
+10-18 16:44:47.699  4788  4918 I Finsky  : [61] AIM: AppInfoManager-Perf > Destroying AppInfoManager ...
+10-18 16:44:47.871  1500  3828 E WifiHAL : handleResponse: Number of MLO links 2
+10-18 16:44:47.871  1500  3828 E libbinder.IPCThreadState: binder thread pool (1 threads) starved for 163 ms
+10-18 16:44:48.314  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:48.314  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:48.314  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:48.314  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:48.357  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:48.357  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:48.366  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:48.366  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:48.366  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:48.450  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:48.450  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:48.482  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:48.482  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:48.482  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:48.523  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:48.523  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:48.673  1474  5169 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-18 16:44:48.781 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian systemd[1]: cloudy-usbip-attach.service: Scheduled restart job, restart counter is at 20214.
+10-18 16:44:48.781 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian systemd[1]: Started cloudy-usbip-attach.service - Cloudy USB/IP auto-attach (VHCI).
+10-18 16:44:48.781 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian cloudy-vhci-attach[48156]: vhci_hcd is not present (/sys/devices/platform/vhci_hcd*)
+10-18 16:44:48.781 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian cloudy-vhci-attach[48156]: run: sudo modprobe vhci-hcd
+10-18 16:44:48.782 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian systemd[1]: cloudy-usbip-attach.service: Main process exited, code=exited, status=1/FAILURE
+10-18 16:44:48.782 19093 19286 I GuestLog:journald: Oct 18 21:44:47 debian systemd[1]: cloudy-usbip-attach.service: Failed with result 'exit-code'.
+10-18 16:44:49.083  4855 26341 I NearbyMediums: Found Fast Ble Advertisements :
+10-18 16:44:49.083  4855 26341 I NearbyMediums: BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x30 0x46 0x34 0x31 0x11 0x32 0x71 0x9b 0x0f 0x2f 0xb0 0x26 0xa9 0x84 0x9b 0xbd 0x8f 0xc3 0xa8 0x4b 0x8d 0x0d ], deviceToken=[ 0x6e 0x8e ], rxAdvertisement=[ 0xa0 0x17 0x46 0x28 0x04 0xcb 0x0b 0xcc 0x3e 0xa4 0x9b 0xa0 0x3c 0x31 0x50 0xd9 0xda 0xe5 0x4b 0xf3 0x6c 0xbc 0x81 0x10 0x69 0x40 0xb8 0x15 0x82 0xce 0x7b 0xab 0xd8 0x54 0x84 0x15 0x05 0x67 0xff 0x1f 0x84 0x15 0x06 0x61 0xdf 0x07 0x84 0x15 0x04 0x67 0xff 0x1f 0x83 0x15 0x01 0x14 0x3c ] } : 2 times.
+10-18 16:44:49.083  4855 26341 I NearbyMediums: BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x37 0x4c 0x4e 0x49 0x11 0x32 0x6e 0xda 0xad 0xbf 0x77 0xd0 0x38 0x61 0x24 0xa6 0xe0 0x6b 0x5e 0x18 0x97 0xf6 ], deviceToken=[ 0xbb 0x62 ], rxAdvertisement=null } : 6 times.
+10-18 16:44:49.083  4855 26341 I NearbyMediums: Total 8 fast advertisements from 2 unique advertisers.
+10-18 16:44:49.083  4855 26341 I NearbyMediums: Current Tracked Scanning Clients are : {NearbyConnections.EnvironmentMonitor, NearbySharing, NearbyConnections.TxAdvertisement}
+10-18 16:44:49.083  4855 26488 I NearbyConnections: Processing lost BlePeripheral BlePeripheral{advertisement=BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x55 0x4e 0x33 0x47 0x11 0x32 0xc1 0xb5 0x1d 0xbe 0x47 0x67 0xf5 0x7b 0x37 0x10 0x40 0x47 0xac 0xf0 0x3a 0xee ], deviceToken=[ 0x6e 0x8e ], rxAdvertisement=null }, dctAdvertisement=null, address=null, psm=0, deviceToken=<ByteString@44c37e6 size=2 contents="n\216">, isSecondProfile=false, rxInstantConnectionAdv=null}.
+10-18 16:44:49.083  4855 26488 I NearbyConnections: Processing lost BlePeripheral BlePeripheral{advertisement=BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x57 0x4b 0x4c 0x35 0x11 0x32 0x2c 0x64 0x8f 0x8e 0xa0 0x0c 0xef 0x49 0x86 0xcc 0x75 0x0c 0xb4 0xbe 0x8e 0xa9 ], deviceToken=[ 0x6e 0x8e ], rxAdvertisement=null }, dctAdvertisement=null, address=null, psm=0, deviceToken=<ByteString@f601127 size=2 contents="n\216">, isSecondProfile=false, rxInstantConnectionAdv=null}.
+10-18 16:44:49.414  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.414  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.414  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.414  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.414  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.414  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.414  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.414  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.414  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6367 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  5287 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. appOpsListener %s %s
+10-18 16:44:49.415  5254  6370 I fmjq    : (REDACTED) HDM. Ignoring irrelevant audio permission changes for package %s
+10-18 16:44:49.664  6376  6436 I native  : I0000 00:00:1792359889.664763    6436 soda_async_impl.cc:1420] Current audio timestamp: 1792359889599450
+10-18 16:44:49.776  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:49.776  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:49.776  1474  5178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-18 16:44:49.776  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:49.817  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:49.817  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:49.844  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-18 16:44:49.844  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-18 16:44:49.844  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-18 16:44:49.917  1474  5178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-18 16:44:49.917  1474  5178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-18 16:44:49.961 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1824): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:49.961 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1825): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:49.961 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1826): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:49.961 26396 26396 W roidJUnitRunner: type=1400 audit(0.0:1827): avc:  denied  { search } for  name="/" dev="cgroup2" ino=1 scontext=u:r:untrusted_app:s0:c68,c257,c522,c768 tcontext=u:object_r:cgroup_v2:s0 tclass=dir permissive=0
+10-18 16:44:49.983 26396 26409 I CloudyWorkload: rows=1000000 csvBytes=44674961 parquetBytes=9338745 writeMs=793 inspectMs=4741 applyMs=2673 queryMs=7 memoryBefore=MemorySnapshot(totalPssKb=242804, nativePssKb=11957, javaHeapUsedKb=107739) memoryAfter=MemorySnapshot(totalPssKb=154689, nativePssKb=24233, javaHeapUsedKb=7379) config=android-desktop/arm64-v8a/37
+10-18 16:44:49.998 26396 26409 I TestRunner: finished: millionRowImportAndGroupedQueryPreserveTotals(io.github.baitian6641.cloudydata.WorkloadProbeTest)
