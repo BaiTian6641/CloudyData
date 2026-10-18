@@ -2,9 +2,12 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits through `b6d4bb3`, plus the pending command-history/chart-customization
-commit; remote push not performed/authorized in this session.
-**Active stage:** S00 partial; S01 partial; early R1 vertical slice.
+**Source:** commits through `7bbc315`; remote push not performed/authorized in
+this session.
+**Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
+vertical slice. The owner-directed chart grammar/customization contract is in
+the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
+`parity/chart-catalog.yaml`.
 
 ## What works (verified)
 
