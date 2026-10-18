@@ -124,6 +124,26 @@ class CsvImportService(
         val stagedParquet = File(operationDir, "snapshot.parquet")
         val quotedSource = Sql.string(pending.sourceFile.absolutePath)
         val quotedTarget = Sql.string(stagedParquet.absolutePath)
+        val proposedSnapshotId = UUID.randomUUID().toString()
+        val dataDir = File(store.workbookDir(workbook.id), "data").apply { mkdirs() }
+        val sourceDir = File(store.workbookDir(workbook.id), "source").apply { mkdirs() }
+        val finalParquet = File(dataDir, "snapshot.parquet")
+        val finalOriginal = File(sourceDir, "original.csv")
+
+        var receipt = ImportReceipt(
+            operationId = pending.operationId,
+            workbookId = workbook.id,
+            phase = ImportPhase.IntentRecorded,
+            proposedSnapshotId = proposedSnapshotId,
+            displayName = pending.displayName,
+            rowCount = 0,
+            stagedBytes = 0,
+            stagedSha256 = null,
+            hadPreviousSnapshot = false,
+            updatedAtEpochMs = System.currentTimeMillis(),
+        )
+        ReceiptFiles.write(operationDir, receipt)
+
         try {
             DuckDbEngine.open(":memory:", memoryLimitMb = 512, threads = 2).use { engine ->
                 val projected = projection(pending.columns, pending.decimalCasts)
@@ -139,6 +159,15 @@ class CsvImportService(
                     error("The analytical snapshot was not written.")
                 }
                 FileOutputStream(stagedParquet, true).use { it.fd.sync() }
+                val sha = ReceiptFiles.sha256(stagedParquet)
+                receipt = receipt.copy(
+                    phase = ImportPhase.DataPrepared,
+                    rowCount = rowCount,
+                    stagedBytes = stagedParquet.length(),
+                    stagedSha256 = sha,
+                    updatedAtEpochMs = System.currentTimeMillis(),
+                )
+                ReceiptFiles.write(operationDir, receipt)
 
                 val finalDescribe = engine.execute("DESCRIBE SELECT * FROM read_parquet($quotedTarget)", maxRows = 1_000)
                 val finalNameIndex = finalDescribe.columns.indexOfFirst { it.name == "column_name" }
@@ -162,10 +191,15 @@ class CsvImportService(
                     "The snapshot schema does not match the inspected CSV schema."
                 }
 
-                val dataDir = File(store.workbookDir(workbook.id), "data").apply { mkdirs() }
-                val sourceDir = File(store.workbookDir(workbook.id), "source").apply { mkdirs() }
-                val finalParquet = File(dataDir, "snapshot.parquet")
-                val finalOriginal = File(sourceDir, "original.csv")
+                val hadPrevious = ReceiptFiles.backup(finalParquet, operationDir, "snapshot.parquet")
+                ReceiptFiles.backup(finalOriginal, operationDir, "original.csv")
+                receipt = receipt.copy(
+                    phase = ImportPhase.DataCommitting,
+                    hadPreviousSnapshot = hadPrevious,
+                    updatedAtEpochMs = System.currentTimeMillis(),
+                )
+                ReceiptFiles.write(operationDir, receipt)
+
                 Files.move(
                     stagedParquet.toPath(),
                     finalParquet.toPath(),
@@ -178,8 +212,14 @@ class CsvImportService(
                     StandardCopyOption.REPLACE_EXISTING,
                     StandardCopyOption.ATOMIC_MOVE,
                 )
+                receipt = receipt.copy(
+                    phase = ImportPhase.DataCommitted,
+                    updatedAtEpochMs = System.currentTimeMillis(),
+                )
+                ReceiptFiles.write(operationDir, receipt)
+
                 val snapshot = DataSnapshot(
-                    id = UUID.randomUUID().toString(),
+                    id = proposedSnapshotId,
                     displayName = pending.displayName,
                     sourceKind = "csv",
                     snapshotFile = "data/snapshot.parquet",
@@ -189,13 +229,26 @@ class CsvImportService(
                     columns = finalColumns,
                 )
                 val saved = store.save(workbook.copy(snapshot = snapshot))
+                receipt = receipt.copy(
+                    phase = ImportPhase.MetadataPublished,
+                    updatedAtEpochMs = System.currentTimeMillis(),
+                )
+                ReceiptFiles.write(operationDir, receipt)
                 operationDir.deleteRecursively()
                 return saved
             }
         } catch (error: Throwable) {
-            throw if (error is EngineException) error else IllegalStateException(error.message ?: "Could not complete the import.", error)
+            val recovery = ImportRecovery(store).reconcile(workbook.id)
+            val recoveryNote = recovery.messages.firstOrNull()?.let { " Recovery: $it" }.orEmpty()
+            throw if (error is EngineException) {
+                error
+            } else {
+                IllegalStateException((error.message ?: "Could not complete the import.") + recoveryNote, error)
+            }
         }
     }
+
+    suspend fun reconcile(workbookId: String): ReconciliationResult = ImportRecovery(store).reconcile(workbookId)
 
     fun discard(pending: PendingCsvImport) {
         pending.stagingDirectory.deleteRecursively()

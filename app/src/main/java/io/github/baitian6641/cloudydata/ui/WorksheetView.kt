@@ -83,6 +83,7 @@ fun WorksheetView(
     onMarkType: (MarkType) -> Unit,
     onSortDescending: (Boolean) -> Unit,
     onRetry: () -> Unit,
+    onCancelQuery: () -> Unit,
     onImport: () -> Unit,
     onOpenFields: () -> Unit,
     compact: Boolean,
@@ -98,6 +99,7 @@ fun WorksheetView(
     val previous = when (queryState) {
         is WorksheetQueryState.Loading -> queryState.previous
         is WorksheetQueryState.Failed -> queryState.previous
+        is WorksheetQueryState.Cancelled -> queryState.previous
         else -> null
     }
     val current = ready ?: previous
@@ -178,15 +180,18 @@ fun WorksheetView(
         }
         CloudyDivider()
 
-        if (stale || queryState is WorksheetQueryState.Failed) {
+        if (stale || queryState is WorksheetQueryState.Failed ||
+            queryState is WorksheetQueryState.Loading || queryState is WorksheetQueryState.Cancelled) {
             QueryNotice(
                 message = when (queryState) {
                     is WorksheetQueryState.Loading -> "Updating the view for the current fields…"
                     is WorksheetQueryState.Failed -> "The last query failed. Values below are from the previous accepted result."
+                    is WorksheetQueryState.Cancelled -> "Query cancelled. Values below are from the previous accepted result."
                     else -> "The view is stale."
                 },
                 detail = (queryState as? WorksheetQueryState.Failed)?.message,
                 onRetry = onRetry,
+                onCancel = if (queryState is WorksheetQueryState.Loading) onCancelQuery else null,
             )
         }
 
@@ -398,7 +403,12 @@ private fun FieldMenu(
 }
 
 @Composable
-private fun QueryNotice(message: String, detail: String?, onRetry: () -> Unit) {
+private fun QueryNotice(
+    message: String,
+    detail: String?,
+    onRetry: () -> Unit,
+    onCancel: (() -> Unit)? = null,
+) {
     val colors = LocalCloudyColors.current
     Row(
         modifier = Modifier
@@ -419,10 +429,16 @@ private fun QueryNotice(message: String, detail: String?, onRetry: () -> Unit) {
                 )
             }
         }
-        TextButton(onClick = onRetry) {
-            Icon(Icons.Default.Refresh, contentDescription = null, tint = colors.warning, modifier = Modifier.size(16.dp))
-            Spacer(Modifier.width(4.dp))
-            Text("Retry", color = colors.warning, style = MaterialTheme.typography.labelMedium)
+        if (onCancel != null) {
+            TextButton(onClick = onCancel) {
+                Text("Cancel query", color = colors.warning, style = MaterialTheme.typography.labelMedium)
+            }
+        } else {
+            TextButton(onClick = onRetry) {
+                Icon(Icons.Default.Refresh, contentDescription = null, tint = colors.warning, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Retry", color = colors.warning, style = MaterialTheme.typography.labelMedium)
+            }
         }
     }
 }

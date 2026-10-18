@@ -205,6 +205,9 @@ fun WorkbookScreen(
                     onRetry = viewModel::retryQuery,
                 )
             }
+            if (state.recoveryMessages.isNotEmpty()) {
+                RecoveryBanner(state.recoveryMessages.joinToString(" "))
+            }
             Row(Modifier.weight(1f).fillMaxWidth()) {
                 if (resolvedTab != DATA_TAB && !compact) {
                     DataPane(
@@ -252,6 +255,7 @@ fun WorkbookScreen(
                                 onMarkType = viewModel::setMarkType,
                                 onSortDescending = viewModel::setSortDescending,
                                 onRetry = viewModel::retryQuery,
+                                onCancelQuery = viewModel::cancelQuery,
                                 onImport = {
                                     importLauncher.launch(arrayOf("*/*"))
                                 },
@@ -279,6 +283,7 @@ fun WorkbookScreen(
                 document = document,
                 state = state,
                 onRetryQuery = viewModel::retryQuery,
+                onCancelQuery = viewModel::cancelQuery,
             )
         }
 
@@ -503,6 +508,26 @@ private fun WorkbookTab(
 }
 
 @Composable
+private fun RecoveryBanner(message: String) {
+    val colors = LocalCloudyColors.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colors.warningContainer)
+            .padding(horizontal = 12.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(Icons.Default.Info, contentDescription = null, tint = colors.warning, modifier = Modifier.size(16.dp))
+        Spacer(Modifier.width(8.dp))
+        Text(
+            "Import recovery: $message",
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.warning,
+        )
+    }
+}
+
+@Composable
 private fun SaveFailureBanner(message: String, onRetry: () -> Unit) {
     val colors = LocalCloudyColors.current
     Row(
@@ -529,6 +554,7 @@ private fun WorkbookStatusStrip(
     document: WorkbookDocument,
     state: WorkbookUiState,
     onRetryQuery: () -> Unit,
+    onCancelQuery: () -> Unit,
 ) {
     val colors = LocalCloudyColors.current
     Row(
@@ -555,13 +581,21 @@ private fun WorkbookStatusStrip(
                 if (query.result.result.truncated) "Result capped" else "Query ready",
                 tone = if (query.result.result.truncated) CloudyBadgeTone.Warning else CloudyBadgeTone.Neutral,
             )
-            is WorksheetQueryState.Loading -> Text(
-                "Querying…",
-                style = MaterialTheme.typography.labelSmall,
-                color = colors.textSecondary,
-            )
+            is WorksheetQueryState.Loading -> Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "Querying…",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = colors.textSecondary,
+                )
+                TextButton(onClick = onCancelQuery) {
+                    Text("Cancel", color = colors.primary, style = MaterialTheme.typography.labelSmall)
+                }
+            }
             is WorksheetQueryState.Failed -> TextButton(onClick = onRetryQuery) {
                 Text("Query failed · Retry", color = colors.danger, style = MaterialTheme.typography.labelSmall)
+            }
+            is WorksheetQueryState.Cancelled -> TextButton(onClick = onRetryQuery) {
+                Text("Query cancelled · Retry", color = colors.textSecondary, style = MaterialTheme.typography.labelSmall)
             }
             WorksheetQueryState.Empty -> Text(
                 "No view",

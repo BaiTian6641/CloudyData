@@ -32,6 +32,7 @@ sealed interface WorksheetQueryState {
     data class Loading(val previous: WorksheetResult?) : WorksheetQueryState
     data class Ready(val result: WorksheetResult) : WorksheetQueryState
     data class Failed(val message: String, val previous: WorksheetResult?) : WorksheetQueryState
+    data class Cancelled(val previous: WorksheetResult?) : WorksheetQueryState
 }
 
 sealed interface ImportUiState {
@@ -57,6 +58,7 @@ data class WorkbookUiState(
     val save: SaveState = SaveState.Saved,
     val engineVersion: String? = null,
     val engineError: String? = null,
+    val recoveryMessages: List<String> = emptyList(),
 )
 
 class WorkbookViewModel(
@@ -91,6 +93,7 @@ class WorkbookViewModel(
         viewModelScope.launch {
             _state.update { it.copy(loading = true, loadError = null) }
             try {
+                val recovery = withContext(Dispatchers.IO) { importService.reconcile(workbookId) }
                 val document = withContext(Dispatchers.IO) { store.load(workbookId) }
                 _state.update {
                     it.copy(
@@ -98,6 +101,7 @@ class WorkbookViewModel(
                         document = document,
                         loadError = null,
                         save = SaveState.Saved,
+                        recoveryMessages = recovery.messages,
                     )
                 }
                 val error = ensureEngine()
@@ -208,6 +212,14 @@ class WorkbookViewModel(
         refreshQuery()
     }
 
+    fun cancelQuery() {
+        if (_state.value.query !is WorksheetQueryState.Loading) return
+        queryGeneration++
+        engine?.interrupt()
+        val previous = (_state.value.query as? WorksheetQueryState.Loading)?.previous
+        _state.update { it.copy(query = WorksheetQueryState.Cancelled(previous)) }
+    }
+
     fun saveNow() {
         persistLatest()
     }
@@ -314,6 +326,7 @@ class WorkbookViewModel(
         val previous = (_state.value.query as? WorksheetQueryState.Ready)?.result
             ?: (_state.value.query as? WorksheetQueryState.Loading)?.previous
             ?: (_state.value.query as? WorksheetQueryState.Failed)?.previous
+            ?: (_state.value.query as? WorksheetQueryState.Cancelled)?.previous
         _state.update { it.copy(query = WorksheetQueryState.Loading(previous)) }
         viewModelScope.launch {
             val engineError = ensureEngine()
