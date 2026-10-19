@@ -52,8 +52,8 @@ device visual and pointer interaction remain unverified.
 
 ## Evidence files
 
-- `app/build/outputs/androidTest-results/cust093-Vega-final.txt`
+- `app/build/outputs/androidTest-results/cust093-Vega-final2.txt`
 - `app/build/outputs/androidTest-results/cust09-DualAxisQueryTest-final.txt`
-- `app/build/outputs/androidTest-results/cust093-Persistence-final.txt`
-- `app/build/outputs/androidTest-results/cust093-Render-final.txt`
+- `app/build/outputs/androidTest-results/cust093-Persistence-final2.txt`
+- `app/build/outputs/androidTest-results/cust093-Render-final2.txt`
 - `app/build/outputs/androidTest-results/cust093-VegaRendererProbeTest-final2.txt`
