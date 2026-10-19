@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `029e8ec`; the value-decimal change is in the next
-local commit. `main` tracks `origin/main` at the pushed gridline baseline.
+**Source:** commits through `655792f`. `main` tracks `origin/main`; the
+decimal-format stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
