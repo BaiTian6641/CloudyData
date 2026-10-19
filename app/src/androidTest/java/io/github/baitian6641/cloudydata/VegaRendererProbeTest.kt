@@ -221,6 +221,32 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun percentFormatRendersPercentSignedLabels() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "percent")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("percent renderer did not complete", result != null)
+            assertNull(result!!.error)
+            assertTrue(
+                "12.5% label missing from SVG: ${result.svgTexts}",
+                result.svgTexts.any { it == "12.5%" },
+            )
+            assertTrue(
+                "25.0% label missing from SVG: ${result.svgTexts}",
+                result.svgTexts.any { it == "25.0%" },
+            )
+            assertTrue(
+                "percent axis tick missing from SVG: ${result.svgTexts}",
+                result.svgTexts.any { it.endsWith("%") && it != "12.5%" && it != "25.0%" },
+            )
+        }
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

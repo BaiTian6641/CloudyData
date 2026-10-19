@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
@@ -79,7 +80,10 @@ object VegaSpecBuilder {
             .put("paddingInner", if (spec.kind == ChartKind.BAR) 0.2 else 0.05)
 
         val visibleXLabels = spec.xAxis.labelValues?.size ?: xDomain.length()
-        val valueFormat = spec.valueDecimals?.let { ",.${it}f" }
+        val valueFormat = when (spec.valueFormat) {
+            ValueDisplayFormat.NUMBER -> spec.valueDecimals?.let { ",.${it}f" }
+            ValueDisplayFormat.PERCENT -> ",.${spec.valueDecimals ?: 1}%"
+        }
         val gridlineStroke = when (spec.gridlines.contrast) {
             GridlineContrast.DEFAULT -> gridColor
             GridlineContrast.STRONG ->
@@ -310,14 +314,17 @@ object VegaSpecBuilder {
 
     private fun valueText(spec: ChartSpec, fontSize: Int): JSONObject {
         val visible = labelDefined(spec, fontSize)
-        val decimals = spec.valueDecimals
-        if (decimals == null && spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) {
+        val pattern = when (spec.valueFormat) {
+            ValueDisplayFormat.NUMBER -> spec.valueDecimals?.let { ",.${it}f" }
+            ValueDisplayFormat.PERCENT -> ",.${spec.valueDecimals ?: 1}%"
+        }
+        if (pattern == null && spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) {
             return JSONObject().put("field", "y")
         }
-        val value = if (decimals == null) {
+        val value = if (pattern == null) {
             "datum.y"
         } else {
-            "format(datum.y, ',.${decimals}f')"
+            "format(datum.y, '$pattern')"
         }
         // Vega text marks ignore format/defined on field references; guard explicitly.
         return JSONObject().put("signal", "($visible) ? $value : ''")

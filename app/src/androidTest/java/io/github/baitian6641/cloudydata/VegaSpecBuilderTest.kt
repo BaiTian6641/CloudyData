@@ -13,6 +13,7 @@ import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LabelPosition
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
@@ -189,6 +190,45 @@ class VegaSpecBuilderTest {
             listOf(0, 2, 4, 1, 3, 5),
             (0 until values.length()).map { values.getJSONObject(it).getInt("sourceRowIndex") },
         )
+    }
+
+    @Test
+    fun percentFormatUsesD3PercentForAxisAndLabels() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "DOUBLE"),
+                ),
+                rows = listOf(listOf<Any?>("A", 0.125), listOf<Any?>("B", 0.25)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "percent", 0, result,
+            ChartOptions(
+                showValueLabels = true,
+                valueDecimals = 1,
+                valueFormat = ValueDisplayFormat.PERCENT,
+            ),
+            "derived",
+        )
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
+        assertEquals(",.1%", json.getJSONArray("axes").getJSONObject(1).getString("format"))
+        val label = json.getJSONArray("marks").getJSONObject(1)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(
+            label.getJSONObject("text").getString("signal")
+                .contains("format(datum.y, ',.1%')"),
+        )
+        assertEquals(0.125, json.getJSONArray("data").getJSONObject(0)
+            .getJSONArray("values").getJSONObject(0).getDouble("y"), 0.0)
     }
 
     @Test

@@ -11,6 +11,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -128,6 +129,26 @@ class ChartSpecBuilderTest {
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("2 and 50"))
         }
+    }
+
+    @Test
+    fun valueDisplayFormatIsCarriedAndDefaultsToNumber() {
+        assertEquals(
+            ValueDisplayFormat.PERCENT,
+            ChartSpecBuilder.build(
+                "percent", 0, lineResult(),
+                ChartOptions(valueFormat = ValueDisplayFormat.PERCENT),
+                "derived",
+            ).valueFormat,
+        )
+        assertEquals(
+            ValueDisplayFormat.NUMBER,
+            ChartSpecBuilder.build(
+                "percent", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).valueFormat,
+        )
     }
 
     @Test

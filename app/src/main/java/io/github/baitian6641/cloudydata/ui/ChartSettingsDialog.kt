@@ -39,6 +39,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -76,6 +77,7 @@ fun ChartSettingsDialog(
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelCollisionPolicy by remember { mutableStateOf(current.labelCollisionPolicy) }
     var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
+    var valueFormat by remember { mutableStateOf(current.valueFormat) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -363,8 +365,20 @@ fun ChartSettingsDialog(
                     value = valueDecimals,
                     onValueChange = { valueDecimals = it },
                     label = "Value decimals",
-                    supportingText = "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank keeps automatic axis/label formatting.",
+                    supportingText = if (valueFormat == ValueDisplayFormat.PERCENT) {
+                        "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank uses 1 decimal for percent."
+                    } else {
+                        "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank keeps automatic axis/label formatting."
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                ChartToggleRow(
+                    title = "Percent values",
+                    description = "Show axis values and labels as percentages; tooltips and exact data stay unchanged.",
+                    checked = valueFormat == ValueDisplayFormat.PERCENT,
+                    onCheckedChange = {
+                        valueFormat = if (it) ValueDisplayFormat.PERCENT else ValueDisplayFormat.NUMBER
+                    },
                 )
                 ChartToggleRow(
                     title = "Value labels",
@@ -604,6 +618,7 @@ fun ChartSettingsDialog(
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
                             valueDecimals = parsedValueDecimals,
+                            valueFormat = valueFormat,
                             labelCollisionPolicy = labelCollisionPolicy,
                             labelFontSize = parsedLabelFontSize,
                             labelPosition = if (sheet.markType == MarkType.BAR) {

@@ -32,6 +32,8 @@ enum class GridlineContrast { DEFAULT, STRONG }
 
 enum class LabelCollisionPolicy { SHOW_ALL, HIDE_CROWDED }
 
+enum class ValueDisplayFormat { NUMBER, PERCENT }
+
 data class ChartOptions(
     val title: String? = null,
     val subtitle: String? = null,
@@ -42,6 +44,7 @@ data class ChartOptions(
     val minorGridlines: Boolean = false,
     val showValueLabels: Boolean = false,
     val valueDecimals: Int? = null,
+    val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
     val labelCollisionPolicy: LabelCollisionPolicy = LabelCollisionPolicy.SHOW_ALL,
     val xAxisTitle: String? = null,
     val yAxisTitle: String? = null,
@@ -77,6 +80,7 @@ data class ChartOptions(
         .put("minorGridlines", minorGridlines)
         .put("showValueLabels", showValueLabels)
         .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
+        .put("valueFormat", valueFormat.name)
         .put("labelCollisionPolicy", labelCollisionPolicy.name)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
         .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
@@ -164,6 +168,11 @@ data class ChartOptions(
             } else {
                 json.optInt("yTickCount").takeIf { it in MIN_TICK_COUNT..MAX_TICK_COUNT }
             },
+            valueFormat = runCatching {
+                ValueDisplayFormat.valueOf(
+                    json.optString("valueFormat", ValueDisplayFormat.NUMBER.name),
+                )
+            }.getOrDefault(ValueDisplayFormat.NUMBER),
             labelCollisionPolicy = runCatching {
                 LabelCollisionPolicy.valueOf(
                     json.optString("labelCollisionPolicy", LabelCollisionPolicy.SHOW_ALL.name),

@@ -4,6 +4,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
@@ -92,6 +93,7 @@ data class ChartSpec(
     val lineWidth: Double? = null,
     val units: String? = null,
     val valueDecimals: Int? = null,
+    val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

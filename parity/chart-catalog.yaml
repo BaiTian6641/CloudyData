@@ -131,7 +131,7 @@ customization:
     area: Labels
     controls: [show_hide, field, position, font, format, collision_policy]
     status: partial
-    note: Numeric value labels can be shown for Bar/Line/Area with a persisted 8–16 font size and an optional 0–6 fixed-decimal display format shared by value labels and the Y axis. Bar labels additionally support a persisted TOP/INSIDE_END position with sign/reversal-aware placement, zero/short-bar fallback/clamping and on-fill contrast halo; Line/Area stay TOP. Field selection, currency/percentage patterns, arbitrary collision controls and device visual qualification remain absent; a bounded crowded-label auto-hide policy exists.
+    note: Numeric value labels can be shown for Bar/Line/Area with a persisted 8–16 font size and an optional 0–6 fixed-decimal display format shared by value labels and the Y axis. Bar labels additionally support a persisted TOP/INSIDE_END position with sign/reversal-aware placement, zero/short-bar fallback/clamping and on-fill contrast halo; Line/Area stay TOP. Field selection, currency patterns, arbitrary collision controls and device visual qualification remain absent; fixed decimals, percent display and a bounded crowded-label auto-hide policy exist.
   - id: CUST07
     area: Color and palette
     controls: [categorical, sequential, diverging, custom, opacity, stable_category_key, missing_pattern]

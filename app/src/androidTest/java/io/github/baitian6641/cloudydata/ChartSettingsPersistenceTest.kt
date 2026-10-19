@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import org.json.JSONObject
 import java.io.File
 import java.util.UUID
@@ -88,6 +89,7 @@ class ChartSettingsPersistenceTest {
                             gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                             minorGridlines = true,
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
+                            valueFormat = ValueDisplayFormat.PERCENT,
                         ),
                     ),
                 ),
@@ -130,6 +132,7 @@ class ChartSettingsPersistenceTest {
         )
         assertEquals(true, reopenedSheet.chart.minorGridlines)
         assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
+        assertEquals(ValueDisplayFormat.PERCENT, reopenedSheet.chart.valueFormat)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -150,6 +153,19 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             GridlineContrast.STRONG,
             ChartOptions.fromJson(JSONObject().put("gridlineContrast", "STRONG")).gridlineContrast,
+        )
+    }
+
+    @Test
+    fun invalidValueFormatFallsBackToNumber() {
+        assertEquals(ValueDisplayFormat.NUMBER, ChartOptions.fromJson(JSONObject()).valueFormat)
+        assertEquals(
+            ValueDisplayFormat.NUMBER,
+            ChartOptions.fromJson(JSONObject().put("valueFormat", "NOT_A_FORMAT")).valueFormat,
+        )
+        assertEquals(
+            ValueDisplayFormat.PERCENT,
+            ChartOptions.fromJson(JSONObject().put("valueFormat", "PERCENT")).valueFormat,
         )
     }
 

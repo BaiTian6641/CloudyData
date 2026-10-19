@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `34a3498`. `main` tracks `origin/main`; the
-minor-gridline stage is pushed.
+**Source:** commits through `6a827f9`; the percent-display change is in the
+next local commit. `main` tracks `origin/main` at the pushed minor-gridline
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +55,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **57/57**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **58/58**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -111,6 +112,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust06-crowded-labels.md`
 - `qualification/evidence/2026-10-19-cust14-transparent-export.md`
 - `qualification/evidence/2026-10-19-cust04-minor-gridlines.md`
+- `qualification/evidence/2026-10-19-cust06-percent-display.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -167,6 +169,10 @@ unless stated otherwise.
   domain-derived 20-interval positions and major grid drawn afterwards. JVM and
   focused emulator spec/persistence/render checks pass; visual/log/reverse checks
   were not run.
+- **Percent display.** Optional persisted NUMBER/PERCENT formatting uses d3
+  percent for value-axis ticks and labels; exact data/tooltips and scales are
+  unchanged. Emulator spec/persistence and a `12.5%`/`25.0%` + axis-tick render
+  pass; visual width/collision checks were not run.
 - **Fixed-decimal value format.** Optional 0–6 decimals format Y-axis ticks and
   Bar/Line/Area value labels; labels use an explicit guarded `format(datum.y)`
   signal because Vega ignores text field `format`. Exact tooltip/data/export
@@ -278,18 +284,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST06 percent value display.**
+**CUST05 interactive legend filtering.**
 
-- Requirements/stage: CUST06, F36/F38, Q21, S11. Prerequisites: persisted fixed
-  decimals, Y-axis and value-label Vega formatting, emulator renderer probes.
-- Files: `ChartOptions`, `ChartSpec`, `ChartSpecBuilder`, `VegaSpecBuilder`,
-  `ChartSettingsDialog`, tests and evidence.
-- Action: add a persisted NUMBER/PERCENT display choice. PERCENT uses d3's
-  percent formatter on the value axis and labels (display-only ×100 + `%`),
-  sharing the existing decimal count with a bounded default when blank.
-- Acceptance: default NUMBER preserves current output; percent formatting never
-  mutates data/tooltips/exact exports, persists, and does not rerun SQL. Emulator
-  spec/persistence/render checks are required; visual review stays unverified.
+- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: multi-series
+  line legend lowering, persisted legend position/orientation/title, exact
+  source-row selection and the offline renderer.
+- Files: `ChartSpec` legend metadata, `VegaSpecBuilder`, `host.js`,
+  `VegaRendererHost`, renderer probes/tests and evidence.
+- Action: make legend entries toggle the visibility of their series as a
+  presentation-only operation. Hidden series must not alter the query, table,
+  tooltip/exact values or selection identity; the state must be recoverable and
+  accessible without a pointer.
+- Acceptance: legend interaction is real in the emulator renderer, the chart
+  remains operable by keyboard/TalkBack alternatives, and a reset/show-all path
+  exists. Device visual and TalkBack qualification remain unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline and
   percent visuals wait for an authorized visual session.

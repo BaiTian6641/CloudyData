@@ -564,6 +564,31 @@ class RendererProbeActivity : Activity() {
             truncated = false,
             valueDecimals = 2,
         )
+        "percent" -> ChartSpec(
+            chartId = "probe-percent",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = "Percent values",
+            xAxis = AxisSpec("Region"),
+            yAxis = AxisSpec("Rate"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(true),
+            sourceNote = "Source: probe fixture",
+            series = listOf(
+                ChartSeries(
+                    "Values",
+                    listOf(
+                        point("A", 0.125, "Values", 0),
+                        point("B", 0.25, "Values", 1),
+                    ),
+                ),
+            ),
+            rowCount = 2,
+            truncated = false,
+            valueDecimals = 1,
+            valueFormat = io.github.baitian6641.cloudydata.model.ValueDisplayFormat.PERCENT,
+        )
         "crowdedline" -> ChartSpec(
             chartId = "probe-crowded-line",
             revision = 1,
@@ -651,6 +676,7 @@ class RendererProbeActivity : Activity() {
         "format" -> "Accessible summary: A = 1234.567, B = 2000.0."
         "crowdedlabel" -> "Accessible summary: 60 crowded categories."
         "crowdedline" -> "Accessible summary: 40 crowded categories across three series."
+        "percent" -> "Accessible summary: A = 0.125, B = 0.25."
         "area" -> "Accessible summary: 2026-01-01 = 10, 2026-02-01 = 20, " +
             "2026-03-01 = 30, 2026-04-01 = 40."
         else -> "Accessible summary: region A = 40, region B = 60."

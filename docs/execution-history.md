@@ -591,3 +591,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   emulator-5580 (API36 x86_64) instrumentation: VegaSpecBuilderTest 7/7,
   ChartSettingsPersistenceTest 7/7, minor-grid export 1/1, plus five earlier
   renderer probes 1/1. The physical Googlebook was not used.
+
+## 2026-10-19 — CUST06 percent display
+
+- Added persisted NUMBER/PERCENT display. Percent uses d3 `,.N%` for axis ticks
+  and value labels (blank decimals default to 1); stored values, tooltips,
+  scales, selection and exact exports are unchanged. Invalid/missing JSON falls
+  back to NUMBER.
+- Emulator-only validation: JVM 58/58; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 8/8, ChartSettingsPersistenceTest 8/8 and
+  a percent render 1/1 showing 12.5%/25.0% plus an axis-only percent tick; the
+  blank-decimals copy states the 1-decimal percent default. Lint 0 errors/5
+  warnings. Googlebook
+  untouched; visual width/collision/dark checks absent.
