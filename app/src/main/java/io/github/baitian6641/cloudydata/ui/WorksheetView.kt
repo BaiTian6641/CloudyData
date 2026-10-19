@@ -753,7 +753,7 @@ private fun ResultTable(
                             measureLabelWithUnits(
                                 result.secondaryAggregation ?: result.aggregation,
                                 result.secondaryMeasureField.name,
-                                null,
+                                options.secondaryUnits,
                             )
                         else -> column.name
                     },

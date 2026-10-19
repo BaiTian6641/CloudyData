@@ -117,6 +117,10 @@ class ChartSettingsPersistenceTest {
                             secondaryAxisSynchronized = true,
                             secondaryShowMarkers = false,
                             secondaryShowLabels = true,
+                            secondaryValueFormat = ValueDisplayFormat.CURRENCY,
+                            secondaryValueDecimals = 2,
+                            secondaryCurrencyCode = CurrencyCode.EUR,
+                            secondaryUnits = "USD",
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -142,6 +146,10 @@ class ChartSettingsPersistenceTest {
         assertTrue(reopenedSheet.chart.secondaryAxisSynchronized)
         assertFalse(reopenedSheet.chart.secondaryShowMarkers)
         assertTrue(reopenedSheet.chart.secondaryShowLabels)
+        assertEquals(ValueDisplayFormat.CURRENCY, reopenedSheet.chart.secondaryValueFormat)
+        assertEquals(2, reopenedSheet.chart.secondaryValueDecimals)
+        assertEquals(CurrencyCode.EUR, reopenedSheet.chart.secondaryCurrencyCode)
+        assertEquals("USD", reopenedSheet.chart.secondaryUnits)
         assertEquals("Regional sales", reopenedSheet.chart.title)
         assertEquals("Quarter to date", reopenedSheet.chart.subtitle)
         assertEquals("Source rows are preserved in the workbook snapshot.", reopenedSheet.chart.caption)

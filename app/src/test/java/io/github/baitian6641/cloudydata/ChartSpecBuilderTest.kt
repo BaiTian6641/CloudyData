@@ -1294,6 +1294,40 @@ class ChartSpecBuilderTest {
         }
     }
 
+
+    @Test
+    fun secondaryValueDecimalsAreValidated() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                    EngineColumn("secondary_value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("Jan", 1L, 2L)),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+            secondaryMeasureField = cost,
+            secondaryAggregation = Aggregation.SUM,
+        )
+        try {
+            ChartSpecBuilder.build(
+                "dual-invalid-decimals", 0, result,
+                ChartOptions(secondaryValueDecimals = 7),
+                "derived",
+            )
+            throw AssertionError("invalid secondary decimals were accepted")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("Secondary value decimals"))
+        }
+    }
+
     private fun barSeriesResult(): WorksheetResult = WorksheetResult(
         result = EngineResult(
             columns = listOf(

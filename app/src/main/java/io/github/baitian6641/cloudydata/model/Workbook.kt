@@ -85,6 +85,10 @@ data class ChartOptions(
     val secondaryAxisSynchronized: Boolean = false,
     val secondaryShowMarkers: Boolean = true,
     val secondaryShowLabels: Boolean = false,
+    val secondaryValueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
+    val secondaryValueDecimals: Int? = null,
+    val secondaryCurrencyCode: CurrencyCode = CurrencyCode.USD,
+    val secondaryUnits: String? = null,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -146,6 +150,10 @@ data class ChartOptions(
         .put("secondaryAxisSynchronized", secondaryAxisSynchronized)
         .put("secondaryShowMarkers", secondaryShowMarkers)
         .put("secondaryShowLabels", secondaryShowLabels)
+        .put("secondaryValueFormat", secondaryValueFormat.name)
+        .put("secondaryValueDecimals", secondaryValueDecimals ?: JSONObject.NULL)
+        .put("secondaryCurrencyCode", secondaryCurrencyCode.name)
+        .put("secondaryUnits", secondaryUnits ?: JSONObject.NULL)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -284,6 +292,28 @@ data class ChartOptions(
             secondaryAxisSynchronized = json.optBoolean("secondaryAxisSynchronized", false),
             secondaryShowMarkers = json.optBoolean("secondaryShowMarkers", true),
             secondaryShowLabels = json.optBoolean("secondaryShowLabels", false),
+            secondaryValueFormat = runCatching {
+                ValueDisplayFormat.valueOf(
+                    json.optString("secondaryValueFormat", ValueDisplayFormat.NUMBER.name),
+                )
+            }.getOrDefault(ValueDisplayFormat.NUMBER),
+            secondaryValueDecimals = if (json.isNull("secondaryValueDecimals")) {
+                null
+            } else {
+                json.optInt("secondaryValueDecimals").takeIf {
+                    it in MIN_VALUE_DECIMALS..MAX_VALUE_DECIMALS
+                }
+            },
+            secondaryCurrencyCode = runCatching {
+                CurrencyCode.valueOf(
+                    json.optString("secondaryCurrencyCode", CurrencyCode.USD.name),
+                )
+            }.getOrDefault(CurrencyCode.USD),
+            secondaryUnits = if (json.isNull("secondaryUnits")) {
+                null
+            } else {
+                json.optString("secondaryUnits").takeIf { it.isNotEmpty() }
+            },
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {

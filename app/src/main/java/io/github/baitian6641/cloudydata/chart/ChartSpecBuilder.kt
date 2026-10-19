@@ -100,8 +100,19 @@ object ChartSpecBuilder {
         if (result.secondaryMeasureField != null && options.barOrientation == BarOrientation.HORIZONTAL) {
             throw ChartSpecException("A secondary axis requires vertical bars in this build.")
         }
+        if (result.secondaryMeasureField != null &&
+            options.secondaryValueDecimals != null &&
+            options.secondaryValueDecimals !in
+            ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS
+        ) {
+            throw ChartSpecException(
+                "Secondary value decimals must be between ${ChartOptions.MIN_VALUE_DECIMALS} and " +
+                    "${ChartOptions.MAX_VALUE_DECIMALS}.",
+            )
+        }
         val secondaryLayer = result.secondaryMeasureField?.let { secondaryField ->
             val secondaryAggregation = result.secondaryAggregation ?: Aggregation.SUM
+            val secondaryUnits = options.secondaryUnits?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
             val points = rows.mapIndexed { index, row ->
                 val raw = row.getOrNull(2)
                 val value = raw?.let { valueAsDouble(it) }
@@ -126,8 +137,11 @@ object ChartSpecBuilder {
                 kind = ChartKind.LINE,
                 series = listOf(ChartSeries(secondaryField.name, points)),
                 axis = AxisSpec(
-                    title = options.secondaryAxisTitle
-                        ?: "${aggregationLabel(secondaryAggregation)} of ${secondaryField.name}",
+                    title = titleWithUnits(
+                        options.secondaryAxisTitle
+                            ?: "${aggregationLabel(secondaryAggregation)} of ${secondaryField.name}",
+                        secondaryUnits,
+                    ),
                     zero = true,
                     tickCount = options.yTickCount,
                     titleAnchor = options.axisTitleAnchor,
@@ -136,6 +150,10 @@ object ChartSpecBuilder {
                 showMarkers = options.secondaryShowMarkers,
                 showLabels = options.secondaryShowLabels,
                 showLegend = options.legendVisible,
+                valueFormat = options.secondaryValueFormat,
+                valueDecimals = options.secondaryValueDecimals,
+                units = secondaryUnits,
+                currencyCode = options.secondaryCurrencyCode,
             )
         }
         val barHasSeries = hasSeries && series.any { it.points.isNotEmpty() }
@@ -188,7 +206,12 @@ object ChartSpecBuilder {
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
-            hiddenSeries = emptySet(),
+            hiddenSeries = options.hiddenSeries.intersect(
+                buildSet {
+                    addAll(series.map { it.key })
+                    result.secondaryMeasureField?.let { add(it.name) }
+                },
+            ),
             barStackMode = stackMode,
             barHasSeries = barHasSeries,
             barOrientation = options.barOrientation,

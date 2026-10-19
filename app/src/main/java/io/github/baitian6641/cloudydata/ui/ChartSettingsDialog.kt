@@ -103,6 +103,14 @@ fun ChartSettingsDialog(
     var secondaryAxisSynchronized by remember { mutableStateOf(current.secondaryAxisSynchronized) }
     var secondaryShowMarkers by remember { mutableStateOf(current.secondaryShowMarkers) }
     var secondaryShowLabels by remember { mutableStateOf(current.secondaryShowLabels) }
+    var secondaryValueFormat by remember { mutableStateOf(current.secondaryValueFormat) }
+    var secondaryFormatExpanded by remember { mutableStateOf(false) }
+    var secondaryValueDecimals by remember {
+        mutableStateOf(current.secondaryValueDecimals?.toString().orEmpty())
+    }
+    var secondaryUnits by remember { mutableStateOf(current.secondaryUnits.orEmpty()) }
+    var secondaryCurrencyCode by remember { mutableStateOf(current.secondaryCurrencyCode) }
+    var secondaryCurrencyExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -145,6 +153,11 @@ fun ChartSettingsDialog(
         gridlineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     } else {
         null
+    }
+    val parsedSecondaryValueDecimals = if (secondaryValueFormat == ValueDisplayFormat.CURRENCY) {
+        null
+    } else {
+        secondaryValueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     }
     val parsedValueDecimals = if (valueFormat == ValueDisplayFormat.CURRENCY) {
         null
@@ -200,6 +213,14 @@ fun ChartSettingsDialog(
             (parsedValueDecimals == null ||
             parsedValueDecimals !in ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS) ->
             "Value decimals must be a whole number from ${ChartOptions.MIN_VALUE_DECIMALS} to " +
+                "${ChartOptions.MAX_VALUE_DECIMALS}."
+        sheet.secondaryMeasureFieldId != null &&
+            secondaryValueFormat != ValueDisplayFormat.CURRENCY &&
+            secondaryValueDecimals.trim().isNotEmpty() &&
+            (parsedSecondaryValueDecimals == null ||
+                parsedSecondaryValueDecimals !in
+                ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS) ->
+            "Secondary decimals must be a whole number from ${ChartOptions.MIN_VALUE_DECIMALS} to " +
                 "${ChartOptions.MAX_VALUE_DECIMALS}."
         labelFontSize.trim().isNotEmpty() && (parsedLabelFontSize == null ||
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
@@ -1079,6 +1100,92 @@ fun ChartSettingsDialog(
                         checked = secondaryShowLabels,
                         onCheckedChange = { secondaryShowLabels = it },
                     )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Secondary format",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                when (secondaryValueFormat) {
+                                    ValueDisplayFormat.NUMBER -> "Plain numeric axis and labels"
+                                    ValueDisplayFormat.PERCENT -> "Percent axis and labels"
+                                    ValueDisplayFormat.CURRENCY -> "Currency axis and labels"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { secondaryFormatExpanded = true }) {
+                            Text(
+                                secondaryValueFormat.name.lowercase()
+                                    .replaceFirstChar { it.uppercase() },
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = secondaryFormatExpanded,
+                            onDismissRequest = { secondaryFormatExpanded = false },
+                        ) {
+                            ValueDisplayFormat.entries.forEach { format ->
+                                DropdownMenuItem(
+                                    text = { Text(format.name.lowercase().replaceFirstChar { it.uppercase() }) },
+                                    onClick = {
+                                        secondaryValueFormat = format
+                                        secondaryFormatExpanded = false
+                                    },
+                                )
+                            }
+                        }
+                    }
+                    if (secondaryValueFormat == ValueDisplayFormat.CURRENCY) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text(
+                                    "Secondary currency",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = colors.textPrimary,
+                                )
+                                Text(
+                                    secondaryCurrencyCode.name,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colors.textSecondary,
+                                )
+                            }
+                            TextButton(onClick = { secondaryCurrencyExpanded = true }) {
+                                Text(secondaryCurrencyCode.name, color = colors.primary)
+                            }
+                            DropdownMenu(
+                                expanded = secondaryCurrencyExpanded,
+                                onDismissRequest = { secondaryCurrencyExpanded = false },
+                            ) {
+                                CurrencyCode.entries.forEach { code ->
+                                    DropdownMenuItem(
+                                        text = { Text(code.name) },
+                                        onClick = {
+                                            secondaryCurrencyCode = code
+                                            secondaryCurrencyExpanded = false
+                                        },
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        CloudyTextField(
+                            value = secondaryValueDecimals,
+                            onValueChange = { secondaryValueDecimals = it },
+                            label = "Secondary decimals",
+                            supportingText = "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank uses automatic formatting.",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        )
+                    }
+                    CloudyTextField(
+                        value = secondaryUnits,
+                        onValueChange = { secondaryUnits = it.take(16) },
+                        label = "Secondary units",
+                        supportingText = "Optional suffix for the right axis and secondary column; up to 16 characters.",
+                    )
                 }
                 if (sheet.markType == MarkType.BAR) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1281,6 +1388,10 @@ fun ChartSettingsDialog(
                             secondaryAxisSynchronized = secondaryAxisSynchronized,
                             secondaryShowMarkers = secondaryShowMarkers,
                             secondaryShowLabels = secondaryShowLabels,
+                            secondaryValueFormat = secondaryValueFormat,
+                            secondaryValueDecimals = parsedSecondaryValueDecimals,
+                            secondaryCurrencyCode = secondaryCurrencyCode,
+                            secondaryUnits = clean(secondaryUnits),
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

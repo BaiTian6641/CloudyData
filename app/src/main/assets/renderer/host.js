@@ -19,6 +19,7 @@
     hiddenSeries: [],
     legendInteractive: true,
     barOrientation: 'VERTICAL',
+    secondaryUnits: '',
     series: [],
     pointerMode: 'replace',
     lasso: null,
@@ -100,7 +101,8 @@
     var series = datum.series ? String(datum.series) + ' · ' : '';
     var secondaryDatum = datum.secondary === true;
     tooltip.textContent = series + String(datum.x || '') + ' = ' + exact +
-      (!secondaryDatum && state.units ? ' ' + state.units : '');
+      (secondaryDatum && state.secondaryUnits ? ' ' + state.secondaryUnits :
+        (!secondaryDatum && state.units ? ' ' + state.units : ''));
     tooltip.hidden = false;
     var x = 20;
     var y = 20;
@@ -850,6 +852,10 @@
         message.spec.usermeta.barOrientation === 'HORIZONTAL'
         ? 'HORIZONTAL'
         : 'VERTICAL';
+      state.secondaryUnits = message.spec.usermeta &&
+        typeof message.spec.usermeta.secondaryUnits === 'string'
+        ? message.spec.usermeta.secondaryUnits
+        : '';
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

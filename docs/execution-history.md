@@ -914,3 +914,19 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   43/43; ChartSettingsPersistenceTest 12/12; lint 0 errors/5 warnings.
   Googlebook untouched; secondary formatting/units, interactive legend and
   visual checks remain open.
+
+## 2026-10-19 — CUST09.3 secondary formatting and interactive legend
+
+- Secondary measures now persist independent number/percent/currency formatting,
+  decimals, currency code and units. The y2 axis, secondary labels, tooltip
+  suffixes, table/inspector/PDF headers use that configuration. The secondary
+  legend is interactive for dual-axis bars and toggles only the secondary marks
+  through hiddenSeries; primary data/axes remain unchanged.
+- Review-driven fixes: blank-decimal NUMBER labels preserve exact values;
+  stored secondary decimals are sanitized and builder validation is tested;
+  legend usermeta carries primary+secondary keys and BAR legend interaction is
+  restricted to the secondary-only case; hidden tests cover marker/label removal.
+- Validation: JVM 75/75; VegaSpecBuilderTest 21/21; DualAxisQueryTest 1/1;
+  ChartSettingsPersistenceTest 12/12; VegaRendererProbeTest 43/43; lint 0
+  errors/5 warnings. Googlebook untouched; manual secondary bounds, pointer
+  legend testing, arbitrary layers and visual checks remain open.

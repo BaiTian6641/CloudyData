@@ -869,10 +869,11 @@ class RendererProbeActivity : Activity() {
                 id = "secondary-line",
                 kind = ChartKind.LINE,
                 series = listOf(secondary),
-                axis = AxisSpec("Cost axis", min = 0.0),
+                axis = AxisSpec("Cost axis (USD)", min = 0.0),
                 synchronizedAxis = false,
                 showMarkers = true,
                 showLabels = true,
+                units = "USD",
             ),
         )
     }

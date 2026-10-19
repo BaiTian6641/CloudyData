@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **74/74**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **75/75**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
   decimal-format, chart-border, crowded-label, palette, bar/area-stacking and
@@ -273,12 +273,13 @@ unless stated otherwise.
   layout, builder-owned bases, display-Y domain, fill legend, exact values and
   hidden-series support. Negative/zero-total stacked cases are diagnosed;
   emulator spec/render/persistence checks pass; visual/gap checks were not run.
-- **Secondary bar+line axis (CUST09.1/2).** A vertical Bar can carry one persisted
-  second measure as a typed LINE layer with a right `y2` axis, shared grouped-row
-  identity, independent/synchronized domain, independent aggregation editing,
-  secondary legend/markers/labels, table/PDF column and settings. Query/spec/
-  render/persistence checks pass; arbitrary layers, secondary number/currency
-  formatting, interactive legend toggling and visual checks remain absent.
+- **Secondary bar+line axis (CUST09.1/2/3).** A vertical Bar can carry one
+  persisted second measure as a typed LINE layer with a right `y2` axis, shared
+  grouped-row identity, independent/synchronized domain, independent aggregation,
+  secondary legend/markers/labels, independent number/percent/currency/unit
+  formatting, interactive legend toggling, table/PDF column and settings. Query/
+  spec/render/persistence checks pass; arbitrary layers, manual secondary bounds,
+  color-series combination, horizontal dual axes and visual checks remain absent.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -375,19 +376,19 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST09.3 secondary formatting and interactive legend.**
+**CUST09.4 secondary axis bounds/ticks and pointer legend verification.**
 
 - Requirements/stage: CUST09, CH04/F36/F38, S11.C0. Prerequisite: committed
-  secondary aggregation/legend/label slice.
-- Files: `ChartOptions`/`ChartLayer` secondary number/currency/units,
-  `ChartSettingsDialog`, Vega `y2` formatting, host legend interaction, tests.
-- Action: add an independent secondary value format/decimals/units and make the
-  secondary legend toggle its line/markers/labels without changing primary data;
-  keep bar category legend behavior non-interactive.
-- Acceptance: axis labels, secondary labels, tooltip and table headers agree on
-  the configured secondary format without inheriting primary units; legend
-  toggling hides only the secondary layer; invalid values fall back safely.
-  Emulator spec/render/persistence checks required; visual review unverified.
+  secondary formatting/interactive-legend slice.
+- Files: `ChartOptions`/`ChartLayer` secondary bounds/ticks, settings, Vega `y2`
+  domain, probe/pointer tests.
+- Action: persist optional secondary min/max/tick-count, validate them, and add
+  a device-level legend click test that hides/restores only the secondary line
+  while primary bars remain unchanged.
+- Acceptance: explicit secondary bounds override the auto domain; invalid bounds
+  are rejected/fallback safely; legend toggling changes only secondary marks;
+  synchronized mode and primary axes remain unchanged. Emulator spec/render/
+  persistence and pointer checks required; visual review unverified.
 - Device-bound qualification remains blocked: dual-axis readability, legend,
   labels, line crossings, Y ticks, lasso/product, titles, units, gridline,
   palette, marker, dash, bar/area/table and horizontal visuals wait for an

@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata.renderer
 
 import io.github.baitian6641.cloudydata.chart.ChartKind
+import io.github.baitian6641.cloudydata.chart.ChartLayer
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
@@ -269,6 +270,23 @@ object VegaSpecBuilder {
                     if (dark) CloudyTokens.Dark.accent else CloudyTokens.Light.accent,
                 )))
         }
+        val secondaryFormat = secondaryLayer?.let { layer ->
+            when (layer.valueFormat) {
+                ValueDisplayFormat.NUMBER -> layer.valueDecimals?.let { ",.${it}f" }
+                ValueDisplayFormat.PERCENT -> ",.${layer.valueDecimals ?: 1}%"
+                ValueDisplayFormat.CURRENCY ->
+                    if (layer.currencyCode == CurrencyCode.USD) "$,.2f" else ",.2f"
+            }
+        }
+        val secondaryAxisLabelSignal = secondaryLayer?.let { layer ->
+            if (layer.valueFormat == ValueDisplayFormat.CURRENCY &&
+                layer.currencyCode != CurrencyCode.USD
+            ) {
+                currencyAxisLabelSignal(layer.currencyCode)
+            } else {
+                null
+            }
+        }
         if (secondaryLayer != null) {
             axes.put(
                 axisJson(
@@ -280,7 +298,8 @@ object VegaSpecBuilder {
                     grid = false,
                     labelAngle = 0,
                     tickCount = secondaryLayer.axis.tickCount,
-                    format = spec.valueDecimals?.let { ",.${it}f" },
+                    format = secondaryFormat,
+                    labelSignal = secondaryAxisLabelSignal,
                     titleAnchor = secondaryLayer.axis.titleAnchor,
                 ),
             )
@@ -288,6 +307,8 @@ object VegaSpecBuilder {
         val secondaryColor = colorHex(
             if (dark) CloudyTokens.Dark.accent else CloudyTokens.Light.accent,
         )
+        val secondaryVisible = secondaryLayer != null &&
+            secondaryLayer.series.none { it.key in spec.hiddenSeries }
 
         val marks = JSONArray()
         when (spec.kind) {
@@ -295,10 +316,12 @@ object VegaSpecBuilder {
                 marks.put(barMark(spec))
                 if (spec.labels.show) marks.put(barLabelMark(spec, textColor, dark))
                 marks.put(barSelectionMark(spec, textColor))
-                if (secondaryLayer != null) {
+                if (secondaryLayer != null && secondaryVisible) {
                     marks.put(secondaryLineMark(spec, secondaryColor))
                     if (secondaryLayer.showMarkers) marks.put(secondaryMarkerMark(spec, secondaryColor))
-                    if (secondaryLayer.showLabels) marks.put(secondaryLabelMark(spec, textColor))
+                    if (secondaryLayer.showLabels) {
+                        marks.put(secondaryLabelMark(spec, textColor, secondaryLayer))
+                    }
                     marks.put(secondaryHitMark(spec))
                 }
             }
@@ -377,8 +400,19 @@ object VegaSpecBuilder {
             .put("barStackMode", spec.barStackMode.name)
             .put("barOrientation", spec.barOrientation.name)
             .put("areaStackMode", spec.areaStackMode.name)
-            .put("legendInteractive", spec.kind != ChartKind.BAR)
-            .put("series", JSONArray(spec.series.map { it.key }))
+            .put(
+                "legendInteractive",
+                spec.kind != ChartKind.BAR ||
+                    (spec.secondaryLayer != null && !spec.legend.visible),
+            )
+            .put(
+                "series",
+                JSONArray(
+                    (spec.series + (spec.secondaryLayer?.series ?: emptyList()))
+                        .map { it.key },
+                ),
+            )
+            .put("secondaryUnits", spec.secondaryLayer?.units ?: "")
                     .put("units", spec.units ?: ""),
             )
             .put("marks", marks)
@@ -1293,7 +1327,11 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun secondaryLabelMark(spec: ChartSpec, textColor: String): JSONObject {
+    private fun secondaryLabelMark(
+        spec: ChartSpec,
+        textColor: String,
+        layer: ChartLayer,
+    ): JSONObject {
         val fontSize = spec.labels.fontSize ?: 10
         val endpoint = "scale('y2', datum.y)"
         val minY = fontSize + 2
@@ -1317,8 +1355,17 @@ object VegaSpecBuilder {
                         "text",
                         JSONObject().put(
                             "signal",
-                            "isValid(datum.y) ? " +
-                                "(datum.exactY === null ? format(datum.y, ',.2f') : datum.exactY) : ''",
+                            "isValid(datum.y) ? " + when (layer.valueFormat) {
+                                ValueDisplayFormat.CURRENCY ->
+                                    currencyValueExpression(layer.currencyCode, "datum.y")
+                                ValueDisplayFormat.PERCENT ->
+                                    "format(datum.y, ',.${layer.valueDecimals ?: 1}%')"
+                                ValueDisplayFormat.NUMBER ->
+                                    layer.valueDecimals?.let {
+                                        "format(datum.y, ',.${it}f')"
+                                    } ?: "(datum.exactY === null ? " +
+                                        "format(datum.y, ',.2~f') : datum.exactY)"
+                            } + " : ''",
                         ),
                     )
                     .put("align", JSONObject().put("value", "center"))

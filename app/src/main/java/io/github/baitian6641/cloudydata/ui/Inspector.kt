@@ -116,7 +116,7 @@ fun WorkbookInspector(
                         measureLabelWithUnits(
                             result.secondaryAggregation ?: result.aggregation,
                             result.secondaryMeasureField.name,
-                            null,
+                            sheet?.chart?.secondaryUnits,
                         )
                     else -> column.name
                 }

@@ -213,7 +213,7 @@ fun VegaChartCard(
                         measureLabelWithUnits(
                             resultNow.secondaryAggregation ?: resultNow.aggregation,
                             resultNow.secondaryMeasureField.name,
-                            null,
+                            applied.spec.secondaryLayer?.units,
                         )
                     else -> column.name
                 }

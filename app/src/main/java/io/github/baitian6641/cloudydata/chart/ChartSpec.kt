@@ -53,6 +53,10 @@ data class ChartLayer(
     val showMarkers: Boolean = true,
     val showLabels: Boolean = false,
     val showLegend: Boolean = true,
+    val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
+    val valueDecimals: Int? = null,
+    val units: String? = null,
+    val currencyCode: CurrencyCode = CurrencyCode.USD,
 )
 
 data class AxisSpec(
