@@ -22,7 +22,8 @@ unless stated otherwise.
   import, Parquet snapshot publication, original source preservation and verified
   row count.
 - Workbook create, atomic metadata save, process-restart reopen, and local
-  worksheet query.
+  worksheet query. Worksheet tab selection commits the active sheet and requeries
+  it, clearing the previous sheet's accepted result while loading.
 - Rows/Values/Line-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -55,10 +56,10 @@ unless stated otherwise.
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (5 warnings). JVM: 32/32. Emulator renderer probe: 17/17;
   Vega spec builder: 4/4; keep/exclude query suite plus engine and line
-  regressions: 9/9; table-selection plus keep/exclude/renderer/spec: 27/27. A
-  three-device connected run still hits a physical-Googlebook PNG export
-  assertion (`expected 803`, actual `804`) and device timeouts; the emulator
-  suites are clean.
+  regressions: 9/9; table-selection plus keep/exclude/renderer/spec: 27/27;
+  View Data plus that suite: 32/32. A three-device connected run still hits a
+  physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
+  device timeouts; the emulator suites are clean.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -84,6 +85,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust13-mark-highlight.md`
 - `qualification/evidence/2026-10-19-cust13-keep-exclude.md`
 - `qualification/evidence/2026-10-19-cust13-table-selection.md`
+- `qualification/evidence/2026-10-19-cust13-view-data.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -122,10 +124,12 @@ unless stated otherwise.
   Ctrl/Cmd toggles, plain activation replaces, and TalkBack custom actions add or
   extend. A Final-pass release observer prevents canceled gestures from leaking
   a mode into later activation; modified Enter/Space mapping is implemented but
-  its row-focus path is not separately exercised. Lasso/rectangle, drill,
-  View Data, compound/global filters, persisted selection, pointer hover,
-  product auto-recovery, focus/TalkBack traversal, live OS-window resize and
-  memory limits remain unverified. The native summary/table is the accessible
+  its row-focus path is not separately exercised. View Data resolves the
+  selected marks back to bounded, exact source rows, combines the active
+  worksheet filter and invalidates stale responses. Lasso/rectangle, drill,
+  compound/global filters, persisted selection, pointer hover, product
+  auto-recovery, focus/TalkBack traversal, live OS-window resize and memory
+  limits remain unverified. The native summary/table is the accessible
   equivalent.
 - Product visual export is verified for a live worksheet: individual and frozen
   multi-format actions use real DocumentsUI/SAF destinations and provider-owned
@@ -137,11 +141,11 @@ unless stated otherwise.
   mid-write failure injection, accessible PDF and print remain partial.
 - **Current emulator state:** the rootable API 37 userdebug emulator returned as
   `emulator-5582` (2880×1800, 240 dpi) and carries the reimported
-  `chart_line_series.csv` workbook now kept to one North mark for filter
-  evidence. `emulator-5580` remains an API 36 non-root fallback with the
-  2880×1800/240 dpi override. The physical Googlebook is connected again; its
-  PNG export path has an unrelated one-pixel height mismatch in the connected
-  suite.
+  `chart_line_series.csv` workbook configured as an `event_date` table for the
+  View Data evidence. `emulator-5580` remains an API 36 non-root fallback with
+  the 2880×1800/240 dpi override. The physical Googlebook is connected again;
+  its PNG export path has an unrelated one-pixel height mismatch in the
+  connected suite.
 
 ## Not implemented / blocked
 
@@ -161,8 +165,9 @@ unless stated otherwise.
   The bundle PDF now includes a searchable A4 table and the product exposes a
   native Print worksheet flow; a real Save-as-PDF print produced a two-page,
   text-extractable PDF. PDF tagging, print-spooler completion, pointer hover,
-  remaining Q18 failures, drill/hierarchy, View Data, compound or cross-sheet
-  filters, persisted selection, TalkBack and live-window qualification remain.
+  remaining Q18 failures, lasso/rectangle, drill/hierarchy, compound or
+  cross-sheet filters, persisted selection, TalkBack and live-window
+  qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -174,21 +179,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST13 View Data for selected marks.**
+**CUST13 lasso/rectangle mark selection.**
 
-- Files: engine row-provenance query, `WorkbookViewModel`, worksheet/inspector
-  dialog, tests and evidence.
-- Action: from the exact selected mark identities, query the underlying source
-  rows without mutating the snapshot or treating the filtered aggregate result
-  as raw data; bound rows, expose typed exact values and clear selection/filter
-  context.
-- Acceptance: a selected aggregate mark opens the real source rows that compose
-  it; active keep/exclude context is honored; truncation and cancellation are
-  explicit; stale selection intents are rejected; keyboard and TalkBack can open
-  and close the result.
-- Then: drill once an explicit dimension hierarchy exists, lasso/rectangle, and
-  compound/cross-sheet filters. Persisted selection remains an explicit action,
-  not automatic, per the architecture boundary.
+- Files: renderer host pointer bridge, `VegaChart` selection intent handling,
+  `RowSelection` reducer integration, fallback/table access and tests.
+- Action: drag a rectangular selection over exact marks, map intersecting marks
+  to their existing source identities, and preserve plain/keyboard/table
+  selection as the accessible alternative. Reject stale chart/revision intents.
+- Acceptance: only intersecting marks are selected, modifier composition is
+  deterministic, empty/clear behavior is explicit, and the same set appears in
+  the table, inspector, mark overlay and View Data.
+- Then: drill once an explicit dimension hierarchy exists; persisted selection
+  remains an explicit action, not automatic.
 
 ## Protected context
 

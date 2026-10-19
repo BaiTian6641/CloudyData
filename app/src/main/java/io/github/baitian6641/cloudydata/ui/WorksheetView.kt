@@ -111,6 +111,7 @@ fun WorksheetView(
     onKeepSelection: (Set<Int>) -> Unit,
     onExcludeSelection: (Set<Int>) -> Unit,
     onClearFilter: () -> Unit,
+    onViewData: (Set<Int>) -> Unit,
     onChartSettings: () -> Unit,
     onRetry: () -> Unit,
     onCancelQuery: () -> Unit,
@@ -227,7 +228,7 @@ fun WorksheetView(
                     )
                 }
             }
-            if (ready != null && sheet.filter == null && sheet.rowFieldId != null &&
+            if (ready != null && sheet.rowFieldId != null &&
                 selectedRowIndices.isNotEmpty()
             ) {
                 Row(
@@ -244,8 +245,11 @@ fun WorksheetView(
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.textSecondary,
                     )
-                    CloudyTextButton("Keep only", { onKeepSelection(selectedRowIndices) })
-                    CloudyTextButton("Exclude", { onExcludeSelection(selectedRowIndices) })
+                    if (sheet.filter == null) {
+                        CloudyTextButton("Keep only", { onKeepSelection(selectedRowIndices) })
+                        CloudyTextButton("Exclude", { onExcludeSelection(selectedRowIndices) })
+                    }
+                    CloudyTextButton("View data", { onViewData(selectedRowIndices) })
                 }
             }
             sheet.filter?.let { filter ->

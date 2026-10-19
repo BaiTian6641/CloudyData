@@ -162,6 +162,80 @@ class TableSelectionTest {
         }
     }
 
+    @Test
+    fun viewDataShowsUnderlyingSourceRowsForTheSelectedMark() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val id = createTableWorkbook(instrumentation)
+        launchWorkbook(instrumentation, id).use {
+            instrumentation.waitForIdleSync()
+            val device = UiDevice.getInstance(instrumentation)
+            assertNotNull(
+                "result table did not render",
+                device.wait(Until.findObject(By.text("2026-01-01")), 8_000),
+            )
+            clickWithMeta(instrumentation, "2026-01-01", 0)
+            assertNotNull(device.wait(Until.findObject(By.text("1 selected mark")), 4_000))
+
+            val viewDataButton = device.wait(Until.findObject(By.text("View data")), 2_000)
+            assertNotNull("View data action is missing", viewDataButton)
+            viewDataButton!!.click()
+            assertNotNull(
+                "underlying rows did not load",
+                device.wait(Until.findObject(By.text("2 source rows.")), 8_000),
+            )
+            assertNotNull("underlying North row is missing", device.findObject(By.text("North")))
+            assertNotNull("underlying South row is missing", device.findObject(By.text("South")))
+
+            device.findObject(By.text("Close")).click()
+            assertNull(
+                "View data dialog did not close",
+                device.wait(Until.findObject(By.text("2 source rows.")), 2_000),
+            )
+        }
+    }
+
+    @Test
+    fun switchingSheetTabQueriesTheVisibleWorksheet() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val id = createTableWorkbook(instrumentation)
+        val app = instrumentation.targetContext.applicationContext as CloudyDataApp
+        val loaded = app.workbookStore.load(id)
+        val snapshot = loaded.snapshot!!
+        val series = snapshot.columns.first { it.name == "series" }
+        val first = loaded.activeWorksheet!!
+        val second = first.copy(
+            id = UUID.randomUUID().toString(),
+            name = "Sheet 2",
+            rowFieldId = series.id,
+        )
+        app.workbookStore.save(
+            loaded.copy(
+                worksheets = listOf(first, second),
+                activeWorksheetId = first.id,
+            ),
+        )
+        launchWorkbook(instrumentation, id).use {
+            instrumentation.waitForIdleSync()
+            val device = UiDevice.getInstance(instrumentation)
+            assertNotNull(
+                "first worksheet did not render",
+                device.wait(Until.findObject(By.text("2026-01-01")), 8_000),
+            )
+            val tab = device.wait(Until.findObject(By.text("Sheet 2")), 2_000)
+            assertNotNull("Sheet 2 tab is missing", tab)
+            tab!!.click()
+            assertNotNull(
+                "visible worksheet did not requery to series rows",
+                device.wait(Until.findObject(By.text("North")), 8_000),
+            )
+            assertNotNull("South row is missing after tab switch", device.findObject(By.text("South")))
+            assertNull(
+                "old worksheet result remained under the new tab",
+                device.findObject(By.text("2026-01-01")),
+            )
+        }
+    }
+
     private fun createTableWorkbook(instrumentation: android.app.Instrumentation): String {
         val app = instrumentation.targetContext.applicationContext as CloudyDataApp
         val fixture = File(instrumentation.targetContext.cacheDir, "table-selection-${UUID.randomUUID()}.csv")

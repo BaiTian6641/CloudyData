@@ -136,6 +136,12 @@ fun WorkbookScreen(
             selectedTab = document?.activeWorksheetId
         }
     }
+    LaunchedEffect(document?.activeWorksheetId) {
+        val active = document?.activeWorksheetId
+        if (selectedTab != DATA_TAB && active != null && selectedTab != active) {
+            selectedTab = active
+        }
+    }
     LaunchedEffect(state.import) {
         if (state.import is ImportUiState.Idle && snapshot != null) {
             selectedTab = document?.activeWorksheetId
@@ -235,7 +241,10 @@ fun WorkbookScreen(
             WorkbookTabStrip(
                 document = document,
                 activeTab = resolvedTab,
-                onSelect = { selectedTab = it },
+                onSelect = { tab ->
+                    selectedTab = tab
+                    if (tab != DATA_TAB) viewModel.selectWorksheet(tab)
+                },
                 onAddSheet = viewModel::addWorksheet,
             )
             CloudyDivider()
@@ -325,6 +334,7 @@ fun WorkbookScreen(
                                     viewModel.clearFilter()
                                     rowSelection = RowSelectionState()
                                 },
+                                onViewData = { rows -> viewModel.openViewData(sheet.id, rows) },
                                 onChartSettings = { showChartSettings = true },
                                 onRetry = viewModel::retryQuery,
                                 onCancelQuery = viewModel::cancelQuery,
@@ -498,6 +508,10 @@ fun WorkbookScreen(
             onDiscard = viewModel::discardImport,
             onClose = viewModel::dismissImportError,
         )
+    }
+
+    if (state.viewData !is ViewDataState.Idle) {
+        ViewDataDialog(state = state.viewData, onDismiss = viewModel::closeViewData)
     }
 }
 

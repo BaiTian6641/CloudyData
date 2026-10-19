@@ -10,6 +10,8 @@ import io.github.baitian6641.cloudydata.data.PendingCsvImport
 import io.github.baitian6641.cloudydata.data.WorkbookStore
 import io.github.baitian6641.cloudydata.engine.DuckDbEngine
 import io.github.baitian6641.cloudydata.engine.MarkFilters
+import io.github.baitian6641.cloudydata.engine.UnderlyingRowsQuery
+import io.github.baitian6641.cloudydata.engine.UnderlyingRowsResult
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
@@ -53,6 +55,13 @@ sealed interface SaveState {
     data class Failed(val message: String) : SaveState
 }
 
+sealed interface ViewDataState {
+    data object Idle : ViewDataState
+    data object Loading : ViewDataState
+    data class Ready(val result: UnderlyingRowsResult) : ViewDataState
+    data class Failed(val message: String) : ViewDataState
+}
+
 data class WorkbookUiState(
     val loading: Boolean = true,
     val document: WorkbookDocument? = null,
@@ -60,6 +69,7 @@ data class WorkbookUiState(
     val query: WorksheetQueryState = WorksheetQueryState.Empty,
     val import: ImportUiState = ImportUiState.Idle,
     val save: SaveState = SaveState.Saved,
+    val viewData: ViewDataState = ViewDataState.Idle,
     val engineVersion: String? = null,
     val engineError: String? = null,
     val recoveryMessages: List<String> = emptyList(),
@@ -80,6 +90,7 @@ class WorkbookViewModel(
     private var engine: DuckDbEngine? = null
     private var history: WorkbookHistory? = null
     private var queryGeneration = 0L
+    private var viewDataGeneration = 0L
 
     init {
         viewModelScope.launch {
@@ -288,21 +299,23 @@ class WorkbookViewModel(
     }
 
     fun undo() {
+        val previousActive = _state.value.document?.activeWorksheetId
         val restored = history?.undo() ?: return
         _state.update {
             it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
         }
         persistLatest()
-        refreshQuery()
+        refreshQuery(keepPrevious = restored.activeWorksheetId == previousActive)
     }
 
     fun redo() {
+        val previousActive = _state.value.document?.activeWorksheetId
         val restored = history?.redo() ?: return
         _state.update {
             it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
         }
         persistLatest()
-        refreshQuery()
+        refreshQuery(keepPrevious = restored.activeWorksheetId == previousActive)
     }
 
     fun retryQuery() {
@@ -315,6 +328,79 @@ class WorkbookViewModel(
         engine?.interrupt()
         val previous = (_state.value.query as? WorksheetQueryState.Loading)?.previous
         _state.update { it.copy(query = WorksheetQueryState.Cancelled(previous)) }
+    }
+
+    fun openViewData(sheetId: String, selectedRows: Set<Int>) {
+        val document = _state.value.document ?: return
+        val snapshot = document.snapshot ?: return
+        val sheet = document.worksheets.firstOrNull { it.id == sheetId } ?: return
+        // The accepted result belongs to the active sheet; refuse a tab/query
+        // mismatch rather than reading another sheet's rows under this UI.
+        if (document.activeWorksheetId != sheetId) return
+        if (selectedRows.isEmpty()) return
+        val accepted = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
+        if (accepted.rowField?.id != sheet.rowFieldId) return
+        val expectedSeriesId = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+            sheet.seriesFieldId
+        } else {
+            null
+        }
+        if (accepted.seriesField?.id != expectedSeriesId) return
+        val generation = ++viewDataGeneration
+        _state.update { it.copy(viewData = ViewDataState.Loading) }
+        viewModelScope.launch {
+            val engineError = ensureEngine()
+            if (engineError != null) {
+                if (generation == viewDataGeneration) {
+                    _state.update { it.copy(viewData = ViewDataState.Failed(engineError)) }
+                }
+                return@launch
+            }
+            val activeEngine = engine ?: return@launch
+            val path = runCatching {
+                store.resolveInsideWorkbook(document.id, snapshot.snapshotFile).absolutePath
+            }.getOrElse { error ->
+                if (generation == viewDataGeneration) {
+                    _state.update {
+                        it.copy(viewData = ViewDataState.Failed(error.message ?: "Snapshot path is invalid."))
+                    }
+                }
+                return@launch
+            }
+            val result = runCatching {
+                withContext(Dispatchers.IO) {
+                    UnderlyingRowsQuery(activeEngine).query(
+                        snapshot = snapshot,
+                        sheet = sheet,
+                        worksheetResult = accepted,
+                        selectedRows = selectedRows,
+                        snapshotPath = path,
+                    )
+                }
+            }
+            if (generation != viewDataGeneration) return@launch
+            _state.update {
+                it.copy(
+                    viewData = result.fold(
+                        onSuccess = { rows ->
+                            if (rows == null) {
+                                ViewDataState.Failed("The selected marks do not identify source rows.")
+                            } else {
+                                ViewDataState.Ready(rows)
+                            }
+                        },
+                        onFailure = { error ->
+                            ViewDataState.Failed(error.message ?: "Could not read the underlying rows.")
+                        },
+                    ),
+                )
+            }
+        }
+    }
+
+    fun closeViewData() {
+        viewDataGeneration++
+        _state.update { it.copy(viewData = ViewDataState.Idle) }
     }
 
     fun saveNow() {
@@ -341,7 +427,7 @@ class WorkbookViewModel(
         mutateDocument {
             it.copy(worksheets = it.worksheets + sheet, activeWorksheetId = sheet.id)
         }
-        refreshQuery()
+        refreshQuery(keepPrevious = false)
     }
 
     fun selectWorksheet(id: String) {
@@ -352,7 +438,7 @@ class WorkbookViewModel(
             ?: document.copy(activeWorksheetId = id)
         _state.update { it.copy(document = updated) }
         persistLatest()
-        refreshQuery()
+        refreshQuery(keepPrevious = false)
     }
 
     private fun autoPlace(snapshotColumns: List<FieldDef>) {
@@ -425,7 +511,11 @@ class WorkbookViewModel(
         }
     }
 
-    private fun refreshQuery() {
+    private fun refreshQuery(keepPrevious: Boolean = true) {
+        if (_state.value.viewData !is ViewDataState.Idle) {
+            viewDataGeneration++
+            _state.update { it.copy(viewData = ViewDataState.Idle) }
+        }
         val document = _state.value.document
         val snapshot = document?.snapshot
         val sheet = document?.activeWorksheet
@@ -434,10 +524,14 @@ class WorkbookViewModel(
             return
         }
         val generation = ++queryGeneration
-        val previous = (_state.value.query as? WorksheetQueryState.Ready)?.result
-            ?: (_state.value.query as? WorksheetQueryState.Loading)?.previous
-            ?: (_state.value.query as? WorksheetQueryState.Failed)?.previous
-            ?: (_state.value.query as? WorksheetQueryState.Cancelled)?.previous
+        val previous = if (keepPrevious) {
+            (_state.value.query as? WorksheetQueryState.Ready)?.result
+                ?: (_state.value.query as? WorksheetQueryState.Loading)?.previous
+                ?: (_state.value.query as? WorksheetQueryState.Failed)?.previous
+                ?: (_state.value.query as? WorksheetQueryState.Cancelled)?.previous
+        } else {
+            null
+        }
         _state.update { it.copy(query = WorksheetQueryState.Loading(previous)) }
         viewModelScope.launch {
             val engineError = ensureEngine()

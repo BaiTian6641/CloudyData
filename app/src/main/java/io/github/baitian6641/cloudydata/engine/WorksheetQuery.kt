@@ -16,9 +16,10 @@ data class WorksheetResult(
     val sql: String,
     val sourceNote: String? = null,
 ) {
-    /** A series column exists only in the multi-series line query shape. */
+    /** A series column exists only in the time-series query shape. */
     val hasSeriesColumn: Boolean
-        get() = rowField != null && measureField != null && seriesField != null
+        get() = (markType == MarkType.LINE || markType == MarkType.AREA) &&
+            rowField != null && measureField != null && seriesField != null
 
     /** Index of the numeric value column in [result]. */
     val valueColumnIndex: Int

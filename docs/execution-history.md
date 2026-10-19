@@ -354,3 +354,25 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   lint 0 errors/5 warnings. Corrected the keep/exclude evidence label from
   CUST14 to CUST13 and refreshed the capability catalog. View Data is the next
   ready CUST13 slice; drill still waits on an explicit hierarchy.
+
+## 2026-10-19 — CUST13 View Data
+
+- Added `UnderlyingRowsQuery`: selected aggregate marks are converted back to
+  exact `(row[, series])` identities and queried read-only against the Parquet
+  snapshot with the active worksheet filter. Results are capped at 200 rows with
+  an explicit 201-row truncation probe; the snapshot and worksheet are untouched.
+- Added generation-guarded `ViewDataState`, a native accessible source-row dialog
+  with exact-value content descriptions, and a `View data` action available for
+  selected marks even while a keep/exclude filter is active.
+- Fixed the pre-existing sheet-tab mismatch: tab selection now commits
+  `activeWorksheetId`, requeries the visible sheet and clears the previous
+  sheet's accepted result while loading. `View data` also rejects a sheet/result
+  mismatch, and `hasSeriesColumn` is mark-type aware so stale series fields on
+  TABLE/BAR sheets cannot corrupt identities.
+- Product evidence: January aggregated to 11 in the worksheet; View Data showed
+  exactly North Jan 1 = 10 and South Jan 1 = 1 while the footer stayed at 6 source
+  rows. Filter-context query test returns only South's three rows under
+  EXCLUDE-North; a line-pair test resolves only North Jan 1.
+- `ViewDataQueryTest` 3/3; combined emulator suite 32/32; JVM 32/32; lint 0
+  errors/5 warnings. Lasso/rectangle is the next ready selection slice; drill
+  still waits on an explicit hierarchy.
