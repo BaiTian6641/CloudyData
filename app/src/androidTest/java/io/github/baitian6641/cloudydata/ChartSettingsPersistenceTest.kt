@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import org.json.JSONObject
 import java.io.File
@@ -93,6 +94,7 @@ class ChartSettingsPersistenceTest {
                             hiddenSeries = setOf("North", "South"),
                             showMarkers = true,
                             markerSize = 6.0,
+                            markerShape = MarkerShape.DIAMOND,
                         ),
                     ),
                 ),
@@ -139,6 +141,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(setOf("North", "South"), reopenedSheet.chart.hiddenSeries)
         assertEquals(true, reopenedSheet.chart.showMarkers)
         assertEquals(6.0, reopenedSheet.chart.markerSize!!, 0.0)
+        assertEquals(MarkerShape.DIAMOND, reopenedSheet.chart.markerShape)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -171,6 +174,14 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             false,
             ChartOptions.fromJson(JSONObject().put("showMarkers", false)).showMarkers,
+        )
+        assertEquals(
+            MarkerShape.CIRCLE,
+            ChartOptions.fromJson(JSONObject().put("markerShape", "NOT_A_SHAPE")).markerShape,
+        )
+        assertEquals(
+            MarkerShape.SQUARE,
+            ChartOptions.fromJson(JSONObject().put("markerShape", "SQUARE")).markerShape,
         )
     }
 

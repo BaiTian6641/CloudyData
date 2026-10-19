@@ -141,7 +141,7 @@ customization:
     area: Marks and lines
     controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]
     status: partial
-    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Marker shape, line style/interpolation, opacity/border/stacking and device visual qualification remain pending.
+    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Persisted marker shape (circle/square/diamond/cross) exists. Line style/interpolation, opacity/border/stacking and device visual qualification remain pending.
   - id: CUST09
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]

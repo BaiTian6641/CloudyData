@@ -19,6 +19,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -198,6 +199,7 @@ class ChartSpecBuilderTest {
         )
         assertEquals(false, spec.markers.show)
         assertEquals(6.0, spec.markers.size!!, 0.0)
+        assertEquals(MarkerShape.CIRCLE, spec.markers.shape)
         assertEquals(
             true,
             ChartSpecBuilder.build(
@@ -205,6 +207,14 @@ class ChartSpecBuilderTest {
                 ChartOptions(),
                 "derived",
             ).markers.show,
+        )
+        assertEquals(
+            MarkerShape.DIAMOND,
+            ChartSpecBuilder.build(
+                "markers", 0, lineResult(),
+                ChartOptions(markerShape = MarkerShape.DIAMOND),
+                "derived",
+            ).markers.shape,
         )
         for (invalid in listOf(1.0, 13.0, Double.NaN)) {
             try {

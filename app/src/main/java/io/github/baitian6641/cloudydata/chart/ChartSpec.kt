@@ -4,6 +4,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -61,6 +62,7 @@ data class LegendSpec(
 data class MarkerSpec(
     val show: Boolean = true,
     val size: Double? = null,
+    val shape: MarkerShape = MarkerShape.CIRCLE,
 )
 
 data class LabelSpec(

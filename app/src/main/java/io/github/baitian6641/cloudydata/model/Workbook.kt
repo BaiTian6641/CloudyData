@@ -32,6 +32,8 @@ enum class GridlineContrast { DEFAULT, STRONG }
 
 enum class LabelCollisionPolicy { SHOW_ALL, HIDE_CROWDED }
 
+enum class MarkerShape { CIRCLE, SQUARE, DIAMOND, CROSS }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT }
 
 data class ChartOptions(
@@ -64,6 +66,7 @@ data class ChartOptions(
     val lineWidth: Double? = null,
     val showMarkers: Boolean = true,
     val markerSize: Double? = null,
+    val markerShape: MarkerShape = MarkerShape.CIRCLE,
     val labelPosition: LabelPosition = LabelPosition.TOP,
     val units: String? = null,
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
@@ -111,6 +114,7 @@ data class ChartOptions(
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
         .put("showMarkers", showMarkers)
         .put("markerSize", markerSize ?: JSONObject.NULL)
+        .put("markerShape", markerShape.name)
         .put("labelPosition", labelPosition.name)
         .put("units", units ?: JSONObject.NULL)
         .put("axisTitleAnchor", axisTitleAnchor.name)
@@ -224,6 +228,9 @@ data class ChartOptions(
                     it.isFinite() && it in MIN_MARKER_SIZE..MAX_MARKER_SIZE
                 }
             },
+            markerShape = runCatching {
+                MarkerShape.valueOf(json.optString("markerShape", MarkerShape.CIRCLE.name))
+            }.getOrDefault(MarkerShape.CIRCLE),
             labelPosition = runCatching {
                 LabelPosition.valueOf(json.optString("labelPosition", LabelPosition.TOP.name))
             }.getOrDefault(LabelPosition.TOP),

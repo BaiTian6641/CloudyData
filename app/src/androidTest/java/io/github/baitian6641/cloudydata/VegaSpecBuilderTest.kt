@@ -18,6 +18,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.renderer.VegaSpecBuilder
 import org.json.JSONArray
 import org.json.JSONObject
@@ -343,6 +344,81 @@ class VegaSpecBuilderTest {
             sized.getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("size").getDouble("value"),
             0.0,
+        )
+        val defaultSymbol = childMarks(ChartOptions()).first { it.getString("type") == "symbol" }
+        assertFalse(
+            "default circle must not emit a shape override",
+            defaultSymbol.getJSONObject("encode").getJSONObject("enter").has("shape"),
+        )
+        val diamond = childMarks(ChartOptions(markerShape = MarkerShape.DIAMOND))
+            .first { it.getString("type") == "symbol" }
+        assertEquals(
+            "diamond",
+            diamond.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("shape").getString("value"),
+        )
+        val defaultJson = VegaSpecBuilder.build(
+            ChartSpecBuilder.build("markers", 0, result, ChartOptions(), "derived"),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        assertFalse(
+            "default circle legend must not emit a symbolType override",
+            defaultJson.getJSONArray("legends").getJSONObject(0).has("symbolType"),
+        )
+        val diamondJson = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "markers", 0, result,
+                ChartOptions(markerShape = MarkerShape.DIAMOND),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        assertEquals("diamond", diamondJson.getJSONArray("legends").getJSONObject(0).getString("symbolType"))
+    }
+
+    @Test
+    fun areaMarkerShapeIsLowered() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val json = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "area-shape", 0, result,
+                ChartOptions(markerShape = MarkerShape.CROSS),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        val marks = json.getJSONArray("marks")
+        val areaSymbol = (0 until marks.length())
+            .map { marks.getJSONObject(it) }
+            .first { it.getString("type") == "symbol" && !it.has("name") }
+        assertEquals(
+            "cross",
+            areaSymbol.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("shape").getString("value"),
         )
     }
 

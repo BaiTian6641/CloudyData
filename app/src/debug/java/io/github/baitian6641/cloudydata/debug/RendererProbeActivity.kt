@@ -70,6 +70,14 @@ class RendererProbeActivity : Activity() {
     private val requestHideMarkers: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_HIDE_MARKERS, false)
     }
+    private val requestMarkerShape by lazy {
+        runCatching {
+            io.github.baitian6641.cloudydata.model.MarkerShape.valueOf(
+                intent.getStringExtra(EXTRA_MARKER_SHAPE)
+                    ?: io.github.baitian6641.cloudydata.model.MarkerShape.CIRCLE.name,
+            )
+        }.getOrDefault(io.github.baitian6641.cloudydata.model.MarkerShape.CIRCLE)
+    }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -90,7 +98,10 @@ class RendererProbeActivity : Activity() {
             transparentExportBackground = requestTransparentExport,
             gridlines = baseSpec.gridlines.copy(minor = requestMinorGrid),
             hiddenSeries = requestedHiddenSeries?.let(::setOf) ?: emptySet(),
-            markers = baseSpec.markers.copy(show = baseSpec.markers.show && !requestHideMarkers),
+            markers = baseSpec.markers.copy(
+                show = baseSpec.markers.show && !requestHideMarkers,
+                shape = requestMarkerShape,
+            ),
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -733,6 +744,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_MINOR_GRID = "minor_grid"
         const val EXTRA_HIDDEN_SERIES = "hidden_series"
         const val EXTRA_HIDE_MARKERS = "hide_markers"
+        const val EXTRA_MARKER_SHAPE = "marker_shape"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

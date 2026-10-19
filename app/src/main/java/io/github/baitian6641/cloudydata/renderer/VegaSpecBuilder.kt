@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -239,6 +240,13 @@ object VegaSpecBuilder {
     private fun markerArea(spec: ChartSpec, default: Double): Double =
         spec.markers.size?.let { it * it } ?: default
 
+    private fun markerShapeName(shape: MarkerShape): String = when (shape) {
+        MarkerShape.CIRCLE -> "circle"
+        MarkerShape.SQUARE -> "square"
+        MarkerShape.DIAMOND -> "diamond"
+        MarkerShape.CROSS -> "cross"
+    }
+
     private fun escapeVegaString(value: String): String =
         value.replace("\\", "\\\\")
             .replace("\n", "\\n")
@@ -441,23 +449,21 @@ object VegaSpecBuilder {
                 ),
         )
         if (spec.pointCount <= 200 && spec.markers.show) {
+            val markerEnter = JSONObject()
+                .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                .put("fill", JSONObject().put("scale", "color").put("field", "series"))
+                .put("size", JSONObject().put("value", markerArea(spec, 30.0)))
+                .put("defined", JSONObject().put("signal", "isValid(datum.y)"))
+            if (spec.markers.shape != MarkerShape.CIRCLE) {
+                markerEnter.put("shape", JSONObject().put("value", markerShapeName(spec.markers.shape)))
+            }
             childMarks.put(
                 JSONObject()
                     .put("type", "symbol")
                     .put("from", JSONObject().put("data", "series"))
                     .put("clip", true)
-                    .put(
-                        "encode",
-                        JSONObject().put(
-                            "enter",
-                            JSONObject()
-                                .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                                .put("y", JSONObject().put("scale", "y").put("field", "y"))
-                                .put("fill", JSONObject().put("scale", "color").put("field", "series"))
-                                .put("size", JSONObject().put("value", markerArea(spec, 30.0)))
-                                .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
-                        ),
-                    ),
+                    .put("encode", JSONObject().put("enter", markerEnter)),
             )
         }
         if (spec.labels.show) {
@@ -563,7 +569,15 @@ object VegaSpecBuilder {
                     .put("y", JSONObject().put("scale", "y").put("field", "y"))
                     .put("fill", JSONObject().put("scale", "color").put("field", "series"))
                     .put("size", JSONObject().put("value", markerArea(spec, 24.0)))
-                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)"))
+                    .apply {
+                        if (spec.markers.shape != MarkerShape.CIRCLE) {
+                            put(
+                                "shape",
+                                JSONObject().put("value", markerShapeName(spec.markers.shape)),
+                            )
+                        }
+                    },
             ),
         )
 
@@ -731,6 +745,9 @@ object VegaSpecBuilder {
             .put("titleFontSize", 11)
         legend.put("direction", direction)
         legend.put("labelLimit", LegendLayout.labelLimitDp(widthDp))
+        if (spec.markers.shape != MarkerShape.CIRCLE) {
+            legend.put("symbolType", markerShapeName(spec.markers.shape))
+        }
         if (direction == "horizontal") {
             legend.put(
                 "columns",

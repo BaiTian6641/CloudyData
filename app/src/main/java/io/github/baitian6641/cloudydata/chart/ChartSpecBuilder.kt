@@ -263,7 +263,7 @@ object ChartSpecBuilder {
                 position = LabelPosition.TOP,
                 collisionPolicy = options.labelCollisionPolicy,
             ),
-            markers = MarkerSpec(options.showMarkers, options.markerSize),
+            markers = MarkerSpec(options.showMarkers, options.markerSize, options.markerShape),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,

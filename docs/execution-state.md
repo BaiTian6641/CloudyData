@@ -115,6 +115,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust05-interactive-legend.md`
 - `qualification/evidence/2026-10-19-cust05-persist-hidden-series.md`
 - `qualification/evidence/2026-10-19-cust03-marker-options.md`
+- `qualification/evidence/2026-10-19-cust03-marker-shape.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -205,10 +206,10 @@ unless stated otherwise.
 - **Line width.** Persisted 1–8 width is carried through Line/Area specs and
   renderer strokes with 2.0/1.5 defaults. JVM validation passes; instrumentation
   and device thickness/legend/export checks were not run.
-- **Marker visibility/size.** Persisted show/hide and 2–12 px diameter apply to
-  Line/Area symbols under the existing 200-point cap; lines/hit targets/selection
-  remain. Emulator spec/persistence/render checks pass; shape/visual checks were
-  not run.
+- **Marker visibility/size/shape.** Persisted show/hide, 2–12 px diameter and
+  circle/square/diamond/cross shape apply to Line/Area symbols under the
+  existing 200-point cap; lines/hit targets/selection remain. Emulator
+  spec/persistence/render checks pass; visual checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -297,21 +298,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted marker shape.**
+**CUST03 persisted line interpolation.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: marker
-  visibility/size, Vega symbol lowering, typed chart options, emulator probes.
-- Files: `ChartOptions`, `ChartSpec`/`MarkerSpec`, builders,
-  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded persisted marker-shape choice (circle/default, square,
-  diamond, cross) for Line/Area markers, preserving default output and the
-  200-point visibility rules.
-- Acceptance: default remains unchanged; shape persists and affects only point
-  symbols, not lines/data/selection; invalid values fall back to default.
-  Emulator spec/render checks required; visual review remains unverified.
+- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line lowering,
+  marker controls, typed chart options and emulator render probes.
+- Files: `ChartOptions`, `ChartSpec`/LineSpec, builders, `VegaSpecBuilder`,
+  `ChartSettingsDialog`, tests/evidence.
+- Action: add a bounded persisted interpolation choice (linear default, step,
+  monotone/smooth) for Line marks, preserving default output and observed-point
+  ordering/gaps.
+- Acceptance: default output unchanged; interpolation affects only line joining,
+  not data, gaps, markers, selection or accessible summaries; invalid values fall
+  back to linear. Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding, X-label, border, gridline, percent
-  and marker visuals wait for an authorized visual session.
+  labels, line width, titles, units, padding, X-label, border, gridline, percent,
+  marker and interpolation visuals wait for an authorized visual session.
 
 ## Protected context
 

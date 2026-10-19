@@ -640,6 +640,18 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   unchanged. Invalid/missing sizes fall back to automatic; UI validation is
   gated by the marker toggle.
 - Emulator-first validation: JVM 60/60; manual emulator-5580 API36 x86_64
-  instrumentation VegaSpecBuilderTest 11/11, ChartSettingsPersistenceTest 10/10,
+  instrumentation VegaSpecBuilderTest 12/12, ChartSettingsPersistenceTest 10/10,
   hidden-marker render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
   visual/shape/export checks absent.
+
+## 2026-10-19 — CUST03 marker shape
+
+- Added persisted marker shape (circle/square/diamond/cross) for Line/Area point
+  symbols. Circle remains the default and emits no Vega shape override, so
+  default output is unchanged. Lines, hit targets, selected overlays, data and
+  selection are untouched; invalid JSON falls back to circle.
+- Emulator-first validation: JVM 60/60; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 12/12, ChartSettingsPersistenceTest 10/10,
+  circle/diamond render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
+  exported circle/diamond SVGs are asserted different; visual/TalkBack checks
+  remain absent.

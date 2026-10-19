@@ -43,6 +43,7 @@ import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
+import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 
@@ -84,6 +85,8 @@ fun ChartSettingsDialog(
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
     var showMarkers by remember { mutableStateOf(current.showMarkers) }
     var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
+    var markerShape by remember { mutableStateOf(current.markerShape) }
+    var markerShapeExpanded by remember { mutableStateOf(false) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
@@ -480,6 +483,45 @@ fun ChartSettingsDialog(
                             supportingText = "${ChartOptions.MIN_MARKER_SIZE}–${ChartOptions.MAX_MARKER_SIZE} px diameter, blank for mark default.",
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text(
+                                    "Marker shape",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = colors.textPrimary,
+                                )
+                                Text(
+                                    "Circle, square, diamond or cross.",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colors.textSecondary,
+                                )
+                            }
+                            TextButton(onClick = { markerShapeExpanded = true }) {
+                                Text(
+                                    markerShape.name.lowercase().replaceFirstChar { it.uppercase() },
+                                    color = colors.primary,
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = markerShapeExpanded,
+                                onDismissRequest = { markerShapeExpanded = false },
+                            ) {
+                                MarkerShape.entries.forEach { shape ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                shape.name.lowercase()
+                                                    .replaceFirstChar { it.uppercase() },
+                                            )
+                                        },
+                                        onClick = {
+                                            markerShape = shape
+                                            markerShapeExpanded = false
+                                        },
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
                 ChartToggleRow(
@@ -658,6 +700,7 @@ fun ChartSettingsDialog(
                             },
                             showMarkers = showMarkers,
                             markerSize = if (showMarkers) parsedMarkerSize else null,
+                            markerShape = markerShape,
                         ),
                     )
                 },

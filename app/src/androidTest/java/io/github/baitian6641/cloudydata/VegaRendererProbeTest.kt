@@ -348,6 +348,34 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun markerShapeRendersWithoutChangingMarkCounts() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(shape: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_MARKER_SHAPE, shape)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("marker-shape render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("marker-shape export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val circle = render("CIRCLE")
+        val diamond = render("DIAMOND")
+        assertEquals(circle.result.markCount, diamond.result.markCount)
+        assertEquals(circle.result.sceneMarks["line"], diamond.result.sceneMarks["line"])
+        assertEquals(circle.result.sceneMarks["symbol"], diamond.result.sceneMarks["symbol"])
+        assertFalse("circle and diamond exported identical SVG", circle.svg == diamond.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext
