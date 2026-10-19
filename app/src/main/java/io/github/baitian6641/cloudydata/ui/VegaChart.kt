@@ -59,6 +59,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.chart.categoryPaletteColors
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.SelectionMode
@@ -765,9 +766,18 @@ fun VegaChartCard(
     }
 }
 
+private fun summaryValue(spec: ChartSpec, value: Double?): String =
+    if (spec.barStackMode == BarStackMode.PERCENT_STACKED && value != null && value.isFinite()) {
+        String.format(java.util.Locale.US, "%.${spec.valueDecimals ?: 1}f%%", value * 100.0)
+    } else {
+        displayValue(value)
+    }
+
 private fun accessibleSummary(spec: ChartSpec): String {
     val parts = spec.series.take(4).joinToString("; ") { series ->
-        val points = series.points.take(4).joinToString(", ") { point -> "${point.x} = ${displayValue(point.y)}" }
+        val points = series.points.take(4).joinToString(", ") { point ->
+            "${point.x} = ${summaryValue(spec, point.y)}"
+        }
         "${series.key}: $points"
     }
     val suffix = if (spec.series.size > 4) " plus ${spec.series.size - 4} more series" else ""

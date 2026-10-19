@@ -594,6 +594,31 @@ class VegaRendererProbeTest {
     }
 
 
+
+    @Test
+    fun percentStackedBarRendersPercentLabelsAndFullStack() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "percentbar")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("percent-bar render did not complete", result != null)
+            assertNull("percent-bar render failed: ${result!!.error}", result.error)
+            assertEquals(2, result.markCount)
+            assertTrue("percent-bar rect missing", (result.sceneMarks["rect"] ?: 0) > 0)
+            assertTrue(
+                "60% segment label missing: ${result.svgTexts}",
+                result.svgTexts.any { it == "60.0%" },
+            )
+            assertTrue(
+                "40% segment label missing: ${result.svgTexts}",
+                result.svgTexts.any { it == "40.0%" },
+            )
+        }
+    }
+
     @Test
     fun groupedAndStackedColorSeriesBarsRenderDistinctGeometry() {
         data class Rendered(val result: RendererProbeState.Result, val svg: String)

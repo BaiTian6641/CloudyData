@@ -983,6 +983,8 @@ fun ChartSettingsDialog(
                                         "Stacking requires Sum or Count"
                                     barStackMode == BarStackMode.STACKED ->
                                         "Series segments stack to the category total"
+                                    barStackMode == BarStackMode.PERCENT_STACKED ->
+                                        "Series segments stack to 100% per category"
                                     else -> "Series bars sit side by side"
                                 },
                                 style = MaterialTheme.typography.labelSmall,
@@ -998,7 +1000,11 @@ fun ChartSettingsDialog(
                                     sheet.aggregation == Aggregation.COUNT),
                         ) {
                             Text(
-                                if (barStackMode == BarStackMode.STACKED) "Stacked" else "Grouped",
+                                when (barStackMode) {
+                                    BarStackMode.STACKED -> "Stacked"
+                                    BarStackMode.PERCENT_STACKED -> "100%"
+                                    else -> "Grouped"
+                                },
                                 color = colors.primary,
                             )
                         }
@@ -1017,6 +1023,13 @@ fun ChartSettingsDialog(
                                 text = { Text("Stacked") },
                                 onClick = {
                                     barStackMode = BarStackMode.STACKED
+                                    barStackModeExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("100% stacked") },
+                                onClick = {
+                                    barStackMode = BarStackMode.PERCENT_STACKED
                                     barStackModeExpanded = false
                                 },
                             )

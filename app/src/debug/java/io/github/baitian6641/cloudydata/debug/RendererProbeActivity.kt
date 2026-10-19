@@ -616,6 +616,7 @@ class RendererProbeActivity : Activity() {
             truncated = false,
         )
         "groupedbar", "stackedbar" -> barSeriesSpec(probeKind == "stackedbar")
+        "percentbar" -> percentBarSpec()
         "palette" -> ChartSpec(
             chartId = "probe-palette",
             revision = 1,
@@ -828,6 +829,39 @@ class RendererProbeActivity : Activity() {
         )
     }
 
+    private fun percentBarSpec(): ChartSpec = ChartSpec(
+        chartId = "probe-percent-bar",
+        revision = 1,
+        kind = ChartKind.BAR,
+        title = "100% stacked sales",
+        xAxis = AxisSpec("Category"),
+        yAxis = AxisSpec("Share", min = 0.0, max = 1.0),
+        gridlines = GridlineSpec(true),
+        legend = LegendSpec(true, LegendPosition.BOTTOM, "Series"),
+        labels = LabelSpec(true),
+        sourceNote = "Source: probe fixture",
+        series = listOf(
+            ChartSeries(
+                "North",
+                listOf(
+                    ChartPoint("Jan", 0, "North", 0.6, "60", true, 0, stackBase = 0.0, seriesIndex = 0),
+                ),
+            ),
+            ChartSeries(
+                "South",
+                listOf(
+                    ChartPoint("Jan", 0, "South", 0.4, "40", true, 1, stackBase = 0.6, seriesIndex = 1),
+                ),
+            ),
+        ),
+        rowCount = 2,
+        truncated = false,
+        valueDecimals = 1,
+        valueFormat = io.github.baitian6641.cloudydata.model.ValueDisplayFormat.PERCENT,
+        barStackMode = BarStackMode.PERCENT_STACKED,
+        barHasSeries = true,
+    )
+
     private fun barSeriesSpec(stacked: Boolean): ChartSpec {
         fun point(x: String, order: Int, series: String, y: Double, base: Double, row: Int) =
             ChartPoint(
@@ -879,6 +913,7 @@ class RendererProbeActivity : Activity() {
     private fun accessibleSummary(): String = when (probeKind) {
         "groupedbar" -> "Accessible summary: North and South across Jan, Feb, Mar."
         "stackedbar" -> "Accessible summary: stacked North and South across Jan, Feb, Mar."
+        "percentbar" -> "Accessible summary: Jan is 60% North and 40% South."
         "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."

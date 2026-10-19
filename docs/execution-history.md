@@ -830,3 +830,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   underlying row); VegaSpecBuilderTest 19/19; VegaRendererProbeTest 39/39;
   ChartSettingsPersistenceTest 12/12. Googlebook untouched; visual, 100%,
   horizontal and native color-series fallback remain open.
+
+## 2026-10-19 — CUST08 100% stacked bars
+
+- Added persisted PERCENT_STACKED. The builder rejects negative or non-positive
+  category totals, normalizes each positive Sum/Count category to 1.0, assigns
+  cumulative bases and keeps raw aggregates in exactY/table/PDF. The chart axis
+  is forced to 0–1 with percent formatting without mutating the saved display
+  format. Non-additive aggregations reset the mode to grouped.
+- Validation: JVM 72/72; VegaSpecBuilderTest 19/19; VegaRendererProbeTest 40/40
+  (60.0%/40.0% labels); BarChartQueryTest 1/1; ChartSettingsPersistenceTest
+  12/12; lint 0 errors/5 warnings. Googlebook untouched; visual/negative and
+  native fallback remain open.

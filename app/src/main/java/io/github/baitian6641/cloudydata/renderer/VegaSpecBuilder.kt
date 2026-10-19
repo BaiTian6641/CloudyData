@@ -424,7 +424,8 @@ object VegaSpecBuilder {
 
     private fun isStackedBar(spec: ChartSpec): Boolean =
         spec.barHasSeries &&
-            spec.barStackMode == BarStackMode.STACKED &&
+            (spec.barStackMode == BarStackMode.STACKED ||
+                spec.barStackMode == BarStackMode.PERCENT_STACKED) &&
             spec.series.size > 1
 
     private fun barXEncode(spec: ChartSpec): JSONObject {

@@ -1293,6 +1293,22 @@ class VegaSpecBuilderTest {
             .single { it.getString("series") == "South" && it.getString("x") == "Feb" }
         assertEquals(20.0, southFebruary.getDouble("stackBase"), 0.0)
         assertEquals(22.0, southFebruary.getDouble("displayY"), 0.0)
+
+        val percentSpec = ChartSpecBuilder.build(
+            "bar-percent", 0, result,
+            ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+            "derived",
+        )
+        val percent = VegaSpecBuilder.build(
+            percentSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals(
+            "PERCENT_STACKED",
+            percent.getJSONObject("usermeta").getString("barStackMode"),
+        )
+        assertEquals(",.1%", percent.getJSONArray("axes").getJSONObject(1).getString("format"))
+        assertEquals(1.0, percent.getJSONArray("scales").getJSONObject(1)
+            .getJSONArray("domain").getDouble(1), 0.0)
     }
 
 

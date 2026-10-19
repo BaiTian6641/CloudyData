@@ -44,7 +44,7 @@ enum class TableDividerContrast { DEFAULT, STRONG }
 
 enum class CategoryPalette { CLOUDY, COLORBLIND }
 
-enum class BarStackMode { NONE, STACKED }
+enum class BarStackMode { NONE, STACKED, PERCENT_STACKED }
 
 enum class ValueDisplayFormat { NUMBER, PERCENT, CURRENCY }
 

@@ -178,8 +178,8 @@ than zeros, absent members are not synthesized, and a truncated result is never
 drawn as a partial line. The renderer is still a bounded offline Vega surface;
 the native summary/table remains the exact-value and accessible equivalent.
 
-The following remain absent or partial: 100%/horizontal bar variants, other
-chart families, rich subtitle/caption formatting and
+The following remain absent or partial: horizontal bar variants, other chart
+families, rich subtitle/caption formatting and
 typed unit models, tick/grid styling, custom/interactive legend behavior, line
 style/interpolation controls, temporal x scales, layers/dual axes, reference
 analysis, annotations, tooltip field controls, chart selection, export and the

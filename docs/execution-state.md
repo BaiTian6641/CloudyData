@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `8047a85`; the color-series bar change is in the
-next local commit. `main` tracks `origin/main` at the pushed palette baseline.
+**Source:** commits through `75f9e02`; the 100%-stacked change is in the next
+local commit. `main` tracks `origin/main` at the pushed grouped/stacked baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **70/70**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **72/72**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
   decimal-format, chart-border, crowded-label, palette and bar-stacking cases.
@@ -259,12 +259,13 @@ unless stated otherwise.
   shared resolver, first-appearance cycle mapping, persisted selection, token
   generator/contrast checks, simulated CVD distance tests and a two-theme
   eight-series emulator render; visual/user CVD checks were not run.
-- **Color-series bars.** A persisted Color field produces side-by-side grouped
-  bars or stacked segments with exact builder-owned stack bases, a complete
-  automatic Y domain, a category legend and source-row/filter identity. Stacked
-  mode is gated to Sum/Count and legend controls persist. Query, spec, renderer
-  and persistence checks pass; the native fallback refuses the shape and
-  visual/100%/negative checks were not run.
+- **Color-series bars.** A persisted Color field produces grouped, stacked or
+  100%-stacked segments with builder-owned bases, a complete automatic Y domain,
+  a category legend and source-row/filter identity. Stacking is gated to
+  Sum/Count; 100% mode normalizes positive totals, uses a 0–1 percent axis and
+  rejects negative/zero-total categories. Query, spec, renderer and persistence
+  checks pass; the native fallback refuses the shape and visual/negative checks
+  were not run.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -361,20 +362,19 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST08 100% stacked bars.**
+**CUST08 horizontal color-series bars.**
 
-- Requirements/stage: CUST08, CH01, F34, S06/S11. Prerequisites: grouped/stacked
-  color-series query, persisted stack mode, typed stack bases, exact values and
-  percent formatting.
-- Files: `BarStackMode`, `ChartSpecBuilder` normalization, Vega bar lowering,
-  chart settings, tests.
-- Action: add a persisted 100% mode that divides positive segments by each
-  category's positive total, forces a 0–1 axis with percent formatting, and keeps
-  exact values in the result/table/inspector.
-- Acceptance: totals equal 1.0 within floating tolerance per category; zero or
-  negative totals are diagnosed rather than divided; grouped/default output is
-  unchanged; invalid modes fall back to NONE. Emulator query/spec/render checks
-  required; visual review unverified.
+- Requirements/stage: CUST08, CH01, F34, S06/S11. Prerequisites: grouped/stacked/
+  100% vertical bars, typed spec axes, labels/legend/selection and exact values.
+- Files: `ChartSpec` orientation, `ChartSpecBuilder`, Vega bar lowering, chart
+  settings, probe fixtures and tests.
+- Action: add a persisted vertical/horizontal orientation. Horizontal bars swap
+  the band and value axes, place labels/legend/selection on the new geometry,
+  and preserve grouped/stacked/100% behavior.
+- Acceptance: vertical default output unchanged; horizontal zero baseline,
+  category order, stack sums, percent totals and source-row selection stay
+  coherent; invalid orientation falls back to vertical. Emulator query/spec/
+  render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, palette, interpolation, dash, opacity, legend-sample, bar and table

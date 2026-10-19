@@ -323,6 +323,11 @@ class ChartSettingsPersistenceTest {
             ChartOptions.fromJson(JSONObject().put("barStackMode", "NOT_A_MODE"))
                 .barStackMode,
         )
+        val percentStacked = ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED)
+        assertEquals(
+            BarStackMode.PERCENT_STACKED,
+            ChartOptions.fromJson(percentStacked.toJson()).barStackMode,
+        )
         assertEquals(
             CategoryPalette.COLORBLIND,
             ChartOptions.fromJson(JSONObject().put("categoryPalette", "COLORBLIND"))

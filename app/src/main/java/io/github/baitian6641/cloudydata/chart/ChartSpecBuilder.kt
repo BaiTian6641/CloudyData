@@ -6,6 +6,7 @@ import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.valueAsDouble
 import java.util.LinkedHashMap
 
@@ -65,7 +66,9 @@ object ChartSpecBuilder {
         }
         val rows = result.result.rows
         val hasSeries = result.hasSeriesColumn
-        if (hasSeries && options.barStackMode == BarStackMode.STACKED &&
+        val wantsStacking = options.barStackMode == BarStackMode.STACKED ||
+            options.barStackMode == BarStackMode.PERCENT_STACKED
+        if (hasSeries && wantsStacking &&
             result.aggregation != Aggregation.SUM && result.aggregation != Aggregation.COUNT
         ) {
             throw ChartSpecException("Stacked bars require Sum or Count aggregation.")
@@ -96,11 +99,19 @@ object ChartSpecBuilder {
             units,
         )
         val barHasSeries = hasSeries && series.any { it.points.isNotEmpty() }
-        val stackMode = if (barHasSeries && options.barStackMode == BarStackMode.STACKED) {
-            BarStackMode.STACKED
+        val stackMode = if (barHasSeries && wantsStacking) {
+            options.barStackMode
         } else {
             BarStackMode.NONE
         }
+        val percentStacked = stackMode == BarStackMode.PERCENT_STACKED
+        val baseAxis = axisFor(options, yTitle)
+        val yAxis = if (percentStacked) {
+            baseAxis.copy(min = 0.0, max = 1.0, zero = true, log = false)
+        } else {
+            baseAxis
+        }
+        val format = if (percentStacked) ValueDisplayFormat.PERCENT else options.valueFormat
         return ChartSpec(
             chartId = chartId,
             revision = revision,
@@ -114,7 +125,7 @@ object ChartSpecBuilder {
                 labelValues = AxisLabelSelection.thin(xLabels, options.xLabelCount),
                 titleAnchor = options.axisTitleAnchor,
             ),
-            yAxis = axisFor(options, yTitle),
+            yAxis = yAxis,
             gridlines = GridlineSpec(
                 options.showGridlines,
                 options.gridlineWidth,
@@ -144,7 +155,7 @@ object ChartSpecBuilder {
             truncated = result.result.truncated,
             units = units,
             valueDecimals = options.valueDecimals,
-            valueFormat = options.valueFormat,
+            valueFormat = format,
             currencyCode = options.currencyCode,
             chartBorder = options.showChartBorder,
             transparentExportBackground = options.transparentExportBackground,
@@ -201,7 +212,30 @@ object ChartSpecBuilder {
                 sourceRowIndex = rowIndex,
             )
         }
-        val stacked = options.barStackMode == BarStackMode.STACKED
+        val percentStacked = options.barStackMode == BarStackMode.PERCENT_STACKED
+        val stacked = percentStacked || options.barStackMode == BarStackMode.STACKED
+        if (percentStacked) {
+            byCategory.forEach { (category, segments) ->
+                if (segments.values.any { it.y != null && it.y < 0.0 }) {
+                    throw ChartSpecException(
+                        "100% stacked bars require non-negative values; category $category has a negative value.",
+                    )
+                }
+            }
+        }
+        val totals = if (percentStacked) {
+            byCategory.mapValues { (category, segments) ->
+                segments.values.sumOf { it.y ?: 0.0 }.also { total ->
+                    if (total <= 0.0) {
+                        throw ChartSpecException(
+                            "100% stacked bars need a positive category total; $category has $total.",
+                        )
+                    }
+                }
+            }
+        } else {
+            emptyMap()
+        }
         val points = seriesOrder.keys.associateWith { mutableListOf<ChartPoint>() }
         for ((x, categoryOrder) in xOrder) {
             var positiveBase = 0.0
@@ -209,9 +243,15 @@ object ChartSpecBuilder {
             val category = byCategory[x].orEmpty()
             for ((series, seriesIndex) in seriesOrder) {
                 val segment = category[series] ?: continue
+                val rawY = segment.y
+                val plotY = if (percentStacked && rawY != null) {
+                    rawY / totals.getValue(x)
+                } else {
+                    rawY
+                }
                 val base = when {
-                    !stacked || segment.y == null -> 0.0
-                    segment.y >= 0.0 -> positiveBase
+                    !stacked || plotY == null -> 0.0
+                    plotY >= 0.0 -> positiveBase
                     else -> negativeBase
                 }
                 points.getValue(series).add(
@@ -219,19 +259,19 @@ object ChartSpecBuilder {
                         x = x,
                         xOrder = categoryOrder,
                         series = series,
-                        y = segment.y,
+                        y = plotY,
                         exactY = segment.exactY,
-                        defined = segment.y != null,
+                        defined = plotY != null,
                         sourceRowIndex = segment.sourceRowIndex,
                         stackBase = base,
                         seriesIndex = seriesIndex,
                     ),
                 )
-                if (stacked && segment.y != null) {
-                    if (segment.y >= 0.0) {
-                        positiveBase += segment.y
+                if (stacked && plotY != null) {
+                    if (plotY >= 0.0) {
+                        positiveBase += plotY
                     } else {
-                        negativeBase += segment.y
+                        negativeBase += plotY
                     }
                 }
             }

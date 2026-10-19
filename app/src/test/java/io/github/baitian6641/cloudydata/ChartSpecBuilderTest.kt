@@ -1125,6 +1125,75 @@ class ChartSpecBuilderTest {
         }
     }
 
+
+    @Test
+    fun percentStackedBarNormalizesEachCategoryToOneAndForcesPercentAxis() {
+        val result = barSeriesResult()
+        val spec = ChartSpecBuilder.build(
+            "bar-percent", 0, result,
+            ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+            "derived",
+        )
+        assertEquals(BarStackMode.PERCENT_STACKED, spec.barStackMode)
+        assertEquals(ValueDisplayFormat.PERCENT, spec.valueFormat)
+        assertEquals(0.0, spec.yAxis.min!!, 0.0)
+        assertEquals(1.0, spec.yAxis.max!!, 0.0)
+        val points = spec.series.flatMap { it.points }
+        val totals = points.groupBy { it.x }.mapValues { (_, category) ->
+            category.sumOf { it.y ?: 0.0 }
+        }
+        totals.forEach { (category, total) ->
+            assertEquals("category $category does not total 100%", 1.0, total, 0.000001)
+        }
+        val feb = points.filter { it.x == "Feb" }.sortedBy { it.seriesIndex }
+        assertEquals(20.0 / 22.0, feb[0].y!!, 0.000001)
+        assertEquals(2.0 / 22.0, feb[1].y!!, 0.000001)
+        assertEquals(20.0 / 22.0, feb[1].stackBase!!, 0.000001)
+        assertEquals(20L.toString(), feb[0].exactY)
+        assertEquals(2L.toString(), feb[1].exactY)
+    }
+
+    @Test
+    fun percentStackedBarRejectsNegativeOrZeroCategoryTotals() {
+        val negative = barSeriesResult().copy(
+            result = barSeriesResult().result.copy(
+                rows = listOf(
+                    listOf<Any?>("Jan", "North", 5L),
+                    listOf<Any?>("Jan", "South", -1L),
+                ),
+            ),
+        )
+        try {
+            ChartSpecBuilder.build(
+                "bar-percent-negative", 0, negative,
+                ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+                "derived",
+            )
+            throw AssertionError("negative 100% stack was accepted")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("non-negative"))
+        }
+
+        val zero = barSeriesResult().copy(
+            result = barSeriesResult().result.copy(
+                rows = listOf(
+                    listOf<Any?>("Jan", "North", 0L),
+                    listOf<Any?>("Jan", "South", 0L),
+                ),
+            ),
+        )
+        try {
+            ChartSpecBuilder.build(
+                "bar-percent-zero", 0, zero,
+                ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+                "derived",
+            )
+            throw AssertionError("zero-total 100% stack was accepted")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("positive category total"))
+        }
+    }
+
     private fun barSeriesResult(): WorksheetResult = WorksheetResult(
         result = EngineResult(
             columns = listOf(
