@@ -806,12 +806,14 @@ object VegaSpecBuilder {
                 legend.put("symbolType", "stroke")
                     .put("symbolSize", 200)
                     .put("symbolStrokeWidth", spec.lineWidth ?: 2.0)
+                spec.lineOpacity?.let { legend.put("symbolOpacity", it) }
                 lineDashArray(spec, 2.0)?.let { legend.put("symbolDash", it) }
             }
             LegendMarkSample.MARKER -> {
                 if (spec.markers.shape != MarkerShape.CIRCLE) {
                     legend.put("symbolType", markerShapeName(spec.markers.shape))
                 }
+                spec.markers.opacity?.let { legend.put("symbolOpacity", it) }
             }
         }
         if (direction == "horizontal") {

@@ -727,3 +727,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   instrumentation ChartSettingsPersistenceTest 11/11, TableSelectionTest 5/5,
   VegaSpecBuilderTest 17/17; lint 0 errors/5 warnings. Googlebook untouched;
   no Compose/table visual or screenshot check.
+
+## 2026-10-19 — CUST05 legend swatch opacity parity
+
+- Legend marker/line sample swatches now mirror markerOpacity/lineOpacity via
+  Vega symbolOpacity; defaults omit the property and plot/data/selection remain
+  unchanged.
+- Emulator-first validation: JVM 64/64; emulator-5580 API36 x86_64
+  VegaSpecBuilderTest 17/17, ChartSettingsPersistenceTest 11/11, legend render
+  1/1; lint 0 errors/5 warnings. Googlebook untouched; visual contrast/export
+  checks absent.

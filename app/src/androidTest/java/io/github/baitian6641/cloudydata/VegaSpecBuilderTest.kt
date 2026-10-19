@@ -331,7 +331,14 @@ class VegaSpecBuilderTest {
             )
             return json.getJSONArray("legends").getJSONObject(0)
         }
-        assertFalse("default marker legend must omit symbolType", legend(ChartOptions()).has("symbolType"))
+        val defaultLegend = legend(ChartOptions())
+        assertFalse("default marker legend must omit symbolType", defaultLegend.has("symbolType"))
+        assertFalse("default legend must omit symbolOpacity", defaultLegend.has("symbolOpacity"))
+        assertEquals(
+            0.5,
+            legend(ChartOptions(markerOpacity = 0.5)).getDouble("symbolOpacity"),
+            0.0,
+        )
         val line = legend(
             ChartOptions(
                 legendMarkSample = LegendMarkSample.LINE,
@@ -352,6 +359,13 @@ class VegaSpecBuilderTest {
         assertEquals(8.0, dottedWide.getDouble("symbolStrokeWidth"), 0.0)
         assertEquals(1.0, dottedWide.getJSONArray("symbolDash").getDouble(0), 0.0)
         assertEquals(11.0, dottedWide.getJSONArray("symbolDash").getDouble(1), 0.0)
+        val translucentLine = legend(
+            ChartOptions(
+                legendMarkSample = LegendMarkSample.LINE,
+                lineOpacity = 0.4,
+            ),
+        )
+        assertEquals(0.4, translucentLine.getDouble("symbolOpacity"), 0.0)
         val diamond = legend(ChartOptions(markerShape = MarkerShape.DIAMOND))
         assertEquals("diamond", diamond.getString("symbolType"))
     }
