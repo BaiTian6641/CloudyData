@@ -449,3 +449,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 42/42; lint 0 errors/5 warnings; debug/test APKs compile. Vega JSON and
   persistence instrumentation compile but were not run; no device thickness,
   legend-sample or export evidence.
+
+## 2026-10-19 — CUST06 robust bar label position
+
+- Reintroduced persisted TOP/INSIDE_END position for Bar labels only. Vega uses
+  Y-scale-derived signals for sign/reversal-aware offsets, a non-zero/short-bar
+  threshold, symmetric plot-bound clamping via `cloudyPlotHeight`, and an
+  on-fill foreground/inverse halo keyed to the final anchor actually over the
+  bar. Labels are non-interactive so bar click/hover still works; Line/Area
+  labels remain TOP.
+- Headless bundled Vega 6.4.0 checks covered positive, negative, zero, 1 px and
+  reversed bars; labels stayed in view and active inside labels remained inside
+  tall bars.
+- JVM 43/43; lint 0 errors/5 warnings; debug/test APKs compile. Instrumentation
+  and device contrast/clipping/export visuals were not run.

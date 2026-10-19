@@ -36,6 +36,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTextField
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -59,6 +60,8 @@ fun ChartSettingsDialog(
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
+    var labelPosition by remember { mutableStateOf(current.labelPosition) }
+    var labelPositionExpanded by remember { mutableStateOf(false) }
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
@@ -184,10 +187,51 @@ fun ChartSettingsDialog(
                 )
                 ChartToggleRow(
                     title = "Value labels",
-                    description = "Show values above bars or line points. The exact table remains available.",
+                    description = "Show values on bars or line points. Bar labels can sit above or inside; the exact table remains available.",
                     checked = showValueLabels,
                     onCheckedChange = { showValueLabels = it },
                 )
+                if (sheet.markType == MarkType.BAR) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Label position", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                            Text(
+                                if (labelPosition == LabelPosition.TOP) {
+                                    "Above the bar"
+                                } else {
+                                    "Inside the bar endpoint; falls back when there is no room"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { labelPositionExpanded = true }) {
+                            Text(
+                                if (labelPosition == LabelPosition.TOP) "Top" else "Inside end",
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = labelPositionExpanded,
+                            onDismissRequest = { labelPositionExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Top / above") },
+                                onClick = {
+                                    labelPosition = LabelPosition.TOP
+                                    labelPositionExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Inside end") },
+                                onClick = {
+                                    labelPosition = LabelPosition.INSIDE_END
+                                    labelPositionExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
                 CloudyTextField(
                     value = labelFontSize,
                     onValueChange = { labelFontSize = it },
@@ -354,6 +398,11 @@ fun ChartSettingsDialog(
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
                             labelFontSize = parsedLabelFontSize,
+                            labelPosition = if (sheet.markType == MarkType.BAR) {
+                                labelPosition
+                            } else {
+                                LabelPosition.TOP
+                            },
                             lineWidth = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
                                 parsedLineWidth
                             } else {

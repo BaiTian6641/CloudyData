@@ -3,6 +3,7 @@ package io.github.baitian6641.cloudydata.chart
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.valueAsDouble
 import java.util.LinkedHashMap
@@ -109,6 +110,7 @@ object ChartSpecBuilder {
             labels = LabelSpec(
                 show = options.showValueLabels,
                 fontSize = options.labelFontSize,
+                position = options.labelPosition,
             ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
@@ -224,6 +226,7 @@ object ChartSpecBuilder {
             labels = LabelSpec(
                 show = options.showValueLabels,
                 fontSize = options.labelFontSize,
+                position = LabelPosition.TOP,
             ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),

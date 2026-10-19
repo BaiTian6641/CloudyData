@@ -10,6 +10,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
@@ -283,6 +284,7 @@ class VegaSpecBuilderTest {
                 yTickCount = 6,
                 showValueLabels = true,
                 labelFontSize = 14,
+                labelPosition = LabelPosition.INSIDE_END,
             ),
             "derived",
         )
@@ -294,10 +296,15 @@ class VegaSpecBuilderTest {
         assertEquals("rect", bar.getString("type"))
         assertTrue(bar.has("clip"))
         val label = json.getJSONArray("marks").getJSONObject(1)
+        assertFalse("labels must not intercept bar hit testing", label.getBoolean("interactive"))
         val labelEncode = label.getJSONObject("encode").getJSONObject("enter")
         assertEquals(14, labelEncode.getJSONObject("fontSize").getInt("value"))
-        assertEquals("bottom", labelEncode.getJSONObject("baseline").getString("value"))
-        assertEquals(-6, labelEncode.getJSONObject("y").getJSONObject("offset").getInt("value"))
+        assertTrue(labelEncode.getJSONObject("baseline").getString("signal").contains("cloudyPlotHeight"))
+        assertTrue(
+            labelEncode.getJSONObject("y").getJSONObject("offset")
+                .getString("signal").contains("datum.y !== 0"),
+        )
+        assertTrue(labelEncode.getJSONObject("fill").getString("signal").contains("#FFFFFF"))
         val selectedBar = (0 until json.getJSONArray("marks").length())
             .map { json.getJSONArray("marks").getJSONObject(it) }
             .firstOrNull { it.optString("name") == "cloudySelectedBar" }

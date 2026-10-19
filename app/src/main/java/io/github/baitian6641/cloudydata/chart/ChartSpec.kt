@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata.chart
 
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
@@ -49,6 +50,7 @@ data class LegendSpec(
 data class LabelSpec(
     val show: Boolean,
     val fontSize: Int? = null,
+    val position: LabelPosition = LabelPosition.TOP,
 )
 
 data class TooltipSpec(val show: Boolean)

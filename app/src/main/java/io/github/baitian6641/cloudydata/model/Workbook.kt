@@ -24,6 +24,8 @@ enum class LegendPosition { BOTTOM, RIGHT }
 
 enum class LegendOrientation { VERTICAL, HORIZONTAL }
 
+enum class LabelPosition { TOP, INSIDE_END }
+
 data class ChartOptions(
     val title: String? = null,
     val showGridlines: Boolean = true,
@@ -43,6 +45,7 @@ data class ChartOptions(
     val yTickCount: Int? = null,
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
+    val labelPosition: LabelPosition = LabelPosition.TOP,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -64,6 +67,7 @@ data class ChartOptions(
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
+        .put("labelPosition", labelPosition.name)
 
     companion object {
         const val VERSION = 1
@@ -111,6 +115,9 @@ data class ChartOptions(
             } else {
                 json.optDouble("lineWidth").takeIf { it.isFinite() && it in MIN_LINE_WIDTH..MAX_LINE_WIDTH }
             },
+            labelPosition = runCatching {
+                LabelPosition.valueOf(json.optString("labelPosition", LabelPosition.TOP.name))
+            }.getOrDefault(LabelPosition.TOP),
         )
     }
 }

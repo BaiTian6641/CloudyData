@@ -10,6 +10,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
@@ -360,6 +361,36 @@ class ChartSpecBuilderTest {
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("2 and 50"))
         }
+    }
+
+    @Test
+    fun barLabelPositionIsCarriedAndLineForcesTop() {
+        val barResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(listOf<Any?>("A", 10L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val barSpec = ChartSpecBuilder.build(
+            "bar", 0, barResult,
+            ChartOptions(showValueLabels = true, labelPosition = LabelPosition.INSIDE_END),
+            "derived",
+        )
+        assertEquals(LabelPosition.INSIDE_END, barSpec.labels.position)
+
+        val lineSpec = ChartSpecBuilder.build(
+            "line", 0, lineResult(),
+            ChartOptions(showValueLabels = true, labelPosition = LabelPosition.INSIDE_END),
+            "derived",
+        )
+        assertEquals(LabelPosition.TOP, lineSpec.labels.position)
     }
 
     @Test

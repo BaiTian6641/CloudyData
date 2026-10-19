@@ -4,6 +4,7 @@ import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
+import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
 import org.json.JSONObject
@@ -102,7 +103,7 @@ object VegaSpecBuilder {
         when (spec.kind) {
             ChartKind.BAR -> {
                 marks.put(barMark())
-                if (spec.labels.show) marks.put(barLabelMark(spec, textColor))
+                if (spec.labels.show) marks.put(barLabelMark(spec, textColor, dark))
                 marks.put(barSelectionMark(textColor))
             }
             ChartKind.LINE -> {
@@ -142,6 +143,7 @@ object VegaSpecBuilder {
             .put(
                 "signals",
                 JSONArray()
+                    .put(JSONObject().put("name", "cloudyPlotHeight").put("value", heightDp))
                     .put(selectionSignal())
                     .put(hoverSignal()),
             )
@@ -210,26 +212,62 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun barLabelMark(spec: ChartSpec, textColor: String): JSONObject =
-        JSONObject()
-        .put("type", "text")
-        .put("from", JSONObject().put("data", "table"))
-        .put("clip", true)
-        .put(
-            "encode",
-            JSONObject()
-                .put(
+    private fun barLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
+        val fontSize = spec.labels.fontSize ?: 11
+        val endpoint = "scale('y', datum.y)"
+        val delta = "(scale('y', 0) - $endpoint)"
+        val active = "(isValid(datum.y) && datum.y !== 0 && abs($delta) >= ${fontSize + 18})"
+        val inside = if (spec.labels.position == LabelPosition.INSIDE_END) "($active)" else "false"
+        val rawOffset = "($inside) ? (($delta) >= 0 ? 6 : -6) : (($delta) >= 0 ? -6 : 6)"
+        val minY = fontSize + 2
+        val maxY = "cloudyPlotHeight - ${fontSize + 2}"
+        val clamped = "(($endpoint + ($rawOffset) < $minY) ? ($minY - $endpoint) : " +
+            "(($endpoint + ($rawOffset) > $maxY) ? ($maxY - $endpoint) : ($rawOffset)))"
+        val baseline = "($clamped) > 0 ? 'top' : 'bottom'"
+        val anchor = "($endpoint + ($clamped))"
+        val barTop = "min(scale('y', 0), $endpoint)"
+        val barBottom = "max(scale('y', 0), $endpoint)"
+        val overBar = "(datum.y !== 0 && $anchor >= $barTop && $anchor <= $barBottom)"
+        val insideFill = if (dark) "#101A1D" else "#FFFFFF"
+        val insideStroke = if (dark) "#FFFFFF" else "#101A1D"
+        return JSONObject()
+            .put("type", "text")
+            .put("from", JSONObject().put("data", "table"))
+            .put("clip", true)
+            .put("interactive", false)
+            .put(
+                "encode",
+                JSONObject().put(
                     "enter",
                     JSONObject()
                         .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                        .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -6))
+                        .put(
+                            "y",
+                            JSONObject().put("scale", "y").put("field", "y")
+                                .put("offset", JSONObject().put("signal", clamped)),
+                        )
                         .put("text", JSONObject().put("field", "y"))
                         .put("align", JSONObject().put("value", "center"))
-                        .put("baseline", JSONObject().put("value", "bottom"))
-                        .put("fill", JSONObject().put("value", textColor))
-                        .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 11)),
+                        .put("baseline", JSONObject().put("signal", baseline))
+                        .put(
+                            "fill",
+                            JSONObject().put(
+                                "signal",
+                                "($overBar) ? '$insideFill' : '$textColor'",
+                            ),
+                        )
+                        .put(
+                            "stroke",
+                            JSONObject().put(
+                                "signal",
+                                "($overBar) ? '$insideStroke' : 'transparent'",
+                            ),
+                        )
+                        .put("strokeWidth", JSONObject().put("signal", "($overBar) ? 1.25 : 0"))
+                        .put("fontSize", JSONObject().put("value", fontSize)),
                 ),
-        )
+            )
+    }
 
     private fun lineGroup(spec: ChartSpec, textColor: String): JSONObject {
         val childMarks = JSONArray()
@@ -277,6 +315,7 @@ object VegaSpecBuilder {
                     .put("type", "text")
                     .put("from", JSONObject().put("data", "series"))
                     .put("clip", true)
+                    .put("interactive", false)
                     .put(
                         "encode",
                         JSONObject().put(
@@ -376,6 +415,7 @@ object VegaSpecBuilder {
         .put("type", "text")
         .put("from", JSONObject().put("data", "table"))
         .put("clip", true)
+        .put("interactive", false)
         .put(
             "encode",
             JSONObject().put(
