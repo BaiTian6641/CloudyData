@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `5f37191`; the table-divider change is in the next
-local commit. `main` tracks `origin/main` at the pushed marker-opacity baseline.
+**Source:** commits through `cf54026`. `main` tracks `origin/main`; the table
+divider stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
