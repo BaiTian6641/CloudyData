@@ -131,7 +131,7 @@ customization:
     area: Labels
     controls: [show_hide, field, position, font, format, collision_policy]
     status: partial
-    note: Numeric value labels can be shown above bars; field selection/position/font/format/collision policy are absent.
+    note: Numeric value labels can be shown for Bar/Line/Area with a persisted 8–16 font size. Position, field selection, number formatting, collision policy and device visual qualification remain absent; inside-end placement needs sign/reversal/short-bar/contrast rules before it can be exposed.
   - id: CUST07
     area: Color and palette
     controls: [categorical, sequential, diverging, custom, opacity, stable_category_key, missing_pattern]

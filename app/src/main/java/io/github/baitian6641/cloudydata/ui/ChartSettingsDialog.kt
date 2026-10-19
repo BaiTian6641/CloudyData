@@ -58,6 +58,7 @@ fun ChartSettingsDialog(
     var yTickCount by remember { mutableStateOf(current.yTickCount?.toString().orEmpty()) }
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
+    var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
@@ -71,6 +72,7 @@ fun ChartSettingsDialog(
     val parsedMin = yMin.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
         yMax.trim().isNotEmpty() && (parsedMax == null || !parsedMax.isFinite()) -> "Y maximum must be a finite number."
@@ -80,6 +82,10 @@ fun ChartSettingsDialog(
         yTickCount.trim().isNotEmpty() && (parsedYTickCount == null ||
             parsedYTickCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
             "Y tick count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
+        labelFontSize.trim().isNotEmpty() && (parsedLabelFontSize == null ||
+            parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
+            "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
+                "${ChartOptions.MAX_LABEL_FONT_SIZE}."
         else -> null
     }
 
@@ -176,6 +182,13 @@ fun ChartSettingsDialog(
                     description = "Show values above bars or line points. The exact table remains available.",
                     checked = showValueLabels,
                     onCheckedChange = { showValueLabels = it },
+                )
+                CloudyTextField(
+                    value = labelFontSize,
+                    onValueChange = { labelFontSize = it },
+                    label = "Label font size",
+                    supportingText = "${ChartOptions.MIN_LABEL_FONT_SIZE}–${ChartOptions.MAX_LABEL_FONT_SIZE}, blank for mark default.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
                 ChartToggleRow(
                     title = "Tooltip",
@@ -326,6 +339,7 @@ fun ChartSettingsDialog(
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
+                            labelFontSize = parsedLabelFontSize,
                         ),
                     )
                 },

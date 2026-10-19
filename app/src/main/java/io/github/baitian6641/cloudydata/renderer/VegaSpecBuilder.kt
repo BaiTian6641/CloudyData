@@ -102,7 +102,7 @@ object VegaSpecBuilder {
         when (spec.kind) {
             ChartKind.BAR -> {
                 marks.put(barMark())
-                if (spec.labels.show) marks.put(barLabelMark(textColor))
+                if (spec.labels.show) marks.put(barLabelMark(spec, textColor))
                 marks.put(barSelectionMark(textColor))
             }
             ChartKind.LINE -> {
@@ -119,7 +119,7 @@ object VegaSpecBuilder {
                 marks.put(areaMark())
                 marks.put(areaLineMark())
                 if (spec.pointCount <= 200) marks.put(areaSymbolMark())
-                if (spec.labels.show) marks.put(areaLabelMark(textColor))
+                if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
                 marks.put(selectedPointMark(textColor))
                 marks.put(lineHitMark())
             }
@@ -210,7 +210,8 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun barLabelMark(textColor: String): JSONObject = JSONObject()
+    private fun barLabelMark(spec: ChartSpec, textColor: String): JSONObject =
+        JSONObject()
         .put("type", "text")
         .put("from", JSONObject().put("data", "table"))
         .put("clip", true)
@@ -226,7 +227,7 @@ object VegaSpecBuilder {
                         .put("align", JSONObject().put("value", "center"))
                         .put("baseline", JSONObject().put("value", "bottom"))
                         .put("fill", JSONObject().put("value", textColor))
-                        .put("fontSize", JSONObject().put("value", 11)),
+                        .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 11)),
                 ),
         )
 
@@ -287,7 +288,7 @@ object VegaSpecBuilder {
                                 .put("align", JSONObject().put("value", "center"))
                                 .put("baseline", JSONObject().put("value", "bottom"))
                                 .put("fill", JSONObject().put("value", textColor))
-                                .put("fontSize", JSONObject().put("value", 10))
+                                .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 10))
                                 .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
                         ),
                     ),
@@ -370,7 +371,8 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun areaLabelMark(textColor: String): JSONObject = JSONObject()
+    private fun areaLabelMark(spec: ChartSpec, textColor: String): JSONObject =
+        JSONObject()
         .put("type", "text")
         .put("from", JSONObject().put("data", "table"))
         .put("clip", true)
@@ -385,7 +387,7 @@ object VegaSpecBuilder {
                     .put("align", JSONObject().put("value", "center"))
                     .put("baseline", JSONObject().put("value", "bottom"))
                     .put("fill", JSONObject().put("value", textColor))
-                    .put("fontSize", JSONObject().put("value", 10))
+                    .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 10))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )

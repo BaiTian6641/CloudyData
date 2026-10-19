@@ -68,6 +68,7 @@ class ChartSettingsPersistenceTest {
                             legendOrientation = LegendOrientation.VERTICAL,
                             showTooltip = false,
                             yTickCount = 6,
+                            labelFontSize = 14,
                         ),
                     ),
                 ),
@@ -91,6 +92,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(LegendOrientation.VERTICAL, reopenedSheet.chart.legendOrientation)
         assertFalse(reopenedSheet.chart.showTooltip)
         assertEquals(6, reopenedSheet.chart.yTickCount)
+        assertEquals(14, reopenedSheet.chart.labelFontSize)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

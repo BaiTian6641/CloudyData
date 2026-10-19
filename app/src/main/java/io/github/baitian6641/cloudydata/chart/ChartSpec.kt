@@ -46,7 +46,10 @@ data class LegendSpec(
     val orientation: LegendOrientation? = null,
 )
 
-data class LabelSpec(val show: Boolean)
+data class LabelSpec(
+    val show: Boolean,
+    val fontSize: Int? = null,
+)
 
 data class TooltipSpec(val show: Boolean)
 

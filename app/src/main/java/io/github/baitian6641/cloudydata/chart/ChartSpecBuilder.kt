@@ -106,7 +106,10 @@ object ChartSpecBuilder {
             // Category color legends are intentionally deferred until grouped
             // bar semantics exist; the legend control applies to line series.
             legend = LegendSpec(false, options.legendPosition, null),
-            labels = LabelSpec(options.showValueLabels),
+            labels = LabelSpec(
+                show = options.showValueLabels,
+                fontSize = options.labelFontSize,
+            ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = listOf(ChartSeries("Values", points)),
@@ -211,7 +214,10 @@ object ChartSpecBuilder {
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
                 orientation = options.legendOrientation,
             ),
-            labels = LabelSpec(options.showValueLabels),
+            labels = LabelSpec(
+                show = options.showValueLabels,
+                fontSize = options.labelFontSize,
+            ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
@@ -248,6 +254,14 @@ object ChartSpecBuilder {
         ) {
             throw ChartSpecException(
                 "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
+        }
+        if (options.labelFontSize != null &&
+            options.labelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE
+        ) {
+            throw ChartSpecException(
+                "Label font size must be between ${ChartOptions.MIN_LABEL_FONT_SIZE} and " +
+                    "${ChartOptions.MAX_LABEL_FONT_SIZE}.",
             )
         }
     }

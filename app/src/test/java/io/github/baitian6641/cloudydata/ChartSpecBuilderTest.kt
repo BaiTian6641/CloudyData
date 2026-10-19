@@ -360,6 +360,30 @@ class ChartSpecBuilderTest {
         }
     }
 
+    @Test
+    fun labelFontSizeIsCarriedAndValidated() {
+        val spec = ChartSpecBuilder.build(
+            "labels", 3, lineResult(),
+            ChartOptions(
+                showValueLabels = true,
+                labelFontSize = 14,
+            ),
+            "derived",
+        )
+        assertEquals(14, spec.labels.fontSize)
+
+        try {
+            ChartSpecBuilder.build(
+                "labels", 3, lineResult(),
+                ChartOptions(showValueLabels = true, labelFontSize = 7),
+                "derived",
+            )
+            throw AssertionError("expected label font-size rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("8 and 16"))
+        }
+    }
+
     private fun lineResult(): WorksheetResult = WorksheetResult(
         result = EngineResult(
             columns = listOf(

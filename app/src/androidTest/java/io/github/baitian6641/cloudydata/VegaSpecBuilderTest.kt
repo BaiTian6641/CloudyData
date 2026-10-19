@@ -257,7 +257,12 @@ class VegaSpecBuilderTest {
         )
         val spec = ChartSpecBuilder.build(
             "bar", 0, result,
-            ChartOptions(legendVisible = true, yTickCount = 6),
+            ChartOptions(
+                legendVisible = true,
+                yTickCount = 6,
+                showValueLabels = true,
+                labelFontSize = 14,
+            ),
             "derived",
         )
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 400f, 300f)
@@ -267,6 +272,11 @@ class VegaSpecBuilderTest {
         val bar = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("rect", bar.getString("type"))
         assertTrue(bar.has("clip"))
+        val label = json.getJSONArray("marks").getJSONObject(1)
+        val labelEncode = label.getJSONObject("encode").getJSONObject("enter")
+        assertEquals(14, labelEncode.getJSONObject("fontSize").getInt("value"))
+        assertEquals("bottom", labelEncode.getJSONObject("baseline").getString("value"))
+        assertEquals(-6, labelEncode.getJSONObject("y").getJSONObject("offset").getInt("value"))
         val selectedBar = (0 until json.getJSONArray("marks").length())
             .map { json.getJSONArray("marks").getJSONObject(it) }
             .firstOrNull { it.optString("name") == "cloudySelectedBar" }

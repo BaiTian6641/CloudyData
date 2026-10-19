@@ -427,3 +427,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   vertical form.
 - JVM 40/40; lint 0 errors/5 warnings; debug/test APKs compile. Persistence and
   Vega JSON instrumentation compile but were not run; no device visual evidence.
+
+## 2026-10-19 — CUST06 label font size
+
+- Added optional persisted `labelFontSize` (8–16) through `ChartOptions`,
+  `LabelSpec`, settings UI and Bar/Line/Area label lowering. Existing top
+  offsets, baselines and mark-default font sizes are preserved.
+- An initial inside-end position control was removed after independent review:
+  it misplaces labels for negative/reversed values and short bars and fails
+  contrast on categorical fills. Position remains absent pending those rules.
+- JVM 41/41; lint 0 errors/5 warnings; debug/test APKs compile. Vega JSON and
+  persistence instrumentation compile but were not run; no device legibility,
+  clipping, collision or export evidence.

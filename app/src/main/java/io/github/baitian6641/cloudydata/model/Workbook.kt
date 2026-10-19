@@ -41,6 +41,7 @@ data class ChartOptions(
     val legendOrientation: LegendOrientation? = null,
     val showTooltip: Boolean = true,
     val yTickCount: Int? = null,
+    val labelFontSize: Int? = null,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -60,11 +61,14 @@ data class ChartOptions(
         .put("legendOrientation", legendOrientation?.name ?: JSONObject.NULL)
         .put("showTooltip", showTooltip)
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
+        .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
 
     companion object {
         const val VERSION = 1
         const val MIN_TICK_COUNT = 2
         const val MAX_TICK_COUNT = 50
+        const val MIN_LABEL_FONT_SIZE = 8
+        const val MAX_LABEL_FONT_SIZE = 16
 
         fun fromJson(json: JSONObject): ChartOptions = ChartOptions(
             title = if (json.isNull("title")) null else json.optString("title").takeIf { it.isNotEmpty() },
@@ -92,6 +96,11 @@ data class ChartOptions(
                 null
             } else {
                 json.optInt("yTickCount").takeIf { it in MIN_TICK_COUNT..MAX_TICK_COUNT }
+            },
+            labelFontSize = if (json.isNull("labelFontSize")) {
+                null
+            } else {
+                json.optInt("labelFontSize").takeIf { it in MIN_LABEL_FONT_SIZE..MAX_LABEL_FONT_SIZE }
             },
         )
     }

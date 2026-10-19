@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `99b4d6c`. `main` tracks `origin/main`; the legend
-orientation/wrapping commit is pushed with this state update.
+**Source:** commits through `99cdc22`; the label font-size change is in the
+next local commit. `main` tracks `origin/main` at the pushed legend baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,9 +54,9 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **40/40**, including set-selection reducer,
-  Y tick-count and legend-layout cases. Emulator renderer probe: 17/17 (pre-lasso);
-  Vega spec builder: 4/4;
+- Lint: 0 errors (5 warnings). JVM: **41/41**, including set-selection reducer,
+  Y tick-count, legend-layout and label-font-size cases. Emulator renderer
+  probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
   suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
@@ -92,6 +92,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust13-lasso.md`
 - `qualification/evidence/2026-10-19-cust03-y-ticks.md`
 - `qualification/evidence/2026-10-19-cust05-legend-orientation.md`
+- `qualification/evidence/2026-10-19-cust06-label-font-size.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -117,6 +118,11 @@ unless stated otherwise.
   settings control, position-derived automatic direction and width/label-aware
   horizontal wrapping/label limits are implemented. JVM layout/propagation tests
   pass; persistence/Vega instrumentation and device visual checks were not run.
+- **Label font size.** Persisted 8–16 font size is carried through the typed
+  spec and bar/line/area label lowering. JVM propagation/validation passes;
+  Vega/persistence instrumentation and device legibility checks were not run.
+  Label position was deferred after review found inside-end sign/reversal,
+  short-bar and fill-contrast defects.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -205,21 +211,22 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST06 value-label position and density.**
+**CUST06 robust inside-end label position.**
 
-- Requirements/stage: CUST06, F32/F38, Q21, S11; verified prerequisites are
-  persisted chart options, Bar/Line/Area typed specs, value-label marks, settings
-  persistence and host-level label tests.
-- Files: `Workbook.kt`/`ChartOptions`, `ChartSpec.kt`, `ChartSpecBuilder.kt`,
-  `VegaSpecBuilder.kt`, `ChartSettingsDialog.kt`, tests and evidence.
-- Action: persist a bounded label position (top/inside-end) and label font size,
-  validate and carry them on the typed label spec, and lower them to the Bar/Line/
-  Area label marks. Exact values and aggregation remain unchanged.
-- Acceptance: old documents default to today's top labels; invalid sizes are
-  rejected; no SQL rerun; generated specs/label geometry and persistence stay
-  coherent. Device visual review remains required before claiming verified.
-- Device-bound qualification remains blocked: lasso/product, Y tick count and
-  legend orientation visual runs wait for an authorized device.
+- Requirements/stage: CUST06, F32/F38, Q21, S11. Prerequisites: persisted label
+  show/font size, typed Bar/Line/Area label marks, exact value table and access
+  to theme/palette roles.
+- Files: `ChartOptions`/`LabelSpec`, `ChartSpecBuilder`, `VegaSpecBuilder` label
+  marks, `ChartSettingsDialog`, tests and evidence.
+- Action: expose position only after implementing sign/reversal-aware endpoint
+  placement, a minimum-height fallback for bars, zero-value handling, and an
+  on-fill text/halo treatment with measured contrast.
+- Acceptance: labels stay inside the correct endpoint for positive/negative and
+  reversed axes; short/zero bars fall back outside without clipping; text meets
+  normal-text contrast on both appearances; old TOP output remains unchanged.
+  Device visual review is required before verified status.
+- Device-bound qualification remains blocked: lasso/product, Y tick, legend and
+  label-font visual runs wait for an authorized device.
 
 ## Protected context
 
