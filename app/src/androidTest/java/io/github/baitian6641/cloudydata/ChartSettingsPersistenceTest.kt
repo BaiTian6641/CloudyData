@@ -7,6 +7,7 @@ import io.github.baitian6641.cloudydata.data.WorkbookStore
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
+import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -84,6 +85,7 @@ class ChartSettingsPersistenceTest {
                             valueDecimals = 2,
                             showChartBorder = true,
                             gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
+                            labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
                         ),
                     ),
                 ),
@@ -123,6 +125,7 @@ class ChartSettingsPersistenceTest {
             io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
             reopenedSheet.chart.gridlineContrast,
         )
+        assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -143,6 +146,26 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             GridlineContrast.STRONG,
             ChartOptions.fromJson(JSONObject().put("gridlineContrast", "STRONG")).gridlineContrast,
+        )
+    }
+
+    @Test
+    fun invalidLabelCollisionPolicyFallsBackToShowAll() {
+        assertEquals(
+            LabelCollisionPolicy.SHOW_ALL,
+            ChartOptions.fromJson(JSONObject()).labelCollisionPolicy,
+        )
+        assertEquals(
+            LabelCollisionPolicy.SHOW_ALL,
+            ChartOptions.fromJson(
+                JSONObject().put("labelCollisionPolicy", "NOT_A_POLICY"),
+            ).labelCollisionPolicy,
+        )
+        assertEquals(
+            LabelCollisionPolicy.HIDE_CROWDED,
+            ChartOptions.fromJson(
+                JSONObject().put("labelCollisionPolicy", "HIDE_CROWDED"),
+            ).labelCollisionPolicy,
         )
     }
 

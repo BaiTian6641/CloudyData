@@ -38,6 +38,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
+import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -71,6 +72,7 @@ fun ChartSettingsDialog(
     var gridlineWidth by remember { mutableStateOf(current.gridlineWidth?.toString().orEmpty()) }
     var gridlineContrast by remember { mutableStateOf(current.gridlineContrast) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
+    var labelCollisionPolicy by remember { mutableStateOf(current.labelCollisionPolicy) }
     var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
@@ -354,6 +356,20 @@ fun ChartSettingsDialog(
                     checked = showValueLabels,
                     onCheckedChange = { showValueLabels = it },
                 )
+                if (showValueLabels) {
+                    ChartToggleRow(
+                        title = "Hide crowded labels",
+                        description = "Omit labels when bars or points do not have enough horizontal space.",
+                        checked = labelCollisionPolicy == LabelCollisionPolicy.HIDE_CROWDED,
+                        onCheckedChange = {
+                            labelCollisionPolicy = if (it) {
+                                LabelCollisionPolicy.HIDE_CROWDED
+                            } else {
+                                LabelCollisionPolicy.SHOW_ALL
+                            }
+                        },
+                    )
+                }
                 if (sheet.markType == MarkType.BAR) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
@@ -570,6 +586,7 @@ fun ChartSettingsDialog(
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
                             valueDecimals = parsedValueDecimals,
+                            labelCollisionPolicy = labelCollisionPolicy,
                             labelFontSize = parsedLabelFontSize,
                             labelPosition = if (sheet.markType == MarkType.BAR) {
                                 labelPosition

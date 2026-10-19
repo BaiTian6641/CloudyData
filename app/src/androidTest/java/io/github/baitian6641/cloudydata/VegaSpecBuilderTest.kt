@@ -11,6 +11,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -117,9 +118,14 @@ class VegaSpecBuilderTest {
             .map { labelMarks.getJSONObject(it) }
             .first { it.getString("type") == "text" }
         assertEquals(
-            "isValid(datum.y) ? format(datum.y, ',.2f') : ''",
+            "(isValid(datum.y)) ? format(datum.y, ',.2f') : ''",
             valueLabel.getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("text").getString("signal"),
+        )
+        assertEquals(
+            "isValid(datum.y)",
+            valueLabel.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("defined").getString("signal"),
         )
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))
@@ -177,6 +183,76 @@ class VegaSpecBuilderTest {
             "source row indices must survive lowering for exact selection",
             listOf(0, 2, 4, 1, 3, 5),
             (0 until values.length()).map { values.getJSONObject(it).getInt("sourceRowIndex") },
+        )
+    }
+
+    @Test
+    fun crowdedLabelPolicyEmitsBoundedBarAndLineRules() {
+        val barResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 40L), listOf<Any?>("B", 60L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val barSpec = ChartSpecBuilder.build(
+            "crowded-bar", 0, barResult,
+            ChartOptions(
+                showValueLabels = true,
+                labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
+            ),
+            "derived",
+        )
+        val barJson = VegaSpecBuilder.build(barSpec, false, listOf(0x006A6A), 600f, 300f)
+        assertEquals(
+            "isValid(datum.y) && bandwidth('x') >= 47",
+            barJson.getJSONArray("marks").getJSONObject(1)
+                .getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("defined").getString("signal"),
+        )
+
+        val lineSpec = ChartSpecBuilder.build(
+            "crowded-line", 0,
+            WorksheetResult(
+                result = EngineResult(
+                    columns = listOf(
+                        EngineColumn("row", "VARCHAR"),
+                        EngineColumn("value", "BIGINT"),
+                    ),
+                    rows = (1..12).map { listOf<Any?>("M$it", it.toLong()) },
+                    truncated = false,
+                ),
+                rowField = region,
+                measureField = sales,
+                seriesField = null,
+                aggregation = Aggregation.SUM,
+                markType = MarkType.LINE,
+                sql = "test",
+            ),
+            ChartOptions(
+                showValueLabels = true,
+                labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
+            ),
+            "derived",
+        )
+        val lineJson = VegaSpecBuilder.build(lineSpec, false, listOf(0x006A6A), 600f, 300f)
+        val lineMarks = lineJson.getJSONArray("marks").getJSONObject(0).getJSONArray("marks")
+        val lineLabel = (0 until lineMarks.length())
+            .map { lineMarks.getJSONObject(it) }
+            .first { it.getString("type") == "text" }
+        assertEquals(
+            "isValid(datum.y) && bandwidth('x') >= 46",
+            lineLabel.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("defined").getString("signal"),
         )
     }
 

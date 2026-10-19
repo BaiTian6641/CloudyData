@@ -69,6 +69,42 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun crowdedLabelPolicyHidesNarrowBarValuesInRenderedSvg() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "crowdedlabel")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("crowded-label renderer did not complete", result != null)
+            assertNull(result!!.error)
+            assertTrue(
+                "a crowded value label was drawn: ${result.svgTexts}",
+                result.svgTexts.none { it == "1,234.57" || it == "1,334.57" },
+            )
+        }
+    }
+
+    @Test
+    fun crowdedLabelPolicyHidesMultiSeriesLineValuesInRenderedSvg() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "crowdedline")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("crowded-line renderer did not complete", result != null)
+            assertNull(result!!.error)
+            assertTrue(
+                "a crowded series label was drawn: ${result.svgTexts}",
+                result.svgTexts.none { it == "1,234.57" || it == "1,244.57" },
+            )
+        }
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

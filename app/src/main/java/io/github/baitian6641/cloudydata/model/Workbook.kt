@@ -30,6 +30,8 @@ enum class AxisTitleAnchor { AUTO, START, END }
 
 enum class GridlineContrast { DEFAULT, STRONG }
 
+enum class LabelCollisionPolicy { SHOW_ALL, HIDE_CROWDED }
+
 data class ChartOptions(
     val title: String? = null,
     val subtitle: String? = null,
@@ -39,6 +41,7 @@ data class ChartOptions(
     val gridlineContrast: GridlineContrast = GridlineContrast.DEFAULT,
     val showValueLabels: Boolean = false,
     val valueDecimals: Int? = null,
+    val labelCollisionPolicy: LabelCollisionPolicy = LabelCollisionPolicy.SHOW_ALL,
     val xAxisTitle: String? = null,
     val yAxisTitle: String? = null,
     val seriesTitle: String? = null,
@@ -71,6 +74,7 @@ data class ChartOptions(
         .put("gridlineContrast", gridlineContrast.name)
         .put("showValueLabels", showValueLabels)
         .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
+        .put("labelCollisionPolicy", labelCollisionPolicy.name)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
         .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
         .put("seriesTitle", seriesTitle ?: JSONObject.NULL)
@@ -155,6 +159,11 @@ data class ChartOptions(
             } else {
                 json.optInt("yTickCount").takeIf { it in MIN_TICK_COUNT..MAX_TICK_COUNT }
             },
+            labelCollisionPolicy = runCatching {
+                LabelCollisionPolicy.valueOf(
+                    json.optString("labelCollisionPolicy", LabelCollisionPolicy.SHOW_ALL.name),
+                )
+            }.getOrDefault(LabelCollisionPolicy.SHOW_ALL),
             labelFontSize = if (json.isNull("labelFontSize")) {
                 null
             } else {

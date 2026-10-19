@@ -512,7 +512,10 @@ class RendererProbeActivity : Activity() {
             yAxis = AxisSpec("Sales"),
             gridlines = GridlineSpec(true),
             legend = LegendSpec(false, LegendPosition.RIGHT, null),
-            labels = LabelSpec(true),
+            labels = LabelSpec(
+                true,
+                collisionPolicy = io.github.baitian6641.cloudydata.model.LabelCollisionPolicy.HIDE_CROWDED,
+            ),
             sourceNote = "Source: probe fixture",
             series = listOf(
                 ChartSeries(
@@ -524,6 +527,63 @@ class RendererProbeActivity : Activity() {
                 ),
             ),
             rowCount = 2,
+            truncated = false,
+            valueDecimals = 2,
+        )
+        "crowdedlabel" -> ChartSpec(
+            chartId = "probe-crowded-label",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = "Crowded labels",
+            xAxis = AxisSpec("Category"),
+            yAxis = AxisSpec("Sales"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(
+                true,
+                collisionPolicy = io.github.baitian6641.cloudydata.model.LabelCollisionPolicy.HIDE_CROWDED,
+            ),
+            sourceNote = "Source: probe fixture",
+            series = listOf(
+                ChartSeries(
+                    "Values",
+                    (0 until 60).map { index ->
+                        point("C$index", 1234.567 + index * 10.0, "Values", index)
+                    },
+                ),
+            ),
+            rowCount = 60,
+            truncated = false,
+            valueDecimals = 2,
+        )
+        "crowdedline" -> ChartSpec(
+            chartId = "probe-crowded-line",
+            revision = 1,
+            kind = ChartKind.LINE,
+            title = "Crowded series labels",
+            xAxis = AxisSpec("Category"),
+            yAxis = AxisSpec("Sales"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(true, LegendPosition.RIGHT, "Region"),
+            labels = LabelSpec(
+                true,
+                collisionPolicy = io.github.baitian6641.cloudydata.model.LabelCollisionPolicy.HIDE_CROWDED,
+            ),
+            sourceNote = "Source: probe fixture",
+            series = listOf("North", "South", "East").mapIndexed { seriesIndex, name ->
+                ChartSeries(
+                    name,
+                    (0 until 40).map { index ->
+                        point(
+                            "C$index",
+                            1234.567 + index * 10.0 + seriesIndex * 2.0,
+                            name,
+                            index,
+                        )
+                    },
+                )
+            },
+            rowCount = 120,
             truncated = false,
             valueDecimals = 2,
         )
@@ -581,6 +641,8 @@ class RendererProbeActivity : Activity() {
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."
         "format" -> "Accessible summary: A = 1234.567, B = 2000.0."
+        "crowdedlabel" -> "Accessible summary: 60 crowded categories."
+        "crowdedline" -> "Accessible summary: 40 crowded categories across three series."
         "area" -> "Accessible summary: 2026-01-01 = 10, 2026-02-01 = 20, " +
             "2026-03-01 = 30, 2026-04-01 = 40."
         else -> "Accessible summary: region A = 40, region B = 60."

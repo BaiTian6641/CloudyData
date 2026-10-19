@@ -10,6 +10,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
+import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -127,6 +128,26 @@ class ChartSpecBuilderTest {
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("2 and 50"))
         }
+    }
+
+    @Test
+    fun labelCollisionPolicyIsCarriedAndDefaultsToShowAll() {
+        assertEquals(
+            LabelCollisionPolicy.HIDE_CROWDED,
+            ChartSpecBuilder.build(
+                "labels", 0, lineResult(),
+                ChartOptions(labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED),
+                "derived",
+            ).labels.collisionPolicy,
+        )
+        assertEquals(
+            LabelCollisionPolicy.SHOW_ALL,
+            ChartSpecBuilder.build(
+                "labels", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).labels.collisionPolicy,
+        )
     }
 
     @Test

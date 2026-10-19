@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `9a54816`. `main` tracks `origin/main`; the
-gridline-contrast stage is pushed.
+**Source:** commits through `d0d2230`; the crowded-label change is in the next
+local commit. `main` tracks `origin/main` at the pushed contrast baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,9 +54,10 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **54/54**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **55/55**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
-  title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format and chart-border cases. Emulator renderer
+  title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
+  crowded-label cases. Emulator renderer
   probe: 17/17 (pre-lasso); Vega spec builder: 5/5;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
@@ -104,6 +105,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust06-value-decimals.md`
 - `qualification/evidence/2026-10-19-cust14-chart-border.md`
 - `qualification/evidence/2026-10-19-cust04-gridline-contrast.md`
+- `qualification/evidence/2026-10-19-cust06-crowded-labels.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -160,6 +162,11 @@ unless stated otherwise.
   signal because Vega ignores text field `format`. Exact tooltip/data/export
   precision and aggregation are unchanged. JVM, focused spec/persistence and a
   packaged-Vega SVG render pass; visual collision/locale checks were not run.
+- **Crowded-label policy.** Optional auto-hide uses a bounded bar-band or
+  line-spacing threshold and empty text signals; default show-all preserves
+  labels. A 60-category render hid labels while a wide render kept them. JVM and
+  focused spec/persistence pass; text-measured collision and device visual
+  checks were not run.
 - **Chart border.** Optional persisted toggle draws one 1 dp divider outline
   around the native card (including fallback content), plus a 1 px outer outline
   in exported SVG, PNG and rasterized PDF scenes. JVM, spec/persistence and an exported-SVG render

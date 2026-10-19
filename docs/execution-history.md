@@ -550,3 +550,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 6/6 on the physical HP Googlebook; lint 0
   errors/5 warnings; debug/test APKs compile. Dark-theme, export, contrast and
   device visual checks were not run.
+
+## 2026-10-19 — CUST06 crowded-label policy
+
+- Added persisted SHOW_ALL/HIDE_CROWDED value-label policy. Crowding is decided
+  in the text signal (Vega ignores text-mark `defined`): band width below font
+  size + 36 emits an empty string for Bar, Line and Area, including multi-series
+  lines. Values, data, scale, selection, tooltip, table and accessible summary
+  are unchanged.
+- Added a 60-category bar probe and a 40-category three-series line probe proving
+  labels disappear, retained the wide formatted-label probe proving labels
+  remain, and added invalid-JSON fallback coverage. JVM 55/55;
+  VegaSpecBuilderTest 6/6, ChartSettingsPersistenceTest 7/7 and three focused
+  render probes 1/1 on the physical HP Googlebook; lint 0 errors/5 warnings.
+  Text measurement, axis-label collision and device visual review remain absent.

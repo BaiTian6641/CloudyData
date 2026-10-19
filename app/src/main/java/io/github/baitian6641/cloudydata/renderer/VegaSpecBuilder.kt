@@ -7,6 +7,7 @@ import io.github.baitian6641.cloudydata.chart.LegendLayout
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
+import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
@@ -254,13 +255,28 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun valueText(spec: ChartSpec): JSONObject {
-        val decimals = spec.valueDecimals ?: return JSONObject().put("field", "y")
-        // Vega text marks ignore format on a field reference; format explicitly.
-        return JSONObject().put(
-            "signal",
-            "isValid(datum.y) ? format(datum.y, ',.${decimals}f') : ''",
-        )
+    private fun labelDefined(spec: ChartSpec, fontSize: Int): String {
+        val valid = "isValid(datum.y)"
+        if (spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) return valid
+        return when (spec.kind) {
+            ChartKind.BAR -> "$valid && bandwidth('x') >= ${fontSize + 36}"
+            ChartKind.LINE, ChartKind.AREA -> "$valid && bandwidth('x') >= ${fontSize + 36}"
+        }
+    }
+
+    private fun valueText(spec: ChartSpec, fontSize: Int): JSONObject {
+        val visible = labelDefined(spec, fontSize)
+        val decimals = spec.valueDecimals
+        if (decimals == null && spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) {
+            return JSONObject().put("field", "y")
+        }
+        val value = if (decimals == null) {
+            "datum.y"
+        } else {
+            "format(datum.y, ',.${decimals}f')"
+        }
+        // Vega text marks ignore format/defined on field references; guard explicitly.
+        return JSONObject().put("signal", "($visible) ? $value : ''")
     }
 
     private fun barLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
@@ -297,7 +313,7 @@ object VegaSpecBuilder {
                             JSONObject().put("scale", "y").put("field", "y")
                                 .put("offset", JSONObject().put("signal", clamped)),
                         )
-                        .put("text", valueText(spec))
+                        .put("text", valueText(spec, fontSize))
                         .put("align", JSONObject().put("value", "center"))
                         .put("baseline", JSONObject().put("signal", baseline))
                         .put(
@@ -315,7 +331,11 @@ object VegaSpecBuilder {
                             ),
                         )
                         .put("strokeWidth", JSONObject().put("signal", "($overBar) ? 1.25 : 0"))
-                        .put("fontSize", JSONObject().put("value", fontSize)),
+                        .put("fontSize", JSONObject().put("value", fontSize))
+                        .put(
+                            "defined",
+                            JSONObject().put("signal", labelDefined(spec, fontSize)),
+                        ),
                 ),
             )
     }
@@ -374,12 +394,18 @@ object VegaSpecBuilder {
                             JSONObject()
                                 .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                                 .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
-                                .put("text", valueText(spec))
+                                .put("text", valueText(spec, spec.labels.fontSize ?: 10))
                                 .put("align", JSONObject().put("value", "center"))
                                 .put("baseline", JSONObject().put("value", "bottom"))
                                 .put("fill", JSONObject().put("value", textColor))
                                 .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 10))
-                                .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                                .put(
+                                    "defined",
+                                    JSONObject().put(
+                                        "signal",
+                                        labelDefined(spec, spec.labels.fontSize ?: 10),
+                                    ),
+                                ),
                         ),
                     ),
             )
@@ -474,12 +500,18 @@ object VegaSpecBuilder {
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                     .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
-                    .put("text", valueText(spec))
+                    .put("text", valueText(spec, spec.labels.fontSize ?: 10))
                     .put("align", JSONObject().put("value", "center"))
                     .put("baseline", JSONObject().put("value", "bottom"))
                     .put("fill", JSONObject().put("value", textColor))
                     .put("fontSize", JSONObject().put("value", spec.labels.fontSize ?: 10))
-                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                    .put(
+                        "defined",
+                        JSONObject().put(
+                            "signal",
+                            labelDefined(spec, spec.labels.fontSize ?: 10),
+                        ),
+                    ),
             ),
         )
 
