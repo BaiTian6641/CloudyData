@@ -504,3 +504,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 50/50; lint 0 errors/5 warnings; debug/test APKs compile. Vega/persistence
   instrumentation and device collision/rotation/accessibility checks were not
   run.
+
+## 2026-10-19 — CUST04 major-gridline width
+
+- Added optional persisted 0.5–3.0 dp gridline width. Chart specs validate it;
+  Vega emits `gridWidth` on the value axis only when gridlines are visible.
+  Settings apply without requerying; missing/invalid stored values use the
+  renderer default.
+- JVM 51/51; VegaSpecBuilderTest 5/5 and ChartSettingsPersistenceTest 5/5 on the
+  physical HP Googlebook; lint 0 errors/5 warnings; debug/test APKs compile.
+  Visual, export and high-contrast checks were not run.

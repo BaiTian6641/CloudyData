@@ -33,6 +33,7 @@ data class ChartOptions(
     val subtitle: String? = null,
     val caption: String? = null,
     val showGridlines: Boolean = true,
+    val gridlineWidth: Double? = null,
     val showValueLabels: Boolean = false,
     val xAxisTitle: String? = null,
     val yAxisTitle: String? = null,
@@ -61,6 +62,7 @@ data class ChartOptions(
         .put("subtitle", subtitle ?: JSONObject.NULL)
         .put("caption", caption ?: JSONObject.NULL)
         .put("showGridlines", showGridlines)
+        .put("gridlineWidth", gridlineWidth ?: JSONObject.NULL)
         .put("showValueLabels", showValueLabels)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
         .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
@@ -91,6 +93,8 @@ data class ChartOptions(
         const val MAX_LABEL_FONT_SIZE = 16
         const val MIN_LINE_WIDTH = 1.0
         const val MAX_LINE_WIDTH = 8.0
+        const val MIN_GRIDLINE_WIDTH = 0.5
+        const val MAX_GRIDLINE_WIDTH = 3.0
         const val MIN_CHART_PADDING = 0
         const val MAX_CHART_PADDING = 32
         const val DEFAULT_CHART_PADDING = 8
@@ -100,6 +104,13 @@ data class ChartOptions(
             subtitle = if (json.isNull("subtitle")) null else json.optString("subtitle").takeIf { it.isNotEmpty() },
             caption = if (json.isNull("caption")) null else json.optString("caption").takeIf { it.isNotEmpty() },
             showGridlines = json.optBoolean("showGridlines", true),
+            gridlineWidth = if (json.isNull("gridlineWidth")) {
+                null
+            } else {
+                json.optDouble("gridlineWidth").takeIf {
+                    it.isFinite() && it in MIN_GRIDLINE_WIDTH..MAX_GRIDLINE_WIDTH
+                }
+            },
             showValueLabels = json.optBoolean("showValueLabels", false),
             xAxisTitle = if (json.isNull("xAxisTitle")) null else json.optString("xAxisTitle").takeIf { it.isNotEmpty() },
             yAxisTitle = if (json.isNull("yAxisTitle")) null else json.optString("yAxisTitle").takeIf { it.isNotEmpty() },

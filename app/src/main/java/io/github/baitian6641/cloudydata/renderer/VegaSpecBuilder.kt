@@ -98,6 +98,7 @@ object VegaSpecBuilder {
                     textColor = textColor,
                     gridColor = gridColor,
                     grid = spec.gridlines.show,
+                    gridWidth = spec.gridlines.width,
                     labelAngle = 0,
                     tickCount = spec.yAxis.tickCount,
                     titleAnchor = spec.yAxis.titleAnchor,
@@ -179,6 +180,7 @@ object VegaSpecBuilder {
         textColor: String,
         gridColor: String,
         grid: Boolean,
+        gridWidth: Double? = null,
         labelAngle: Int,
         tickCount: Int? = null,
         titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
@@ -194,6 +196,9 @@ object VegaSpecBuilder {
             .put("grid", grid)
             .put("gridColor", gridColor)
             .put("labelAngle", labelAngle)
+        if (gridWidth != null && grid) {
+            axis.put("gridWidth", gridWidth)
+        }
         if (tickCount != null) {
             axis.put("tickCount", tickCount).put("labelOverlap", "greedy")
         }

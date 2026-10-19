@@ -66,6 +66,7 @@ fun ChartSettingsDialog(
     var yTickCount by remember { mutableStateOf(current.yTickCount?.toString().orEmpty()) }
     var xLabelCount by remember { mutableStateOf(current.xLabelCount?.toString().orEmpty()) }
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
+    var gridlineWidth by remember { mutableStateOf(current.gridlineWidth?.toString().orEmpty()) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
@@ -85,6 +86,11 @@ fun ChartSettingsDialog(
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedXLabelCount = xLabelCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedGridlineWidth = if (showGridlines) {
+        gridlineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    } else {
+        null
+    }
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
@@ -100,6 +106,11 @@ fun ChartSettingsDialog(
         xLabelCount.trim().isNotEmpty() && (parsedXLabelCount == null ||
             parsedXLabelCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
             "X label count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
+        showGridlines && gridlineWidth.trim().isNotEmpty() && (parsedGridlineWidth == null ||
+            !parsedGridlineWidth.isFinite() ||
+            parsedGridlineWidth !in ChartOptions.MIN_GRIDLINE_WIDTH..ChartOptions.MAX_GRIDLINE_WIDTH) ->
+            "Gridline width must be from ${ChartOptions.MIN_GRIDLINE_WIDTH} to " +
+                "${ChartOptions.MAX_GRIDLINE_WIDTH}."
         labelFontSize.trim().isNotEmpty() && (parsedLabelFontSize == null ||
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
@@ -296,6 +307,16 @@ fun ChartSettingsDialog(
                     checked = showGridlines,
                     onCheckedChange = { showGridlines = it },
                 )
+                if (showGridlines) {
+                    Spacer(Modifier.height(8.dp))
+                    CloudyTextField(
+                        value = gridlineWidth,
+                        onValueChange = { gridlineWidth = it },
+                        label = "Gridline width",
+                        supportingText = "${ChartOptions.MIN_GRIDLINE_WIDTH}–${ChartOptions.MAX_GRIDLINE_WIDTH} dp, blank for the renderer default.",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    )
+                }
                 ChartToggleRow(
                     title = "Value labels",
                     description = "Show values on bars or line points. Bar labels can sit above or inside; the exact table remains available.",
@@ -504,6 +525,7 @@ fun ChartSettingsDialog(
                             yMin = parsedMin,
                             yMax = parsedMax,
                             showGridlines = showGridlines,
+                            gridlineWidth = parsedGridlineWidth,
                             showValueLabels = showValueLabels,
                             zeroBaseline = zeroBaseline || sheet.markType == MarkType.AREA,
                             logScale = logScale && sheet.markType == MarkType.LINE,

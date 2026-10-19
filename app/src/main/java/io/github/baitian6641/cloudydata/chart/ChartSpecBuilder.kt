@@ -111,7 +111,7 @@ object ChartSpecBuilder {
                 titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = axisFor(options, yTitle),
-            gridlines = GridlineSpec(options.showGridlines),
+            gridlines = GridlineSpec(options.showGridlines, options.gridlineWidth),
             // Category color legends are intentionally deferred until grouped
             // bar semantics exist; the legend control applies to line series.
             legend = LegendSpec(false, options.legendPosition, null),
@@ -234,7 +234,7 @@ object ChartSpecBuilder {
             } else {
                 baseAxis
             },
-            gridlines = GridlineSpec(options.showGridlines),
+            gridlines = GridlineSpec(options.showGridlines, options.gridlineWidth),
             legend = LegendSpec(
                 visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,
                 position = options.legendPosition,
@@ -289,6 +289,15 @@ object ChartSpecBuilder {
         ) {
             throw ChartSpecException(
                 "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
+        }
+        if (options.gridlineWidth != null &&
+            (!options.gridlineWidth.isFinite() ||
+                options.gridlineWidth !in ChartOptions.MIN_GRIDLINE_WIDTH..ChartOptions.MAX_GRIDLINE_WIDTH)
+        ) {
+            throw ChartSpecException(
+                "Gridline width must be between ${ChartOptions.MIN_GRIDLINE_WIDTH} and " +
+                    "${ChartOptions.MAX_GRIDLINE_WIDTH}.",
             )
         }
         if (options.xLabelCount != null &&

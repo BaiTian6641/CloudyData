@@ -129,6 +129,30 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun gridlineWidthIsCarriedAndBounded() {
+        val spec = ChartSpecBuilder.build(
+            "grid", 0, lineResult(),
+            ChartOptions(gridlineWidth = 2.5),
+            "derived",
+        )
+        assertEquals(2.5, spec.gridlines.width!!, 0.0)
+        assertTrue(spec.gridlines.show)
+
+        for (invalid in listOf(0.0, 3.5, Double.NaN)) {
+            try {
+                ChartSpecBuilder.build(
+                    "grid", 0, lineResult(),
+                    ChartOptions(gridlineWidth = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected gridline width rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Gridline width"))
+            }
+        }
+    }
+
+    @Test
     fun chartPaddingDefaultsAndIsValidated() {
         val default = ChartSpecBuilder.build("padding", 0, lineResult(), ChartOptions(), "derived")
         assertEquals(8, default.padding)

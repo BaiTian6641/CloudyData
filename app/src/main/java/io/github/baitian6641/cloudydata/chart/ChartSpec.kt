@@ -41,7 +41,10 @@ data class AxisSpec(
     val titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
 )
 
-data class GridlineSpec(val show: Boolean)
+data class GridlineSpec(
+    val show: Boolean,
+    val width: Double? = null,
+)
 
 data class LegendSpec(
     val visible: Boolean,

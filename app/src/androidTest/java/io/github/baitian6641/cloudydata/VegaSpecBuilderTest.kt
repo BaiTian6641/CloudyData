@@ -66,6 +66,7 @@ class VegaSpecBuilderTest {
                 yMin = 0.0,
                 yMax = 40.0,
                 showValueLabels = true,
+                gridlineWidth = 2.5,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
@@ -87,6 +88,11 @@ class VegaSpecBuilderTest {
                 .map { json.getJSONArray("axes").getJSONObject(0).getJSONArray("values").getString(it) },
         )
         assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
+        assertEquals(
+            2.5,
+            json.getJSONArray("axes").getJSONObject(1).getDouble("gridWidth"),
+            0.0,
+        )
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))
         assertEquals(
@@ -182,6 +188,20 @@ class VegaSpecBuilderTest {
                 .getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("strokeWidth").getDouble("value"),
             0.0,
+        )
+        assertFalse(
+            "automatic gridline width must not emit an override",
+            json.getJSONArray("axes").getJSONObject(1).has("gridWidth"),
+        )
+        val hiddenGrid = ChartSpecBuilder.build(
+            "no-grid", 0, result,
+            ChartOptions(showGridlines = false, gridlineWidth = 2.5),
+            "derived",
+        )
+        val hiddenJson = VegaSpecBuilder.build(hiddenGrid, false, listOf(0x006A6A), 600f, 300f)
+        assertFalse(
+            "hidden gridlines must not emit gridWidth",
+            hiddenJson.getJSONArray("axes").getJSONObject(1).has("gridWidth"),
         )
         val legend = json.getJSONArray("legends").getJSONObject(0)
         assertEquals("horizontal", legend.getString("direction"))
