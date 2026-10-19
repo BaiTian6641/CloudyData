@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits through `423e512`, plus the pending S01.7 lifecycle
-increment; remote push not performed/authorized in this session.
+**Source:** commits through `083287c`; remote push not performed/authorized in
+this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
