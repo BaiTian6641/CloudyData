@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `d6ade54`; the transparent-export change is in the
-next local commit. `main` tracks `origin/main` at the pushed crowded-label
-baseline.
+**Source:** commits through `c14c8b8`. `main` tracks `origin/main`; the
+transparent-export stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -270,21 +269,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST14 transparent exported-chart background.**
+**CUST04 optional minor gridlines.**
 
-- Requirements/stage: CUST14, F36/F38, Q21, S11. Prerequisites: SVG/PNG/PDF
-  export scene assembly, persisted chart options and the chart-settings dialog.
-- Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`, `host.js`,
-  probe activity/test, `ChartSettingsDialog`, tests and evidence.
-- Action: add an optional transparent export background. The native chart card
-  remains on the app surface; SVG/PNG/PDF export scenes omit their opaque
-  background fill when enabled, while border/header/chart content stay intact.
-- Acceptance: default exports remain opaque and unchanged; transparent export
-  is explicit, persists, and does not alter data, dimensions or SQL. Device
-  alpha/visual review is required before verified status.
+- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: persisted major
+  gridline visibility/width/contrast, typed axis lowering and chart settings.
+- Files: `ChartOptions`, `GridlineSpec`, `ChartSpecBuilder`, `VegaSpecBuilder`,
+  `ChartSettingsDialog`, tests and evidence.
+- Action: add an optional minor-gridline toggle. Lower a secondary value-axis
+  grid with labels/ticks/domain/title disabled, a bounded minor tick count, a
+  muted token color and major grid drawn above it.
+- Acceptance: default has no extra axis; enabling adds grid marks only, without
+  changing data, major ticks, domain, labels, dimensions or SQL. Device visual
+  review is required before verified status.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding, X-label and border visuals wait for
-  an authorized device.
+  labels, line width, titles, units, padding, X-label, border and minor-grid
+  visuals wait for an authorized device.
 
 ## Protected context
 
