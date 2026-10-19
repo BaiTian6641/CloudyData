@@ -655,3 +655,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   circle/diamond render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
   exported circle/diamond SVGs are asserted different; visual/TalkBack checks
   remain absent.
+
+## 2026-10-19 — CUST03 line interpolation
+
+- Added persisted linear/step/monotone interpolation for Line and Area/outline.
+  Vega receives it in `encode.enter.interpolate`; linear emits no override, so
+  default output is unchanged. Gaps, markers, labels, axes, selection and data
+  are untouched; invalid JSON falls back to linear.
+- A first implementation incorrectly placed `interpolate` at mark level; the
+  render/export probe detected identical linear/step SVGs, and the property was
+  moved into the encode block. Emulator-first validation: JVM 61/61;
+  emulator-5580 API36 x86_64 VegaSpecBuilderTest 14/14 (line + area/outline),
+  ChartSettingsPersistenceTest 10/10, linear/step render 1/1; lint 0 errors/5
+  warnings. Googlebook untouched; visual checks absent.

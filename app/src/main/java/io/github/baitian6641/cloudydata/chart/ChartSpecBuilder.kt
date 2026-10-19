@@ -276,6 +276,7 @@ object ChartSpecBuilder {
             truncated = result.result.truncated,
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
             lineWidth = options.lineWidth,
+            lineInterpolation = options.lineInterpolation,
             units = units,
             valueDecimals = options.valueDecimals,
             valueFormat = options.valueFormat,

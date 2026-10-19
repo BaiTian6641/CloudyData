@@ -18,6 +18,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.renderer.VegaSpecBuilder
 import org.json.JSONArray
@@ -295,6 +296,48 @@ class VegaSpecBuilderTest {
     }
 
     @Test
+    fun lineInterpolationIsLoweredOnlyWhenNonLinear() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        fun lineMark(options: ChartOptions): JSONObject {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build("line", 0, result, options, "derived"),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            return json.getJSONArray("marks").getJSONObject(0)
+                .getJSONArray("marks").getJSONObject(0)
+        }
+        assertFalse(
+            "default linear line must not emit interpolate",
+            lineMark(ChartOptions()).getJSONObject("encode").getJSONObject("enter")
+                .has("interpolate"),
+        )
+        assertEquals(
+            "step",
+            lineMark(ChartOptions(lineInterpolation = LineInterpolation.STEP))
+                .getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("interpolate").getString("value"),
+        )
+    }
+
+    @Test
     fun markerVisibilityAndSizeAreLowered() {
         val result = WorksheetResult(
             result = EngineResult(
@@ -380,6 +423,55 @@ class VegaSpecBuilderTest {
             300f,
         )
         assertEquals("diamond", diamondJson.getJSONArray("legends").getJSONObject(0).getString("symbolType"))
+    }
+
+    @Test
+    fun areaInterpolationIsLoweredOnAreaAndOutline() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("A", 1L),
+                    listOf<Any?>("B", 2L),
+                    listOf<Any?>("C", 3L),
+                ),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val json = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "area-interp", 0, result,
+                ChartOptions(lineInterpolation = LineInterpolation.MONOTONE),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        val marks = (0 until json.getJSONArray("marks").length())
+            .map { json.getJSONArray("marks").getJSONObject(it) }
+        val area = marks.first { it.getString("type") == "area" }
+        assertEquals(
+            "monotone",
+            area.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("interpolate").getString("value"),
+        )
+        val outline = marks.first { it.getString("type") == "line" }
+        assertEquals(
+            "monotone",
+            outline.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("interpolate").getString("value"),
+        )
     }
 
     @Test

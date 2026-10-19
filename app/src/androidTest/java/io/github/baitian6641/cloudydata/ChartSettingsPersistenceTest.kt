@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import org.json.JSONObject
@@ -95,6 +96,7 @@ class ChartSettingsPersistenceTest {
                             showMarkers = true,
                             markerSize = 6.0,
                             markerShape = MarkerShape.DIAMOND,
+                            lineInterpolation = LineInterpolation.STEP,
                         ),
                     ),
                 ),
@@ -142,6 +144,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(true, reopenedSheet.chart.showMarkers)
         assertEquals(6.0, reopenedSheet.chart.markerSize!!, 0.0)
         assertEquals(MarkerShape.DIAMOND, reopenedSheet.chart.markerShape)
+        assertEquals(LineInterpolation.STEP, reopenedSheet.chart.lineInterpolation)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -182,6 +185,14 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             MarkerShape.SQUARE,
             ChartOptions.fromJson(JSONObject().put("markerShape", "SQUARE")).markerShape,
+        )
+        assertEquals(
+            LineInterpolation.LINEAR,
+            ChartOptions.fromJson(JSONObject().put("lineInterpolation", "NOT_A_LINE")).lineInterpolation,
+        )
+        assertEquals(
+            LineInterpolation.MONOTONE,
+            ChartOptions.fromJson(JSONObject().put("lineInterpolation", "MONOTONE")).lineInterpolation,
         )
     }
 

@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -174,7 +175,7 @@ object VegaSpecBuilder {
                 marks.put(lineHitMark(spec, visibleExpr))
             }
             ChartKind.AREA -> {
-                marks.put(areaMark())
+                marks.put(areaMark(spec))
                 marks.put(areaLineMark(spec))
                 if (spec.pointCount <= 200 && spec.markers.show) marks.put(areaSymbolMark(spec))
                 if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
@@ -239,6 +240,13 @@ object VegaSpecBuilder {
 
     private fun markerArea(spec: ChartSpec, default: Double): Double =
         spec.markers.size?.let { it * it } ?: default
+
+    private fun lineInterpolationName(interpolation: LineInterpolation): String =
+        when (interpolation) {
+            LineInterpolation.LINEAR -> "linear"
+            LineInterpolation.STEP -> "step"
+            LineInterpolation.MONOTONE -> "monotone"
+        }
 
     private fun markerShapeName(shape: MarkerShape): String = when (shape) {
         MarkerShape.CIRCLE -> "circle"
@@ -446,7 +454,15 @@ object VegaSpecBuilder {
                             .put("strokeWidth", JSONObject().put("value", spec.lineWidth ?: 2.0))
                             .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
                     ),
-                ),
+                )
+                .also { mark ->
+                    if (spec.lineInterpolation != LineInterpolation.LINEAR) {
+                        mark.getJSONObject("encode").getJSONObject("enter").put(
+                            "interpolate",
+                            JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
+                        )
+                    }
+                },
         )
         if (spec.pointCount <= 200 && spec.markers.show) {
             val markerEnter = JSONObject()
@@ -521,7 +537,7 @@ object VegaSpecBuilder {
             .put("marks", childMarks)
     }
 
-    private fun areaMark(): JSONObject = JSONObject()
+    private fun areaMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "area")
         .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
@@ -538,6 +554,14 @@ object VegaSpecBuilder {
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )
+        .also { mark ->
+            if (spec.lineInterpolation != LineInterpolation.LINEAR) {
+                mark.getJSONObject("encode").getJSONObject("enter").put(
+                    "interpolate",
+                    JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
+                )
+            }
+        }
 
     private fun areaLineMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "line")
@@ -555,6 +579,14 @@ object VegaSpecBuilder {
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )
+        .also { mark ->
+            if (spec.lineInterpolation != LineInterpolation.LINEAR) {
+                mark.getJSONObject("encode").getJSONObject("enter").put(
+                    "interpolate",
+                    JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
+                )
+            }
+        }
 
     private fun areaSymbolMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "symbol")

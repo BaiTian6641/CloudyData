@@ -376,6 +376,34 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun stepInterpolationRendersWithoutChangingMarkCounts() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(interpolation: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_LINE_INTERPOLATION, interpolation)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("interpolation render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("interpolation export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val linear = render("LINEAR")
+        val step = render("STEP")
+        assertEquals(linear.result.markCount, step.result.markCount)
+        assertEquals(linear.result.sceneMarks["line"], step.result.sceneMarks["line"])
+        assertEquals(linear.result.sceneMarks["symbol"], step.result.sceneMarks["symbol"])
+        assertFalse("linear and step exported identical SVG", linear.svg == step.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

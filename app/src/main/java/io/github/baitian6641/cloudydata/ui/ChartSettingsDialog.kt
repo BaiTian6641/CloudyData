@@ -43,6 +43,7 @@ import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
+import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorksheetDef
@@ -83,6 +84,8 @@ fun ChartSettingsDialog(
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
+    var lineInterpolation by remember { mutableStateOf(current.lineInterpolation) }
+    var lineInterpolationExpanded by remember { mutableStateOf(false) }
     var showMarkers by remember { mutableStateOf(current.showMarkers) }
     var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
     var markerShape by remember { mutableStateOf(current.markerShape) }
@@ -469,6 +472,46 @@ fun ChartSettingsDialog(
                         supportingText = "${ChartOptions.MIN_LINE_WIDTH}–${ChartOptions.MAX_LINE_WIDTH}, blank for mark default.",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Line interpolation",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                "Linear, stepped or monotone joining.",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { lineInterpolationExpanded = true }) {
+                            Text(
+                                lineInterpolation.name.lowercase()
+                                    .replaceFirstChar { it.uppercase() },
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = lineInterpolationExpanded,
+                            onDismissRequest = { lineInterpolationExpanded = false },
+                        ) {
+                            LineInterpolation.entries.forEach { interpolation ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            interpolation.name.lowercase()
+                                                .replaceFirstChar { it.uppercase() },
+                                        )
+                                    },
+                                    onClick = {
+                                        lineInterpolation = interpolation
+                                        lineInterpolationExpanded = false
+                                    },
+                                )
+                            }
+                        }
+                    }
                     ChartToggleRow(
                         title = "Markers",
                         description = "Show observed-point markers up to the 200-point cap.",
@@ -697,6 +740,13 @@ fun ChartSettingsDialog(
                                 parsedLineWidth
                             } else {
                                 null
+                            },
+                            lineInterpolation = if (sheet.markType == MarkType.LINE ||
+                                sheet.markType == MarkType.AREA
+                            ) {
+                                lineInterpolation
+                            } else {
+                                LineInterpolation.LINEAR
                             },
                             showMarkers = showMarkers,
                             markerSize = if (showMarkers) parsedMarkerSize else null,

@@ -19,6 +19,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -187,6 +188,26 @@ class ChartSpecBuilderTest {
                 ChartOptions(hiddenSeries = setOf("sales")),
                 "derived",
             ).hiddenSeries,
+        )
+    }
+
+    @Test
+    fun lineInterpolationIsCarriedAndDefaultsToLinear() {
+        assertEquals(
+            LineInterpolation.STEP,
+            ChartSpecBuilder.build(
+                "interpolation", 0, lineResult(),
+                ChartOptions(lineInterpolation = LineInterpolation.STEP),
+                "derived",
+            ).lineInterpolation,
+        )
+        assertEquals(
+            LineInterpolation.LINEAR,
+            ChartSpecBuilder.build(
+                "interpolation", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).lineInterpolation,
         )
     }
 

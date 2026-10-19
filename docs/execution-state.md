@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **60/60**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **61/61**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -116,6 +116,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust05-persist-hidden-series.md`
 - `qualification/evidence/2026-10-19-cust03-marker-options.md`
 - `qualification/evidence/2026-10-19-cust03-marker-shape.md`
+- `qualification/evidence/2026-10-19-cust03-line-interpolation.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -210,6 +211,10 @@ unless stated otherwise.
   circle/square/diamond/cross shape apply to Line/Area symbols under the
   existing 200-point cap; lines/hit targets/selection remain. Emulator
   spec/persistence/render checks pass; visual checks were not run.
+- **Line interpolation.** Persisted linear/step/monotone joins apply to Line and
+  Area fill/outline via `encode.enter.interpolate`; gaps/markers/selection/data
+  remain. Emulator line spec/persistence/render and area spec checks pass;
+  visual shape/gap checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -298,21 +303,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted line interpolation.**
+**CUST03 persisted line dash style.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line lowering,
-  marker controls, typed chart options and emulator render probes.
-- Files: `ChartOptions`, `ChartSpec`/LineSpec, builders, `VegaSpecBuilder`,
+- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line/Area
+  lowering, width/interpolation/markers, typed options and emulator probes.
+- Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`,
   `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded persisted interpolation choice (linear default, step,
-  monotone/smooth) for Line marks, preserving default output and observed-point
-  ordering/gaps.
-- Acceptance: default output unchanged; interpolation affects only line joining,
-  not data, gaps, markers, selection or accessible summaries; invalid values fall
-  back to linear. Emulator spec/render checks required; visual review unverified.
+- Action: add a bounded persisted stroke style (solid default, dashed, dotted)
+  for Line marks and Area outlines, preserving default output and interpolation.
+- Acceptance: default solid unchanged; style persists and affects only strokes,
+  not data/markers/selection; invalid values fall back to solid. Emulator
+  spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker and interpolation visuals wait for an authorized visual session.
+  marker, interpolation and dash visuals wait for an authorized visual session.
 
 ## Protected context
 

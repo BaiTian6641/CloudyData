@@ -34,6 +34,8 @@ enum class LabelCollisionPolicy { SHOW_ALL, HIDE_CROWDED }
 
 enum class MarkerShape { CIRCLE, SQUARE, DIAMOND, CROSS }
 
+enum class LineInterpolation { LINEAR, STEP, MONOTONE }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT }
 
 data class ChartOptions(
@@ -64,6 +66,7 @@ data class ChartOptions(
     val yTickCount: Int? = null,
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
+    val lineInterpolation: LineInterpolation = LineInterpolation.LINEAR,
     val showMarkers: Boolean = true,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
@@ -112,6 +115,7 @@ data class ChartOptions(
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
+        .put("lineInterpolation", lineInterpolation.name)
         .put("showMarkers", showMarkers)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
@@ -220,6 +224,11 @@ data class ChartOptions(
             } else {
                 json.optDouble("lineWidth").takeIf { it.isFinite() && it in MIN_LINE_WIDTH..MAX_LINE_WIDTH }
             },
+            lineInterpolation = runCatching {
+                LineInterpolation.valueOf(
+                    json.optString("lineInterpolation", LineInterpolation.LINEAR.name),
+                )
+            }.getOrDefault(LineInterpolation.LINEAR),
             showMarkers = json.optBoolean("showMarkers", true),
             markerSize = if (json.isNull("markerSize")) {
                 null
