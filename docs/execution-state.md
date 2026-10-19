@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `0ecd9a1`; the keep/exclude change is in the next
-local commit. Remote push not performed/authorized in this session.
+**Source:** commits through `cc03522`. Remote push not performed/authorized in
+this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
