@@ -105,6 +105,7 @@ class ChartSettingsPersistenceTest {
                             markerOpacity = 0.5,
                             showTableRowDividers = false,
                             showTableColumnDividers = true,
+                            tableDividerWidth = 2.0,
                         ),
                     ),
                 ),
@@ -159,6 +160,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(false, reopenedSheet.chart.showTableRowDividers)
         assertEquals(true, reopenedSheet.chart.showTableColumnDividers)
+        assertEquals(2.0, reopenedSheet.chart.tableDividerWidth!!, 0.0)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -187,6 +189,33 @@ class ChartSettingsPersistenceTest {
         val options = ChartOptions.fromJson(JSONObject())
         assertEquals(true, options.showTableRowDividers)
         assertEquals(false, options.showTableColumnDividers)
+        assertEquals(null, options.tableDividerWidth)
+        assertEquals(
+            2.0,
+            ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 2.0))
+                .tableDividerWidth!!,
+            0.0,
+        )
+        assertEquals(
+            null,
+            ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 0.4)).tableDividerWidth,
+        )
+        assertEquals(
+            0.5,
+            ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 0.5))
+                .tableDividerWidth!!,
+            0.0,
+        )
+        assertEquals(
+            3.0,
+            ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 3.0))
+                .tableDividerWidth!!,
+            0.0,
+        )
+        assertEquals(
+            null,
+            ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 3.5)).tableDividerWidth,
+        )
     }
 
     @Test

@@ -695,6 +695,7 @@ private fun ResultTable(
     val hasSeriesColumn = result.hasSeriesColumn
     val valueColumn = result.valueColumnIndex
     val horizontal = rememberScrollState()
+    val dividerThickness = (options.tableDividerWidth ?: 1.0).toFloat().dp
     Column(modifier.background(colors.surface)) {
         Row(
             Modifier
@@ -720,11 +721,11 @@ private fun ResultTable(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (options.showTableColumnDividers && index < columns.lastIndex) {
-                    Box(Modifier.width(1.dp).height(24.dp).background(colors.divider))
+                    Box(Modifier.width(dividerThickness).height(24.dp).background(colors.divider))
                 }
             }
         }
-        CloudyDivider()
+        Box(Modifier.fillMaxWidth().height(dividerThickness).background(colors.divider))
         if (engineResult.rows.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("The current view returned no rows.", color = colors.textSecondary)
@@ -824,11 +825,13 @@ private fun ResultTable(
                             modifier = Modifier.width(tableColumnWidth(columnIndex, row.size)).padding(horizontal = 4.dp),
                         )
                         if (options.showTableColumnDividers && columnIndex < row.lastIndex) {
-                            Box(Modifier.width(1.dp).height(24.dp).background(colors.divider))
+                            Box(Modifier.width(dividerThickness).height(24.dp).background(colors.divider))
                         }
                     }
                 }
-                if (options.showTableRowDividers) CloudyDivider()
+                if (options.showTableRowDividers) {
+                    Box(Modifier.fillMaxWidth().height(dividerThickness).background(colors.divider))
+                }
             }
         }
     }

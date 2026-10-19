@@ -102,6 +102,7 @@ fun ChartSettingsDialog(
     var showTooltip by remember { mutableStateOf(current.showTooltip) }
     var showTableRowDividers by remember { mutableStateOf(current.showTableRowDividers) }
     var showTableColumnDividers by remember { mutableStateOf(current.showTableColumnDividers) }
+    var tableDividerWidth by remember { mutableStateOf(current.tableDividerWidth?.toString().orEmpty()) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
     var legendMarkSample by remember { mutableStateOf(current.legendMarkSample) }
     var legendMarkSampleExpanded by remember { mutableStateOf(false) }
@@ -114,6 +115,7 @@ fun ChartSettingsDialog(
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedXLabelCount = xLabelCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedTableDividerWidth = tableDividerWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedGridlineWidth = if (showGridlines) {
         gridlineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     } else {
@@ -150,6 +152,11 @@ fun ChartSettingsDialog(
         xLabelCount.trim().isNotEmpty() && (parsedXLabelCount == null ||
             parsedXLabelCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
             "X label count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
+        tableDividerWidth.trim().isNotEmpty() && (parsedTableDividerWidth == null ||
+            !parsedTableDividerWidth.isFinite() ||
+            parsedTableDividerWidth !in ChartOptions.MIN_TABLE_DIVIDER_WIDTH..ChartOptions.MAX_TABLE_DIVIDER_WIDTH) ->
+            "Table divider width must be from ${ChartOptions.MIN_TABLE_DIVIDER_WIDTH} to " +
+                "${ChartOptions.MAX_TABLE_DIVIDER_WIDTH}."
         showGridlines && gridlineWidth.trim().isNotEmpty() && (parsedGridlineWidth == null ||
             !parsedGridlineWidth.isFinite() ||
             parsedGridlineWidth !in ChartOptions.MIN_GRIDLINE_WIDTH..ChartOptions.MAX_GRIDLINE_WIDTH) ->
@@ -312,6 +319,13 @@ fun ChartSettingsDialog(
                     description = "Show vertical rules between result columns.",
                     checked = showTableColumnDividers,
                     onCheckedChange = { showTableColumnDividers = it },
+                )
+                CloudyTextField(
+                    value = tableDividerWidth,
+                    onValueChange = { tableDividerWidth = it },
+                    label = "Table divider width",
+                    supportingText = "${ChartOptions.MIN_TABLE_DIVIDER_WIDTH}–${ChartOptions.MAX_TABLE_DIVIDER_WIDTH} dp, blank for 1 dp.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -866,6 +880,7 @@ fun ChartSettingsDialog(
                             showTooltip = showTooltip,
                             showTableRowDividers = showTableRowDividers,
                             showTableColumnDividers = showTableColumnDividers,
+                            tableDividerWidth = parsedTableDividerWidth,
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
                             valueDecimals = parsedValueDecimals,

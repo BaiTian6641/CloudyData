@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `13b86e5`. `main` tracks `origin/main`; the legend
-swatch opacity stage is pushed.
+**Source:** commits through `8abea85`; the table divider-width change is in the
+next local commit. `main` tracks `origin/main` at the pushed legend-opacity
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -123,6 +124,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-marker-opacity.md`
 - `qualification/evidence/2026-10-19-cust04-table-dividers.md`
 - `qualification/evidence/2026-10-19-cust05-legend-swatch-opacity.md`
+- `qualification/evidence/2026-10-19-cust04-table-divider-width.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -244,6 +246,9 @@ unless stated otherwise.
 - **Legend swatch opacity.** Legend marker/line samples mirror their respective
   marker/line opacity without changing defaults or plot/data. Emulator spec/
   persistence/render checks pass; visual contrast checks were not run.
+- **Table divider width.** Optional 0.5–3.0 dp thickness applies to header/body/
+  column rules with 1 dp default; persistence/table-selection pass; visual
+  alignment checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -332,18 +337,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 persisted table divider width.**
+**CUST04 persisted table divider contrast.**
 
 - Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: table divider
-  toggles, shared divider fix, typed options and emulator persistence tests.
+  toggles/width, token palette and persistence/selection tests.
 - Files: `ChartOptions`, settings dialog, `ResultTable`, tests/evidence.
-- Action: add an optional 0.5–3.0 dp table divider thickness, defaulting to the
-  current 1 dp appearance and applying consistently to header/body row rules and
-  column rules.
-- Acceptance: blank/default remains 1 dp; width persists and affects only table
-  rules, never query/data/selection; invalid values fall back to default.
-  Emulator persistence and table-selection checks required; visual review
-  unverified.
+- Action: add a bounded DEFAULT/STRONG choice using provisional divider/outline
+  tokens for table rules, preserving the current divider default and applying
+  consistently to row/column/header rules.
+- Acceptance: default unchanged; contrast persists and affects only rule color;
+  invalid values fall back to DEFAULT; selection/data unchanged. Emulator
+  persistence/table-selection checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, interpolation, dash, opacity, legend-sample and table-divider visuals

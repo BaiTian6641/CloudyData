@@ -77,6 +77,7 @@ data class ChartOptions(
     val showMarkers: Boolean = true,
     val showTableRowDividers: Boolean = true,
     val showTableColumnDividers: Boolean = false,
+    val tableDividerWidth: Double? = null,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
     val markerOpacity: Double? = null,
@@ -132,6 +133,7 @@ data class ChartOptions(
         .put("showMarkers", showMarkers)
         .put("tableRowDividers", showTableRowDividers)
         .put("tableColumnDividers", showTableColumnDividers)
+        .put("tableDividerWidth", tableDividerWidth ?: JSONObject.NULL)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
         .put("markerOpacity", markerOpacity ?: JSONObject.NULL)
@@ -162,6 +164,8 @@ data class ChartOptions(
         const val MAX_MARKER_SIZE = 12.0
         const val MIN_MARKER_OPACITY = 0.1
         const val MAX_MARKER_OPACITY = 1.0
+        const val MIN_TABLE_DIVIDER_WIDTH = 0.5
+        const val MAX_TABLE_DIVIDER_WIDTH = 3.0
         const val MIN_GRIDLINE_WIDTH = 0.5
         const val MAX_GRIDLINE_WIDTH = 3.0
         const val MIN_CHART_PADDING = 0
@@ -267,6 +271,13 @@ data class ChartOptions(
             showMarkers = json.optBoolean("showMarkers", true),
             showTableRowDividers = json.optBoolean("tableRowDividers", true),
             showTableColumnDividers = json.optBoolean("tableColumnDividers", false),
+            tableDividerWidth = if (json.isNull("tableDividerWidth")) {
+                null
+            } else {
+                json.optDouble("tableDividerWidth").takeIf {
+                    it.isFinite() && it in MIN_TABLE_DIVIDER_WIDTH..MAX_TABLE_DIVIDER_WIDTH
+                }
+            },
             markerSize = if (json.isNull("markerSize")) {
                 null
             } else {
