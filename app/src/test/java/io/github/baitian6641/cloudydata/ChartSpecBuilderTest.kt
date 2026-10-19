@@ -129,6 +129,50 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun chartBorderIsCarriedAndDefaultsOff() {
+        assertEquals(
+            true,
+            ChartSpecBuilder.build(
+                "border", 0, lineResult(),
+                ChartOptions(showChartBorder = true),
+                "derived",
+            ).chartBorder,
+        )
+        assertEquals(
+            false,
+            ChartSpecBuilder.build(
+                "border", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).chartBorder,
+        )
+        assertEquals(
+            true,
+            ChartSpecBuilder.build(
+                "border-bar", 0,
+                WorksheetResult(
+                    result = EngineResult(
+                        columns = listOf(
+                            EngineColumn("row", "VARCHAR"),
+                            EngineColumn("value", "BIGINT"),
+                        ),
+                        rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                        truncated = false,
+                    ),
+                    rowField = region,
+                    measureField = sales,
+                    seriesField = null,
+                    aggregation = Aggregation.SUM,
+                    markType = MarkType.BAR,
+                    sql = "test",
+                ),
+                ChartOptions(showChartBorder = true),
+                "derived",
+            ).chartBorder,
+        )
+    }
+
+    @Test
     fun valueDecimalsAreCarriedAndBounded() {
         val spec = ChartSpecBuilder.build(
             "format", 0, lineResult(),

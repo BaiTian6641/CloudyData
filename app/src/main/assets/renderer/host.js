@@ -14,6 +14,7 @@
     exportCaption: '',
     exportSource: '',
     exportDark: false,
+    chartBorder: false,
     pointerMode: 'replace',
     lasso: null,
     suppressClickUntil: 0
@@ -539,6 +540,17 @@
     background.setAttribute('height', String(height + header));
     background.setAttribute('fill', state.exportDark ? '#182427' : '#FFFFFF');
     outer.appendChild(background);
+    if (state.chartBorder) {
+      var border = document.createElementNS(ns, 'rect');
+      border.setAttribute('x', '0.5');
+      border.setAttribute('y', '0.5');
+      border.setAttribute('width', String(Math.max(0, width - 1)));
+      border.setAttribute('height', String(Math.max(0, height + header - 1)));
+      border.setAttribute('fill', 'none');
+      border.setAttribute('stroke', state.exportDark ? '#35515A' : '#D3DFE2');
+      border.setAttribute('stroke-width', '1');
+      outer.appendChild(border);
+    }
     var textNodes = [];
     nodes.forEach(function (item) {
       var node = document.createElementNS(ns, 'text');
@@ -746,6 +758,7 @@
       state.units = message.spec.usermeta && typeof message.spec.usermeta.units === 'string'
         ? message.spec.usermeta.units
         : '';
+      state.chartBorder = Boolean(message.spec.usermeta && message.spec.usermeta.chartBorder);
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

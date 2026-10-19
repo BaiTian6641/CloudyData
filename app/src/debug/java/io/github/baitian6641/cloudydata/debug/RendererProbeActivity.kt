@@ -51,6 +51,12 @@ class RendererProbeActivity : Activity() {
     private val exportSubtitle: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_SUBTITLE) }
     private val exportCaption: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_CAPTION) }
     private val exportSource: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_SOURCE) }
+    private val requestChartBorder: Boolean by lazy {
+        intent.getBooleanExtra(EXTRA_CHART_BORDER, false)
+    }
+    private val requestDark: Boolean by lazy {
+        intent.getBooleanExtra(EXTRA_DARK, false)
+    }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -67,6 +73,7 @@ class RendererProbeActivity : Activity() {
             subtitle = exportSubtitle ?: baseSpec.subtitle,
             caption = exportCaption ?: baseSpec.caption,
             sourceNote = exportSource ?: baseSpec.sourceNote,
+            chartBorder = requestChartBorder,
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -364,7 +371,7 @@ class RendererProbeActivity : Activity() {
         runCatching {
             host?.applyChartSpec(
                 spec = spec,
-                dark = false,
+                dark = requestDark,
                 palette = listOf(0x006A6A, 0x3559C7),
                 widthDp = widthDp,
                 heightDp = heightDp,
@@ -603,6 +610,8 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_EXPORT_SUBTITLE = "export_subtitle"
         const val EXTRA_EXPORT_CAPTION = "export_caption"
         const val EXTRA_EXPORT_SOURCE = "export_source"
+        const val EXTRA_CHART_BORDER = "chart_border"
+        const val EXTRA_DARK = "dark"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

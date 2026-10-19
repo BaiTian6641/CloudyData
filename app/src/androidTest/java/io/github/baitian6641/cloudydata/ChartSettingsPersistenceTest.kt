@@ -81,6 +81,7 @@ class ChartSettingsPersistenceTest {
                             xLabelCount = 2,
                             gridlineWidth = 2.5,
                             valueDecimals = 2,
+                            showChartBorder = true,
                         ),
                     ),
                 ),
@@ -115,6 +116,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(2, reopenedSheet.chart.xLabelCount)
         assertEquals(2.5, reopenedSheet.chart.gridlineWidth!!, 0.0)
         assertEquals(2, reopenedSheet.chart.valueDecimals)
+        assertEquals(true, reopenedSheet.chart.showChartBorder)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

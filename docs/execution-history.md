@@ -527,3 +527,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   5/5 and a focused packaged-Vega format render 1/1 on the physical HP
   Googlebook; lint 0 errors/5 warnings; debug/test APKs compile. Visual
   collision, locale, extreme-magnitude and export rendering were not run.
+
+## 2026-10-19 — CUST14 chart border
+
+- Added optional persisted chart border. Native chart cards (including fallback
+  content) draw a single 1 dp theme-divider outline; the offline renderer carries
+  the intent in spec user metadata, and SVG/PNG/PDF export frames add a 1 px
+  outer outline around header and chart.
+- JVM 53/53; VegaSpecBuilderTest 5/5, ChartSettingsPersistenceTest 5/5 and a
+  focused exported-SVG border render 1/1 on the physical HP Googlebook; lint
+  0 errors/5 warnings. Native visual contrast, density, PNG/PDF pixel
+  comparison and export-header geometry were not visually reviewed.

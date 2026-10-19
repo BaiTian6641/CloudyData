@@ -159,6 +159,7 @@ object VegaSpecBuilder {
                 "usermeta",
                 JSONObject()
                     .put("tooltip", spec.tooltip.show)
+            .put("chartBorder", spec.chartBorder)
                     .put("units", spec.units ?: ""),
             )
             .put("marks", marks)

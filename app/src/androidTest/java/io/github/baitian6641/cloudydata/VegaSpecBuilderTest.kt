@@ -68,6 +68,7 @@ class VegaSpecBuilderTest {
                 showValueLabels = true,
                 gridlineWidth = 2.5,
                 valueDecimals = 2,
+                showChartBorder = true,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
@@ -89,6 +90,7 @@ class VegaSpecBuilderTest {
                 .map { json.getJSONArray("axes").getJSONObject(0).getJSONArray("values").getString(it) },
         )
         assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
+        assertEquals(true, json.getJSONObject("usermeta").getBoolean("chartBorder"))
         assertEquals(
             2.5,
             json.getJSONArray("axes").getJSONObject(1).getDouble("gridWidth"),

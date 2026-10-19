@@ -127,6 +127,7 @@ object ChartSpecBuilder {
             truncated = result.result.truncated,
             units = units,
             valueDecimals = options.valueDecimals,
+            chartBorder = options.showChartBorder,
             padding = options.chartPadding,
         )
     }
@@ -256,6 +257,7 @@ object ChartSpecBuilder {
             lineWidth = options.lineWidth,
             units = units,
             valueDecimals = options.valueDecimals,
+            chartBorder = options.showChartBorder,
             padding = options.chartPadding,
         )
     }

@@ -58,6 +58,7 @@ fun ChartSettingsDialog(
     var axisTitleAnchor by remember { mutableStateOf(current.axisTitleAnchor) }
     var axisAnchorExpanded by remember { mutableStateOf(false) }
     var chartPadding by remember { mutableStateOf(current.chartPadding.toString()) }
+    var showChartBorder by remember { mutableStateOf(current.showChartBorder) }
     var xAxisTitle by remember { mutableStateOf(current.xAxisTitle.orEmpty()) }
     var yAxisTitle by remember { mutableStateOf(current.yAxisTitle.orEmpty()) }
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
@@ -234,6 +235,12 @@ fun ChartSettingsDialog(
                     label = "Chart padding",
                     supportingText = "${ChartOptions.MIN_CHART_PADDING}–${ChartOptions.MAX_CHART_PADDING} dp; default ${ChartOptions.DEFAULT_CHART_PADDING}.",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                ChartToggleRow(
+                    title = "Chart border",
+                    description = "Draw a subtle outline around the chart and exported scene.",
+                    checked = showChartBorder,
+                    onCheckedChange = { showChartBorder = it },
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -533,6 +540,7 @@ fun ChartSettingsDialog(
                             units = clean(units)?.take(16),
                             axisTitleAnchor = axisTitleAnchor,
                             chartPadding = parsedChartPadding ?: ChartOptions.DEFAULT_CHART_PADDING,
+                            showChartBorder = showChartBorder,
                             xAxisTitle = clean(xAxisTitle),
                             yAxisTitle = clean(yAxisTitle),
                             seriesTitle = clean(seriesTitle),

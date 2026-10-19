@@ -754,6 +754,10 @@ class VegaRendererProbeTest {
             assertTrue("current axis title is missing", svg.contains(">Region<"))
             assertTrue("chart title is missing from the export", svg.contains(">Regional sales<"))
             assertTrue("source provenance is missing from the export", svg.contains(">Source: probe fixture<"))
+            assertFalse(
+                "default export unexpectedly has a chart border",
+                Regex("<rect x=\"0\\.5\" y=\"0\\.5\"[^>]*fill=\"none\"").containsMatchIn(svg),
+            )
             assertTrue("export is unexpectedly small: ${svg.length}", svg.length > 500)
             assertTrue("export exceeded the bounded limit", svg.length <= 2 * 1024 * 1024)
             val fileSvg = File(
@@ -763,6 +767,57 @@ class VegaRendererProbeTest {
             assertEquals("probe evidence file does not match the exported payload", svg, fileSvg)
         }
     }
+
+    @Test
+    fun chartBorderIsPresentInExportedSvg() {
+        for ((dark, stroke) in listOf(false to "#D3DFE2", true to "#35515A")) {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_CHART_BORDER, true)
+                .putExtra(RendererProbeActivity.EXTRA_DARK, dark)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                assertNull(RendererProbeState.await(30)!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertNull("export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+                assertTrue("SVG export did not complete", svg != null)
+                val document = svg!!
+                assertNull(
+                    "border export failed validation: ${SvgExportValidator.validate(document)}",
+                    SvgExportValidator.validate(document),
+                )
+                val outerTag = Regex("<svg[^>]*>").find(document)!!.value
+                val outerWidth = attribute(outerTag, "width")
+                val outerHeight = attribute(outerTag, "height")
+                val borderTag = Regex("<rect x=\"0\\.5\" y=\"0\\.5\"[^>]*/>")
+                    .find(document)?.value
+                assertTrue("outer chart border missing from export", borderTag != null)
+                assertEquals(0.5, attribute(borderTag!!, "x"), 0.0)
+                assertEquals(0.5, attribute(borderTag, "y"), 0.0)
+                assertEquals("none", attributeText(borderTag, "fill"))
+                assertEquals(stroke, attributeText(borderTag, "stroke"))
+                assertEquals("1", attributeText(borderTag, "stroke-width"))
+                assertEquals(outerWidth - 1.0, attribute(borderTag, "width"), 0.01)
+                assertEquals(outerHeight - 1.0, attribute(borderTag, "height"), 0.01)
+                val nestedTag = Regex("<svg[^>]*y=\"[^\"]+\"[^>]*>").findAll(document)
+                    .map { it.value }
+                    .first { it != outerTag }
+                val nestedHeight = attribute(nestedTag, "height")
+                assertTrue(
+                    "export border does not include the header: outer=$outerHeight nested=$nestedHeight",
+                    outerHeight > nestedHeight,
+                )
+            }
+        }
+    }
+
+    private fun attribute(tag: String, name: String): Double =
+        attributeText(tag, name).toDouble()
+
+    private fun attributeText(tag: String, name: String): String =
+        Regex("""$name="([^"]*)"""").find(tag)!!.groupValues[1]
 
     @Test
     fun packagedVegaRendersTrustedBarSpecOffline() {
