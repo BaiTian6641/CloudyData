@@ -155,3 +155,12 @@ transaction, and the PDF remains a raster image without a text layer. Evidence:
 snapshot ID. The renderer wraps exports in a background/header/nested-chart SVG;
 PNG and native PDF inherit it. Evidence:
 `qualification/evidence/2026-10-18-s16-titled-export.md`.
+
+### Frozen export bundle addendum
+
+The Export menu can freeze one revision into an SVG scene, rasterize that exact
+scene to PNG, derive the PDF natively, and write all three to one user-selected
+SAF folder with a shared timestamp. Host validation cross-checks PNG/SVG
+dimensions; cancellation and unknown-tree provider failure are explicit.
+Evidence: `qualification/evidence/2026-10-18-s16-frozen-bundle.md`. SAF writes
+are not transactional and PDF remains raster-only.

@@ -114,11 +114,12 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
   are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths
   a bounded exact-value tooltip plus bounded SVG, PNG and one-page PDF export are
   implemented and the real product SaveDocument save/write path is verified;
-  exported scenes now carry title/source provenance and matching dimensions.
-  Product reopening, one frozen multi-format transaction, accessible/rasterized
-  PDF labeling, pointer-hover qualification, print, additive/range selection,
-  product auto-recovery, live OS-window resize, TalkBack and the full chart
-  catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
+  exported scenes now carry title/source provenance and matching dimensions;
+  one frozen multi-format SAF bundle and explicit cancellation/provider-failure
+  paths are verified. Product reopening, accessible/rasterized PDF labeling,
+  print, remaining Q18 injections, pointer-hover qualification, additive/range
+  selection, product auto-recovery, live OS-window resize, TalkBack and the full
+  chart catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
   million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.

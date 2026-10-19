@@ -260,3 +260,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   `Source: chart_line_series.csv · 6 rows · snapshot 5fbbe640`.
 - PDF remains raster-only; separate export actions and Q18 failure injection
   remain. API37 suite 39/39; JVM 24/24; lint 0/5.
+
+## 2026-10-18 — frozen multi-format export bundle
+
+- Added `ExportBundle`: one revision produces a titled SVG and a PNG raster from
+  that exact SVG, plus a native PDF; the host cross-checks dimensions and writes
+  all three to a real SAF folder with one timestamp.
+- Product evidence: SVG 9512 B, PNG 34810 B 1705×318, PDF 16119 B one page
+  1705×318, same basename; cancellation reported and wrote nothing; unknown SAF
+  tree produced an explicit failure.
+- API37 suite 41/41; JVM 24/24; lint 0/5. PDF remains raster-only; accessible/
+  tagged output, print and storage-full/mid-write injection remain pending.

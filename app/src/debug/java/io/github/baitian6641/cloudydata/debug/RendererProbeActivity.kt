@@ -227,6 +227,32 @@ class RendererProbeActivity : Activity() {
                     }
                 }
 
+                override fun onExportBundle(
+                    chartId: String,
+                    revision: Long,
+                    svg: String,
+                    png: ByteArray,
+                    width: Int,
+                    height: Int,
+                ) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        val svgWritten = runCatching {
+                            File(filesDir, "bundle-chart.svg").writeText(svg, Charsets.UTF_8)
+                        }.isSuccess
+                        val pngWritten = runCatching {
+                            File(filesDir, "bundle-chart.png").writeBytes(png)
+                        }.isSuccess
+                        if (svgWritten && pngWritten) {
+                            RendererProbeState.completeBundle(svg, png, width, height)
+                            status.text = "Exported bundle $chartId r$revision · ${width}x$height"
+                        } else {
+                            RendererProbeState.failExport("Could not write the probe bundle files")
+                            status.text = "Bundle write failed"
+                        }
+                    }
+                }
+
                 override fun onExportError(message: String) {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
@@ -356,6 +382,10 @@ class RendererProbeActivity : Activity() {
 
     fun exportPngForTest() {
         host?.requestPngExport()
+    }
+
+    fun exportBundleForTest() {
+        host?.requestExportBundle()
     }
 
 
@@ -576,6 +606,20 @@ object RendererProbeState {
     @Volatile
     private var pngLatch: CountDownLatch = CountDownLatch(1)
 
+    data class BundleExport(
+        val svg: String,
+        val png: ByteArray,
+        val width: Int,
+        val height: Int,
+    )
+
+    @Volatile
+    var bundleExport: BundleExport? = null
+        private set
+
+    @Volatile
+    private var bundleLatch: CountDownLatch = CountDownLatch(1)
+
     @Volatile
     var exportError: String? = null
         private set
@@ -590,9 +634,11 @@ object RendererProbeState {
         exportedPng = null
         pngWidth = 0
         pngHeight = 0
+        bundleExport = null
         exportError = null
         svgLatch = CountDownLatch(1)
         pngLatch = CountDownLatch(1)
+        bundleLatch = CountDownLatch(1)
         latch = CountDownLatch(1)
         recoveryLatch = CountDownLatch(1)
     }
@@ -616,10 +662,22 @@ object RendererProbeState {
         return exportedPng
     }
 
+    fun completeBundle(svg: String, png: ByteArray, width: Int, height: Int) {
+        bundleExport = BundleExport(svg, png, width, height)
+        exportError = null
+        bundleLatch.countDown()
+    }
+
+    fun awaitBundle(timeoutSeconds: Long): BundleExport? {
+        bundleLatch.await(timeoutSeconds, TimeUnit.SECONDS)
+        return bundleExport
+    }
+
     fun failExport(message: String) {
         exportError = message
         svgLatch.countDown()
         pngLatch.countDown()
+        bundleLatch.countDown()
     }
 
     fun awaitSvg(timeoutSeconds: Long): String? {

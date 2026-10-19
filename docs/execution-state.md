@@ -54,7 +54,7 @@ unless stated otherwise.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (warnings documented). JVM tests: 24/24. Emulator instrumentation:
-  39/39, 0 failures. The physical Googlebook was removed by the owner; new
+  41/41, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -75,6 +75,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s11-svg-export.md`
 - `qualification/evidence/2026-10-18-s16-product-export.md`
 - `qualification/evidence/2026-10-18-s16-titled-export.md`
+- `qualification/evidence/2026-10-18-s16-frozen-bundle.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -103,14 +104,14 @@ unless stated otherwise.
   product auto-recovery, focus/TalkBack traversal, live OS-window resize and
   memory limits remain unverified. The native summary/table is the current
   accessible equivalent.
-- Product visual export is verified for a live worksheet: SVG, PNG and PDF
-  actions opened the real DocumentsUI CreateDocument picker, wrote
-  provider-owned bytes, and the files were accepted by independent readers.
-  Title and source/snapshot provenance are now embedded in the exported scene;
-  the latest product exports matched at 1705×318 across PNG/PDF (SVG
-  1704.6666×318.33333). This remains separate export actions rather than one
-  frozen multi-format transaction; PDF is rasterized without a text layer, and
-  failure injection/Q18 and full Q24 remain partial.
+- Product visual export is verified for a live worksheet: individual and frozen
+  multi-format actions use real DocumentsUI/SAF destinations and provider-owned
+  bytes. The frozen bundle produces basename/timestamp-matched SVG/PNG/PDF from
+  one validated scene; the verified set is 9,512-byte SVG,
+  34,810-byte 1705×318 PNG and 16,119-byte one-page 1705×318 PDF with embedded
+  title/source provenance. Cancellation writes nothing; an unknown SAF tree
+  returns an explicit provider failure. PDF is still raster-only, and storage-full/
+  mid-write failure injection, accessible PDF and print remain partial.
 - **Current emulator state:** the rootable API 37 userdebug emulator returned as
   `emulator-5582` (2880×1800, 240 dpi) and carries the preserved Area workbook;
   product-export evidence uses it. `emulator-5580` remains an API 36 non-root
@@ -131,9 +132,9 @@ unless stated otherwise.
   match their probe evidence files; a real product SaveDocument save/write path is
   verified for all three; reopening them in the product remains unverified.
   Title/source/snapshot provenance and matching dimensions are embedded in the
-  latest exports. Pointer hover, a single frozen multi-format export, Q18
-  failure injection, accessible PDF, print, additive/range selection, TalkBack
-  and live-window qualification remain.
+  latest exports; one frozen multi-format export into a SAF folder is verified.
+  Pointer hover, remaining Q18 failure injections, accessible PDF, print,
+  additive/range selection, TalkBack and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -145,18 +146,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S16/F59 frozen multi-format export operation + Q18 failure injection.**
+**S16/F60 accessible PDF + worksheet print flow.**
 
-- Files: `VegaChart.kt`/export orchestration, `VegaRendererHost.kt`, tests.
-- Action: freeze one chart revision, surface size, theme and source note, then
-  write SVG/PNG/PDF from that single frozen scene; inject cancellation, provider
-  failure and stale revision. Keep PDF rasterization labeled unless a tagged
-  path is implemented.
-- Acceptance: one operation produces matching frozen artifacts with the same
-  title/provenance/dimensions; stale/failed exports leave no claimed file;
-  independent readers accept every output.
-- Then: accessible PDF/print, pointer-hover qualification and additive/range
-  selection.
+- Files: `PdfExportWriter`/export orchestration, `AndroidManifest.xml`, print
+  adapter, tests.
+- Action: label/bundle the raster PDF with accessible source/summary metadata (or
+  implement a tagged text layer), add a native Android print path for the current
+  worksheet, and keep title/provenance/page size frozen.
+- Acceptance: a real print/export produces a readable page with title/provenance
+  and accessible text or an explicit rasterized label; cancellation/failure
+  leaves no false completion; independent readers verify the output.
+- Then: remaining Q18 failure injection, pointer-hover qualification and
+  additive/range selection.
 
 ## Protected context
 

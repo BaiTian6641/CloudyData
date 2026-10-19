@@ -1,0 +1,6 @@
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 23:24 /sdcard/Documents/cloudy-chart-20261018-232430.pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 23:24 /sdcard/Documents/cloudy-chart-20261018-232430.png
+-rw-rw---- 1 u0_a211 media_rw  9512 2026-10-18 23:24 /sdcard/Documents/cloudy-chart-20261018-232430.svg
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 23:21 /sdcard/Documents/cloudy-chart-20261018-232143.pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 23:21 /sdcard/Documents/cloudy-chart-20261018-232143.png
+-rw-rw---- 1 u0_a211 media_rw  9504 2026-10-18 23:21 /sdcard/Documents/cloudy-chart-20261018-232143.svg

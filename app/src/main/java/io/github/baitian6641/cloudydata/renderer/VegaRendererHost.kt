@@ -17,6 +17,7 @@ import androidx.webkit.WebViewFeature
 import io.github.baitian6641.cloudydata.BuildConfig
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import java.io.ByteArrayInputStream
+import kotlin.math.abs
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -61,6 +62,14 @@ class VegaRendererHost(
             width: Int,
             height: Int,
             png: ByteArray,
+        )
+        fun onExportBundle(
+            chartId: String,
+            revision: Long,
+            svg: String,
+            png: ByteArray,
+            width: Int,
+            height: Int,
         )
         fun onExportError(message: String)
         fun onRendererError(code: String, detail: String)
@@ -196,6 +205,23 @@ class VegaRendererHost(
     fun requestPngExport() = requestRasterExport("png")
 
     fun requestPdfExport() = requestRasterExport("pdf")
+
+    fun requestExportBundle() {
+        val view = webView
+        if (view == null || !ready || disposed) {
+            listener.onExportError("The renderer is not ready to export.")
+            return
+        }
+        val message = JSONObject().put("type", "ExportBundle")
+        mainHandler.post {
+            if (!disposed && webView === view) {
+                view.evaluateJavascript(
+                    "window.cloudyReceive(${JSONObject.quote(message.toString())})",
+                    null,
+                )
+            }
+        }
+    }
 
     private fun requestRasterExport(purpose: String) {
         val view = webView
@@ -374,30 +400,44 @@ class VegaRendererHost(
                 val height = json.optInt("height", 0)
                 val purpose = if (json.optString("purpose") == "pdf") "pdf" else "png"
                 val encoded = json.optString("pngBase64")
-                if (width !in 1..MAX_EXPORT_DIMENSION || height !in 1..MAX_EXPORT_DIMENSION) {
-                    listener.onExportError("The PNG dimensions are outside the allowed range.")
+                val bytes = runCatching { validatedPng(encoded, width, height) }
+                    .getOrElse {
+                        listener.onExportError(it.message ?: "The PNG payload is invalid.")
+                        return
+                    }
+                listener.onPngExport(chartId, revision, purpose, width, height, bytes)
+            }
+            "ExportBundle" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val svg = json.optString("svg")
+                if (svg.length !in 1..MAX_SVG_CHARS) {
+                    listener.onExportError("The exported SVG is empty or too large.")
                     return
                 }
-                if (encoded.length !in 1..MAX_PNG_BASE64_CHARS) {
-                    listener.onExportError("The PNG payload is empty or too large.")
+                SvgExportValidator.validate(svg)?.let { error ->
+                    listener.onExportError(error)
                     return
                 }
-                val bytes = runCatching { Base64.decode(encoded, Base64.DEFAULT) }.getOrNull()
-                if (bytes == null || bytes.size < 24 ||
-                    !bytes.copyOfRange(0, PNG_SIGNATURE.size).contentEquals(PNG_SIGNATURE)
-                ) {
-                    listener.onExportError("The PNG payload is invalid.")
+                val dimensions = SvgExportValidator.dimensions(svg)
+                if (dimensions == null) {
+                    listener.onExportError("The exported SVG has no bounded dimensions.")
                     return
                 }
-                val pngWidth = pngDimension(bytes, 16)
-                val pngHeight = pngDimension(bytes, 20)
-                if (pngWidth != width || pngHeight != height ||
-                    pngWidth !in 1..MAX_EXPORT_DIMENSION || pngHeight !in 1..MAX_EXPORT_DIMENSION
-                ) {
-                    listener.onExportError("The PNG dimensions do not match the declared bounds.")
+                val width = json.optInt("width", 0)
+                val height = json.optInt("height", 0)
+                val bytes = runCatching {
+                    validatedPng(json.optString("pngBase64"), width, height)
+                }.getOrElse {
+                    listener.onExportError(it.message ?: "The PNG payload is invalid.")
                     return
                 }
-                listener.onPngExport(chartId, revision, purpose, pngWidth, pngHeight, bytes)
+                if (abs(dimensions.width - width) > 1.0 || abs(dimensions.height - height) > 1.0) {
+                    listener.onExportError("The PNG dimensions do not match the exported SVG.")
+                    return
+                }
+                listener.onExportBundle(chartId, revision, svg, bytes, width, height)
             }
             "ExportError" -> {
                 val chartId = json.optString("chartId")
@@ -424,6 +464,26 @@ class VegaRendererHost(
         }
     }
 
+    private fun validatedPng(encoded: String, width: Int, height: Int): ByteArray {
+        require(width in 1..MAX_EXPORT_DIMENSION && height in 1..MAX_EXPORT_DIMENSION) {
+            "The PNG dimensions are outside the allowed range."
+        }
+        require(encoded.length in 1..MAX_PNG_BASE64_CHARS) {
+            "The PNG payload is empty or too large."
+        }
+        val bytes = runCatching { Base64.decode(encoded, Base64.DEFAULT) }.getOrNull()
+            ?: throw IllegalArgumentException("The PNG payload is invalid.")
+        require(bytes.size >= 24 && bytes.copyOfRange(0, PNG_SIGNATURE.size).contentEquals(PNG_SIGNATURE)) {
+            "The PNG payload is invalid."
+        }
+        val pngWidth = pngDimension(bytes, 16)
+        val pngHeight = pngDimension(bytes, 20)
+        require(pngWidth == width && pngHeight == height) {
+            "The PNG dimensions do not match the declared bounds."
+        }
+        return bytes
+    }
+
     private fun capText(value: String, max: Int): String =
         if (value.length <= max) value else value.take(max - 1) + "…"
 
@@ -448,7 +508,7 @@ class VegaRendererHost(
         const val ASSET_DOMAIN = "appassets.androidplatform.net"
         const val BRIDGE_NAME = "CloudyBridge"
         const val MAX_CHART_POINTS = 2000
-        const val MAX_MESSAGE_CHARS = 6 * 1024 * 1024
+        const val MAX_MESSAGE_CHARS = 8 * 1024 * 1024
         const val MAX_SPEC_CHARS = 512 * 1024
         const val MAX_SVG_CHARS = 2 * 1024 * 1024
         const val MAX_PNG_BASE64_CHARS = 4 * 1024 * 1024

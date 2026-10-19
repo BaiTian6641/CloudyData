@@ -33,6 +33,31 @@ object SvgExportValidator {
         "cursor",
     )
 
+    data class Dimensions(val width: Double, val height: Double)
+
+    fun dimensions(svg: String): Dimensions? = runCatching {
+        val parser = Xml.newPullParser()
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true)
+        parser.setInput(StringReader(svg))
+        while (parser.eventType != XmlPullParser.START_TAG) {
+            if (parser.eventType == XmlPullParser.END_DOCUMENT) return null
+            parser.next()
+        }
+        var width: Double? = null
+        var height: Double? = null
+        for (index in 0 until parser.attributeCount) {
+            when (parser.getAttributeName(index).lowercase().substringAfter(':')) {
+                "width" -> width = parser.getAttributeValue(index)?.removeSuffix("px")?.toDoubleOrNull()
+                "height" -> height = parser.getAttributeValue(index)?.removeSuffix("px")?.toDoubleOrNull()
+            }
+        }
+        if (width != null && height != null && width!! > 0 && height!! > 0) {
+            Dimensions(width!!, height!!)
+        } else {
+            null
+        }
+    }.getOrNull()
+
     fun validate(svg: String): String? {
         if (svg.isBlank()) return "The exported SVG is empty."
         return runCatching {

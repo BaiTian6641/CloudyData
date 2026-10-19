@@ -228,6 +228,62 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun frozenBundleHasMatchingSvgPngPdfAndEvidenceFiles() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            scenario.onActivity { it.exportBundleForTest() }
+            val bundle = RendererProbeState.awaitBundle(30)
+            assertNull("bundle export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertTrue("bundle export did not complete", bundle != null)
+            val svg = bundle!!.svg
+            assertNull("bundle SVG failed validation: ${SvgExportValidator.validate(svg)}", SvgExportValidator.validate(svg))
+            assertTrue("bundle title missing", svg.contains(">Regional sales<"))
+            assertTrue("bundle source missing", svg.contains(">Source: probe fixture<"))
+            val dimensions = SvgExportValidator.dimensions(svg)
+            assertNotNull("bundle SVG dimensions missing", dimensions)
+            assertTrue(
+                "bundle PNG dimensions do not match the SVG: ${dimensions!!.width}x${dimensions.height} vs ${bundle.width}x${bundle.height}",
+                kotlin.math.abs(dimensions.width - bundle.width) <= 1.0 &&
+                    kotlin.math.abs(dimensions.height - bundle.height) <= 1.0,
+            )
+            val bitmap = BitmapFactory.decodeByteArray(bundle.png, 0, bundle.png.size)
+            assertNotNull("bundle PNG did not decode", bitmap)
+            assertEquals("bundle PNG width", bundle.width, bitmap!!.width)
+            assertEquals("bundle PNG height", bundle.height, bitmap.height)
+            var opaque = 0
+            val stepX = (bitmap.width / 40).coerceAtLeast(1)
+            val stepY = (bitmap.height / 40).coerceAtLeast(1)
+            var y = 0
+            while (y < bitmap.height) {
+                var x = 0
+                while (x < bitmap.width) {
+                    if ((bitmap.getPixel(x, y) ushr 24) != 0) opaque++
+                    x += stepX
+                }
+                y += stepY
+            }
+            assertTrue("bundle PNG is blank", opaque > 50)
+            val filesDir = InstrumentationRegistry.getInstrumentation().targetContext.filesDir
+            assertEquals("bundle SVG evidence file mismatch", svg, File(filesDir, "bundle-chart.svg").readText())
+            assertTrue("bundle PNG evidence file mismatch", bundle.png.contentEquals(File(filesDir, "bundle-chart.png").readBytes()))
+
+            val pdf = PdfExportWriter.fromPng(bundle.png)
+            val pdfFile = File(filesDir, "bundle-chart.pdf")
+            pdfFile.writeBytes(pdf)
+            ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY).use { descriptor ->
+                PdfRenderer(descriptor).use { renderer ->
+                    assertEquals(1, renderer.pageCount)
+                    renderer.openPage(0).use { page ->
+                        assertEquals(bundle.width, page.width)
+                        assertEquals(bundle.height, page.height)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     fun narrowExportEllipsizesLongTitleAndSourceNote() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

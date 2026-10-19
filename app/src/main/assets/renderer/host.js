@@ -306,16 +306,7 @@
     });
   }
 
-  function exportPng(purpose) {
-    // Snapshot the revision before asynchronous rasterization; a later spec must
-    // not relabel this image as current.
-    var chartId = state.activeChartId;
-    var revision = state.activeRevision;
-    var text = currentSvgMarkup();
-    if (text === null) {
-      postExportError('The chart SVG is not available for PNG rendering', chartId, revision);
-      return;
-    }
+  function rasterizeSvg(text, chartId, revision, onSuccess) {
     try {
       var encoded = btoa(unescape(encodeURIComponent(text)));
       var image = new Image();
@@ -342,15 +333,7 @@
             postExportError('PNG encoding failed', chartId, revision);
             return;
           }
-          post({
-            type: 'PngExport',
-            chartId: chartId,
-            revision: revision,
-            purpose: purpose === 'pdf' ? 'pdf' : 'png',
-            width: width,
-            height: height,
-            pngBase64: dataUrl.substring(comma + 1)
-          });
+          onSuccess(width, height, dataUrl.substring(comma + 1));
         } catch (error) {
           postExportError('PNG rendering failed: ' + (error && error.message ? error.message : error), chartId, revision);
         }
@@ -362,6 +345,50 @@
     } catch (error) {
       postExportError('PNG encoding failed: ' + (error && error.message ? error.message : error), chartId, revision);
     }
+  }
+
+  function exportPng(purpose) {
+    // Snapshot the revision before asynchronous rasterization; a later spec must
+    // not relabel this image as current.
+    var chartId = state.activeChartId;
+    var revision = state.activeRevision;
+    var text = currentSvgMarkup();
+    if (text === null) {
+      postExportError('The chart SVG is not available for PNG rendering', chartId, revision);
+      return;
+    }
+    rasterizeSvg(text, chartId, revision, function (width, height, pngBase64) {
+      post({
+        type: 'PngExport',
+        chartId: chartId,
+        revision: revision,
+        purpose: purpose === 'pdf' ? 'pdf' : 'png',
+        width: width,
+        height: height,
+        pngBase64: pngBase64
+      });
+    });
+  }
+
+  function exportBundle() {
+    var chartId = state.activeChartId;
+    var revision = state.activeRevision;
+    var text = currentSvgMarkup();
+    if (text === null) {
+      postExportError('The chart SVG is not available for the export bundle', chartId, revision);
+      return;
+    }
+    rasterizeSvg(text, chartId, revision, function (width, height, pngBase64) {
+      post({
+        type: 'ExportBundle',
+        chartId: chartId,
+        revision: revision,
+        width: width,
+        height: height,
+        svg: text,
+        pngBase64: pngBase64
+      });
+    });
   }
 
   function disposeView() {
@@ -499,6 +526,9 @@
         break;
       case 'ExportPng':
         exportPng(message.purpose);
+        break;
+      case 'ExportBundle':
+        exportBundle();
         break;
       case 'Dispose':
         disposeView();

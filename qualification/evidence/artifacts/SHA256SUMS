@@ -1,5 +1,5 @@
-4ef39050eb6bec59752b63ca96cbcf0fb1fe81da06d1f6236c15de0dfc671cd2  app/build/outputs/apk/debug/app-debug.apk
-f3bd1c8805c6f940d55bb23f187a1a0de964875347d60a3c75c10c020deb69b0  app/src/main/assets/renderer/host.js
+1163b7f224289e0584407f37d4476b2997f1166957472e7ba660915118b77381  app/build/outputs/apk/debug/app-debug.apk
+56a6b4b2d704e14d7763cd57138eb827f361808610674ae1a3c061b31b2397f9  app/src/main/assets/renderer/host.js
 560957620bf931d20649b3afd22e1934f2a9cd31cbd85b316c2bffecafedae0b  app/src/main/assets/renderer/index.html
 e9b1f19c647fd8de6af562050b27ab945c3a4f542b949edd45f57eb6fc2d3bf8  app/src/main/assets/renderer/renderer.css
 ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
@@ -19,6 +19,16 @@ aeeac6cf1698ca784949adfba2c20f93743e65dba4a3d0c4f454211b3358b4eb  qualification/
 3fdf6ca402ec92afd1e9e41c7c02892fbeaf2228e195b7776891b4ea5f164e7e  qualification/evidence/artifacts/2026-10-18-exported-chart.pdf
 eb7084a247b5f8d94e1e10aebc2c3cf6fb20b3b2fd674eab61936f1f94a39e34  qualification/evidence/artifacts/2026-10-18-exported-chart.png
 0ef81ccf6965f5769d8837e3ffd25746b2021bdff4c794494859e9bcbc59ac5a  qualification/evidence/artifacts/2026-10-18-exported-chart.svg
+dda67800896512f0976c235b0013c6c8906cea93a2b36225e58b2094b78ff429  qualification/evidence/artifacts/2026-10-18-frozen-bundle-cancel-ui.xml
+d90019919d57cbb5f95c21f4c6d6e115d228ee4c2cc754d8f70b5a20832a0168  qualification/evidence/artifacts/2026-10-18-frozen-bundle-downloads.txt
+58990aed6cc2c0a79b5e5450f054bb84dc56c83996b22b582ef32e55bd4ae295  qualification/evidence/artifacts/2026-10-18-frozen-bundle-folder-confirm-ui.xml
+5cd330b0cb6fd0f061d9b5972c93767f9b9b89aa7c62e368a808ec9a7aaa28cf  qualification/evidence/artifacts/2026-10-18-frozen-bundle-folder-picker-ui.xml
+a381299926cebb0dc4d8400414f89a10ea7b0b0d0a3cdd5ffc37d07662e3425b  qualification/evidence/artifacts/2026-10-18-frozen-bundle-pdf-raster.png
+fb4473decd78b791ba12cd20443d82293664277508938313ed236aecc8e1f02a  qualification/evidence/artifacts/2026-10-18-frozen-bundle-success-ui.xml
+8aee460518c0f9b718a47eed904e7a4b75776f01dc08e678eda948950092b508  qualification/evidence/artifacts/2026-10-18-frozen-bundle-success.png
+8bbef20ec7ef20b56326ac1500be381422be58d158f941fc7293df212bccc8f1  qualification/evidence/artifacts/2026-10-18-frozen-bundle.pdf
+8b7fd84b34fa9be9a19cee3e756e655b77c75ca44422cbdb1fbb74a8a6911ec3  qualification/evidence/artifacts/2026-10-18-frozen-bundle.png
+4bc275b937248a539ac30684216d148431f66633e1b9eb2cb8ca8f89a1c7ba63  qualification/evidence/artifacts/2026-10-18-frozen-bundle.svg
 c2d0859b6bf472422138b9a2eebd87e8ccad7322acf8e66fc80d62f4dc12de3d  qualification/evidence/artifacts/2026-10-18-home-ui.xml
 f45f8024951932032ac21f285c0a22a7ae3620e86a79821adfc11f9148065257  qualification/evidence/artifacts/2026-10-18-home.png
 ec7adeb6df09e23701cb043048437941d1dca781ba9b7a841a87a09bca81863d  qualification/evidence/artifacts/2026-10-18-import-dialog-ui.xml

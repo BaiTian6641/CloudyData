@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +55,9 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.renderer.ExportBundleWriter
+import io.github.baitian6641.cloudydata.renderer.ExportWriteResult
+import io.github.baitian6641.cloudydata.renderer.FrozenExport
 import io.github.baitian6641.cloudydata.renderer.PdfExportWriter
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.util.concurrent.atomic.AtomicReference
@@ -96,6 +101,32 @@ fun VegaChartCard(
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
     val scope = rememberCoroutineScope()
     var exportStatus by remember { mutableStateOf<String?>(null) }
+    var showExportMenu by remember { mutableStateOf(false) }
+    fun writeFrozenBundle(uri: android.net.Uri?) {
+        val frozen = exportModel.frozenBundle
+        exportModel.frozenBundle = null
+        if (uri == null) {
+            exportStatus = "Export cancelled."
+            return
+        }
+        if (frozen == null) {
+            exportStatus = "Export was lost when the screen was recreated. Try again."
+            return
+        }
+        scope.launch {
+            exportStatus = withContext(Dispatchers.IO) {
+                when (val result = ExportBundleWriter.write(context, uri, frozen)) {
+                    is ExportWriteResult.Success ->
+                        "Exported SVG, PNG and PDF (${frozen.width}×${frozen.height}) to " +
+                            "${result.directory ?: "the selected folder"}."
+                    is ExportWriteResult.Failure -> "Export failed: ${result.message}"
+                }
+            }
+        }
+    }
+    val saveBundle = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocumentTree(),
+    ) { writeFrozenBundle(it) }
     fun savePending(uri: android.net.Uri?, format: String) {
         val pending = when (format) {
             "png" -> exportModel.pendingPng
@@ -163,26 +194,48 @@ fun VegaChartCard(
             }
             if (rendered && specError == null && rendererError == null) {
                 Spacer(Modifier.width(density.spaceSmall))
-                CloudyTextButton("SVG", {
-                    exportStatus = null
-                    hostRef.get()?.requestSvgExport() ?: run {
-                        exportStatus = "Renderer is unavailable."
+                Box {
+                    CloudyTextButton("Export", { showExportMenu = true })
+                    DropdownMenu(
+                        expanded = showExportMenu,
+                        onDismissRequest = { showExportMenu = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("All formats — SVG, PNG, PDF") },
+                            onClick = {
+                                showExportMenu = false
+                                exportStatus = null
+                                hostRef.get()?.requestExportBundle() ?: run {
+                                    exportStatus = "Renderer is unavailable."
+                                }
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("SVG only") },
+                            onClick = {
+                                showExportMenu = false
+                                exportStatus = null
+                                hostRef.get()?.requestSvgExport()
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("PNG only") },
+                            onClick = {
+                                showExportMenu = false
+                                exportStatus = null
+                                hostRef.get()?.requestPngExport()
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("PDF only") },
+                            onClick = {
+                                showExportMenu = false
+                                exportStatus = null
+                                hostRef.get()?.requestPdfExport()
+                            },
+                        )
                     }
-                })
-                Spacer(Modifier.width(density.spaceSmall))
-                CloudyTextButton("PNG", {
-                    exportStatus = null
-                    hostRef.get()?.requestPngExport() ?: run {
-                        exportStatus = "Renderer is unavailable."
-                    }
-                })
-                Spacer(Modifier.width(density.spaceSmall))
-                CloudyTextButton("PDF", {
-                    exportStatus = null
-                    hostRef.get()?.requestPdfExport() ?: run {
-                        exportStatus = "Renderer is unavailable."
-                    }
-                })
+                }
             }
         }
         if (specError != null) {
@@ -304,6 +357,35 @@ fun VegaChartCard(
                                         }
                                     }
 
+                                    override fun onExportBundle(
+                                        chartId: String,
+                                        revision: Long,
+                                        svg: String,
+                                        png: ByteArray,
+                                        width: Int,
+                                        height: Int,
+                                    ) {
+                                        if (hostRef.get() == null) return
+                                        scope.launch {
+                                            exportStatus = "Preparing the frozen export bundle."
+                                            withContext(Dispatchers.IO) {
+                                                runCatching { PdfExportWriter.fromPng(png) }
+                                            }.onSuccess { pdf ->
+                                                exportModel.frozenBundle = FrozenExport(
+                                                    svg = svg.toByteArray(Charsets.UTF_8),
+                                                    png = png,
+                                                    pdf = pdf,
+                                                    width = width,
+                                                    height = height,
+                                                )
+                                                exportStatus = "Choose a folder for the three frozen files."
+                                                saveBundle.launch(null)
+                                            }.onFailure { error ->
+                                                exportStatus = "Export failed: ${error.message}"
+                                            }
+                                        }
+                                    }
+
                                     override fun onExportError(message: String) {
                                         exportStatus = "Export failed: $message"
                                     }
@@ -418,6 +500,7 @@ internal data class PendingExport(
 )
 
 internal class ChartExportViewModel : ViewModel() {
+    var frozenBundle: FrozenExport? = null
     var pendingSvg: PendingExport? = null
     var pendingPng: PendingExport? = null
     var pendingPdf: PendingExport? = null
