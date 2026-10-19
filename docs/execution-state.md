@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `49490ea`; the marker-border change is in the next
-local commit. `main` tracks `origin/main` at the pushed currency baseline.
+**Source:** commits through `c2660b2`. `main` tracks `origin/main`; the marker
+border stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
