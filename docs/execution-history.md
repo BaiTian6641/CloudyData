@@ -376,3 +376,24 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - `ViewDataQueryTest` 3/3; combined emulator suite 32/32; JVM 32/32; lint 0
   errors/5 warnings. Lasso/rectangle is the next ready selection slice; drill
   still waits on an explicit hierarchy.
+
+## 2026-10-19 — CUST13 rectangle/lasso selection (implemented_unverified)
+
+- Added a pointer rectangle over the offline Vega surface, exact scenegraph hit
+  testing for `cloudyBar`/`cloudyHit`, SVG-CTM coordinate inversion (origin and
+  padding), a visible lasso overlay, and a revision-gated `LassoSelectionIntent`
+  carrying bounded exact source-row identities plus additive state. Ctrl/Meta
+  drag adds; an empty non-additive rectangle clears. Selection overlays are
+  `interactive:false`, and pointer-up hit testing now posts SelectionIntent
+  directly so a click immediately after a lasso cannot be lost to browser click
+  suppression.
+- Added `RowSelectionReducer.selectMany`, native callback wiring, probe lasso
+  mode, tests for set replace/union/clear, slow Ctrl-drag, empty rectangle and
+  overlay non-interactivity. Independent review corrected the coordinate
+  transform (SVG CTM minus origin and padding) and removed the modifier TTL.
+- Host-only checks: JVM **35/35**, lint 0 errors/5 warnings, debug/test APKs
+  compile. Before the final geometry/TTL changes, the API37 physical device ran
+  the renderer selection subset **5/5**, including rectangle and Ctrl-drag.
+- Final device/product qualification is blocked: the owner resumed using the
+  physical device, `emulator-5582` disappeared, and the API36 emulator was not
+  used because of laptop memory pressure. No raw final device log exists.

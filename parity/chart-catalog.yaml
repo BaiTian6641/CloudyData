@@ -163,7 +163,7 @@ customization:
     area: Selection and inspect
     controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
     status: partial
-    note: Click/arrow plus Ctrl/Cmd additive and Shift range selection map to exact source rows in both the chart and native result table; multi-row highlight, endpoint inspector, mark overlays, keep/exclude filters, bounded View Data with active-filter context and Escape focus exit are implemented. Lasso/rectangle, drill and persisted selection remain absent; selection persistence is window/session by default per the architecture. CUST12 covers the tooltip.
+    note: Click/arrow plus Ctrl/Cmd additive and Shift range selection map to exact source rows in both the chart and native result table; multi-row highlight, endpoint inspector, mark overlays, keep/exclude filters, bounded View Data with active-filter context and Escape focus exit are implemented. Rectangle/lasso drag and Ctrl-drag additive selection are implemented but their final device/product qualification was blocked by a device handoff; drill and persisted selection remain absent. Selection persistence is window/session by default per the architecture. CUST12 covers the tooltip.
   - id: CUST14
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]

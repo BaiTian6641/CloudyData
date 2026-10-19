@@ -310,6 +310,10 @@ fun WorkbookScreen(
                                     rowSelection = RowSelectionReducer.select(rowSelection, index, mode)
                                     selectedFieldId = null
                                 },
+                                onSelectionSet = { rows, additive ->
+                                    rowSelection = RowSelectionReducer.selectMany(rowSelection, rows, additive)
+                                    selectedFieldId = null
+                                },
                                 onClampSelection = { rowCount ->
                                     rowSelection = RowSelectionReducer.clamp(rowSelection, rowCount)
                                 },

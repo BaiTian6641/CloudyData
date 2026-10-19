@@ -389,6 +389,7 @@ object VegaSpecBuilder {
         return JSONObject()
             .put("name", "cloudySelectedBar")
             .put("type", "rect")
+            .put("interactive", false)
             .put("from", JSONObject().put("data", "selected"))
             .put("clip", true)
             .put(
@@ -413,6 +414,7 @@ object VegaSpecBuilder {
         return JSONObject()
             .put("name", "cloudySelectedPoints")
             .put("type", "symbol")
+            .put("interactive", false)
             .put("from", JSONObject().put("data", "selected"))
             .put("clip", true)
             .put(

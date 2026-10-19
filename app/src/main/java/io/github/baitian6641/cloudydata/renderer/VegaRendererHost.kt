@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.util.Base64
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -56,6 +55,12 @@ class VegaRendererHost(
             x: String,
             mode: SelectionMode,
         )
+        fun onLassoSelection(
+            chartId: String,
+            revision: Long,
+            sourceRowIndices: Set<Int>,
+            additive: Boolean,
+        )
         fun onFocusExit()
         fun onSvgExport(chartId: String, revision: Long, svg: String)
         fun onPngExport(
@@ -94,7 +99,6 @@ class VegaRendererHost(
     private var pendingSpec: PendingSpec? = null
     private val revisionGate = RendererRevisionGate()
     private var pointerMode: SelectionMode? = null
-    private var pointerModeAt = 0L
 
     private data class PendingSpec(
         val spec: ChartSpec,
@@ -198,13 +202,12 @@ class VegaRendererHost(
             metaState and android.view.KeyEvent.META_META_ON != 0 -> SelectionMode.TOGGLE
             else -> SelectionMode.REPLACE
         }
-        pointerModeAt = SystemClock.uptimeMillis()
     }
 
     private fun consumePointerMode(): SelectionMode? {
         val mode = pointerMode
         pointerMode = null
-        return if (mode != null && SystemClock.uptimeMillis() - pointerModeAt <= 500L) mode else null
+        return mode
     }
 
     fun requestSvgExport() {
@@ -395,6 +398,28 @@ class VegaRendererHost(
                     json.optInt("surfaceHeight", 0),
                     json.optInt("viewWidth", 0),
                     json.optInt("viewHeight", 0),
+                )
+            }
+            "LassoSelectionIntent" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val rowsJson = json.optJSONArray("rows") ?: return
+                val rows = buildSet {
+                    for (index in 0 until rowsJson.length().coerceAtMost(MAX_CHART_POINTS)) {
+                        val row = rowsJson.optInt(index, -1)
+                        if (row in 0..MAX_SOURCE_ROW_INDEX) add(row)
+                    }
+                }
+                if (rowsJson.length() > MAX_CHART_POINTS) return
+                val reportedAdditive = json.optBoolean("additive", false)
+                val pointer = json.optBoolean("pointer", true)
+                val hint = if (pointer) consumePointerMode() else null
+                listener.onLassoSelection(
+                    chartId,
+                    revision,
+                    rows,
+                    reportedAdditive || hint == SelectionMode.TOGGLE,
                 )
             }
             "SelectionIntent" -> {

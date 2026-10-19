@@ -50,4 +50,32 @@ class RowSelectionReducerTest {
         assertEquals(-1, clamped.primary)
         assertTrue(RowSelectionReducer.clamp(state, 0).rows.isEmpty())
     }
+
+    @Test
+    fun lassoSetReplacesWithStableMinMaxEndpoints() {
+        val state = RowSelectionReducer.selectMany(
+            current = RowSelectionState(setOf(9), anchor = 9, primary = 9),
+            rows = setOf(4, 1, 2, -1),
+            additive = false,
+        )
+        assertEquals(setOf(1, 2, 4), state.rows)
+        assertEquals(1, state.anchor)
+        assertEquals(4, state.primary)
+    }
+
+    @Test
+    fun additiveLassoUnionsAndKeepsExistingAnchor() {
+        val current = RowSelectionState(setOf(3), anchor = 3, primary = 3)
+        val state = RowSelectionReducer.selectMany(current, setOf(6, 8), additive = true)
+        assertEquals(setOf(3, 6, 8), state.rows)
+        assertEquals(3, state.anchor)
+        assertEquals(8, state.primary)
+    }
+
+    @Test
+    fun emptyLassoClearsOnlyWhenReplacing() {
+        val current = RowSelectionState(setOf(3), anchor = 3, primary = 3)
+        assertEquals(RowSelectionState(), RowSelectionReducer.selectMany(current, emptySet(), additive = false))
+        assertEquals(current, RowSelectionReducer.selectMany(current, emptySet(), additive = true))
+    }
 }

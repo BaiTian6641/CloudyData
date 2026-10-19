@@ -17,6 +17,7 @@ import io.github.baitian6641.cloudydata.renderer.VegaSpecBuilder
 import org.json.JSONArray
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -95,6 +96,7 @@ class VegaSpecBuilderTest {
             .map { json.getJSONArray("marks").getJSONObject(it) }
         val selectedOverlay = selectedMarks.first { it.optString("name") == "cloudySelectedPoints" }
         assertEquals("selected", selectedOverlay.getJSONObject("from").getString("data"))
+        assertFalse("selected overlay must not intercept marks", selectedOverlay.getBoolean("interactive"))
         assertFalse("renderer must not receive analytical aggregation transforms", json.toString().contains("\"aggregate\""))
         val values = json.getJSONArray("data").getJSONObject(0).getJSONArray("values")
         assertEquals(6, values.length())
@@ -197,11 +199,10 @@ class VegaSpecBuilderTest {
         val bar = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("rect", bar.getString("type"))
         assertTrue(bar.has("clip"))
-        assertTrue(
-            "selected bar overlay missing",
-            (0 until json.getJSONArray("marks").length()).any {
-                json.getJSONArray("marks").getJSONObject(it).optString("name") == "cloudySelectedBar"
-            },
-        )
+        val selectedBar = (0 until json.getJSONArray("marks").length())
+            .map { json.getJSONArray("marks").getJSONObject(it) }
+            .firstOrNull { it.optString("name") == "cloudySelectedBar" }
+        assertNotNull("selected bar overlay missing", selectedBar)
+        assertFalse("selected bar overlay must not intercept marks", selectedBar!!.getBoolean("interactive"))
     }
 }

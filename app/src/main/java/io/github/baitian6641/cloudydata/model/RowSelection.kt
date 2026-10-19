@@ -39,4 +39,29 @@ object RowSelectionReducer {
         val anchor = current.anchor.takeIf { it in 0 until rowCount } ?: -1
         return RowSelectionState(rows, anchor, primary)
     }
+
+    /**
+     * Applies an exact set from a rectangle/lasso. Additive keeps the existing
+     * set; replace clears it, including when [rows] is empty.
+     */
+    fun selectMany(
+        current: RowSelectionState,
+        rows: Set<Int>,
+        additive: Boolean,
+    ): RowSelectionState {
+        val incoming = rows.filter { it >= 0 }.toSet()
+        if (incoming.isEmpty()) {
+            return if (additive) current else RowSelectionState()
+        }
+        if (additive) {
+            val combined = current.rows + incoming
+            val anchor = current.anchor.takeIf { it >= 0 } ?: incoming.minOrNull() ?: -1
+            return RowSelectionState(combined, anchor, incoming.maxOrNull() ?: current.primary)
+        }
+        return RowSelectionState(
+            rows = incoming,
+            anchor = incoming.minOrNull() ?: -1,
+            primary = incoming.maxOrNull() ?: -1,
+        )
+    }
 }

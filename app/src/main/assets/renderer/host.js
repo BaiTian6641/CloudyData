@@ -11,7 +11,9 @@
     exportTitle: '',
     exportSource: '',
     exportDark: false,
-    pointerMode: 'replace'
+    pointerMode: 'replace',
+    lasso: null,
+    suppressClickUntil: 0
   };
 
   function post(message) {
@@ -145,10 +147,239 @@
     return true;
   }
 
+  function viewClientPoint(event) {
+    var rect = viewElement.getBoundingClientRect();
+    var svg = document.querySelector('#view svg');
+    var ctm = svg && svg.getScreenCTM ? svg.getScreenCTM() : null;
+    if (svg && ctm) {
+      try {
+        var point = svg.createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        var local = point.matrixTransform(ctm.inverse());
+        var origin = typeof state.view.origin === 'function' ? state.view.origin() : [0, 0];
+        var padding = typeof state.view.padding === 'function' ? state.view.padding() : null;
+        var padLeft = padding && typeof padding.left === 'number' ? padding.left : 0;
+        var padTop = padding && typeof padding.top === 'number' ? padding.top : 0;
+        return {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          x: local.x - origin[0] - padLeft,
+          y: local.y - origin[1] - padTop
+        };
+      } catch (error) {
+        // Fall through to the box approximation if the SVG matrix is unavailable.
+      }
+    }
+    var viewWidth = 1;
+    var viewHeight = 1;
+    try {
+      viewWidth = state.view.width() || rect.width || 1;
+      viewHeight = state.view.height() || rect.height || 1;
+    } catch (error) {
+      viewWidth = rect.width || 1;
+      viewHeight = rect.height || 1;
+    }
+    var fallbackPadding = typeof state.view.padding === 'function' ? state.view.padding() : null;
+    var fallbackLeft = fallbackPadding && typeof fallbackPadding.left === 'number' ? fallbackPadding.left : 0;
+    var fallbackTop = fallbackPadding && typeof fallbackPadding.top === 'number' ? fallbackPadding.top : 0;
+    return {
+      clientX: event.clientX,
+      clientY: event.clientY,
+      x: (event.clientX - rect.left) * (viewWidth / (rect.width || 1)) - fallbackLeft,
+      y: (event.clientY - rect.top) * (viewHeight / (rect.height || 1)) - fallbackTop
+    };
+  }
+
+  function itemBounds(item) {
+    var bounds = item && item.bounds;
+    if (!bounds) return null;
+    if (typeof bounds.x1 === 'number') return [bounds.x1, bounds.y1, bounds.x2, bounds.y2];
+    if (bounds.length >= 4) return [bounds[0], bounds[1], bounds[2], bounds[3]];
+    return null;
+  }
+
+  function itemIntersects(item, left, top, right, bottom) {
+    if (!item) return false;
+    var bounds = itemBounds(item);
+    if (bounds) {
+      return bounds[2] >= left && bounds[0] <= right && bounds[3] >= top && bounds[1] <= bottom;
+    }
+    if (typeof item.x === 'number' && typeof item.y === 'number') {
+      var radius = 10;
+      if (typeof item.size === 'number' && item.size > 0) radius = Math.max(6, Math.sqrt(item.size) / 2 + 2);
+      var width = typeof item.width === 'number' ? item.width : radius * 2;
+      var height = typeof item.height === 'number' ? item.height : radius * 2;
+      return item.x + width >= left && item.x <= right && item.y + height >= top && item.y <= bottom;
+    }
+    return false;
+  }
+
+  function pointHitsMark(item, x, y) {
+    var bounds = itemBounds(item);
+    if (bounds) return x >= bounds[0] && x <= bounds[2] && y >= bounds[1] && y <= bounds[3];
+    if (typeof item.x === 'number' && typeof item.y === 'number') {
+      var radius = 10;
+      if (typeof item.size === 'number' && item.size > 0) radius = Math.max(6, Math.sqrt(item.size) / 2 + 2);
+      var dx = x - item.x;
+      var dy = y - item.y;
+      return dx * dx + dy * dy <= radius * radius;
+    }
+    return false;
+  }
+
+  function findHitAt(x, y) {
+    var found = null;
+    if (!state.view) return null;
+    function walk(items) {
+      (items || []).forEach(function (item) {
+        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit') &&
+            item.datum && typeof item.datum.sourceRowIndex === 'number' &&
+            pointHitsMark(item, x, y)) {
+          found = item.datum;
+        }
+        if (item.items) walk(item.items);
+      });
+    }
+    try {
+      walk(state.view.scenegraph().root.items);
+    } catch (error) {
+      return null;
+    }
+    return found;
+  }
+
+  function collectLassoRows(left, top, right, bottom) {
+    var rows = {};
+    if (!state.view) return [];
+    function walk(items) {
+      (items || []).forEach(function (item) {
+        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit') &&
+            item.datum && typeof item.datum.sourceRowIndex === 'number' &&
+            itemIntersects(item, left, top, right, bottom)) {
+          rows[item.datum.sourceRowIndex] = true;
+        }
+        if (item.items) walk(item.items);
+      });
+    }
+    try {
+      walk(state.view.scenegraph().root.items);
+    } catch (error) {
+      return [];
+    }
+    return Object.keys(rows).map(Number).sort(function (a, b) { return a - b; });
+  }
+
+  function lassoOverlay() {
+    return document.getElementById('lasso');
+  }
+
+  function updateLassoOverlay(start, current) {
+    var overlay = lassoOverlay();
+    if (!overlay) return;
+    var viewRect = viewElement.getBoundingClientRect();
+    var left = Math.min(start.clientX, current.clientX) - viewRect.left;
+    var top = Math.min(start.clientY, current.clientY) - viewRect.top;
+    var width = Math.abs(current.clientX - start.clientX);
+    var height = Math.abs(current.clientY - start.clientY);
+    overlay.style.left = left + 'px';
+    overlay.style.top = top + 'px';
+    overlay.style.width = width + 'px';
+    overlay.style.height = height + 'px';
+    overlay.style.borderColor = state.exportDark ? '#9FB3B8' : '#35515A';
+    overlay.style.background = state.exportDark ? 'rgba(159,179,184,0.14)' : 'rgba(53,81,90,0.12)';
+    overlay.hidden = false;
+  }
+
+  function hideLassoOverlay() {
+    var overlay = lassoOverlay();
+    if (overlay) overlay.hidden = true;
+  }
+
   var viewElement = document.getElementById('view');
   if (viewElement) {
     viewElement.addEventListener('click', function (event) {
+      if (Date.now() < state.suppressClickUntil) {
+        state.suppressClickUntil = 0;
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
       state.pointerMode = selectionMode(event);
+    }, true);
+
+    viewElement.addEventListener('pointerdown', function (event) {
+      if (event.button !== undefined && event.button !== 0) return;
+      // A new physical press starts a new gesture; only the synthetic click
+      // produced by the just-finished lasso is suppressed.
+      state.suppressClickUntil = 0;
+      var point = viewClientPoint(event);
+      state.lasso = {
+        pointerId: event.pointerId,
+        startClientX: event.clientX,
+        startClientY: event.clientY,
+        startX: point.x,
+        startY: point.y,
+        additive: event.ctrlKey || event.metaKey,
+        moved: false
+      };
+    }, true);
+
+    viewElement.addEventListener('pointermove', function (event) {
+      var lasso = state.lasso;
+      if (!lasso || event.pointerId !== lasso.pointerId) return;
+      if (!lasso.moved) {
+        var dx = event.clientX - lasso.startClientX;
+        var dy = event.clientY - lasso.startClientY;
+        if (Math.sqrt(dx * dx + dy * dy) < 8) return;
+        lasso.moved = true;
+        try { viewElement.setPointerCapture(lasso.pointerId); } catch (error) { /* mouse fallback */ }
+      }
+      event.preventDefault();
+      updateLassoOverlay(lasso, event);
+    }, { capture: true, passive: false });
+
+    viewElement.addEventListener('pointerup', function (event) {
+      var lasso = state.lasso;
+      if (!lasso || event.pointerId !== lasso.pointerId) return;
+      state.lasso = null;
+      var point = viewClientPoint(event);
+      if (!lasso.moved) {
+        var datum = findHitAt(point.x, point.y);
+        if (datum) {
+          state.suppressClickUntil = Date.now() + 250;
+          postSelection(state.activeChartId, state.activeRevision, datum, selectionMode(event), true);
+        }
+        return;
+      }
+      hideLassoOverlay();
+      try {
+        if (viewElement.hasPointerCapture(event.pointerId)) {
+          viewElement.releasePointerCapture(event.pointerId);
+        }
+      } catch (error) { /* ignore */ }
+      var left = Math.min(lasso.startX, point.x);
+      var top = Math.min(lasso.startY, point.y);
+      var right = Math.max(lasso.startX, point.x);
+      var bottom = Math.max(lasso.startY, point.y);
+      var rows = collectLassoRows(left, top, right, bottom);
+      // A completed non-additive rectangle is an explicit selection command:
+      // no intersecting marks clears the set. Additive empty rectangles no-op.
+      state.suppressClickUntil = Date.now() + 450;
+      post({
+        type: 'LassoSelectionIntent',
+        chartId: state.activeChartId,
+        revision: state.activeRevision,
+        rows: rows,
+        additive: lasso.additive === true,
+        pointer: true
+      });
+    }, true);
+
+    viewElement.addEventListener('pointercancel', function (event) {
+      if (!state.lasso || event.pointerId !== state.lasso.pointerId) return;
+      state.lasso = null;
+      hideLassoOverlay();
     }, true);
   }
 
@@ -449,6 +680,8 @@
         // Disposal is best effort; a dead renderer cannot be repaired here.
       }
       state.view = null;
+      state.lasso = null;
+      hideLassoOverlay();
     }
   }
 

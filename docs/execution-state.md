@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `b72ee99`. Remote push not performed/authorized in
-this session.
+**Source:** commits through `1169778`; the lasso implementation is in the next
+local commit. Remote push not performed/authorized.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,10 +54,12 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: 32/32. Emulator renderer probe: 17/17;
-  Vega spec builder: 4/4; keep/exclude query suite plus engine and line
-  regressions: 9/9; table-selection plus keep/exclude/renderer/spec: 27/27;
-  View Data plus that suite: 32/32. A three-device connected run still hits a
+- Lint: 0 errors (5 warnings). JVM: **35/35**, including set-selection reducer
+  cases. Emulator renderer probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
+  keep/exclude query suite plus engine and line regressions: 9/9;
+  table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
+  suite: 32/32. The final lasso slice was not instrumented after device handoff;
+  see **Implemented but unverified**. A three-device connected run still hits a
   physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
   device timeouts; the emulator suites are clean.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
@@ -86,6 +88,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust13-keep-exclude.md`
 - `qualification/evidence/2026-10-19-cust13-table-selection.md`
 - `qualification/evidence/2026-10-19-cust13-view-data.md`
+- `qualification/evidence/2026-10-19-cust13-lasso.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -93,6 +96,14 @@ unless stated otherwise.
 
 ## Implemented but unverified
 
+- **Rectangle/lasso final qualification.** Renderer gesture, SVG-CTM hit
+  testing, revision-gated set intent, non-interactive overlays and native set
+  reducer compile and pass host-only checks. An earlier pre-final renderer
+  probe on the API37 physical Googlebook passed **5/5** selection methods,
+  including rectangle and Ctrl-drag. The final coordinate/TTL/empty-rectangle
+  changes and the product-level worksheet path were not rerun: the owner
+  resumed using the physical device, `emulator-5582` disappeared from `adb`, and
+  the API36 emulator was not used further because it consumes laptop memory.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -126,10 +137,13 @@ unless stated otherwise.
   a mode into later activation; modified Enter/Space mapping is implemented but
   its row-focus path is not separately exercised. View Data resolves the
   selected marks back to bounded, exact source rows, combines the active
-  worksheet filter and invalidates stale responses. Lasso/rectangle, drill,
-  compound/global filters, persisted selection, pointer hover, product
-  auto-recovery, focus/TalkBack traversal, live OS-window resize and memory
-  limits remain unverified. The native summary/table is the accessible
+  worksheet filter and invalidates stale responses. Rectangle/lasso drag and
+  Ctrl-drag additive selection are implemented with SVG-CTM scene hit testing,
+  a revision-gated set intent, non-interactive overlays and a native set
+  reducer; final device/product qualification was interrupted by a device
+  handoff. Drill, compound/global filters, persisted selection, pointer hover,
+  product auto-recovery, focus/TalkBack traversal, live OS-window resize and
+  memory limits remain unverified. The native summary/table is the accessible
   equivalent.
 - Product visual export is verified for a live worksheet: individual and frozen
   multi-format actions use real DocumentsUI/SAF destinations and provider-owned
@@ -139,13 +153,12 @@ unless stated otherwise.
   title/source provenance. Cancellation writes nothing; an unknown SAF tree
   returns an explicit provider failure. PDF is still raster-only, and storage-full/
   mid-write failure injection, accessible PDF and print remain partial.
-- **Current emulator state:** the rootable API 37 userdebug emulator returned as
-  `emulator-5582` (2880×1800, 240 dpi) and carries the reimported
-  `chart_line_series.csv` workbook configured as an `event_date` table for the
-  View Data evidence. `emulator-5580` remains an API 36 non-root fallback with
-  the 2880×1800/240 dpi override. The physical Googlebook is connected again;
-  its PNG export path has an unrelated one-pixel height mismatch in the
-  connected suite.
+- **Current device state:** the owner is using the API37 physical Googlebook
+  (`C1L63708PZ`); no further interaction is permitted. The rootable
+  `emulator-5582` disappeared from `adb` during the renderer suite. Only the
+  API36 `emulator-5580` remains, and it was not started/used further because it
+  consumes laptop memory. Final lasso/product instrumentation is blocked until
+  an available device is provided.
 
 ## Not implemented / blocked
 
@@ -165,9 +178,9 @@ unless stated otherwise.
   The bundle PDF now includes a searchable A4 table and the product exposes a
   native Print worksheet flow; a real Save-as-PDF print produced a two-page,
   text-extractable PDF. PDF tagging, print-spooler completion, pointer hover,
-  remaining Q18 failures, lasso/rectangle, drill/hierarchy, compound or
-  cross-sheet filters, persisted selection, TalkBack and live-window
-  qualification remain.
+  remaining Q18 failures, final lasso/rectangle device and product qualification,
+  drill/hierarchy, compound or cross-sheet filters, persisted selection, TalkBack
+  and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -179,16 +192,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST13 lasso/rectangle mark selection.**
+**CUST13 final lasso/product qualification — blocked on an available device.**
 
-- Files: renderer host pointer bridge, `VegaChart` selection intent handling,
-  `RowSelection` reducer integration, fallback/table access and tests.
-- Action: drag a rectangular selection over exact marks, map intersecting marks
-  to their existing source identities, and preserve plain/keyboard/table
-  selection as the accessible alternative. Reject stale chart/revision intents.
-- Acceptance: only intersecting marks are selected, modifier composition is
-  deterministic, empty/clear behavior is explicit, and the same set appears in
-  the table, inspector, mark overlay and View Data.
+- Files: none planned; fix `renderer/host.js`, `VegaChart.kt`,
+  `WorkbookScreen.kt`, tests/evidence only if qualification finds a defect.
+- Action: with an explicitly available device, run the rectangle/Ctrl-drag probe
+  (including slow drag and empty rectangle), run the full selection suite, then
+  perform a product worksheet rectangle/Ctrl-drag and open View Data on the same
+  selected set.
+- Acceptance: exact intersecting marks appear in the table, inspector, overlay
+  and View Data; empty replace clears; Ctrl-drag adds; keyboard/table remain the
+  accessible alternative; stale chart/revision intents are rejected.
 - Then: drill once an explicit dimension hierarchy exists; persisted selection
   remains an explicit action, not automatic.
 

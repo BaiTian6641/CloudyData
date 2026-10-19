@@ -184,6 +184,21 @@ class RendererProbeActivity : Activity() {
                     }
                 }
 
+                override fun onLassoSelection(
+                    chartId: String,
+                    revision: Long,
+                    sourceRowIndices: Set<Int>,
+                    additive: Boolean,
+                ) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        RendererProbeState.applyLasso(sourceRowIndices, additive)
+                        host?.applySelection(chartId, revision, RendererProbeState.selectionRows)
+                        status.text = "Lasso selected rows=${RendererProbeState.selectionRows.size} · " +
+                            "additive=$additive · $chartId r$revision"
+                    }
+                }
+
                 override fun onFocusExit() {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
@@ -718,6 +733,14 @@ object RendererProbeState {
         selectionRow.set(row)
         selectionRows = selectionState.rows
         selectionMode = mode
+        selectionCount.incrementAndGet()
+    }
+
+    fun applyLasso(rows: Set<Int>, additive: Boolean) {
+        selectionState = RowSelectionReducer.selectMany(selectionState, rows, additive)
+        selectionRow.set(selectionState.primary)
+        selectionRows = selectionState.rows
+        selectionMode = if (additive) SelectionMode.TOGGLE else SelectionMode.REPLACE
         selectionCount.incrementAndGet()
     }
 

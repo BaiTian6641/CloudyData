@@ -81,6 +81,7 @@ fun VegaChartCard(
     selectedRowIndices: Set<Int>,
     onSelectRow: (Int) -> Unit,
     onSelection: (Int, SelectionMode) -> Unit,
+    onSelectionSet: (Set<Int>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     chartId: String = "worksheet-chart",
     title: String = chartTitle(result),
@@ -107,6 +108,7 @@ fun VegaChartCard(
     val focusManager = LocalFocusManager.current
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
     val currentSelection = rememberUpdatedState(onSelection)
+    val currentSelectionSet = rememberUpdatedState(onSelectionSet)
     var appliedExport by remember { mutableStateOf<AppliedExport?>(null) }
     val context = LocalContext.current
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
@@ -366,6 +368,19 @@ fun VegaChartCard(
                                         }
                                     }
 
+                                    override fun onLassoSelection(
+                                        chartId: String,
+                                        revision: Long,
+                                        sourceRowIndices: Set<Int>,
+                                        additive: Boolean,
+                                    ) {
+                                        val rowCount = currentRowCount.value
+                                        val valid = sourceRowIndices.filter { it in 0 until rowCount }.toSet()
+                                        if (valid.size != sourceRowIndices.size) return
+                                        hostRef.get()?.webView?.requestFocus()
+                                        currentSelectionSet.value(valid, additive)
+                                    }
+
                                     override fun onFocusExit() {
                                         hostRef.get()?.webView?.clearFocus()
                                         focusManager.clearFocus(force = true)
@@ -621,7 +636,8 @@ private fun accessibleSummary(spec: ChartSpec): String {
         ChartKind.AREA -> "Area"
     }
     return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; " +
-        "Ctrl-click or Ctrl+arrow adds, Shift-click or Shift+arrow selects a range; Escape leaves the chart."
+        "Ctrl-click or Ctrl+arrow adds, Shift-click or Shift+arrow selects a range; " +
+        "drag a rectangle to select intersecting marks and Ctrl-drag to add; Escape leaves the chart."
 }
 
 internal data class PendingExport(

@@ -7,12 +7,14 @@ import android.os.ParcelFileDescriptor
 import android.graphics.Rect
 import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.uiautomator.UiDevice
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.debug.RendererProbeActivity
 import io.github.baitian6641.cloudydata.debug.RendererProbeState
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.renderer.PdfExportWriter
 import io.github.baitian6641.cloudydata.renderer.SvgExportValidator
 import java.io.File
@@ -320,6 +322,114 @@ class VegaRendererProbeTest {
                 rangeObserved,
             )
         }
+    }
+
+    @Test
+    fun rectangleDragSelectsIntersectingMarksAndCtrlDragAdds() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var bounds: Rect? = null
+            scenario.onActivity { bounds = it.rendererBoundsForTest() }
+            val chart = bounds!!
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+
+            dragWithMeta(
+                instrumentation,
+                (chart.left + chart.width() * 0.05f).toInt(),
+                (chart.top + chart.height() * 0.12f).toInt(),
+                (chart.left + chart.width() * 0.95f).toInt(),
+                (chart.top + chart.height() * 0.88f).toInt(),
+                0,
+            )
+            assertTrue("rectangle did not select both bars", waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1)
+            })
+
+            // Raw pointer injection exercises the pointerup hit-test immediately
+            // after the lasso; a new press must not inherit click suppression.
+            clickWithMeta(
+                instrumentation,
+                (chart.left + chart.width() * 0.28f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+                0,
+            )
+            assertTrue(
+                "plain click did not replace with row 0: rows=${RendererProbeState.selectionRows} " +
+                    "row=${RendererProbeState.selectionRow.get()} mode=${RendererProbeState.selectionMode}",
+                waitFor(5000) { RendererProbeState.selectionRows == setOf(0) },
+            )
+
+            dragWithMeta(
+                instrumentation,
+                (chart.left + chart.width() * 0.60f).toInt(),
+                (chart.top + chart.height() * 0.20f).toInt(),
+                (chart.left + chart.width() * 0.95f).toInt(),
+                (chart.top + chart.height() * 0.88f).toInt(),
+                KeyEvent.META_CTRL_ON,
+                stepDelayMs = 150L,
+            )
+            assertTrue(
+                "Slow Ctrl-drag did not add the second bar: rows=${RendererProbeState.selectionRows}",
+                waitFor(5000) {
+                    RendererProbeState.selectionRows == setOf(0, 1) &&
+                        RendererProbeState.selectionMode == SelectionMode.TOGGLE
+                },
+            )
+
+            dragWithMeta(
+                instrumentation,
+                chart.left + 2,
+                chart.top + 2,
+                chart.left + 12,
+                chart.top + 12,
+                0,
+            )
+            assertTrue("empty rectangle did not clear the selection", waitFor(5000) {
+                RendererProbeState.selectionRows.isEmpty()
+            })
+
+        }
+    }
+
+    private fun dragWithMeta(
+        instrumentation: android.app.Instrumentation,
+        startX: Int,
+        startY: Int,
+        endX: Int,
+        endY: Int,
+        metaState: Int,
+        stepDelayMs: Long = 30L,
+    ) {
+        val downTime = SystemClock.uptimeMillis()
+        instrumentation.sendPointerSync(
+            MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, startX.toFloat(), startY.toFloat(), metaState),
+        )
+        for (step in 1..4) {
+            SystemClock.sleep(stepDelayMs)
+            val fraction = step / 4f
+            instrumentation.sendPointerSync(
+                MotionEvent.obtain(
+                    downTime,
+                    SystemClock.uptimeMillis(),
+                    MotionEvent.ACTION_MOVE,
+                    startX + (endX - startX) * fraction,
+                    startY + (endY - startY) * fraction,
+                    metaState,
+                ),
+            )
+        }
+        SystemClock.sleep(stepDelayMs)
+        instrumentation.sendPointerSync(
+            MotionEvent.obtain(
+                downTime,
+                SystemClock.uptimeMillis(),
+                MotionEvent.ACTION_UP,
+                endX.toFloat(),
+                endY.toFloat(),
+                metaState,
+            ),
+        )
     }
 
     private fun clickWithMeta(
