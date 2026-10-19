@@ -43,6 +43,7 @@ class ChartSpecBuilderTest {
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
+                lineWidth = 3.5,
             ),
             derivedTitle = "derived",
         )
@@ -56,6 +57,7 @@ class ChartSpecBuilderTest {
         assertEquals(true, spec.labels.show)
         assertEquals(LegendPosition.RIGHT, spec.legend.position)
         assertEquals(LegendOrientation.VERTICAL, spec.legend.orientation)
+        assertEquals(3.5, spec.lineWidth!!, 0.0)
         assertEquals(2, spec.series.size)
         val north = spec.series.first { it.key == "North" }
         val south = spec.series.first { it.key == "South" }
@@ -357,6 +359,20 @@ class ChartSpecBuilderTest {
             throw AssertionError("expected tick-count rejection")
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("2 and 50"))
+        }
+    }
+
+    @Test
+    fun lineWidthIsValidated() {
+        try {
+            ChartSpecBuilder.build(
+                "line", 0, lineResult(),
+                ChartOptions(lineWidth = 0.5),
+                "derived",
+            )
+            throw AssertionError("expected line-width rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("1.0 and 8.0"))
         }
     }
 

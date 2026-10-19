@@ -59,6 +59,7 @@ fun ChartSettingsDialog(
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
+    var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
@@ -73,6 +74,7 @@ fun ChartSettingsDialog(
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
         yMax.trim().isNotEmpty() && (parsedMax == null || !parsedMax.isFinite()) -> "Y maximum must be a finite number."
@@ -86,6 +88,9 @@ fun ChartSettingsDialog(
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
                 "${ChartOptions.MAX_LABEL_FONT_SIZE}."
+        lineWidth.trim().isNotEmpty() && (parsedLineWidth == null || !parsedLineWidth.isFinite() ||
+            parsedLineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH) ->
+            "Line width must be from ${ChartOptions.MIN_LINE_WIDTH} to ${ChartOptions.MAX_LINE_WIDTH}."
         else -> null
     }
 
@@ -190,6 +195,15 @@ fun ChartSettingsDialog(
                     supportingText = "${ChartOptions.MIN_LABEL_FONT_SIZE}–${ChartOptions.MAX_LABEL_FONT_SIZE}, blank for mark default.",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
+                if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+                    CloudyTextField(
+                        value = lineWidth,
+                        onValueChange = { lineWidth = it },
+                        label = "Line width",
+                        supportingText = "${ChartOptions.MIN_LINE_WIDTH}–${ChartOptions.MAX_LINE_WIDTH}, blank for mark default.",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    )
+                }
                 ChartToggleRow(
                     title = "Tooltip",
                     description = "Show the exact series, category and value on hover, focus or selection.",
@@ -340,6 +354,11 @@ fun ChartSettingsDialog(
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
                             labelFontSize = parsedLabelFontSize,
+                            lineWidth = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+                                parsedLineWidth
+                            } else {
+                                null
+                            },
                         ),
                     )
                 },

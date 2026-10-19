@@ -129,6 +129,13 @@ object ChartSpecBuilder {
         sourceNote: String?,
     ): ChartSpec {
         val label = if (kind == ChartKind.AREA) "Area" else "Line"
+        if (options.lineWidth != null &&
+            (!options.lineWidth.isFinite() || options.lineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH)
+        ) {
+            throw ChartSpecException(
+                "Line width must be between ${ChartOptions.MIN_LINE_WIDTH} and ${ChartOptions.MAX_LINE_WIDTH}.",
+            )
+        }
         if (kind == ChartKind.AREA && options.logScale) {
             throw ChartSpecException("A logarithmic value axis is not available for Area marks in this build.")
         }
@@ -224,6 +231,7 @@ object ChartSpecBuilder {
             rowCount = result.result.rows.size,
             truncated = result.result.truncated,
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
+            lineWidth = options.lineWidth,
         )
     }
 

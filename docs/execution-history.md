@@ -439,3 +439,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 41/41; lint 0 errors/5 warnings; debug/test APKs compile. Vega JSON and
   persistence instrumentation compile but were not run; no device legibility,
   clipping, collision or export evidence.
+
+## 2026-10-19 — CUST08 line width
+
+- Added optional persisted `lineWidth` (1–8) for Line/Area, chart-settings input,
+  spec validation and Vega stroke lowering. Defaults remain 2.0 for Line and
+  1.5 for the Area outline; Bar and selection overlays are untouched. Bar/Table
+  Apply clears hidden widths, and validation is time-series only.
+- JVM 42/42; lint 0 errors/5 warnings; debug/test APKs compile. Vega JSON and
+  persistence instrumentation compile but were not run; no device thickness,
+  legend-sample or export evidence.

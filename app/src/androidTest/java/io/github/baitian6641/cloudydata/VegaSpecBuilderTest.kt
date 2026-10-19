@@ -67,6 +67,7 @@ class VegaSpecBuilderTest {
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
+                lineWidth = 3.5,
             ),
             "derived",
         )
@@ -74,6 +75,13 @@ class VegaSpecBuilderTest {
         assertEquals(1, json.getInt("version"))
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))
+        assertEquals(
+            3.5,
+            group.getJSONArray("marks").getJSONObject(0)
+                .getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("strokeWidth").getDouble("value"),
+            0.0,
+        )
         val facet = group.getJSONObject("from").getJSONObject("facet")
         assertEquals("table", facet.getString("data"))
         assertEquals("series", facet.getJSONArray("groupby").getString(0))
@@ -154,6 +162,13 @@ class VegaSpecBuilderTest {
             "derived",
         )
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
+        assertEquals(
+            2.0,
+            json.getJSONArray("marks").getJSONObject(0).getJSONArray("marks").getJSONObject(0)
+                .getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("strokeWidth").getDouble("value"),
+            0.0,
+        )
         val legend = json.getJSONArray("legends").getJSONObject(0)
         assertEquals("horizontal", legend.getString("direction"))
         assertEquals(2, legend.getInt("columns"))
@@ -200,6 +215,12 @@ class VegaSpecBuilderTest {
         val marks = json.getJSONArray("marks")
         assertEquals("area", marks.getJSONObject(0).getString("type"))
         assertEquals("line", marks.getJSONObject(1).getString("type"))
+        assertEquals(
+            1.5,
+            marks.getJSONObject(1).getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("strokeWidth").getDouble("value"),
+            0.0,
+        )
         assertEquals("cloudyHit", marks.getJSONObject(marks.length() - 1).getString("name"))
         val yScale = json.getJSONArray("scales").getJSONObject(1)
         assertEquals(true, yScale.getBoolean("zero"))

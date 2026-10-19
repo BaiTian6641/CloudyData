@@ -69,6 +69,7 @@ class ChartSettingsPersistenceTest {
                             showTooltip = false,
                             yTickCount = 6,
                             labelFontSize = 14,
+                            lineWidth = 3.5,
                         ),
                     ),
                 ),
@@ -93,6 +94,7 @@ class ChartSettingsPersistenceTest {
         assertFalse(reopenedSheet.chart.showTooltip)
         assertEquals(6, reopenedSheet.chart.yTickCount)
         assertEquals(14, reopenedSheet.chart.labelFontSize)
+        assertEquals(3.5, reopenedSheet.chart.lineWidth!!, 0.0)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

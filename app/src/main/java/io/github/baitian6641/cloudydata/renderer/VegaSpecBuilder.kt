@@ -117,7 +117,7 @@ object VegaSpecBuilder {
             }
             ChartKind.AREA -> {
                 marks.put(areaMark())
-                marks.put(areaLineMark())
+                marks.put(areaLineMark(spec))
                 if (spec.pointCount <= 200) marks.put(areaSymbolMark())
                 if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
                 marks.put(selectedPointMark(textColor))
@@ -246,7 +246,7 @@ object VegaSpecBuilder {
                             .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                             .put("y", JSONObject().put("scale", "y").put("field", "y"))
                             .put("stroke", JSONObject().put("scale", "color").put("field", "series"))
-                            .put("strokeWidth", JSONObject().put("value", 2))
+                            .put("strokeWidth", JSONObject().put("value", spec.lineWidth ?: 2.0))
                             .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
                     ),
                 ),
@@ -337,7 +337,7 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun areaLineMark(): JSONObject = JSONObject()
+    private fun areaLineMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "line")
         .put("from", JSONObject().put("data", "table"))
         .put("clip", true)
@@ -349,7 +349,7 @@ object VegaSpecBuilder {
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                     .put("y", JSONObject().put("scale", "y").put("field", "y"))
                     .put("stroke", JSONObject().put("scale", "color").put("field", "series"))
-                    .put("strokeWidth", JSONObject().put("value", 1.5))
+                    .put("strokeWidth", JSONObject().put("value", spec.lineWidth ?: 1.5))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )
