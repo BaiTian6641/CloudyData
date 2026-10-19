@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `89f20c6`. `main` tracks `origin/main`; the table
-divider-width stage is pushed.
+**Source:** commits through `d614e64`. `main` tracks `origin/main`; the table
+divider-contrast stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
