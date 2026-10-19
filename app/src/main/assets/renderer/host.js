@@ -173,26 +173,94 @@
     return out;
   }
 
-  function exportSvg() {
-    if (!state.view) {
-      fail('not_ready', 'Export requested before a chart was rendered');
-      return;
-    }
+  function postExportError(detail, chartId, revision) {
+    post({
+      type: 'ExportError',
+      chartId: typeof chartId === 'string' ? chartId : state.activeChartId,
+      revision: typeof revision === 'number' ? revision : state.activeRevision,
+      detail: String(detail || 'Export failed')
+    });
+  }
+
+  function currentSvgMarkup() {
+    if (!state.view) return null;
     var svg = document.querySelector('#view svg');
-    if (!svg) {
-      fail('export_unavailable', 'The chart SVG is not available');
-      return;
-    }
+    if (!svg) return null;
     var clone = svg.cloneNode(true);
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    var text = new XMLSerializer().serializeToString(clone);
+    return new XMLSerializer().serializeToString(clone);
+  }
+
+  function exportSvg() {
+    var text = currentSvgMarkup();
+    if (text === null) {
+      postExportError('The chart SVG is not available');
+      return;
+    }
     post({
       type: 'SvgExport',
       chartId: state.activeChartId,
       revision: state.activeRevision,
       svg: text
     });
+  }
+
+  function exportPng() {
+    // Snapshot the revision before asynchronous rasterization; a later spec must
+    // not relabel this image as current.
+    var chartId = state.activeChartId;
+    var revision = state.activeRevision;
+    var text = currentSvgMarkup();
+    if (text === null) {
+      postExportError('The chart SVG is not available for PNG rendering', chartId, revision);
+      return;
+    }
+    try {
+      var encoded = btoa(unescape(encodeURIComponent(text)));
+      var image = new Image();
+      image.onload = function () {
+        try {
+          var width = image.naturalWidth || image.width;
+          var height = image.naturalHeight || image.height;
+          if (!width || !height || width > 4096 || height > 4096) {
+            postExportError('The PNG dimensions are outside the allowed range', chartId, revision);
+            return;
+          }
+          var canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          var context = canvas.getContext('2d');
+          if (!context) {
+            postExportError('A PNG canvas is unavailable', chartId, revision);
+            return;
+          }
+          context.drawImage(image, 0, 0, width, height);
+          var dataUrl = canvas.toDataURL('image/png');
+          var comma = dataUrl.indexOf(',');
+          if (comma < 0) {
+            postExportError('PNG encoding failed', chartId, revision);
+            return;
+          }
+          post({
+            type: 'PngExport',
+            chartId: chartId,
+            revision: revision,
+            width: width,
+            height: height,
+            pngBase64: dataUrl.substring(comma + 1)
+          });
+        } catch (error) {
+          postExportError('PNG rendering failed: ' + (error && error.message ? error.message : error), chartId, revision);
+        }
+      };
+      image.onerror = function () {
+        postExportError('The SVG could not be rasterized', chartId, revision);
+      };
+      image.src = 'data:image/svg+xml;base64,' + encoded;
+    } catch (error) {
+      postExportError('PNG encoding failed: ' + (error && error.message ? error.message : error), chartId, revision);
+    }
   }
 
   function disposeView() {
@@ -324,6 +392,9 @@
         break;
       case 'ExportSvg':
         exportSvg();
+        break;
+      case 'ExportPng':
+        exportPng();
         break;
       case 'Dispose':
         disposeView();

@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -221,6 +222,62 @@ class VegaRendererProbeTest {
             SystemClock.sleep(100)
         }
         return condition()
+    }
+
+    @Test
+    fun exportsCurrentChartPngWithBoundedDimensionsAndEvidenceFile() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            scenario.onActivity { it.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertNull("SVG export failed before PNG: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertNotNull("SVG export did not complete before PNG", svg)
+            val svgWidth = Regex("<svg[^>]*width=\"([0-9.]+)\"").find(svg!!)?.groupValues?.get(1)?.toDouble()
+            val svgHeight = Regex("<svg[^>]*height=\"([0-9.]+)\"").find(svg)?.groupValues?.get(1)?.toDouble()
+            assertNotNull("SVG width is missing", svgWidth)
+            assertNotNull("SVG height is missing", svgHeight)
+            scenario.onActivity { it.exportPngForTest() }
+            val png = RendererProbeState.awaitPng(30)
+            assertNull("PNG export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertTrue("PNG export did not complete", png != null)
+            val signature = byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A)
+            assertTrue("PNG signature is wrong", png!!.size > 24 && png.copyOfRange(0, 8).contentEquals(signature))
+            val width = ((png[16].toInt() and 0xFF) shl 24) or
+                ((png[17].toInt() and 0xFF) shl 16) or
+                ((png[18].toInt() and 0xFF) shl 8) or
+                (png[19].toInt() and 0xFF)
+            val height = ((png[20].toInt() and 0xFF) shl 24) or
+                ((png[21].toInt() and 0xFF) shl 16) or
+                ((png[22].toInt() and 0xFF) shl 8) or
+                (png[23].toInt() and 0xFF)
+            assertTrue("PNG dimensions are not bounded: ${width}x$height", width in 1..4096 && height in 1..4096)
+            assertEquals("PNG width does not match the exported SVG", svgWidth!!.toInt(), width)
+            assertEquals("PNG height does not match the exported SVG", svgHeight!!.toInt(), height)
+            assertEquals(width, RendererProbeState.pngWidth)
+            assertEquals(height, RendererProbeState.pngHeight)
+            val bitmap = BitmapFactory.decodeByteArray(png, 0, png.size)
+            assertNotNull("PNG did not decode", bitmap)
+            var opaque = 0
+            val stepX = (bitmap!!.width / 50).coerceAtLeast(1)
+            val stepY = (bitmap.height / 50).coerceAtLeast(1)
+            var y = 0
+            while (y < bitmap.height) {
+                var x = 0
+                while (x < bitmap.width) {
+                    if ((bitmap.getPixel(x, y) ushr 24) != 0) opaque++
+                    x += stepX
+                }
+                y += stepY
+            }
+            assertTrue("PNG raster is blank or nearly blank (opaque samples=$opaque)", opaque > 100)
+            assertTrue("PNG raster does not match the rendered surface", bitmap.width == width && bitmap.height == height)
+            val fileBytes = File(
+                InstrumentationRegistry.getInstrumentation().targetContext.filesDir,
+                "exported-chart.png",
+            ).readBytes()
+            assertTrue("probe PNG evidence file does not match the payload", png.contentEquals(fileBytes))
+        }
     }
 
     @Test

@@ -198,6 +198,28 @@ class RendererProbeActivity : Activity() {
                     }
                 }
 
+                override fun onPngExport(
+                    chartId: String,
+                    revision: Long,
+                    width: Int,
+                    height: Int,
+                    png: ByteArray,
+                ) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        val written = runCatching {
+                            File(filesDir, "exported-chart.png").writeBytes(png)
+                        }.isSuccess
+                        if (written) {
+                            RendererProbeState.completePng(width, height, png)
+                            status.text = "Exported PNG $chartId r$revision · ${width}x$height · ${png.size} bytes"
+                        } else {
+                            RendererProbeState.failExport("Could not write the probe PNG file")
+                            status.text = "PNG write failed"
+                        }
+                    }
+                }
+
                 override fun onExportError(message: String) {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
@@ -323,6 +345,10 @@ class RendererProbeActivity : Activity() {
 
     fun exportForTest() {
         host?.requestSvgExport()
+    }
+
+    fun exportPngForTest() {
+        host?.requestPngExport()
     }
 
 
@@ -524,6 +550,21 @@ object RendererProbeState {
     private var svgLatch: CountDownLatch = CountDownLatch(1)
 
     @Volatile
+    var exportedPng: ByteArray? = null
+        private set
+
+    @Volatile
+    var pngWidth: Int = 0
+        private set
+
+    @Volatile
+    var pngHeight: Int = 0
+        private set
+
+    @Volatile
+    private var pngLatch: CountDownLatch = CountDownLatch(1)
+
+    @Volatile
     var exportError: String? = null
         private set
 
@@ -534,8 +575,12 @@ object RendererProbeState {
         selectionCount.set(0)
         focusExitCount.set(0)
         exportedSvg = null
+        exportedPng = null
+        pngWidth = 0
+        pngHeight = 0
         exportError = null
         svgLatch = CountDownLatch(1)
+        pngLatch = CountDownLatch(1)
         latch = CountDownLatch(1)
         recoveryLatch = CountDownLatch(1)
     }
@@ -546,9 +591,23 @@ object RendererProbeState {
         svgLatch.countDown()
     }
 
+    fun completePng(width: Int, height: Int, png: ByteArray) {
+        pngWidth = width
+        pngHeight = height
+        exportedPng = png
+        exportError = null
+        pngLatch.countDown()
+    }
+
+    fun awaitPng(timeoutSeconds: Long): ByteArray? {
+        pngLatch.await(timeoutSeconds, TimeUnit.SECONDS)
+        return exportedPng
+    }
+
     fun failExport(message: String) {
         exportError = message
         svgLatch.countDown()
+        pngLatch.countDown()
     }
 
     fun awaitSvg(timeoutSeconds: Long): String? {

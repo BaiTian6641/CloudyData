@@ -94,23 +94,21 @@ fun VegaChartCard(
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
     val scope = rememberCoroutineScope()
     var exportStatus by remember { mutableStateOf<String?>(null) }
-    val saveSvg = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument("image/svg+xml"),
-    ) { uri ->
-        val svg = exportModel.pendingSvg
-        exportModel.pendingSvg = null
+    fun savePending(uri: android.net.Uri?, isPng: Boolean) {
+        val pending = if (isPng) exportModel.pendingPng else exportModel.pendingSvg
+        if (isPng) exportModel.pendingPng = null else exportModel.pendingSvg = null
         if (uri == null) {
             exportStatus = null
-        } else if (svg == null) {
+        } else if (pending == null) {
             exportStatus = "Export was lost when the screen was recreated. Try again."
         } else {
             scope.launch {
                 exportStatus = withContext(Dispatchers.IO) {
                     runCatching {
                         context.contentResolver.openOutputStream(uri)?.use { stream ->
-                            stream.write(svg.toByteArray(Charsets.UTF_8))
+                            stream.write(pending.bytes)
                         } ?: error("The destination could not be opened.")
-                        "Exported SVG (${svg.length} characters)."
+                        "Exported ${pending.label} (${pending.bytes.size} bytes)."
                     }.getOrElse { error ->
                         "Export failed: ${error.message}"
                     }
@@ -118,6 +116,12 @@ fun VegaChartCard(
             }
         }
     }
+    val saveSvg = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("image/svg+xml"),
+    ) { savePending(it, isPng = false) }
+    val savePng = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("image/png"),
+    ) { savePending(it, isPng = true) }
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -146,9 +150,16 @@ fun VegaChartCard(
             }
             if (rendered && specError == null && rendererError == null) {
                 Spacer(Modifier.width(density.spaceSmall))
-                CloudyTextButton("Export SVG", {
+                CloudyTextButton("SVG", {
                     exportStatus = null
                     hostRef.get()?.requestSvgExport() ?: run {
+                        exportStatus = "Renderer is unavailable."
+                    }
+                })
+                Spacer(Modifier.width(density.spaceSmall))
+                CloudyTextButton("PNG", {
+                    exportStatus = null
+                    hostRef.get()?.requestPngExport() ?: run {
                         exportStatus = "Renderer is unavailable."
                     }
                 })
@@ -230,9 +241,28 @@ fun VegaChartCard(
 
                                     override fun onSvgExport(chartId: String, revision: Long, svg: String) {
                                         if (hostRef.get() == null) return
-                                        exportModel.pendingSvg = svg
+                                        exportModel.pendingSvg = PendingExport(
+                                            bytes = svg.toByteArray(Charsets.UTF_8),
+                                            label = "SVG",
+                                        )
                                         exportStatus = "Choose a destination for the SVG."
                                         saveSvg.launch("cloudy-chart.svg")
+                                    }
+
+                                    override fun onPngExport(
+                                        chartId: String,
+                                        revision: Long,
+                                        width: Int,
+                                        height: Int,
+                                        png: ByteArray,
+                                    ) {
+                                        if (hostRef.get() == null) return
+                                        exportModel.pendingPng = PendingExport(
+                                            bytes = png,
+                                            label = "PNG",
+                                        )
+                                        exportStatus = "Choose a destination for the PNG."
+                                        savePng.launch("cloudy-chart.png")
                                     }
 
                                     override fun onExportError(message: String) {
@@ -340,6 +370,12 @@ private fun accessibleSummary(spec: ChartSpec): String {
     return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; Escape leaves the chart."
 }
 
+internal data class PendingExport(
+    val bytes: ByteArray,
+    val label: String,
+)
+
 internal class ChartExportViewModel : ViewModel() {
-    var pendingSvg: String? = null
+    var pendingSvg: PendingExport? = null
+    var pendingPng: PendingExport? = null
 }

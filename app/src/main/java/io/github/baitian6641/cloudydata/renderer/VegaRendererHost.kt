@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -53,6 +54,7 @@ class VegaRendererHost(
         )
         fun onFocusExit()
         fun onSvgExport(chartId: String, revision: Long, svg: String)
+        fun onPngExport(chartId: String, revision: Long, width: Int, height: Int, png: ByteArray)
         fun onExportError(message: String)
         fun onRendererError(code: String, detail: String)
         fun onExternalRequestBlocked(url: String)
@@ -174,6 +176,23 @@ class VegaRendererHost(
             return
         }
         val message = JSONObject().put("type", "ExportSvg")
+        mainHandler.post {
+            if (!disposed && webView === view) {
+                view.evaluateJavascript(
+                    "window.cloudyReceive(${JSONObject.quote(message.toString())})",
+                    null,
+                )
+            }
+        }
+    }
+
+    fun requestPngExport() {
+        val view = webView
+        if (view == null || !ready || disposed) {
+            listener.onExportError("The renderer is not ready to export.")
+            return
+        }
+        val message = JSONObject().put("type", "ExportPng")
         mainHandler.post {
             if (!disposed && webView === view) {
                 view.evaluateJavascript(
@@ -331,6 +350,46 @@ class VegaRendererHost(
                 }
                 listener.onSvgExport(chartId, revision, svg)
             }
+            "PngExport" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val width = json.optInt("width", 0)
+                val height = json.optInt("height", 0)
+                val encoded = json.optString("pngBase64")
+                if (width !in 1..MAX_EXPORT_DIMENSION || height !in 1..MAX_EXPORT_DIMENSION) {
+                    listener.onExportError("The PNG dimensions are outside the allowed range.")
+                    return
+                }
+                if (encoded.length !in 1..MAX_PNG_BASE64_CHARS) {
+                    listener.onExportError("The PNG payload is empty or too large.")
+                    return
+                }
+                val bytes = runCatching { Base64.decode(encoded, Base64.DEFAULT) }.getOrNull()
+                if (bytes == null || bytes.size < 24 ||
+                    !bytes.copyOfRange(0, PNG_SIGNATURE.size).contentEquals(PNG_SIGNATURE)
+                ) {
+                    listener.onExportError("The PNG payload is invalid.")
+                    return
+                }
+                val pngWidth = pngDimension(bytes, 16)
+                val pngHeight = pngDimension(bytes, 20)
+                if (pngWidth != width || pngHeight != height ||
+                    pngWidth !in 1..MAX_EXPORT_DIMENSION || pngHeight !in 1..MAX_EXPORT_DIMENSION
+                ) {
+                    listener.onExportError("The PNG dimensions do not match the declared bounds.")
+                    return
+                }
+                listener.onPngExport(chartId, revision, pngWidth, pngHeight, bytes)
+            }
+            "ExportError" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (chartId.isNotEmpty() && revision >= 0 && !revisionGate.isCurrent(chartId, revision)) {
+                    return
+                }
+                listener.onExportError(json.optString("detail", "Export failed."))
+            }
             "RendererError" -> {
                 val errorChartId = json.optString("chartId")
                 val errorRevision = json.optLong("revision", -1)
@@ -348,6 +407,12 @@ class VegaRendererHost(
         }
     }
 
+    private fun pngDimension(bytes: ByteArray, offset: Int): Int =
+        ((bytes[offset].toInt() and 0xFF) shl 24) or
+            ((bytes[offset + 1].toInt() and 0xFF) shl 16) or
+            ((bytes[offset + 2].toInt() and 0xFF) shl 8) or
+            (bytes[offset + 3].toInt() and 0xFF)
+
     private fun blockedResponse(reason: String): WebResourceResponse {
         return WebResourceResponse(
             "text/plain",
@@ -363,9 +428,14 @@ class VegaRendererHost(
         const val ASSET_DOMAIN = "appassets.androidplatform.net"
         const val BRIDGE_NAME = "CloudyBridge"
         const val MAX_CHART_POINTS = 2000
-        const val MAX_MESSAGE_CHARS = 3 * 1024 * 1024
+        const val MAX_MESSAGE_CHARS = 6 * 1024 * 1024
         const val MAX_SPEC_CHARS = 512 * 1024
         const val MAX_SVG_CHARS = 2 * 1024 * 1024
+        const val MAX_PNG_BASE64_CHARS = 4 * 1024 * 1024
+        private const val MAX_EXPORT_DIMENSION = 4096
+        private val PNG_SIGNATURE = byteArrayOf(
+            0x89.toByte(), 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
+        )
         private const val MAX_SOURCE_ROW_INDEX = 1_000_000
         private const val MAX_SELECTION_LABEL = 512
     }

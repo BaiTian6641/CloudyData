@@ -1,5 +1,5 @@
-69a9c878b2c620eb70407bdcebe6e3c326496d50987a060bbd970c810fc787f1  app/build/outputs/apk/debug/app-debug.apk
-44db383aa3547f24bae94eb855b2a83eb25cb54c422e4bd15efcc86e8383965c  app/src/main/assets/renderer/host.js
+35d46cab2e3298f0ffc1857593be9a71678496f94bf2e1e5a6280e77e16aa94a  app/build/outputs/apk/debug/app-debug.apk
+b6fadcc4666487053a4b0b4ff31de2e4f5bb2c451f61c6ad7f9e4aef63166aad  app/src/main/assets/renderer/host.js
 560957620bf931d20649b3afd22e1934f2a9cd31cbd85b316c2bffecafedae0b  app/src/main/assets/renderer/index.html
 e9b1f19c647fd8de6af562050b27ab945c3a4f542b949edd45f57eb6fc2d3bf8  app/src/main/assets/renderer/renderer.css
 ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
@@ -16,6 +16,7 @@ aeeac6cf1698ca784949adfba2c20f93743e65dba4a3d0c4f454211b3358b4eb  qualification/
 1b2afc549d67c6d9e332bd5f24ac6a532ccd2eda75504b8b4fb5f137dcbb6802  qualification/evidence/artifacts/2026-10-18-chart-reopened.png
 9fb7687d7756468e22030b793fd1e129f9da6244adb933e764d27ffc4b7eb757  qualification/evidence/artifacts/2026-10-18-chart-settings-dialog.png
 208a4b53b371e223ff33cbd82badfbeec226d89ef1b138ad742f0d5efe9a2dc7  qualification/evidence/artifacts/2026-10-18-command-palette.png
+eb7084a247b5f8d94e1e10aebc2c3cf6fb20b3b2fd674eab61936f1f94a39e34  qualification/evidence/artifacts/2026-10-18-exported-chart.png
 0ef81ccf6965f5769d8837e3ffd25746b2021bdff4c794494859e9bcbc59ac5a  qualification/evidence/artifacts/2026-10-18-exported-chart.svg
 c2d0859b6bf472422138b9a2eebd87e8ccad7322acf8e66fc80d62f4dc12de3d  qualification/evidence/artifacts/2026-10-18-home-ui.xml
 f45f8024951932032ac21f285c0a22a7ae3620e86a79821adfc11f9148065257  qualification/evidence/artifacts/2026-10-18-home.png
