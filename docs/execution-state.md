@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `5006123`; the X-label thinning change is in the
-next local commit. `main` tracks `origin/main` at the pushed padding baseline.
+**Source:** commits through `3508293`. `main` tracks `origin/main`; the X-label
+thinning stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
