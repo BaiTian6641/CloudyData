@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `c14c8b8`. `main` tracks `origin/main`; the
-transparent-export stage is pushed.
+**Source:** commits through `8906917`; the minor-gridline change is in the next
+local commit. `main` tracks `origin/main` at the pushed transparent-export
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,17 +55,20 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **56/56**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **57/57**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
-  probe: 17/17 (pre-lasso); Vega spec builder: 5/5;
+  probe: 17/17 (pre-lasso); Vega spec builder: 7/7;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
   suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
   not instrumented after device handoff; see **Implemented but unverified**. A three-device connected run still hits a
   physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
   device timeouts; the emulator suites are clean.
+- Emulator-first rerun: manual instrumentation on `emulator-5580` (API36,
+  x86_64) passed focused Vega spec 7/7 and chart-settings persistence 7/7 for the
+  minor-gridline slice; the physical Googlebook was not used.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -107,6 +111,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-gridline-contrast.md`
 - `qualification/evidence/2026-10-19-cust06-crowded-labels.md`
 - `qualification/evidence/2026-10-19-cust14-transparent-export.md`
+- `qualification/evidence/2026-10-19-cust04-minor-gridlines.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -158,6 +163,11 @@ unless stated otherwise.
   divider/outline contrast choice apply only to visible value-axis grids;
   data/ticks/dimensions are unchanged. JVM and focused physical
   spec/persistence checks pass; visual/export checks were not run.
+- **Minor gridlines.** Optional persisted secondary linear value-axis grid with
+  no labels/ticks/domain/title/aria, fixed 0.5 width/0.55 opacity, explicit
+  domain-derived 20-interval positions and major grid drawn afterwards. JVM and
+  focused emulator spec/persistence/render checks pass; visual/log/reverse checks
+  were not run.
 - **Fixed-decimal value format.** Optional 0–6 decimals format Y-axis ticks and
   Bar/Line/Area value labels; labels use an explicit guarded `format(datum.y)`
   signal because Vega ignores text field `format`. Exact tooltip/data/export
@@ -269,21 +279,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 optional minor gridlines.**
+**CUST06 percent value display.**
 
-- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: persisted major
-  gridline visibility/width/contrast, typed axis lowering and chart settings.
-- Files: `ChartOptions`, `GridlineSpec`, `ChartSpecBuilder`, `VegaSpecBuilder`,
+- Requirements/stage: CUST06, F36/F38, Q21, S11. Prerequisites: persisted fixed
+  decimals, Y-axis and value-label Vega formatting, emulator renderer probes.
+- Files: `ChartOptions`, `ChartSpec`, `ChartSpecBuilder`, `VegaSpecBuilder`,
   `ChartSettingsDialog`, tests and evidence.
-- Action: add an optional minor-gridline toggle. Lower a secondary value-axis
-  grid with labels/ticks/domain/title disabled, a bounded minor tick count, a
-  muted token color and major grid drawn above it.
-- Acceptance: default has no extra axis; enabling adds grid marks only, without
-  changing data, major ticks, domain, labels, dimensions or SQL. Device visual
-  review is required before verified status.
+- Action: add a persisted NUMBER/PERCENT display choice. PERCENT uses d3's
+  percent formatter on the value axis and labels (display-only ×100 + `%`),
+  sharing the existing decimal count with a bounded default when blank.
+- Acceptance: default NUMBER preserves current output; percent formatting never
+  mutates data/tooltips/exact exports, persists, and does not rerun SQL. Emulator
+  spec/persistence/render checks are required; visual review stays unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding, X-label, border and minor-grid
-  visuals wait for an authorized device.
+  labels, line width, titles, units, padding, X-label, border, gridline and
+  percent visuals wait for an authorized visual session.
 
 ## Protected context
 

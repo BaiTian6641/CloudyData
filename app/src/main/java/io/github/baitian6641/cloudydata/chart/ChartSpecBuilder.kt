@@ -115,6 +115,7 @@ object ChartSpecBuilder {
                 options.showGridlines,
                 options.gridlineWidth,
                 options.gridlineContrast,
+                options.minorGridlines,
             ),
             // Category color legends are intentionally deferred until grouped
             // bar semantics exist; the legend control applies to line series.
@@ -246,6 +247,7 @@ object ChartSpecBuilder {
                 options.showGridlines,
                 options.gridlineWidth,
                 options.gridlineContrast,
+                options.minorGridlines,
             ),
             legend = LegendSpec(
                 visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,

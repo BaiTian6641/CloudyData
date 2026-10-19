@@ -99,22 +99,49 @@ object VegaSpecBuilder {
                     labelValues = spec.xAxis.labelValues,
                 ),
             )
-            .put(
+        if (spec.gridlines.minor && spec.gridlines.show && !spec.yAxis.log) {
+            // Explicit values from the resolved scale domain, because a second
+            // tickCount often quantizes to the same nice ticks as the major axis.
+            val minorValues =
+                "domain('y')[0] === domain('y')[1] ? [] : " +
+                    "sequence(domain('y')[0], domain('y')[1], " +
+                    "(domain('y')[1] - domain('y')[0]) / 20)"
+            axes.put(
                 axisJson(
                     orient = "left",
                     scale = "y",
-                    title = spec.yAxis.title,
+                    title = null,
                     textColor = textColor,
                     gridColor = gridColor,
-                    grid = spec.gridlines.show,
+                    grid = true,
                     gridLineColor = gridlineStroke,
-                    gridWidth = spec.gridlines.width,
+                    gridWidth = 0.5,
+                    gridOpacity = 0.55,
                     labelAngle = 0,
-                    tickCount = spec.yAxis.tickCount,
-                    format = valueFormat,
-                    titleAnchor = spec.yAxis.titleAnchor,
+                    valueSignal = minorValues,
+                    domain = false,
+                    ticks = false,
+                    labels = false,
+                    aria = false,
                 ),
             )
+        }
+        axes.put(
+            axisJson(
+                orient = "left",
+                scale = "y",
+                title = spec.yAxis.title,
+                textColor = textColor,
+                gridColor = gridColor,
+                grid = spec.gridlines.show,
+                gridLineColor = gridlineStroke,
+                gridWidth = spec.gridlines.width,
+                labelAngle = 0,
+                tickCount = spec.yAxis.tickCount,
+                format = valueFormat,
+                titleAnchor = spec.yAxis.titleAnchor,
+            ),
+        )
 
         val marks = JSONArray()
         when (spec.kind) {
@@ -198,11 +225,17 @@ object VegaSpecBuilder {
         grid: Boolean,
         gridLineColor: String = gridColor,
         gridWidth: Double? = null,
+        gridOpacity: Double? = null,
         labelAngle: Int,
         tickCount: Int? = null,
         titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
         labelValues: List<String>? = null,
+        valueSignal: String? = null,
         format: String? = null,
+        domain: Boolean = true,
+        ticks: Boolean = true,
+        labels: Boolean = true,
+        aria: Boolean? = null,
     ): JSONObject {
         val axis = JSONObject()
             .put("orient", orient)
@@ -214,8 +247,15 @@ object VegaSpecBuilder {
             .put("grid", grid)
             .put("gridColor", gridLineColor)
             .put("labelAngle", labelAngle)
+        if (!domain) axis.put("domain", false)
+        if (!ticks) axis.put("ticks", false)
+        if (!labels) axis.put("labels", false)
+        if (aria != null) axis.put("aria", aria)
         if (gridWidth != null && grid) {
             axis.put("gridWidth", gridWidth)
+        }
+        if (gridOpacity != null && grid) {
+            axis.put("gridOpacity", gridOpacity)
         }
         if (format != null) {
             axis.put("format", format)
@@ -228,6 +268,9 @@ object VegaSpecBuilder {
         }
         if (!labelValues.isNullOrEmpty()) {
             axis.put("values", JSONArray(labelValues)).put("labelOverlap", "greedy")
+        }
+        if (valueSignal != null) {
+            axis.put("values", JSONObject().put("signal", valueSignal))
         }
         if (!title.isNullOrBlank()) {
             axis.put("title", title)

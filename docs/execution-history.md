@@ -579,3 +579,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   transparent SVG/PNG render 1/1, default bundle 1/1 and dark PDF compositing
   1/1 on the physical HP Googlebook; lint 0 errors/5 warnings. Viewer/light-
   destination contrast and device visual review remain absent.
+
+## 2026-10-19 — CUST04 minor gridlines
+
+- Added optional persisted minor gridlines as a secondary value axis before the
+  major axis, with grid only, no domain/ticks/labels/title/aria, 0.5 width and
+  0.55 opacity. Minor positions are explicit domain-derived axis values (20
+  linear intervals) rather than a second nice tick count; major chrome is drawn
+  afterwards. Log axes omit minors and hide the control.
+- Validation moved to emulator-first per owner instruction. JVM 57/57; manual
+  emulator-5580 (API36 x86_64) instrumentation: VegaSpecBuilderTest 7/7,
+  ChartSettingsPersistenceTest 7/7, minor-grid export 1/1, plus five earlier
+  renderer probes 1/1. The physical Googlebook was not used.

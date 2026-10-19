@@ -39,6 +39,7 @@ data class ChartOptions(
     val showGridlines: Boolean = true,
     val gridlineWidth: Double? = null,
     val gridlineContrast: GridlineContrast = GridlineContrast.DEFAULT,
+    val minorGridlines: Boolean = false,
     val showValueLabels: Boolean = false,
     val valueDecimals: Int? = null,
     val labelCollisionPolicy: LabelCollisionPolicy = LabelCollisionPolicy.SHOW_ALL,
@@ -73,6 +74,7 @@ data class ChartOptions(
         .put("showGridlines", showGridlines)
         .put("gridlineWidth", gridlineWidth ?: JSONObject.NULL)
         .put("gridlineContrast", gridlineContrast.name)
+        .put("minorGridlines", minorGridlines)
         .put("showValueLabels", showValueLabels)
         .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
         .put("labelCollisionPolicy", labelCollisionPolicy.name)
@@ -132,6 +134,7 @@ data class ChartOptions(
                     json.optString("gridlineContrast", GridlineContrast.DEFAULT.name),
                 )
             }.getOrDefault(GridlineContrast.DEFAULT),
+            minorGridlines = json.optBoolean("minorGridlines", false),
             showValueLabels = json.optBoolean("showValueLabels", false),
             valueDecimals = if (json.isNull("valueDecimals")) {
                 null

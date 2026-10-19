@@ -151,6 +151,26 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun minorGridlinesAreCarriedAndDefaultOff() {
+        assertEquals(
+            true,
+            ChartSpecBuilder.build(
+                "minor", 0, lineResult(),
+                ChartOptions(minorGridlines = true),
+                "derived",
+            ).gridlines.minor,
+        )
+        assertEquals(
+            false,
+            ChartSpecBuilder.build(
+                "minor", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).gridlines.minor,
+        )
+    }
+
+    @Test
     fun gridlineContrastIsCarriedAndDefaultsToDivider() {
         assertEquals(
             GridlineContrast.STRONG,

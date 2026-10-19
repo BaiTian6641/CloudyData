@@ -47,6 +47,7 @@ data class GridlineSpec(
     val show: Boolean,
     val width: Double? = null,
     val contrast: GridlineContrast = GridlineContrast.DEFAULT,
+    val minor: Boolean = false,
 )
 
 data class LegendSpec(

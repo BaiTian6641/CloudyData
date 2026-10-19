@@ -86,6 +86,7 @@ class ChartSettingsPersistenceTest {
                             showChartBorder = true,
                             transparentExportBackground = true,
                             gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
+                            minorGridlines = true,
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
                         ),
                     ),
@@ -127,6 +128,7 @@ class ChartSettingsPersistenceTest {
             io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
             reopenedSheet.chart.gridlineContrast,
         )
+        assertEquals(true, reopenedSheet.chart.minorGridlines)
         assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())

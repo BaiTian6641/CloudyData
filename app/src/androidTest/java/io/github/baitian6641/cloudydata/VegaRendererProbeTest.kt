@@ -187,6 +187,40 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun minorGridlinesAddMutedLinesToExportedSvg() {
+        fun export(minor: Boolean): String {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_MINOR_GRID, minor)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                assertNull(RendererProbeState.await(30)!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertNull("export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+                assertTrue("SVG export did not complete", svg != null)
+                return svg!!
+            }
+        }
+        val baseline = export(false)
+        val minor = export(true)
+        val lineY = Regex("<line transform=\"translate\\(0,([0-9.]+)\\)\"")
+        val minorY = Regex(
+            "<line transform=\"translate\\(0,([0-9.]+)\\)\"[^>]*stroke-opacity=\"0.55\"",
+        )
+        val baselinePositions = lineY.findAll(baseline).map { it.groupValues[1].toDouble() }.toSet()
+        val minorPositions = minorY.findAll(minor).map { it.groupValues[1].toDouble() }.toList()
+        assertTrue("too few distinct minor gridlines: $minorPositions", minorPositions.toSet().size >= 10)
+        assertTrue(
+            "minor gridlines do not add a position between majors: $minorPositions vs $baselinePositions",
+            minorPositions.any { position ->
+                baselinePositions.none { kotlin.math.abs(it - position) < 0.5 }
+            },
+        )
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

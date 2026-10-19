@@ -192,6 +192,52 @@ class VegaSpecBuilderTest {
     }
 
     @Test
+    fun minorGridlinesEmitASecondUnlabelledValueAxis() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 40L), listOf<Any?>("B", 60L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "minor", 0, result,
+            ChartOptions(minorGridlines = true, yTickCount = 7, yAxisTitle = "Sales"),
+            "derived",
+        )
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
+        val axes = json.getJSONArray("axes")
+        assertEquals(3, axes.length())
+        val minor = axes.getJSONObject(1)
+        assertEquals("y", minor.getString("scale"))
+        assertEquals(true, minor.getBoolean("grid"))
+        assertEquals(0.5, minor.getDouble("gridWidth"), 0.0)
+        assertEquals(0.55, minor.getDouble("gridOpacity"), 0.0)
+        assertFalse(minor.has("tickCount"))
+        val minorSignal = minor.getJSONObject("values").getString("signal")
+        assertTrue(minorSignal.contains("sequence(domain('y')[0], domain('y')[1]"))
+        assertTrue(minorSignal.contains("/ 20"))
+        assertEquals(false, minor.getBoolean("domain"))
+        assertEquals(false, minor.getBoolean("ticks"))
+        assertEquals(false, minor.getBoolean("labels"))
+        assertEquals(false, minor.getBoolean("aria"))
+        assertFalse(minor.has("title"))
+        val major = axes.getJSONObject(2)
+        assertEquals("Sales", major.getString("title"))
+        assertEquals(true, major.getBoolean("grid"))
+        assertEquals(2, json.getJSONArray("data").getJSONObject(0).getJSONArray("values").length())
+    }
+
+    @Test
     fun crowdedLabelPolicyEmitsBoundedBarAndLineRules() {
         val barResult = WorksheetResult(
             result = EngineResult(

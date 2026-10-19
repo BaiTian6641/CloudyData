@@ -72,6 +72,7 @@ fun ChartSettingsDialog(
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var gridlineWidth by remember { mutableStateOf(current.gridlineWidth?.toString().orEmpty()) }
     var gridlineContrast by remember { mutableStateOf(current.gridlineContrast) }
+    var minorGridlines by remember { mutableStateOf(current.minorGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelCollisionPolicy by remember { mutableStateOf(current.labelCollisionPolicy) }
     var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
@@ -348,6 +349,14 @@ fun ChartSettingsDialog(
                             gridlineContrast = if (it) GridlineContrast.STRONG else GridlineContrast.DEFAULT
                         },
                     )
+                    if (!logScale) {
+                        ChartToggleRow(
+                            title = "Minor gridlines",
+                            description = "Add muted subdivisions between major linear value-axis lines.",
+                            checked = minorGridlines,
+                            onCheckedChange = { minorGridlines = it },
+                        )
+                    }
                 }
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -583,6 +592,7 @@ fun ChartSettingsDialog(
                             showGridlines = showGridlines,
                             gridlineWidth = parsedGridlineWidth,
                             gridlineContrast = gridlineContrast,
+                            minorGridlines = minorGridlines,
                             showValueLabels = showValueLabels,
                             zeroBaseline = zeroBaseline || sheet.markType == MarkType.AREA,
                             logScale = logScale && sheet.markType == MarkType.LINE,
