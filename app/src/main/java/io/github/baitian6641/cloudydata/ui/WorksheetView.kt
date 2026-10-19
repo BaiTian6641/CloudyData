@@ -349,6 +349,7 @@ fun WorksheetView(
                         selectedRowIndices = selectedRowIndices,
                         onSelection = onSelection,
                         units = sheet.chart.units?.take(16),
+                        options = sheet.chart,
                         modifier = Modifier.weight(1f).fillMaxWidth(),
                     )
                 }
@@ -684,6 +685,7 @@ private fun ResultTable(
     selectedRowIndices: Set<Int>,
     onSelection: (Int, SelectionMode) -> Unit,
     units: String?,
+    options: ChartOptions,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalCloudyColors.current
@@ -717,6 +719,9 @@ private fun ResultTable(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
+                if (options.showTableColumnDividers && index < columns.lastIndex) {
+                    Box(Modifier.width(1.dp).height(24.dp).background(colors.divider))
+                }
             }
         }
         CloudyDivider()
@@ -818,9 +823,12 @@ private fun ResultTable(
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.width(tableColumnWidth(columnIndex, row.size)).padding(horizontal = 4.dp),
                         )
+                        if (options.showTableColumnDividers && columnIndex < row.lastIndex) {
+                            Box(Modifier.width(1.dp).height(24.dp).background(colors.divider))
+                        }
                     }
                 }
-                CloudyDivider()
+                if (options.showTableRowDividers) CloudyDivider()
             }
         }
     }

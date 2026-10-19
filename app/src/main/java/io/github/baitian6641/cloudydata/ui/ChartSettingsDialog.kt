@@ -100,6 +100,8 @@ fun ChartSettingsDialog(
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
     var showTooltip by remember { mutableStateOf(current.showTooltip) }
+    var showTableRowDividers by remember { mutableStateOf(current.showTableRowDividers) }
+    var showTableColumnDividers by remember { mutableStateOf(current.showTableColumnDividers) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
     var legendMarkSample by remember { mutableStateOf(current.legendMarkSample) }
     var legendMarkSampleExpanded by remember { mutableStateOf(false) }
@@ -298,6 +300,18 @@ fun ChartSettingsDialog(
                     description = "Omit the SVG/PNG background. PDF and print use the chart theme background.",
                     checked = transparentExportBackground,
                     onCheckedChange = { transparentExportBackground = it },
+                )
+                ChartToggleRow(
+                    title = "Table row dividers",
+                    description = "Show horizontal rules between result rows.",
+                    checked = showTableRowDividers,
+                    onCheckedChange = { showTableRowDividers = it },
+                )
+                ChartToggleRow(
+                    title = "Table column dividers",
+                    description = "Show vertical rules between result columns.",
+                    checked = showTableColumnDividers,
+                    onCheckedChange = { showTableColumnDividers = it },
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -850,6 +864,8 @@ fun ChartSettingsDialog(
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
+                            showTableRowDividers = showTableRowDividers,
+                            showTableColumnDividers = showTableColumnDividers,
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
                             valueDecimals = parsedValueDecimals,

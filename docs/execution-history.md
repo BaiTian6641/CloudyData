@@ -714,3 +714,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   instrumentation VegaSpecBuilderTest 17/17 (line + area markers),
   ChartSettingsPersistenceTest 10/10, marker-opacity render 1/1; lint 0 errors/5
   warnings. Googlebook untouched; visual contrast/export checks absent.
+
+## 2026-10-19 — CUST04 table row/column dividers
+
+- Added persisted result-table row (default on) and column (default off)
+  divider toggles in ChartOptions. ResultTable conditionally draws body row
+  rules and 1 dp column rules; query/data/selection are unchanged. Settings apply
+  persists without requery. Review found CloudyDivider horizontal instances were
+  zero-width; the shared component now fills width/height, making row and existing
+  app-wide horizontal dividers visible. Pre-fix screenshots are stale.
+- Emulator-first validation: JVM 64/64; manual emulator-5580 API36 x86_64
+  instrumentation ChartSettingsPersistenceTest 11/11, TableSelectionTest 5/5,
+  VegaSpecBuilderTest 17/17; lint 0 errors/5 warnings. Googlebook untouched;
+  no Compose/table visual or screenshot check.

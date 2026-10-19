@@ -121,7 +121,7 @@ customization:
     area: Gridlines and dividers
     controls: [major_gridlines, minor_gridlines, color, width, row_dividers, column_dividers]
     status: partial
-    note: Value-axis major gridlines can be shown/hidden with a persisted 0.5–3 dp width and a bounded divider/outline contrast choice. An optional muted minor-grid axis is implemented; arbitrary gridline colors and crosstab dividers are absent.
+    note: Value-axis major gridlines can be shown/hidden with a persisted 0.5–3 dp width and a bounded divider/outline contrast choice. An optional muted minor-grid axis and persisted table row/column divider toggles are implemented; arbitrary gridline colors remain absent.
   - id: CUST05
     area: Legend
     controls: [show_hide, position, orientation, title, mark_sample, interactive]

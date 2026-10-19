@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -360,9 +361,9 @@ fun CloudySectionLabel(text: String, modifier: Modifier = Modifier) {
 fun CloudyDivider(modifier: Modifier = Modifier, vertical: Boolean = false) {
     val colors = LocalCloudyColors.current
     if (vertical) {
-        Box(modifier.width(1.dp).background(colors.divider))
+        Box(modifier.width(1.dp).fillMaxHeight().background(colors.divider))
     } else {
-        Box(modifier.height(1.dp).background(colors.divider))
+        Box(modifier.height(1.dp).fillMaxWidth().background(colors.divider))
     }
 }
 

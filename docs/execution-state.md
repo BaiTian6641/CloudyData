@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `e632050`. `main` tracks `origin/main`; the marker
-opacity stage is pushed.
+**Source:** commits through `5f37191`; the table-divider change is in the next
+local commit. `main` tracks `origin/main` at the pushed marker-opacity baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -121,6 +121,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-line-opacity.md`
 - `qualification/evidence/2026-10-19-cust05-legend-sample.md`
 - `qualification/evidence/2026-10-19-cust03-marker-opacity.md`
+- `qualification/evidence/2026-10-19-cust04-table-dividers.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -234,6 +235,11 @@ unless stated otherwise.
   independently of line/area paint; selected overlays/hit targets stay opaque.
   Emulator spec/persistence/render checks pass; visual contrast checks were not
   run.
+- **Table dividers.** Persisted row (default on) and column (default off)
+  divider toggles affect result-table borders. The shared divider fix also makes
+  previously invisible horizontal rules visible app-wide; pre-fix screenshots
+  are stale. Emulator persistence/table-selection pass; visual alignment/scroll
+  checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -322,18 +328,16 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 persisted crosstab row/column dividers.**
+**CUST05 legend swatch opacity parity.**
 
-- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: native table
-  rendering, worksheet persistence, chart-options settings pattern and tests.
-- Files: `WorksheetDef`/workbook JSON, `WorksheetView`, settings/dialog wiring,
-  persistence and selection tests, evidence.
-- Action: add persisted table row- and column-divider toggles, defaulting to the
-  current table appearance (row dividers on, column dividers off).
-- Acceptance: defaults preserve current output; toggles persist across reopen
-  and affect only table borders, never query/data/selection; invalid/missing
-  values fall back to defaults. Emulator persistence/render checks required;
-  visual review remains unverified.
+- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: marker/line
+  opacity, marker/line legend samples, typed options and emulator probes.
+- Files: `VegaSpecBuilder` legend lowering, tests/evidence.
+- Action: mirror existing `markerOpacity`/`lineOpacity` onto the corresponding
+  legend sample swatch, leaving defaults opaque and plot/data unchanged.
+- Acceptance: default legend output unchanged; custom opacity changes only the
+  swatch paint; marker and line sample modes each use their own opacity.
+  Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, interpolation, dash, opacity, legend-sample and table-divider visuals

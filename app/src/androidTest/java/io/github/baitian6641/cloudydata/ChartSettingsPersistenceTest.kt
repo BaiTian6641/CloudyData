@@ -103,6 +103,8 @@ class ChartSettingsPersistenceTest {
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
                             markerOpacity = 0.5,
+                            showTableRowDividers = false,
+                            showTableColumnDividers = true,
                         ),
                     ),
                 ),
@@ -155,6 +157,8 @@ class ChartSettingsPersistenceTest {
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
+        assertEquals(false, reopenedSheet.chart.showTableRowDividers)
+        assertEquals(true, reopenedSheet.chart.showTableColumnDividers)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -176,6 +180,13 @@ class ChartSettingsPersistenceTest {
             GridlineContrast.STRONG,
             ChartOptions.fromJson(JSONObject().put("gridlineContrast", "STRONG")).gridlineContrast,
         )
+    }
+
+    @Test
+    fun tableDividerDefaultsAreStable() {
+        val options = ChartOptions.fromJson(JSONObject())
+        assertEquals(true, options.showTableRowDividers)
+        assertEquals(false, options.showTableColumnDividers)
     }
 
     @Test

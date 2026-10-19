@@ -75,6 +75,8 @@ data class ChartOptions(
     val lineDashStyle: LineDashStyle = LineDashStyle.SOLID,
     val lineOpacity: Double? = null,
     val showMarkers: Boolean = true,
+    val showTableRowDividers: Boolean = true,
+    val showTableColumnDividers: Boolean = false,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
     val markerOpacity: Double? = null,
@@ -128,6 +130,8 @@ data class ChartOptions(
         .put("lineDashStyle", lineDashStyle.name)
         .put("lineOpacity", lineOpacity ?: JSONObject.NULL)
         .put("showMarkers", showMarkers)
+        .put("tableRowDividers", showTableRowDividers)
+        .put("tableColumnDividers", showTableColumnDividers)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
         .put("markerOpacity", markerOpacity ?: JSONObject.NULL)
@@ -261,6 +265,8 @@ data class ChartOptions(
                 }
             },
             showMarkers = json.optBoolean("showMarkers", true),
+            showTableRowDividers = json.optBoolean("tableRowDividers", true),
+            showTableColumnDividers = json.optBoolean("tableColumnDividers", false),
             markerSize = if (json.isNull("markerSize")) {
                 null
             } else {
