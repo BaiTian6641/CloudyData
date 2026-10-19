@@ -419,7 +419,7 @@ object VegaSpecBuilder {
 
     private fun isGroupedBar(spec: ChartSpec): Boolean =
         spec.barHasSeries &&
-            spec.barStackMode != BarStackMode.STACKED &&
+            spec.barStackMode == BarStackMode.NONE &&
             spec.series.size > 1
 
     private fun isStackedBar(spec: ChartSpec): Boolean =

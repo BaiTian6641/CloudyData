@@ -1309,6 +1309,16 @@ class VegaSpecBuilderTest {
         assertEquals(",.1%", percent.getJSONArray("axes").getJSONObject(1).getString("format"))
         assertEquals(1.0, percent.getJSONArray("scales").getJSONObject(1)
             .getJSONArray("domain").getDouble(1), 0.0)
+        val percentBar = percent.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(
+            "100% bars must use the stacked x offset",
+            percentBar.getJSONObject("x").getString("signal").contains("0.05"),
+        )
+        assertTrue(
+            "100% bars must use the stacked width",
+            percentBar.getJSONObject("width").getString("signal").contains("0.9"),
+        )
     }
 
 

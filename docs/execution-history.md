@@ -838,7 +838,11 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   cumulative bases and keeps raw aggregates in exactY/table/PDF. The chart axis
   is forced to 0–1 with percent formatting without mutating the saved display
   format. Non-additive aggregations reset the mode to grouped.
+- Review-driven fix: 100% mode was still using grouped x/width because the
+  grouped predicate excluded only STACKED. It now qualifies only NONE, so 100%
+  uses stacked x/width. The probe now asserts equal x/width and contiguous
+  exported rect geometry, and the spec test asserts stacked x/width signals.
 - Validation: JVM 72/72; VegaSpecBuilderTest 19/19; VegaRendererProbeTest 40/40
-  (60.0%/40.0% labels); BarChartQueryTest 1/1; ChartSettingsPersistenceTest
-  12/12; lint 0 errors/5 warnings. Googlebook untouched; visual/negative and
-  native fallback remain open.
+  (60.0%/40.0% labels and full-stack geometry); BarChartQueryTest 1/1;
+  ChartSettingsPersistenceTest 12/12; lint 0 errors/5 warnings. Googlebook
+  untouched; visual/negative and native fallback remain open.

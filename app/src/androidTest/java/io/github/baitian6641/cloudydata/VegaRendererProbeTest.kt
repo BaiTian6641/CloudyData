@@ -616,6 +616,29 @@ class VegaRendererProbeTest {
                 "40% segment label missing: ${result.svgTexts}",
                 result.svgTexts.any { it == "40.0%" },
             )
+            it.onActivity { activity -> activity.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertTrue("percent-bar export did not complete", svg != null)
+            fun geometry(tag: String): List<Double> {
+                val match = Regex("""M(-?[0-9.]+),(-?[0-9.]+)h(-?[0-9.]+)v(-?[0-9.]+)""").find(tag)
+                    ?: error("unexpected bar path: $tag")
+                return match.groupValues.drop(1).map(String::toDouble)
+            }
+            val bars = Regex("""<path[^>]*fill="#(?:006A6A|3559C7)"[^>]*>""")
+                .findAll(svg!!)
+                .map { it.value }
+                .filter { geometry(it)[2] > 100.0 }
+                .toList()
+            assertEquals("expected two colored bar paths", 2, bars.size)
+            val first = geometry(bars[0])
+            val second = geometry(bars[1])
+            assertEquals("100% segments must share x", first[0], second[0], 0.5)
+            assertEquals("100% segments must share width", first[2], second[2], 0.5)
+            assertTrue(
+                "100% segments must be contiguous: $bars",
+                kotlin.math.abs(first[1] + first[3] - second[1]) < 0.6 ||
+                    kotlin.math.abs(second[1] + second[3] - first[1]) < 0.6,
+            )
         }
     }
 

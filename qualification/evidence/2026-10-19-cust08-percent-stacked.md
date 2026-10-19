@@ -29,7 +29,7 @@ visual acceptance remains absent.
 | --- | --- |
 | JVM | **72/72**, including per-category normalization to 1.0, cumulative bases, percent axis/format, exact raw values, negative rejection and zero-total rejection. |
 | Vega spec | `VegaSpecBuilderTest` **19/19**: PERCENT_STACKED metadata, 0–1 domain array, `,.1%` axis format and stacked geometry. |
-| Vega render probe | `VegaRendererProbeTest` **40/40**: a 100% fixture renders 60.0% and 40.0% segment labels with a full stack. |
+| Vega render probe | `VegaRendererProbeTest` **40/40**: a 100% fixture renders 60.0%/40.0% labels and two exported bar paths with equal x/width and contiguous y extents (the render now asserts geometry, not just labels). |
 | Bar query | `BarChartQueryTest` **1/1** unchanged for grouped grain/order/filter/source rows. |
 | Persistence | `ChartSettingsPersistenceTest` **12/12**: PERCENT_STACKED round-trips and invalid modes fall back to NONE. |
 | Build/lint | Debug/test APKs build; lint 0 errors / 5 warnings. |
@@ -49,6 +49,6 @@ visual acceptance remains absent.
 ## Evidence files
 
 - `app/build/outputs/androidTest-results/cust08-bars/VegaSpecBuilderTest-percent-final.txt`
-- `app/build/outputs/androidTest-results/cust08-bars/VegaRendererProbeTest-percent-final.txt`
+- `app/build/outputs/androidTest-results/cust08-bars/VegaRendererProbeTest-percent-final2.txt`
 - `app/build/outputs/androidTest-results/cust08-bars/BarChartQueryTest-percent-final.txt`
 - `app/build/outputs/androidTest-results/cust08-bars/ChartSettingsPersistenceTest-percent-final.txt`

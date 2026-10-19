@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `75f9e02`; the 100%-stacked change is in the next
-local commit. `main` tracks `origin/main` at the pushed grouped/stacked baseline.
+**Source:** commits through `f07ac26`; the 100%-stacked geometry follow-up is in
+the next local commit. `main` tracks `origin/main` at the pushed 100% baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
