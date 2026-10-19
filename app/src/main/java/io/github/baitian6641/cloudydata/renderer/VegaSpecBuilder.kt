@@ -189,7 +189,9 @@ object VegaSpecBuilder {
             ChartKind.AREA -> {
                 marks.put(areaMark(spec))
                 marks.put(areaLineMark(spec))
-                if (spec.pointCount <= 200 && spec.markers.show) marks.put(areaSymbolMark(spec))
+                if (spec.pointCount <= 200 && spec.markers.show) {
+                    marks.put(areaSymbolMark(spec, textColor))
+                }
                 if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
                 marks.put(selectedPointMark(spec, textColor, visibleExpr))
                 marks.put(lineHitMark(spec, visibleExpr))
@@ -547,6 +549,11 @@ object VegaSpecBuilder {
             spec.markers.opacity?.let {
                 markerEnter.put("opacity", JSONObject().put("value", it))
             }
+            if (spec.markers.border) {
+                markerEnter
+                    .put("stroke", JSONObject().put("value", textColor))
+                    .put("strokeWidth", JSONObject().put("value", spec.markers.borderWidth ?: 1.0))
+            }
             if (spec.markers.shape != MarkerShape.CIRCLE) {
                 markerEnter.put("shape", JSONObject().put("value", markerShapeName(spec.markers.shape)))
             }
@@ -660,7 +667,7 @@ object VegaSpecBuilder {
         )
         .also { applyLineStroke(spec, it, 1.5) }
 
-    private fun areaSymbolMark(spec: ChartSpec): JSONObject = JSONObject()
+    private fun areaSymbolMark(spec: ChartSpec, textColor: String): JSONObject = JSONObject()
         .put("type", "symbol")
         .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
@@ -677,6 +684,13 @@ object VegaSpecBuilder {
                     .apply {
                         spec.markers.opacity?.let {
                             put("opacity", JSONObject().put("value", it))
+                        }
+                        if (spec.markers.border) {
+                            put("stroke", JSONObject().put("value", textColor))
+                                .put(
+                                    "strokeWidth",
+                                    JSONObject().put("value", spec.markers.borderWidth ?: 1.0),
+                                )
                         }
                         if (spec.markers.shape != MarkerShape.CIRCLE) {
                             put(

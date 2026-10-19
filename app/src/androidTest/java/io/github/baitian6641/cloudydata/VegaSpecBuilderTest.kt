@@ -700,6 +700,16 @@ class VegaSpecBuilderTest {
                 .getJSONObject("opacity").getDouble("value"),
             0.0,
         )
+        assertFalse(
+            "default markers must omit stroke",
+            childMarks(ChartOptions()).first { it.getString("type") == "symbol" }
+                .getJSONObject("encode").getJSONObject("enter").has("stroke"),
+        )
+        val bordered = childMarks(ChartOptions(markerBorder = true, markerBorderWidth = 2.0))
+            .first { it.getString("type") == "symbol" }
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("#182427", bordered.getJSONObject("stroke").getString("value"))
+        assertEquals(2.0, bordered.getJSONObject("strokeWidth").getDouble("value"), 0.0)
         val defaultSymbol = childMarks(ChartOptions()).first { it.getString("type") == "symbol" }
         assertFalse(
             "default circle must not emit a shape override",
@@ -807,7 +817,12 @@ class VegaSpecBuilderTest {
         val json = VegaSpecBuilder.build(
             ChartSpecBuilder.build(
                 "area-shape", 0, result,
-                ChartOptions(markerShape = MarkerShape.CROSS, markerOpacity = 0.5),
+                ChartOptions(
+                    markerShape = MarkerShape.CROSS,
+                    markerOpacity = 0.5,
+                    markerBorder = true,
+                    markerBorderWidth = 1.5,
+                ),
                 "derived",
             ),
             false,
@@ -828,6 +843,12 @@ class VegaSpecBuilderTest {
             0.5,
             areaSymbol.getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("opacity").getDouble("value"),
+            0.0,
+        )
+        assertEquals(
+            1.5,
+            areaSymbol.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("strokeWidth").getDouble("value"),
             0.0,
         )
     }

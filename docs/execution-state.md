@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `9aa1539`. `main` tracks `origin/main`; the currency
-display stage is pushed.
+**Source:** commits through `49490ea`; the marker-border change is in the next
+local commit. `main` tracks `origin/main` at the pushed currency baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -126,6 +126,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-table-divider-width.md`
 - `qualification/evidence/2026-10-19-cust04-table-divider-contrast.md`
 - `qualification/evidence/2026-10-19-cust06-currency-display.md`
+- `qualification/evidence/2026-10-19-cust08-marker-border.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -254,6 +255,10 @@ unless stated otherwise.
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
   spec/persistence checks pass; visual/locale checks were not run.
+- **Marker border.** Optional theme-text-colored stroke with 0.5–3 dp width
+  applies to Line/Area symbols; defaults/other marker encodings unchanged.
+  Emulator spec/persistence/render checks pass; visual contrast checks were not
+  run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -342,17 +347,16 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST08 persisted marker border.**
+**CUST04 persisted table header divider toggle.**
 
-- Requirements/stage: CUST08, F36/F38, Q21, S11. Prerequisites: marker
-  visibility/size/shape/opacity, line/area symbols, emulator probes.
-- Files: `ChartOptions`, `ChartSpec`/MarkerSpec, builders,
-  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
-- Action: add an optional persisted border on Line/Area point symbols using the
-  theme text color and a bounded stroke width, defaulting off.
-- Acceptance: default output unchanged; border persists and affects only point
-  symbols, preserving fill/shape/size/opacity/selection; invalid values fall
-  back to off. Emulator spec/render checks required; visual review unverified.
+- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: table row/column
+  dividers, width/contrast, shared divider rendering and persistence tests.
+- Files: `ChartOptions`, settings dialog, `ResultTable`, tests/evidence.
+- Action: add a persisted header-rule visibility toggle, defaulting on to preserve
+  current structure and applying the same width/contrast as body rules.
+- Acceptance: default unchanged; disabling affects only the rule under the table
+  header, never header content/data/selection; persists across reopen. Emulator
+  persistence/table-selection checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, interpolation, dash, opacity, legend-sample and table visuals wait for

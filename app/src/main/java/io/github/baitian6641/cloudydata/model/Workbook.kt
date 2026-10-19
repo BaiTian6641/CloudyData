@@ -87,6 +87,8 @@ data class ChartOptions(
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
     val markerOpacity: Double? = null,
+    val markerBorder: Boolean = false,
+    val markerBorderWidth: Double? = null,
     val labelPosition: LabelPosition = LabelPosition.TOP,
     val units: String? = null,
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
@@ -145,6 +147,8 @@ data class ChartOptions(
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
         .put("markerOpacity", markerOpacity ?: JSONObject.NULL)
+        .put("markerBorder", markerBorder)
+        .put("markerBorderWidth", markerBorderWidth ?: JSONObject.NULL)
         .put("labelPosition", labelPosition.name)
         .put("units", units ?: JSONObject.NULL)
         .put("axisTitleAnchor", axisTitleAnchor.name)
@@ -172,6 +176,8 @@ data class ChartOptions(
         const val MAX_MARKER_SIZE = 12.0
         const val MIN_MARKER_OPACITY = 0.1
         const val MAX_MARKER_OPACITY = 1.0
+        const val MIN_MARKER_BORDER_WIDTH = 0.5
+        const val MAX_MARKER_BORDER_WIDTH = 3.0
         const val MIN_TABLE_DIVIDER_WIDTH = 0.5
         const val MAX_TABLE_DIVIDER_WIDTH = 3.0
         const val MIN_GRIDLINE_WIDTH = 0.5
@@ -312,6 +318,14 @@ data class ChartOptions(
             } else {
                 json.optDouble("markerOpacity").takeIf {
                     it.isFinite() && it in MIN_MARKER_OPACITY..MAX_MARKER_OPACITY
+                }
+            },
+            markerBorder = json.optBoolean("markerBorder", false),
+            markerBorderWidth = if (json.isNull("markerBorderWidth")) {
+                null
+            } else {
+                json.optDouble("markerBorderWidth").takeIf {
+                    it.isFinite() && it in MIN_MARKER_BORDER_WIDTH..MAX_MARKER_BORDER_WIDTH
                 }
             },
             labelPosition = runCatching {

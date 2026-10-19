@@ -771,3 +771,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   VegaSpecBuilderTest 18/18, ChartSettingsPersistenceTest 12/12, USD/EUR render
   1/1; lint 0 errors/5 warnings. Googlebook untouched; visual/locale/export
   checks absent.
+
+## 2026-10-19 — CUST08 marker border
+
+- Added optional persisted theme-text-colored marker border with 0.5–3 dp width
+  for Line/Area point symbols. Default off; fill/shape/size/opacity/lines/
+  selection unchanged. Hiding markers clears width; invalid values fall back.
+- Emulator-first validation: JVM 65/65; emulator-5580 API36 x86_64
+  VegaSpecBuilderTest 18/18 (line + area), ChartSettingsPersistenceTest 12/12,
+  border render 1/1; lint 0 errors/5 warnings. Googlebook untouched; visual/
+  legend/export checks absent.

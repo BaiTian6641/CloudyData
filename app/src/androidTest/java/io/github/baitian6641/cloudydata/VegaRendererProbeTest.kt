@@ -563,6 +563,37 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun markerBorderRendersWithoutChangingMarkCounts() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(border: Boolean): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_MARKER_BORDER, border)
+                .putExtra(RendererProbeActivity.EXTRA_MARKER_BORDER_WIDTH, "2.0")
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("marker-border render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("marker-border export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val plain = render(false)
+        val bordered = render(true)
+        assertEquals(plain.result.markCount, bordered.result.markCount)
+        assertEquals(plain.result.sceneMarks["line"], bordered.result.sceneMarks["line"])
+        assertEquals(plain.result.sceneMarks["symbol"], bordered.result.sceneMarks["symbol"])
+        assertFalse("marker border did not affect export", plain.svg == bordered.svg)
+        assertTrue("marker border stroke missing", bordered.svg.contains("stroke=\"#182427\""))
+        assertTrue("marker border width missing", bordered.svg.contains("stroke-width=\"2\""))
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

@@ -99,6 +99,8 @@ fun ChartSettingsDialog(
     var showMarkers by remember { mutableStateOf(current.showMarkers) }
     var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
     var markerOpacity by remember { mutableStateOf(current.markerOpacity?.toString().orEmpty()) }
+    var markerBorder by remember { mutableStateOf(current.markerBorder) }
+    var markerBorderWidth by remember { mutableStateOf(current.markerBorderWidth?.toString().orEmpty()) }
     var markerShape by remember { mutableStateOf(current.markerShape) }
     var markerShapeExpanded by remember { mutableStateOf(false) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
@@ -149,6 +151,11 @@ fun ChartSettingsDialog(
     } else {
         null
     }
+    val parsedMarkerBorderWidth = if (showMarkers && markerBorder) {
+        markerBorderWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    } else {
+        null
+    }
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
@@ -181,6 +188,12 @@ fun ChartSettingsDialog(
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
                 "${ChartOptions.MAX_LABEL_FONT_SIZE}."
+        showMarkers && markerBorder && markerBorderWidth.trim().isNotEmpty() &&
+            (parsedMarkerBorderWidth == null || !parsedMarkerBorderWidth.isFinite() ||
+                parsedMarkerBorderWidth !in
+                ChartOptions.MIN_MARKER_BORDER_WIDTH..ChartOptions.MAX_MARKER_BORDER_WIDTH) ->
+            "Marker border width must be from ${ChartOptions.MIN_MARKER_BORDER_WIDTH} to " +
+                "${ChartOptions.MAX_MARKER_BORDER_WIDTH}."
         showMarkers && markerOpacity.trim().isNotEmpty() && (parsedMarkerOpacity == null ||
             !parsedMarkerOpacity.isFinite() ||
             parsedMarkerOpacity !in ChartOptions.MIN_MARKER_OPACITY..ChartOptions.MAX_MARKER_OPACITY) ->
@@ -716,6 +729,21 @@ fun ChartSettingsDialog(
                             supportingText = "${ChartOptions.MIN_MARKER_OPACITY}–${ChartOptions.MAX_MARKER_OPACITY}, blank for opaque.",
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         )
+                        ChartToggleRow(
+                            title = "Marker border",
+                            description = "Outline point symbols with the theme text color.",
+                            checked = markerBorder,
+                            onCheckedChange = { markerBorder = it },
+                        )
+                        if (markerBorder) {
+                            CloudyTextField(
+                                value = markerBorderWidth,
+                                onValueChange = { markerBorderWidth = it },
+                                label = "Marker border width",
+                                supportingText = "${ChartOptions.MIN_MARKER_BORDER_WIDTH}–${ChartOptions.MAX_MARKER_BORDER_WIDTH}, blank for 1.",
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            )
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text(
@@ -1009,6 +1037,12 @@ fun ChartSettingsDialog(
                             markerSize = if (showMarkers) parsedMarkerSize else null,
                             markerShape = markerShape,
                             markerOpacity = if (showMarkers) parsedMarkerOpacity else null,
+                            markerBorder = markerBorder,
+                            markerBorderWidth = if (showMarkers && markerBorder) {
+                                parsedMarkerBorderWidth
+                            } else {
+                                null
+                            },
                         ),
                     )
                 },

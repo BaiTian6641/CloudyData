@@ -310,13 +310,21 @@ class ChartSpecBuilderTest {
     fun markerOptionsAreCarriedAndBounded() {
         val spec = ChartSpecBuilder.build(
             "markers", 0, lineResult(),
-            ChartOptions(showMarkers = false, markerSize = 6.0, markerOpacity = 0.5),
+            ChartOptions(
+                showMarkers = false,
+                markerSize = 6.0,
+                markerOpacity = 0.5,
+                markerBorder = true,
+                markerBorderWidth = 2.0,
+            ),
             "derived",
         )
         assertEquals(false, spec.markers.show)
         assertEquals(6.0, spec.markers.size!!, 0.0)
         assertEquals(MarkerShape.CIRCLE, spec.markers.shape)
         assertEquals(0.5, spec.markers.opacity!!, 0.0)
+        assertEquals(true, spec.markers.border)
+        assertEquals(2.0, spec.markers.borderWidth!!, 0.0)
         assertEquals(
             true,
             ChartSpecBuilder.build(
@@ -342,6 +350,18 @@ class ChartSpecBuilderTest {
             ).markers.opacity!!,
             0.0,
         )
+        for (invalid in listOf(0.0, 4.0, Double.NaN)) {
+            try {
+                ChartSpecBuilder.build(
+                    "markers", 0, lineResult(),
+                    ChartOptions(markerBorderWidth = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected marker border rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Marker border width"))
+            }
+        }
         for (invalid in listOf(0.0, 1.1, Double.NaN)) {
             try {
                 ChartSpecBuilder.build(

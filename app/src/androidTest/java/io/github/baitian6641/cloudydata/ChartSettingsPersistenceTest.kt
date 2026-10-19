@@ -106,6 +106,8 @@ class ChartSettingsPersistenceTest {
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
                             markerOpacity = 0.5,
+                            markerBorder = true,
+                            markerBorderWidth = 2.0,
                             showTableRowDividers = false,
                             showTableColumnDividers = true,
                             tableDividerWidth = 2.0,
@@ -163,6 +165,8 @@ class ChartSettingsPersistenceTest {
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
+        assertEquals(true, reopenedSheet.chart.markerBorder)
+        assertEquals(2.0, reopenedSheet.chart.markerBorderWidth!!, 0.0)
         assertEquals(false, reopenedSheet.chart.showTableRowDividers)
         assertEquals(true, reopenedSheet.chart.showTableColumnDividers)
         assertEquals(2.0, reopenedSheet.chart.tableDividerWidth!!, 0.0)
@@ -301,6 +305,14 @@ class ChartSettingsPersistenceTest {
             ChartOptions.fromJson(JSONObject().put("legendMarkSample", "LINE")).legendMarkSample,
         )
         assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerOpacity", 0.0)).markerOpacity)
+        assertEquals(false, ChartOptions.fromJson(JSONObject()).markerBorder)
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerBorderWidth", 4.0)).markerBorderWidth)
+        assertEquals(
+            2.0,
+            ChartOptions.fromJson(JSONObject().put("markerBorderWidth", 2.0))
+                .markerBorderWidth!!,
+            0.0,
+        )
         assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerOpacity", 1.1)).markerOpacity)
         assertEquals(
             0.5,

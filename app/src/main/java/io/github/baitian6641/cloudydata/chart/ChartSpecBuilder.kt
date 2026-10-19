@@ -279,6 +279,8 @@ object ChartSpecBuilder {
                 options.markerSize,
                 options.markerShape,
                 options.markerOpacity,
+                options.markerBorder,
+                options.markerBorderWidth,
             ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
@@ -344,6 +346,16 @@ object ChartSpecBuilder {
             throw ChartSpecException(
                 "Value decimals must be between ${ChartOptions.MIN_VALUE_DECIMALS} and " +
                     "${ChartOptions.MAX_VALUE_DECIMALS}.",
+            )
+        }
+        if (options.markerBorderWidth != null &&
+            (!options.markerBorderWidth.isFinite() ||
+                options.markerBorderWidth !in
+                ChartOptions.MIN_MARKER_BORDER_WIDTH..ChartOptions.MAX_MARKER_BORDER_WIDTH)
+        ) {
+            throw ChartSpecException(
+                "Marker border width must be between ${ChartOptions.MIN_MARKER_BORDER_WIDTH} and " +
+                    "${ChartOptions.MAX_MARKER_BORDER_WIDTH}.",
             )
         }
         if (options.markerOpacity != null &&
