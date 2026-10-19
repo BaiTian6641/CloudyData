@@ -621,6 +621,7 @@ class RendererProbeActivity : Activity() {
         "horizontalbar" -> horizontalBarSpec()
         "stackedarea" -> areaSeriesSpec(io.github.baitian6641.cloudydata.model.StackMode.STACKED)
         "percentarea" -> areaSeriesSpec(io.github.baitian6641.cloudydata.model.StackMode.PERCENT_STACKED)
+        "dualaxis" -> dualAxisSpec()
         "palette" -> ChartSpec(
             chartId = "probe-palette",
             revision = 1,
@@ -833,6 +834,47 @@ class RendererProbeActivity : Activity() {
         )
     }
 
+    private fun dualAxisSpec(): ChartSpec {
+        val primary = ChartSeries(
+            "Sales",
+            listOf(
+                ChartPoint("Jan", 0, "Sales", 150.0, "150", true, 0, stackBase = 0.0),
+                ChartPoint("Feb", 1, "Sales", 120.0, "120", true, 1, stackBase = 0.0),
+                ChartPoint("Mar", 2, "Sales", 80.0, "80", true, 2, stackBase = 0.0),
+            ),
+        )
+        val secondary = ChartSeries(
+            "Cost",
+            listOf(
+                ChartPoint("Jan", 0, "Cost", 90.0, "90", true, 0),
+                ChartPoint("Feb", 1, "Cost", 70.0, "70", true, 1),
+                ChartPoint("Mar", 2, "Cost", 40.0, "40", true, 2),
+            ),
+        )
+        return ChartSpec(
+            chartId = "probe-dual-axis",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = "Sales and cost",
+            xAxis = AxisSpec("Month"),
+            yAxis = AxisSpec("Sales", min = 0.0),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(false),
+            sourceNote = "Source: probe fixture",
+            series = listOf(primary),
+            rowCount = 3,
+            truncated = false,
+            secondaryLayer = io.github.baitian6641.cloudydata.chart.ChartLayer(
+                id = "secondary-line",
+                kind = ChartKind.LINE,
+                series = listOf(secondary),
+                axis = AxisSpec("Cost", min = 0.0),
+                synchronizedAxis = false,
+            ),
+        )
+    }
+
     private fun areaSeriesSpec(mode: io.github.baitian6641.cloudydata.model.StackMode): ChartSpec {
         val percent = mode == io.github.baitian6641.cloudydata.model.StackMode.PERCENT_STACKED
         val north = if (percent) listOf(0.6, 0.5, 0.4) else listOf(10.0, 20.0, 30.0)
@@ -1002,6 +1044,7 @@ class RendererProbeActivity : Activity() {
         "horizontalbar" -> "Accessible summary: Jan has North 60 and South 40."
         "stackedarea" -> "Accessible summary: stacked North and South across three months."
         "percentarea" -> "Accessible summary: 100% stacked North and South across three months."
+        "dualaxis" -> "Accessible summary: sales and cost across three months."
         "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."

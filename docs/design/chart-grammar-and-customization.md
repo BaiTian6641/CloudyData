@@ -179,7 +179,7 @@ drawn as a partial line. The renderer is still a bounded offline Vega surface;
 the native summary/table remains the exact-value and accessible equivalent.
 
 The following remain absent or partial: bar detail encodings, negative stacked
-areas, other chart families, rich subtitle/caption formatting and
+areas, full dual-axis composition, other chart families, rich subtitle/caption formatting and
 typed unit models, tick/grid styling, custom/interactive legend behavior, line
 style/interpolation controls, temporal x scales, layers/dual axes, reference
 analysis, annotations, tooltip field controls, chart selection, export and the

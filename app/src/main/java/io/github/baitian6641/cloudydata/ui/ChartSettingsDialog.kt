@@ -99,6 +99,8 @@ fun ChartSettingsDialog(
     var barOrientationExpanded by remember { mutableStateOf(false) }
     var areaStackMode by remember { mutableStateOf(current.areaStackMode) }
     var areaStackExpanded by remember { mutableStateOf(false) }
+    var secondaryAxisTitle by remember { mutableStateOf(current.secondaryAxisTitle.orEmpty()) }
+    var secondaryAxisSynchronized by remember { mutableStateOf(current.secondaryAxisSynchronized) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -1050,6 +1052,20 @@ fun ChartSettingsDialog(
                         }
                     }
                 }
+                if (sheet.markType == MarkType.BAR && sheet.secondaryMeasureFieldId != null) {
+                    CloudyTextField(
+                        value = secondaryAxisTitle,
+                        onValueChange = { secondaryAxisTitle = it.take(120) },
+                        label = "Secondary axis title",
+                        supportingText = "Leave blank to derive it from the secondary measure.",
+                    )
+                    ChartToggleRow(
+                        title = "Synchronize secondary axis",
+                        description = "Use the primary value domain for the secondary line; otherwise the right axis has its own domain.",
+                        checked = secondaryAxisSynchronized,
+                        onCheckedChange = { secondaryAxisSynchronized = it },
+                    )
+                }
                 if (sheet.markType == MarkType.BAR) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
@@ -1247,6 +1263,8 @@ fun ChartSettingsDialog(
                             barStackMode = barStackMode,
                             barOrientation = barOrientation,
                             areaStackMode = areaStackMode,
+                            secondaryAxisTitle = clean(secondaryAxisTitle),
+                            secondaryAxisSynchronized = secondaryAxisSynchronized,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

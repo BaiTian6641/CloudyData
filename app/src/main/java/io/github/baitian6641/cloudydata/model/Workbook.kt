@@ -81,6 +81,8 @@ data class ChartOptions(
     val barStackMode: StackMode = StackMode.NONE,
     val barOrientation: BarOrientation = BarOrientation.VERTICAL,
     val areaStackMode: StackMode = StackMode.NONE,
+    val secondaryAxisTitle: String? = null,
+    val secondaryAxisSynchronized: Boolean = false,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -138,6 +140,8 @@ data class ChartOptions(
         .put("barStackMode", barStackMode.name)
         .put("barOrientation", barOrientation.name)
         .put("areaStackMode", areaStackMode.name)
+        .put("secondaryAxisTitle", secondaryAxisTitle ?: JSONObject.NULL)
+        .put("secondaryAxisSynchronized", secondaryAxisSynchronized)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -268,6 +272,12 @@ data class ChartOptions(
                     json.optString("areaStackMode", StackMode.NONE.name),
                 )
             }.getOrDefault(StackMode.NONE),
+            secondaryAxisTitle = if (json.isNull("secondaryAxisTitle")) {
+                null
+            } else {
+                json.optString("secondaryAxisTitle").takeIf { it.isNotEmpty() }
+            },
+            secondaryAxisSynchronized = json.optBoolean("secondaryAxisSynchronized", false),
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {
@@ -467,6 +477,8 @@ data class WorksheetDef(
     val markType: MarkType,
     val sortDescending: Boolean,
     val seriesFieldId: String? = null,
+    val secondaryMeasureFieldId: String? = null,
+    val secondaryAggregation: Aggregation = Aggregation.SUM,
     val chart: ChartOptions = ChartOptions(),
     val filter: MarkFilter? = null,
 ) {
@@ -479,6 +491,8 @@ data class WorksheetDef(
         .put("markType", markType.name)
         .put("sortDescending", sortDescending)
         .put("seriesFieldId", seriesFieldId ?: JSONObject.NULL)
+        .put("secondaryMeasureFieldId", secondaryMeasureFieldId ?: JSONObject.NULL)
+        .put("secondaryAggregation", secondaryAggregation.name)
         .put("chart", chart.toJson())
         .put("filter", filter?.toJson() ?: JSONObject.NULL)
 
@@ -500,6 +514,16 @@ data class WorksheetDef(
                 markType = markType,
                 sortDescending = json.getBoolean("sortDescending"),
                 seriesFieldId = if (json.isNull("seriesFieldId")) null else json.optString("seriesFieldId").takeIf { it.isNotEmpty() },
+                secondaryMeasureFieldId = if (json.isNull("secondaryMeasureFieldId")) {
+                    null
+                } else {
+                    json.optString("secondaryMeasureFieldId").takeIf { it.isNotEmpty() }
+                },
+                secondaryAggregation = runCatching {
+                    Aggregation.valueOf(
+                        json.optString("secondaryAggregation", Aggregation.SUM.name),
+                    )
+                }.getOrDefault(Aggregation.SUM),
                 // Log/legend line settings must not make a bar document unrenderable.
                 chart = if (markType == MarkType.LINE) parsedChart else parsedChart.copy(logScale = false),
                 filter = runCatching {

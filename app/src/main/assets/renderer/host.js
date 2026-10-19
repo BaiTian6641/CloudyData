@@ -98,19 +98,21 @@
       ? String(datum.exactY)
       : (typeof datum.y === 'number' && isFinite(datum.y) ? String(datum.y) : 'NULL');
     var series = datum.series ? String(datum.series) + ' · ' : '';
+    var secondaryDatum = datum.secondary === true;
     tooltip.textContent = series + String(datum.x || '') + ' = ' + exact +
-      (state.units ? ' ' + state.units : '');
+      (!secondaryDatum && state.units ? ' ' + state.units : '');
     tooltip.hidden = false;
     var x = 20;
     var y = 20;
     try {
       var origin = typeof state.view.origin === 'function' ? state.view.origin() : [0, 0];
       var scaleX = state.view.scale('x');
-      var scaleY = state.view.scale('y');
+      var scaleY = state.view.scale(secondaryDatum ? 'y2' : 'y');
       var sourceY = datum.y;
       var sourceBase = datum.stackBase;
-      if (typeof sourceY !== 'number' || !isFinite(sourceY) ||
-          typeof sourceBase !== 'number' || !isFinite(sourceBase)) {
+      if (!secondaryDatum &&
+          (typeof sourceY !== 'number' || !isFinite(sourceY) ||
+           typeof sourceBase !== 'number' || !isFinite(sourceBase))) {
         var rows = state.view.data('table') || [];
         for (var i = 0; i < rows.length; i++) {
           if (rows[i] && rows[i].sourceRowIndex === datum.sourceRowIndex) {
@@ -301,7 +303,8 @@
     if (!state.view) return null;
     function walk(items) {
       (items || []).forEach(function (item) {
-        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit') &&
+        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit' ||
+            item.mark.name === 'cloudySecondaryHit') &&
             item.datum && typeof item.datum.sourceRowIndex === 'number' &&
             pointHitsMark(item, x, y)) {
           found = item.datum;
@@ -322,7 +325,8 @@
     if (!state.view) return [];
     function walk(items) {
       (items || []).forEach(function (item) {
-        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit') &&
+        if (item.mark && (item.mark.name === 'cloudyBar' || item.mark.name === 'cloudyHit' ||
+            item.mark.name === 'cloudySecondaryHit') &&
             item.datum && typeof item.datum.sourceRowIndex === 'number' &&
             itemIntersects(item, left, top, right, bottom)) {
           rows[item.datum.sourceRowIndex] = true;
@@ -869,7 +873,8 @@
             series: value[1],
             x: value[2],
             exactY: value[3],
-            y: value[4]
+            y: value[4],
+            secondary: value[5] === true
           }, mode, true);
         }
       });
@@ -880,7 +885,8 @@
             series: value[1],
             x: value[2],
             exactY: value[3],
-            y: value[4]
+            y: value[4],
+            secondary: value[5] === true
           });
         } else {
           hideTooltip();

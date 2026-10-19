@@ -104,9 +104,11 @@ fun WorksheetView(
     onSetRowField: (FieldDef) -> Unit,
     onSetMeasureField: (FieldDef) -> Unit,
     onSetSeriesField: (FieldDef) -> Unit,
+    onSetSecondaryMeasureField: (FieldDef) -> Unit,
     onClearRowField: () -> Unit,
     onClearMeasureField: () -> Unit,
     onClearSeriesField: () -> Unit,
+    onClearSecondaryMeasureField: () -> Unit,
     onAggregation: (Aggregation) -> Unit,
     onMarkType: (MarkType) -> Unit,
     onSortDescending: (Boolean) -> Unit,
@@ -129,6 +131,9 @@ fun WorksheetView(
     val rowField = sheet.rowFieldId?.let { id -> columns.firstOrNull { it.id == id } }
     val measureField = sheet.measureFieldId?.let { id -> columns.firstOrNull { it.id == id } }
     val seriesField = sheet.seriesFieldId?.let { id -> columns.firstOrNull { it.id == id } }
+    val secondaryMeasureField = sheet.secondaryMeasureFieldId?.let { id ->
+        columns.firstOrNull { it.id == id }
+    }
 
     val ready = (queryState as? WorksheetQueryState.Ready)?.result
     val previous = when (queryState) {
@@ -209,6 +214,16 @@ fun WorksheetView(
                     fields = columns.filter { it.role == FieldRole.DIMENSION && it.id != sheet.rowFieldId },
                     onSelect = onSetSeriesField,
                     onClear = onClearSeriesField,
+                )
+            }
+            if (sheet.markType == MarkType.BAR && sheet.measureFieldId != null) {
+                ShelfRow(
+                    label = "Secondary",
+                    field = secondaryMeasureField,
+                    emptyHint = "Add a second value (optional)",
+                    fields = columns.filter { it.role == FieldRole.MEASURE },
+                    onSelect = onSetSecondaryMeasureField,
+                    onClear = onClearSecondaryMeasureField,
                 )
             }
             Row(
@@ -731,6 +746,12 @@ private fun ResultTable(
                         hasSeriesColumn && index == 1 -> result.seriesField?.name ?: column.name
                         result.measureField != null && index == valueColumn ->
                             measureLabelWithUnits(result.aggregation, result.measureField.name, units)
+                        result.secondaryMeasureField != null && index == 2 ->
+                            measureLabelWithUnits(
+                                result.secondaryAggregation ?: result.aggregation,
+                                result.secondaryMeasureField.name,
+                                null,
+                            )
                         else -> column.name
                     },
                     style = MaterialTheme.typography.labelSmall,

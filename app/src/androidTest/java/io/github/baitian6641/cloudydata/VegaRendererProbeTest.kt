@@ -597,6 +597,32 @@ class VegaRendererProbeTest {
 
 
 
+
+    @Test
+    fun dualAxisSecondaryLineRendersWithIndependentRightAxis() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "dualaxis")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            val result = RendererProbeState.await(30)
+            assertTrue("dual-axis render did not complete", result != null)
+            assertNull("dual-axis render failed: ${result!!.error}", result.error)
+            assertEquals(3, result.markCount)
+            assertTrue("secondary line missing", (result.sceneMarks["line"] ?: 0) > 0)
+            assertTrue(
+                "secondary axis title missing: ${result.svgTexts}",
+                result.svgTexts.any { it == "Cost" },
+            )
+            scenario.onActivity { it.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertTrue("dual-axis export did not complete", svg != null)
+            assertTrue("primary bars missing", svg!!.contains("#006A6A"))
+            assertTrue("secondary line missing", svg.contains("#3559C7"))
+        }
+    }
+
     @Test
     fun stackedAndPercentAreaRenderBandsAndPercentLabels() {
         data class Rendered(val result: RendererProbeState.Result, val svg: String)

@@ -240,12 +240,56 @@ object VegaSpecBuilder {
             )
         }
 
+        val secondaryLayer = spec.secondaryLayer
+        val secondaryRows = JSONArray()
+        secondaryLayer?.series?.forEach { series ->
+            series.points.forEach { point ->
+                secondaryRows.put(pointJson(point).put("secondary", true))
+            }
+        }
+        val secondaryScale = secondaryLayer?.let { layer ->
+            if (layer.synchronizedAxis) {
+                JSONObject(yScale.toString()).put("name", "y2")
+            } else {
+                JSONObject()
+                    .put("name", "y2")
+                    .put("type", "linear")
+                    .put("range", "height")
+                    .put("nice", true)
+                    .put("zero", true)
+                    .put("domain", JSONObject().put("data", "table2").put("field", "y"))
+            }
+        }
+        if (secondaryLayer != null) {
+            axes.put(
+                axisJson(
+                    orient = "right",
+                    scale = "y2",
+                    title = secondaryLayer.axis.title,
+                    textColor = textColor,
+                    gridColor = gridColor,
+                    grid = false,
+                    labelAngle = 0,
+                    tickCount = secondaryLayer.axis.tickCount,
+                    format = spec.valueDecimals?.let { ",.${it}f" },
+                    titleAnchor = secondaryLayer.axis.titleAnchor,
+                ),
+            )
+        }
+        val secondaryColor = colorHex(
+            if (dark) CloudyTokens.Dark.accent else CloudyTokens.Light.accent,
+        )
+
         val marks = JSONArray()
         when (spec.kind) {
             ChartKind.BAR -> {
                 marks.put(barMark(spec))
                 if (spec.labels.show) marks.put(barLabelMark(spec, textColor, dark))
                 marks.put(barSelectionMark(spec, textColor))
+                if (secondaryLayer != null) {
+                    marks.put(secondaryLineMark(spec, secondaryColor))
+                    marks.put(secondaryHitMark(spec))
+                }
             }
             ChartKind.LINE -> {
                 marks.put(lineGroup(spec, textColor, visibleExpr))
@@ -288,9 +332,18 @@ object VegaSpecBuilder {
                                 ),
                             ),
                     )
-                    .put(JSONObject().put("name", "selected").put("values", JSONArray())),
+                    .put(JSONObject().put("name", "selected").put("values", JSONArray()))
+                    .also { data ->
+                        if (secondaryLayer != null) {
+                            data.put(JSONObject().put("name", "table2").put("values", secondaryRows))
+                        }
+                    },
             )
-            .put("scales", JSONArray().put(xScale).put(yScale).put(colorScale))
+            .put(
+                "scales",
+                JSONArray().put(xScale).put(yScale).put(colorScale)
+                    .also { scales -> secondaryScale?.let { scales.put(it) } },
+            )
             .put("axes", axes)
             .put(
                 "signals",
@@ -1171,6 +1224,48 @@ object VegaSpecBuilder {
             .put("encode", JSONObject().put("enter", enter))
     }
 
+    private fun secondaryLineMark(spec: ChartSpec, color: String): JSONObject {
+        val mark = JSONObject()
+            .put("name", "cloudySecondaryLine")
+            .put("type", "line")
+            .put("interactive", false)
+            .put("from", JSONObject().put("data", "table2"))
+            .put("clip", true)
+            .put(
+                "encode",
+                JSONObject().put(
+                    "enter",
+                    JSONObject()
+                        .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                        .put("y", JSONObject().put("scale", "y2").put("field", "y"))
+                        .put("stroke", JSONObject().put("value", color))
+                        .put("strokeWidth", JSONObject().put("value", spec.lineWidth ?: 2.0))
+                        .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                ),
+            )
+        applyLineStroke(spec, mark, 2.0)
+        return mark
+    }
+
+    private fun secondaryHitMark(spec: ChartSpec): JSONObject = JSONObject()
+        .put("name", "cloudySecondaryHit")
+        .put("type", "symbol")
+        .put("from", JSONObject().put("data", "table2"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y2").put("field", "y"))
+                    .put("fill", JSONObject().put("value", "#000000"))
+                    .put("size", JSONObject().put("value", 180))
+                    .put("opacity", JSONObject().put("value", 0.001))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
     private fun selectedPointMark(spec: ChartSpec, textColor: String, visibleExpr: String): JSONObject {
         val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
         return JSONObject()
@@ -1255,38 +1350,68 @@ object VegaSpecBuilder {
                 .put(
                     JSONObject()
                         .put("events", "@cloudyBar:click")
-                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]"),
+                        .put(
+                            "update",
+                            "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, " +
+                                "datum.y, datum.secondary === true]",
+                        ),
                 )
                 .put(
                     JSONObject()
                         .put("events", "@cloudyHit:click")
-                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]"),
-                ),
+                        .put(
+                            "update",
+                            "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, " +
+                                "datum.y, datum.secondary === true]",
+                        ),
+                )
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudySecondaryHit:click")
+                        .put(
+                            "update",
+                            "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, " +
+                                "datum.y, datum.secondary === true]",
+                        ),
+                )
         )
 
     private fun hoverSignal(): JSONObject = JSONObject()
         .put("name", "cloudyHover")
-        .put("value", JSONArray().put(-1).put("").put("").put("").put(JSONObject.NULL))
+        .put(
+            "value",
+            JSONArray().put(-1).put("").put("").put("").put(JSONObject.NULL).put(false),
+        )
         .put(
             "on",
             JSONArray()
                 .put(hoverEvent("@cloudyBar:pointermove"))
                 .put(hoverEvent("@cloudyHit:pointermove"))
+                .put(hoverEvent("@cloudySecondaryHit:pointermove"))
                 .put(
                     JSONObject()
                         .put("events", "@cloudyBar:pointerout")
-                        .put("update", "[-1, '', '', '', null]"),
+                        .put("update", "[-1, '', '', '', null, false]"),
                 )
                 .put(
                     JSONObject()
                         .put("events", "@cloudyHit:pointerout")
-                        .put("update", "[-1, '', '', '', null]"),
-                ),
+                        .put("update", "[-1, '', '', '', null, false]"),
+                )
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudySecondaryHit:pointerout")
+                        .put("update", "[-1, '', '', '', null, false]"),
+                )
         )
 
     private fun hoverEvent(selector: String): JSONObject = JSONObject()
         .put("events", selector)
-        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]")
+        .put(
+            "update",
+            "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y, " +
+                "datum.secondary === true]",
+        )
 
     private fun legendJson(spec: ChartSpec, textColor: String, widthDp: Float): JSONObject? {
         if (!spec.legend.visible) return null

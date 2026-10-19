@@ -876,3 +876,25 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Validation: JVM 72/72; VegaSpecBuilderTest 20/20; VegaRendererProbeTest
   42/42; ChartSettingsPersistenceTest 12/12; BarChartQueryTest 1/1; lint 0
   errors/5 warnings.
+
+## 2026-10-19 — CUST09.1 secondary bar+line axis
+
+- Added persisted secondary measure/aggregation and secondary-axis title/sync
+  options. The grouped query returns primary and secondary values on the same
+  row, so source-row identity and selection are shared. A typed `ChartLayer`
+  carries one LINE series and right-axis ownership; Vega renders a separate
+  `table2`, `y2` scale/axis, line and hit target. Primary bar/stack/percent and
+  area paths are unchanged; horizontal primary bars reject the secondary axis.
+- UI adds a Secondary Values shelf and settings; result/PDF tables label the
+  second column with its measure/aggregation.
+- Review-driven fixes: secondary points carry an explicit flag so tooltips use
+  `y2` and skip primary-table fallback; secondary line/hit marks participate in
+  tap/lasso hit-testing; secondary tooltips/axis labels avoid primary units;
+  inspector headers label the secondary measure; the test fixture uses
+  non-monotonic secondary values and AVG vs primary SUM, and spec tests assert
+  bar→y / secondary→y2 bindings.
+- Validation: JVM 74/74; DualAxisQueryTest 1/1; VegaSpecBuilderTest 21/21;
+  VegaRendererProbeTest 43/43; ChartSettingsPersistenceTest 12/12;
+  BarChartQueryTest 1/1; lint 0 errors/5 warnings. Googlebook untouched;
+  arbitrary layers, secondary legend/aggregation UI, labels and visual checks
+  remain open.

@@ -43,6 +43,15 @@ data class ChartSeries(
     val points: List<ChartPoint>,
 )
 
+/** A typed secondary mark layer with its own axis ownership. */
+data class ChartLayer(
+    val id: String,
+    val kind: ChartKind,
+    val series: List<ChartSeries>,
+    val axis: AxisSpec,
+    val synchronizedAxis: Boolean = false,
+)
+
 data class AxisSpec(
     val title: String?,
     val min: Double? = null,
@@ -125,6 +134,7 @@ data class ChartSpec(
     val barHasSeries: Boolean = false,
     val barOrientation: BarOrientation = BarOrientation.VERTICAL,
     val areaStackMode: StackMode = StackMode.NONE,
+    val secondaryLayer: ChartLayer? = null,
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

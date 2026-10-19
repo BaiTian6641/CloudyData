@@ -112,6 +112,12 @@ fun WorkbookInspector(
                             result.measureField.name,
                             sheet?.chart?.units,
                         )
+                    result.secondaryMeasureField != null && index == 2 ->
+                        measureLabelWithUnits(
+                            result.secondaryAggregation ?: result.aggregation,
+                            result.secondaryMeasureField.name,
+                            null,
+                        )
                     else -> column.name
                 }
                 InspectorRow(label, displayValue(row.getOrNull(index)), exact = exactValueText(row.getOrNull(index)))

@@ -230,13 +230,31 @@ class WorkbookViewModel(
             sheet.copy(
                 measureFieldId = null,
                 seriesFieldId = null,
+                secondaryMeasureFieldId = null,
                 filter = sheet.filter?.takeIf { it.seriesFieldId == null },
             )
         }
     }
 
     fun setSeriesField(field: FieldDef) {
-        updateActiveSheet { it.copy(seriesFieldId = field.id, filter = null) }
+        updateActiveSheet {
+            it.copy(seriesFieldId = field.id, secondaryMeasureFieldId = null, filter = null)
+        }
+    }
+
+    fun setSecondaryMeasureField(field: FieldDef) {
+        updateActiveSheet {
+            it.copy(
+                secondaryMeasureFieldId = field.id,
+                secondaryAggregation = it.aggregation,
+                seriesFieldId = null,
+                filter = null,
+            )
+        }
+    }
+
+    fun clearSecondaryMeasureField() {
+        updateActiveSheet { it.copy(secondaryMeasureFieldId = null, filter = null) }
     }
 
     fun clearSeriesField() {
@@ -247,6 +265,7 @@ class WorkbookViewModel(
         updateActiveSheet { sheet ->
             sheet.copy(
                 aggregation = aggregation,
+                secondaryAggregation = aggregation,
                 chart = if (aggregation == Aggregation.SUM || aggregation == Aggregation.COUNT) {
                     sheet.chart
                 } else {
@@ -265,6 +284,11 @@ class WorkbookViewModel(
             if (markType == MarkType.LINE || markType == MarkType.BAR || markType == MarkType.AREA) {
                 sheet.copy(
                     markType = markType,
+                    secondaryMeasureFieldId = if (markType == MarkType.BAR) {
+                        sheet.secondaryMeasureFieldId
+                    } else {
+                        null
+                    },
                     chart = if (markType == MarkType.BAR || markType == MarkType.AREA) {
                         sheet.chart.copy(logScale = false)
                     } else {
@@ -272,12 +296,13 @@ class WorkbookViewModel(
                     },
                 )
             } else {
-                // Color is a Line/Bar channel in this build; switching away
+                // Color is a Line/Bar/Area channel in this build; switching away
                 // clears it instead of silently querying an unused column. A
                 // row-only filter remains meaningful; a pair filter does not.
                 sheet.copy(
                     markType = markType,
                     seriesFieldId = null,
+                    secondaryMeasureFieldId = null,
                     chart = sheet.chart.copy(logScale = false),
                     filter = sheet.filter?.takeIf { it.seriesFieldId == null },
                 )

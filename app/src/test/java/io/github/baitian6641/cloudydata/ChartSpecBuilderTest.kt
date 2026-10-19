@@ -33,6 +33,7 @@ class ChartSpecBuilderTest {
     private val region = FieldDef("region", "region", "VARCHAR", LogicalType.STRING, FieldRole.DIMENSION)
     private val month = FieldDef("month", "month", "VARCHAR", LogicalType.STRING, FieldRole.DIMENSION)
     private val sales = FieldDef("sales", "sales", "BIGINT", LogicalType.INTEGER, FieldRole.MEASURE)
+    private val cost = FieldDef("cost", "cost", "BIGINT", LogicalType.INTEGER, FieldRole.MEASURE)
 
     @Test
     fun lineSpecGroupsSeriesAndPreservesObservedOrder() {
@@ -1212,6 +1213,84 @@ class ChartSpecBuilderTest {
             throw AssertionError("zero-total 100% stack was accepted")
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("positive category total"))
+        }
+    }
+
+
+    @Test
+    fun barSecondaryMeasureBuildsTypedLineLayerAndSynchronizedAxis() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                    EngineColumn("secondary_value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("Jan", 10L, 7L),
+                    listOf<Any?>("Feb", 20L, 5L),
+                    listOf<Any?>("Mar", 30L, 9L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+            secondaryMeasureField = cost,
+            secondaryAggregation = Aggregation.SUM,
+        )
+        val spec = ChartSpecBuilder.build(
+            "dual", 0, result,
+            ChartOptions(
+                secondaryAxisTitle = "Cost",
+                secondaryAxisSynchronized = true,
+            ),
+            "derived",
+        )
+        val layer = spec.secondaryLayer!!
+        assertEquals(ChartKind.LINE, layer.kind)
+        assertEquals("secondary-line", layer.id)
+        assertEquals("Cost", layer.axis.title)
+        assertTrue(layer.synchronizedAxis)
+        assertEquals(listOf("Jan", "Feb", "Mar"), layer.series.single().points.map { it.x })
+        assertEquals(listOf(7.0, 5.0, 9.0), layer.series.single().points.map { it.y })
+        assertEquals(listOf(0, 1, 2), layer.series.single().points.map { it.sourceRowIndex })
+        assertEquals(30.0, spec.series.single().points.maxOf { it.y!! }, 0.0)
+    }
+
+    @Test
+    fun secondaryAxisRequiresVerticalBars() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                    EngineColumn("secondary_value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("Jan", 1L, 2L)),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+            secondaryMeasureField = cost,
+            secondaryAggregation = Aggregation.SUM,
+        )
+        try {
+            ChartSpecBuilder.build(
+                "dual-horizontal", 0, result,
+                ChartOptions(barOrientation = io.github.baitian6641.cloudydata.model.BarOrientation.HORIZONTAL),
+                "derived",
+            )
+            throw AssertionError("horizontal secondary axis was accepted")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("vertical bars"))
         }
     }
 

@@ -2,6 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -96,6 +97,44 @@ object ChartSpecBuilder {
                 ?: "Value",
             units,
         )
+        if (result.secondaryMeasureField != null && options.barOrientation == BarOrientation.HORIZONTAL) {
+            throw ChartSpecException("A secondary axis requires vertical bars in this build.")
+        }
+        val secondaryLayer = result.secondaryMeasureField?.let { secondaryField ->
+            val secondaryAggregation = result.secondaryAggregation ?: Aggregation.SUM
+            val points = rows.mapIndexed { index, row ->
+                val raw = row.getOrNull(2)
+                val value = raw?.let { valueAsDouble(it) }
+                if (raw != null && value == null) {
+                    throw ChartSpecException("Secondary value for row ${index + 1} is not numeric.")
+                }
+                if (value != null && !value.isFinite()) {
+                    throw ChartSpecException("Secondary value for row ${index + 1} is not finite.")
+                }
+                ChartPoint(
+                    x = display(row.getOrNull(0)),
+                    xOrder = index,
+                    series = secondaryField.name,
+                    y = value,
+                    exactY = raw?.toString(),
+                    defined = value != null,
+                    sourceRowIndex = index,
+                )
+            }
+            ChartLayer(
+                id = "secondary-line",
+                kind = ChartKind.LINE,
+                series = listOf(ChartSeries(secondaryField.name, points)),
+                axis = AxisSpec(
+                    title = options.secondaryAxisTitle
+                        ?: "${aggregationLabel(secondaryAggregation)} of ${secondaryField.name}",
+                    zero = true,
+                    tickCount = options.yTickCount,
+                    titleAnchor = options.axisTitleAnchor,
+                ),
+                synchronizedAxis = options.secondaryAxisSynchronized,
+            )
+        }
         val barHasSeries = hasSeries && series.any { it.points.isNotEmpty() }
         val stackMode = if (barHasSeries && wantsStacking) {
             options.barStackMode
@@ -150,6 +189,7 @@ object ChartSpecBuilder {
             barStackMode = stackMode,
             barHasSeries = barHasSeries,
             barOrientation = options.barOrientation,
+            secondaryLayer = secondaryLayer,
             rowCount = rows.size,
             truncated = result.result.truncated,
             units = units,

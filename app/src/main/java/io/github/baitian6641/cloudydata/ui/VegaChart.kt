@@ -209,6 +209,12 @@ fun VegaChartCard(
                             resultNow.measureField.name,
                             applied.spec.units,
                         )
+                    resultNow.secondaryMeasureField != null && index == 2 ->
+                        measureLabelWithUnits(
+                            resultNow.secondaryAggregation ?: resultNow.aggregation,
+                            resultNow.secondaryMeasureField.name,
+                            null,
+                        )
                     else -> column.name
                 }
             },
@@ -390,6 +396,7 @@ fun VegaChartCard(
             Text(
                 "Renderer unavailable: $rendererError. " +
                     if (result.markType == MarkType.BAR && !result.hasSeriesColumn &&
+                        result.secondaryMeasureField == null &&
                         options.barOrientation == io.github.baitian6641.cloudydata.model.BarOrientation.VERTICAL
                     ) {
                         "The native chart is shown with the same result."
@@ -400,6 +407,7 @@ fun VegaChartCard(
                 color = colors.warning,
             )
             if (result.markType == MarkType.BAR && !result.hasSeriesColumn &&
+                result.secondaryMeasureField == null &&
                 options.barOrientation == io.github.baitian6641.cloudydata.model.BarOrientation.VERTICAL
             ) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -789,7 +797,17 @@ private fun accessibleSummary(spec: ChartSpec): String {
         }
         "${series.key}: $points"
     }
-    val suffix = if (spec.series.size > 4) " plus ${spec.series.size - 4} more series" else ""
+    val secondary = spec.secondaryLayer?.series?.take(1)?.joinToString("; ") { series ->
+        val points = series.points.take(4).joinToString(", ") { point ->
+            "${point.x} = ${displayValue(point.y)}"
+        }
+        "${series.key}: $points"
+    }
+    val extras = buildList {
+        if (spec.series.size > 4) add("plus ${spec.series.size - 4} more series")
+        if (!secondary.isNullOrBlank()) add("secondary $secondary")
+    }
+    val suffix = if (extras.isEmpty()) "" else " " + extras.joinToString("; ")
     val kind = when (spec.kind) {
         ChartKind.BAR -> "Bar"
         ChartKind.LINE -> "Line"

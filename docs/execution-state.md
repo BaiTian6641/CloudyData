@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `d02b7e3`; `main` tracks `origin/main`. The next
-task is local-only until it passes its gates.
+**Source:** commits through `51f21b5`; `main` tracks `origin/main`. The CUST09
+secondary-axis change is in the next local commit.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,13 +54,14 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **72/72**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **74/74**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
-  decimal-format, chart-border, crowded-label, palette and bar/area-stacking
-  cases.
-  Emulator renderer probe: **42/42**; Vega spec builder: **20/20**;
-  chart-settings persistence: **12/12**; color-series bar query: **1/1**.
+  decimal-format, chart-border, crowded-label, palette, bar/area-stacking and
+  secondary-axis cases.
+  Emulator renderer probe: **43/43**; Vega spec builder: **21/21**;
+  chart-settings persistence: **12/12**; color-series bar query: **1/1**;
+  dual-axis query: **1/1**.
   Earlier keep/exclude, table-selection and View Data runs remain valid for the
   unchanged paths. The lasso/Y-tick/device visual assertions still lack a
   post-handoff device run; see **Implemented but unverified**. A three-device connected run still hits a
@@ -271,6 +272,11 @@ unless stated otherwise.
   layout, builder-owned bases, display-Y domain, fill legend, exact values and
   hidden-series support. Negative/zero-total stacked cases are diagnosed;
   emulator spec/render/persistence checks pass; visual/gap checks were not run.
+- **Secondary bar+line axis (CUST09.1).** A vertical Bar can carry one persisted
+  second measure as a typed LINE layer with a right `y2` axis, shared grouped-row
+  identity, independent/synchronized domain, table/PDF column and settings.
+  Query/spec/render/persistence checks pass; arbitrary layers, secondary legend/
+  aggregation UI and visual checks remain absent.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -367,23 +373,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST09 combo bar+line and dual axis.**
+**CUST09.2 dual-axis legend, independent secondary aggregation and labels.**
 
-- Requirements/stage: CUST09, CH04, F34/F36, S06/S11. Prerequisites: typed
-  measures/axes, bar/line specs, legends, selection and persistence.
-- Files: workbook schema for a second measure/layer, semantic query shape,
-  `ChartSpec` layers/axes, Vega lowering, settings, tests.
-- Action: add one persisted bar+line combo layer with a second measure, separate
-  value axes and synchronized/independent domain choice; keep the existing
-  single-mark path unchanged.
-- Acceptance: two exact measures retain independent fields/aggregation and
-  source-row inspection; axes/scales do not silently share domains; default
-  single-mark specs, persistence and selection remain valid. Emulator
-  query/spec/render checks required; visual review unverified.
-- Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, palette, interpolation, dash, opacity, legend-sample, bar/area/table
-  and horizontal visuals wait for an authorized visual session.
+- Requirements/stage: CUST09, CH04/F32/F36/F38, S11.C0/S11. Prerequisite:
+  committed secondary bar+line layer with shared row identity.
+- Files: `ChartOptions` secondary aggregation/format, settings, `ChartSpec`
+  secondary layer, Vega legend/label/hit lowering, tests.
+- Action: expose an independent secondary aggregation and number format, add a
+  two-entry bar/line legend with correct swatches, and optional secondary value
+  labels/markers without changing primary semantics.
+- Acceptance: primary and secondary aggregations differ independently in SQL;
+  legend/labels identify the correct layer; synchronized/independent domains
+  remain exact; invalid secondary settings fall back without touching primary.
+  Emulator query/spec/render checks required; visual review unverified.
+- Device-bound qualification remains blocked: dual-axis readability, legend,
+  labels, line crossings, Y ticks, lasso/product, titles, units, gridline,
+  palette, marker, dash, bar/area/table and horizontal visuals wait for an
+  authorized visual session.
 
 ## Protected context
 

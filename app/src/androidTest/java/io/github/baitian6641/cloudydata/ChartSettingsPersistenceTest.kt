@@ -65,6 +65,8 @@ class ChartSettingsPersistenceTest {
                     sheet.copy(
                         markType = MarkType.LINE,
                         seriesFieldId = "region-field",
+                        secondaryMeasureFieldId = "cost-field",
+                        secondaryAggregation = io.github.baitian6641.cloudydata.model.Aggregation.AVG,
                         chart = ChartOptions(
                             title = "Regional sales",
                             subtitle = "Quarter to date",
@@ -111,6 +113,8 @@ class ChartSettingsPersistenceTest {
                             categoryPalette = CategoryPalette.COLORBLIND,
                             barStackMode = StackMode.STACKED,
                             barOrientation = BarOrientation.HORIZONTAL,
+                            secondaryAxisTitle = "Cost",
+                            secondaryAxisSynchronized = true,
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -127,6 +131,13 @@ class ChartSettingsPersistenceTest {
         val reopened = store.load(saved.id)
         val reopenedSheet = reopened.worksheets.single()
         assertEquals("region-field", reopenedSheet.seriesFieldId)
+        assertEquals("cost-field", reopenedSheet.secondaryMeasureFieldId)
+        assertEquals(
+            io.github.baitian6641.cloudydata.model.Aggregation.AVG,
+            reopenedSheet.secondaryAggregation,
+        )
+        assertEquals("Cost", reopenedSheet.chart.secondaryAxisTitle)
+        assertTrue(reopenedSheet.chart.secondaryAxisSynchronized)
         assertEquals("Regional sales", reopenedSheet.chart.title)
         assertEquals("Quarter to date", reopenedSheet.chart.subtitle)
         assertEquals("Source rows are preserved in the workbook snapshot.", reopenedSheet.chart.caption)

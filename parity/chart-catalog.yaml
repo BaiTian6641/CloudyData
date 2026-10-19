@@ -6,8 +6,8 @@ reference_profile: pending_no_licensed_tableau
 design_contract: docs/design/chart-grammar-and-customization.md
 inventory_complete: false
 status_counts:
-  partial: 4
-  not_started: 20
+  partial: 5
+  not_started: 19
 families:
   - id: CH01
     family: Bar
@@ -33,7 +33,8 @@ families:
   - id: CH04
     family: Combo / dual axis
     variants: [bar_line, dual_measure, synchronized]
-    status: not_started
+    status: partial
+    note: Vertical primary bars can carry one persisted secondary measure as a right-axis line with an independent or synchronized domain. Secondary legend, independent aggregation UI, secondary labels/markers, color-series combination, horizontal dual axes and visual export are pending.
   - id: CH05
     family: Scatter
     variants: [single, multi_series, sized]
@@ -116,7 +117,7 @@ customization:
     area: Axes and scales
     controls: [range, zero_baseline, log, reverse, ticks, dual_axis, synchronize]
     status: partial
-    note: Y range, zero baseline, log (positive-value validation), reverse, X/Y titles, a persisted Y tick count (2–50, greedy label overlap), bounded categorical X-label thinning (2–50, first/last retained via axis.values) and an optional 0.5–3 dp major-gridline width are implemented. Gridline color styling, dual axes, synchronization and temporal x scaling are pending.
+    note: Y range, zero baseline, log (positive-value validation), reverse, X/Y titles, a persisted Y tick count (2–50, greedy label overlap), bounded categorical X-label thinning (2–50, first/last retained via axis.values) and an optional 0.5–3 dp major-gridline width are implemented. A bounded secondary right axis with independent/synchronized domain exists for vertical bar+line; arbitrary dual-axis composition and temporal x scaling remain pending.
   - id: CUST04
     area: Gridlines and dividers
     controls: [major_gridlines, minor_gridlines, color, width, row_dividers, column_dividers]
@@ -145,7 +146,8 @@ customization:
   - id: CUST09
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]
-    status: not_started
+    status: partial
+    note: One typed secondary LINE layer with a persisted second measure, right axis, independent/synchronized domain, shared source-row identity, table/PDF column and settings exists for vertical bars. Arbitrary ordered layers, reorder/remove, secondary legend/aggregation UI, labels/markers and horizontal dual axes remain pending.
   - id: CUST10
     area: Reference and statistics
     controls: [reference_line, reference_band, distribution, trend, forecast, cluster, confidence]

@@ -1445,4 +1445,90 @@ class VegaSpecBuilderTest {
     }
 
 
+    @Test
+    fun dualAxisSecondaryLineUsesSeparateScaleAxisAndData() {
+        val secondary = FieldDef("cost", "cost", "BIGINT", LogicalType.INTEGER, FieldRole.MEASURE)
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                    EngineColumn("secondary_value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("Jan", 10L, 7L),
+                    listOf<Any?>("Feb", 20L, 5L),
+                    listOf<Any?>("Mar", 30L, 9L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+            secondaryMeasureField = secondary,
+            secondaryAggregation = Aggregation.SUM,
+        )
+        val spec = ChartSpecBuilder.build(
+            "dual", 0, result,
+            ChartOptions(secondaryAxisTitle = "Cost"),
+            "derived",
+        )
+        val json = VegaSpecBuilder.build(
+            spec, false, listOf(0x006A6A), 600f, 320f,
+        )
+        assertNotNull(json.getJSONArray("data").optJSONObject(3))
+        assertEquals("table2", json.getJSONArray("data").getJSONObject(3).getString("name"))
+        assertEquals(4, json.getJSONArray("scales").length())
+        assertEquals("y2", json.getJSONArray("scales").getJSONObject(3).getString("name"))
+        val rightAxis = json.getJSONArray("axes").getJSONObject(json.getJSONArray("axes").length() - 1)
+        assertEquals("right", rightAxis.getString("orient"))
+        assertEquals("Cost", rightAxis.getString("title"))
+        val markNames = (0 until json.getJSONArray("marks").length())
+            .map { json.getJSONArray("marks").getJSONObject(it).optString("name") }
+        assertTrue(markNames.contains("cloudySecondaryLine"))
+        assertTrue(markNames.contains("cloudySecondaryHit"))
+        val secondaryLine = json.getJSONArray("marks")
+            .getJSONObject(markNames.indexOf("cloudySecondaryLine"))
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("y2", secondaryLine.getJSONObject("y").getString("scale"))
+        val secondaryHit = json.getJSONArray("marks")
+            .getJSONObject(markNames.indexOf("cloudySecondaryHit"))
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("y2", secondaryHit.getJSONObject("y").getString("scale"))
+        val primaryBar = json.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("y", primaryBar.getJSONObject("y").getString("scale"))
+        assertEquals(
+            true,
+            json.getJSONArray("data").getJSONObject(3).getJSONArray("values")
+                .getJSONObject(0).getBoolean("secondary"),
+        )
+        assertEquals(
+            "table2",
+            json.getJSONArray("scales").getJSONObject(3)
+                .getJSONObject("domain").getString("data"),
+        )
+
+        val synchronized = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "dual-sync", 0, result,
+                ChartOptions(
+                    secondaryAxisTitle = "Cost",
+                    secondaryAxisSynchronized = true,
+                ),
+                "derived",
+            ),
+            false, listOf(0x006A6A), 600f, 320f,
+        )
+        assertEquals(
+            "table",
+            synchronized.getJSONArray("scales").getJSONObject(3)
+                .getJSONObject("domain").getString("data"),
+        )
+    }
+
+
 }

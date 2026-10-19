@@ -58,6 +58,8 @@ Color-series bars now use the same typed query/IR path: the semantic query group
 by category and series, and `ChartSpecBuilder` fixes each segment's stack base
 before rendering. Grouped bars are the unstacked default; stacked and 100%-stacked bars use a
 persisted `barStackMode`, vertical/horizontal uses `barOrientation`, and Area
-uses a persisted `areaStackMode` with builder-owned cumulative bases. The renderer lowers the supplied bases and never
+uses a persisted `areaStackMode` with builder-owned cumulative bases. A bounded
+secondary layer (`ChartLayer`) adds one right-axis line measure for vertical bars
+without changing the primary series contract. The renderer lowers the supplied bases and never
 re-aggregates. Bar color legends are enabled for this shape. The native fallback
 does not draw color-series bars and states that the table remains authoritative.
