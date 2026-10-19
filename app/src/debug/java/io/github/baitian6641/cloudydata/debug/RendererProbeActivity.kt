@@ -22,6 +22,7 @@ import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.GridlineSpec
 import io.github.baitian6641.cloudydata.chart.LabelSpec
 import io.github.baitian6641.cloudydata.chart.LegendSpec
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
@@ -617,6 +618,7 @@ class RendererProbeActivity : Activity() {
         )
         "groupedbar", "stackedbar" -> barSeriesSpec(probeKind == "stackedbar")
         "percentbar" -> percentBarSpec()
+        "horizontalbar" -> horizontalBarSpec()
         "palette" -> ChartSpec(
             chartId = "probe-palette",
             revision = 1,
@@ -829,6 +831,38 @@ class RendererProbeActivity : Activity() {
         )
     }
 
+    private fun horizontalBarSpec(): ChartSpec = ChartSpec(
+        chartId = "probe-horizontal-bar",
+        revision = 1,
+        kind = ChartKind.BAR,
+        title = "Horizontal sales",
+        xAxis = AxisSpec("Category"),
+        yAxis = AxisSpec("Value", min = 0.0, max = 100.0),
+        gridlines = GridlineSpec(true),
+        legend = LegendSpec(true, LegendPosition.BOTTOM, "Series"),
+        labels = LabelSpec(false),
+        sourceNote = "Source: probe fixture",
+        series = listOf(
+            ChartSeries(
+                "North",
+                listOf(
+                    ChartPoint("Jan", 0, "North", 60.0, "60", true, 0, stackBase = 0.0, seriesIndex = 0),
+                ),
+            ),
+            ChartSeries(
+                "South",
+                listOf(
+                    ChartPoint("Jan", 0, "South", 40.0, "40", true, 1, stackBase = 60.0, seriesIndex = 1),
+                ),
+            ),
+        ),
+        rowCount = 2,
+        truncated = false,
+        barStackMode = BarStackMode.STACKED,
+        barHasSeries = true,
+        barOrientation = BarOrientation.HORIZONTAL,
+    )
+
     private fun percentBarSpec(): ChartSpec = ChartSpec(
         chartId = "probe-percent-bar",
         revision = 1,
@@ -914,6 +948,7 @@ class RendererProbeActivity : Activity() {
         "groupedbar" -> "Accessible summary: North and South across Jan, Feb, Mar."
         "stackedbar" -> "Accessible summary: stacked North and South across Jan, Feb, Mar."
         "percentbar" -> "Accessible summary: Jan is 60% North and 40% South."
+        "horizontalbar" -> "Accessible summary: Jan has North 60 and South 40."
         "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."

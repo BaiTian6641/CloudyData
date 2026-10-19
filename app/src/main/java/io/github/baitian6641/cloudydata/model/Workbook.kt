@@ -46,6 +46,8 @@ enum class CategoryPalette { CLOUDY, COLORBLIND }
 
 enum class BarStackMode { NONE, STACKED, PERCENT_STACKED }
 
+enum class BarOrientation { VERTICAL, HORIZONTAL }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT, CURRENCY }
 
 enum class CurrencyCode { USD, EUR, GBP, JPY }
@@ -77,6 +79,7 @@ data class ChartOptions(
     val legendMarkSample: LegendMarkSample = LegendMarkSample.MARKER,
     val categoryPalette: CategoryPalette = CategoryPalette.CLOUDY,
     val barStackMode: BarStackMode = BarStackMode.NONE,
+    val barOrientation: BarOrientation = BarOrientation.VERTICAL,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -132,6 +135,7 @@ data class ChartOptions(
         .put("legendMarkSample", legendMarkSample.name)
         .put("categoryPalette", categoryPalette.name)
         .put("barStackMode", barStackMode.name)
+        .put("barOrientation", barOrientation.name)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -252,6 +256,11 @@ data class ChartOptions(
                     json.optString("barStackMode", BarStackMode.NONE.name),
                 )
             }.getOrDefault(BarStackMode.NONE),
+            barOrientation = runCatching {
+                BarOrientation.valueOf(
+                    json.optString("barOrientation", BarOrientation.VERTICAL.name),
+                )
+            }.getOrDefault(BarOrientation.VERTICAL),
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {

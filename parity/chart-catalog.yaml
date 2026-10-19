@@ -16,7 +16,7 @@ families:
     customizations: [aggregation, sort, axis_title, axis_range, zero_baseline, gridlines, legend, labels, color, tooltip]
     owning_stages: S06, S11
     status: partial
-    note: Vertical bars only. A Color field produces side-by-side grouped, stacked or 100%-stacked segments with a category legend; 100% stacks normalize positive Sum/Count totals and use a percent axis. Aggregation, sorting, titles, ranges, gridlines, labels, tooltip and palette are persisted. Horizontal, detail, negative-value native fallback and visual qualification remain absent.
+    note: Vertical and horizontal bars. A Color field produces side-by-side grouped, stacked or 100%-stacked segments with a category legend; 100% stacks normalize positive Sum/Count totals and use a percent axis. Aggregation, sorting, titles, ranges, gridlines, labels, tooltip and palette are persisted. Detail, negative-value native fallback and visual qualification remain absent.
   - id: CH02
     family: Line
     variants: [single, multi_series, stepped, curved, markers]
@@ -141,7 +141,7 @@ customization:
     area: Marks and lines
     controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]
     status: partial
-    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Persisted marker shape/size/visibility/opacity/border, linear/step/monotone interpolation, solid/dashed/dotted strokes and line/area paint opacity exist. Color-series bar grouped/stacked/100% layout is implemented for bars; 100% stacking on other marks and device visual qualification remain pending.
+    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Persisted marker shape/size/visibility/opacity/border, linear/step/monotone interpolation, solid/dashed/dotted strokes and line/area paint opacity exist. Color-series bar grouped/stacked/100% layout and vertical/horizontal orientation are implemented for bars; 100% stacking on other marks and device visual qualification remain pending.
   - id: CUST09
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]

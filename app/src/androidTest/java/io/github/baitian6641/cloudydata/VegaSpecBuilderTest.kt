@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
@@ -1318,6 +1319,57 @@ class VegaSpecBuilderTest {
         assertTrue(
             "100% bars must use the stacked width",
             percentBar.getJSONObject("width").getString("signal").contains("0.9"),
+        )
+
+        val horizontalSpec = ChartSpecBuilder.build(
+            "bar-horizontal", 0, result,
+            ChartOptions(
+                barOrientation = BarOrientation.HORIZONTAL,
+                barStackMode = BarStackMode.STACKED,
+                xAxisTitle = "Category",
+                yAxisTitle = "Value",
+                showValueLabels = true,
+            ),
+            "derived",
+        )
+        val horizontal = VegaSpecBuilder.build(
+            horizontalSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals(
+            "HORIZONTAL",
+            horizontal.getJSONObject("usermeta").getString("barOrientation"),
+        )
+        assertEquals("x", horizontal.getJSONArray("scales").getJSONObject(0).getString("name"))
+        assertEquals("linear", horizontal.getJSONArray("scales").getJSONObject(0).getString("type"))
+        assertEquals("y", horizontal.getJSONArray("scales").getJSONObject(1).getString("name"))
+        assertEquals("band", horizontal.getJSONArray("scales").getJSONObject(1).getString("type"))
+        assertEquals("left", horizontal.getJSONArray("axes").getJSONObject(0).getString("orient"))
+        assertEquals("bottom", horizontal.getJSONArray("axes").getJSONObject(1).getString("orient"))
+        val horizontalBar = horizontal.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(horizontalBar.getJSONObject("x").getString("signal").contains("scale('x'"))
+        assertTrue(horizontalBar.getJSONObject("x2").getString("signal").contains("scale('x'"))
+        assertTrue(horizontalBar.getJSONObject("y").getString("signal").contains("scale('y'"))
+        assertTrue(horizontalBar.getJSONObject("height").has("signal"))
+        val horizontalLabel = horizontal.getJSONArray("marks").getJSONObject(1)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(
+            "horizontal label x must follow the value endpoint",
+            horizontalLabel.getJSONObject("x").getString("signal").contains("scale('x'"),
+        )
+        assertTrue(
+            "horizontal label y must follow the category band",
+            horizontalLabel.getJSONObject("y").has("field") ||
+                horizontalLabel.getJSONObject("y").getString("signal").contains("scale('y'"),
+        )
+        val labelAlign = horizontalLabel.getJSONObject("align").getString("signal")
+        assertTrue(
+            "horizontal label direction must follow screen geometry: $labelAlign",
+            labelAlign.contains("scale('x'") && !labelAlign.contains("datum.y >= 0"),
+        )
+        assertTrue(
+            "horizontal label clamp must reserve text width",
+            horizontalLabel.getJSONObject("x").getString("signal").contains("cloudyPlotWidth"),
         )
     }
 

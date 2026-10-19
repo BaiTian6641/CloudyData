@@ -595,6 +595,45 @@ class VegaRendererProbeTest {
 
 
 
+
+    @Test
+    fun horizontalStackedBarRendersSwappedGeometry() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "horizontalbar")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            val result = RendererProbeState.await(30)
+            assertTrue("horizontal-bar render did not complete", result != null)
+            assertNull("horizontal-bar render failed: ${result!!.error}", result.error)
+            assertEquals(2, result.markCount)
+            scenario.onActivity { it.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertTrue("horizontal-bar export did not complete", svg != null)
+            fun geometry(tag: String): List<Double> {
+                val match = Regex("""M(-?[0-9.]+),(-?[0-9.]+)h(-?[0-9.]+)v(-?[0-9.]+)""").find(tag)
+                    ?: error("unexpected bar path: $tag")
+                return match.groupValues.drop(1).map(String::toDouble)
+            }
+            val bars = Regex("""<path[^>]*fill="#(?:006A6A|3559C7)"[^>]*>""")
+                .findAll(svg!!)
+                .map { it.value }
+                .filter { geometry(it)[2] > 100.0 || geometry(it)[3] > 100.0 }
+                .toList()
+            assertEquals("expected two horizontal bar paths", 2, bars.size)
+            val first = geometry(bars[0])
+            val second = geometry(bars[1])
+            assertEquals("horizontal segments must share y", first[1], second[1], 0.5)
+            assertEquals("horizontal segments must share height", first[3], second[3], 0.5)
+            assertTrue(
+                "horizontal segments must be contiguous: $bars",
+                kotlin.math.abs(first[0] + first[2] - second[0]) < 0.6 ||
+                    kotlin.math.abs(second[0] + second[2] - first[0]) < 0.6,
+            )
+        }
+    }
+
     @Test
     fun percentStackedBarRendersPercentLabelsAndFullStack() {
         RendererProbeState.reset()

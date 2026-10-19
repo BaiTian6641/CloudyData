@@ -846,3 +846,21 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   (60.0%/40.0% labels and full-stack geometry); BarChartQueryTest 1/1;
   ChartSettingsPersistenceTest 12/12; lint 0 errors/5 warnings. Googlebook
   untouched; visual/negative and native fallback remain open.
+
+## 2026-10-19 — CUST08 horizontal bars
+
+- Added persisted BarOrientation. Horizontal bars use an x linear value scale and
+  a y category band, swap axes/gridlines/titles, and mirror grouped/stacked/100%
+  layout into vertical bands with horizontal stack endpoints. Labels, selection,
+  minor gridlines and tooltips follow the new geometry; default vertical output
+  and query semantics are unchanged. The native fallback remains vertical-only.
+- Review-driven fixes: horizontal label alignment/offset now follows screen
+  geometry (so reversed axes and negatives stay outside/inside correctly),
+  label clamping reserves text width, and the reverse toggle copy is
+  orientation-aware.
+- Validation: JVM 72/72; VegaSpecBuilderTest 19/19; VegaRendererProbeTest 41/41
+  with an exported horizontal stack sharing y/height and contiguous x;
+  BarChartQueryTest 1/1; ChartSettingsPersistenceTest 12/12; lint 0 errors/5
+  warnings. One full renderer run had a transient process crash; immediate
+  reruns passed. Googlebook untouched; visual/long-label and native fallback
+  remain open.

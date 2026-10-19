@@ -6,6 +6,7 @@ import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
@@ -65,37 +66,43 @@ object VegaSpecBuilder {
             .put("domain", colorDomain)
             .put("range", JSONArray(palette.map { "#%06X".format(0xFFFFFF and it) }))
 
+        val horizontalBar = spec.kind == ChartKind.BAR &&
+            spec.barOrientation == BarOrientation.HORIZONTAL
         val hasExplicitRange = spec.yAxis.min != null || spec.yAxis.max != null
-        val yScale = JSONObject()
-            .put("name", "y")
-            .put("type", if (spec.yAxis.log) "log" else "linear")
-            .put("range", "height")
-            // Explicit bounds are authoritative; Vega's default zero/nice would
-            // silently expand them and misreport the configured range.
-            .put("nice", !hasExplicitRange)
-            .put("reverse", spec.yAxis.reverse)
-        val bothBounds = spec.yAxis.min != null && spec.yAxis.max != null
-        if (bothBounds) {
-            yScale.put("domain", JSONArray().put(spec.yAxis.min).put(spec.yAxis.max))
-            yScale.put("zero", false)
-        } else {
-            yScale.put(
-                "domain",
-                JSONObject().put("data", "table")
-                    .put("field", if (isStackedBar(spec)) "displayY" else "y"),
-            )
-            spec.yAxis.min?.let { yScale.put("domainMin", it) }
-            spec.yAxis.max?.let { yScale.put("domainMax", it) }
-            if (!spec.yAxis.log) yScale.put("zero", spec.yAxis.zero)
+        fun valueScale(name: String, range: String): JSONObject {
+            val scale = JSONObject()
+                .put("name", name)
+                .put("type", if (spec.yAxis.log) "log" else "linear")
+                .put("range", range)
+                // Explicit bounds are authoritative; Vega's default zero/nice would
+                // silently expand them and misreport the configured range.
+                .put("nice", !hasExplicitRange)
+                .put("reverse", spec.yAxis.reverse)
+            val bothBounds = spec.yAxis.min != null && spec.yAxis.max != null
+            if (bothBounds) {
+                scale.put("domain", JSONArray().put(spec.yAxis.min).put(spec.yAxis.max))
+                scale.put("zero", false)
+            } else {
+                scale.put(
+                    "domain",
+                    JSONObject().put("data", "table")
+                        .put("field", if (isStackedBar(spec)) "displayY" else "y"),
+                )
+                spec.yAxis.min?.let { scale.put("domainMin", it) }
+                spec.yAxis.max?.let { scale.put("domainMax", it) }
+                if (!spec.yAxis.log) scale.put("zero", spec.yAxis.zero)
+            }
+            if (spec.yAxis.log) scale.put("zero", false)
+            return scale
         }
-        if (spec.yAxis.log) yScale.put("zero", false)
-
-        val xScale = JSONObject()
-            .put("name", "x")
+        val categoryScale = JSONObject()
+            .put("name", if (horizontalBar) "y" else "x")
             .put("type", "band")
             .put("domain", xDomain)
-            .put("range", "width")
+            .put("range", if (horizontalBar) "height" else "width")
             .put("paddingInner", if (spec.kind == ChartKind.BAR) 0.2 else 0.05)
+        val xScale = if (horizontalBar) valueScale("x", "width") else categoryScale
+        val yScale = if (horizontalBar) categoryScale else valueScale("y", "height")
 
         val visibleXLabels = spec.xAxis.labelValues?.size ?: xDomain.length()
         val valueFormat = when (spec.valueFormat) {
@@ -109,8 +116,72 @@ object VegaSpecBuilder {
             GridlineContrast.STRONG ->
                 colorHex(if (dark) CloudyTokens.Dark.outline else CloudyTokens.Light.outline)
         }
+        val valueAxisLabelSignal = if (spec.valueFormat == ValueDisplayFormat.CURRENCY &&
+            spec.currencyCode != CurrencyCode.USD
+        ) {
+            currencyAxisLabelSignal(spec.currencyCode)
+        } else {
+            null
+        }
         val axes = JSONArray()
-            .put(
+        if (horizontalBar) {
+            axes.put(
+                axisJson(
+                    orient = "left",
+                    scale = "y",
+                    title = spec.xAxis.title,
+                    textColor = textColor,
+                    gridColor = gridColor,
+                    grid = false,
+                    labelAngle = 0,
+                    titleAnchor = spec.xAxis.titleAnchor,
+                    labelValues = spec.xAxis.labelValues,
+                ),
+            )
+            if (spec.gridlines.minor && spec.gridlines.show && !spec.yAxis.log) {
+                val minorValues =
+                    "domain('x')[0] === domain('x')[1] ? [] : " +
+                        "sequence(domain('x')[0], domain('x')[1], " +
+                        "(domain('x')[1] - domain('x')[0]) / 20)"
+                axes.put(
+                    axisJson(
+                        orient = "bottom",
+                        scale = "x",
+                        title = null,
+                        textColor = textColor,
+                        gridColor = gridColor,
+                        grid = true,
+                        gridLineColor = gridlineStroke,
+                        gridWidth = 0.5,
+                        gridOpacity = 0.55,
+                        labelAngle = 0,
+                        valueSignal = minorValues,
+                        domain = false,
+                        ticks = false,
+                        labels = false,
+                        aria = false,
+                    ),
+                )
+            }
+            axes.put(
+                axisJson(
+                    orient = "bottom",
+                    scale = "x",
+                    title = spec.yAxis.title,
+                    textColor = textColor,
+                    gridColor = gridColor,
+                    grid = spec.gridlines.show,
+                    gridLineColor = gridlineStroke,
+                    gridWidth = spec.gridlines.width,
+                    labelAngle = 0,
+                    tickCount = spec.yAxis.tickCount,
+                    format = valueFormat,
+                    labelSignal = valueAxisLabelSignal,
+                    titleAnchor = spec.yAxis.titleAnchor,
+                ),
+            )
+        } else {
+            axes.put(
                 axisJson(
                     orient = "bottom",
                     scale = "x",
@@ -123,56 +194,51 @@ object VegaSpecBuilder {
                     labelValues = spec.xAxis.labelValues,
                 ),
             )
-        if (spec.gridlines.minor && spec.gridlines.show && !spec.yAxis.log) {
-            // Explicit values from the resolved scale domain, because a second
-            // tickCount often quantizes to the same nice ticks as the major axis.
-            val minorValues =
-                "domain('y')[0] === domain('y')[1] ? [] : " +
-                    "sequence(domain('y')[0], domain('y')[1], " +
-                    "(domain('y')[1] - domain('y')[0]) / 20)"
+            if (spec.gridlines.minor && spec.gridlines.show && !spec.yAxis.log) {
+                // Explicit values from the resolved scale domain, because a second
+                // tickCount often quantizes to the same nice ticks as the major axis.
+                val minorValues =
+                    "domain('y')[0] === domain('y')[1] ? [] : " +
+                        "sequence(domain('y')[0], domain('y')[1], " +
+                        "(domain('y')[1] - domain('y')[0]) / 20)"
+                axes.put(
+                    axisJson(
+                        orient = "left",
+                        scale = "y",
+                        title = null,
+                        textColor = textColor,
+                        gridColor = gridColor,
+                        grid = true,
+                        gridLineColor = gridlineStroke,
+                        gridWidth = 0.5,
+                        gridOpacity = 0.55,
+                        labelAngle = 0,
+                        valueSignal = minorValues,
+                        domain = false,
+                        ticks = false,
+                        labels = false,
+                        aria = false,
+                    ),
+                )
+            }
             axes.put(
                 axisJson(
                     orient = "left",
                     scale = "y",
-                    title = null,
+                    title = spec.yAxis.title,
                     textColor = textColor,
                     gridColor = gridColor,
-                    grid = true,
+                    grid = spec.gridlines.show,
                     gridLineColor = gridlineStroke,
-                    gridWidth = 0.5,
-                    gridOpacity = 0.55,
+                    gridWidth = spec.gridlines.width,
                     labelAngle = 0,
-                    valueSignal = minorValues,
-                    domain = false,
-                    ticks = false,
-                    labels = false,
-                    aria = false,
+                    tickCount = spec.yAxis.tickCount,
+                    format = valueFormat,
+                    labelSignal = valueAxisLabelSignal,
+                    titleAnchor = spec.yAxis.titleAnchor,
                 ),
             )
         }
-        axes.put(
-            axisJson(
-                orient = "left",
-                scale = "y",
-                title = spec.yAxis.title,
-                textColor = textColor,
-                gridColor = gridColor,
-                grid = spec.gridlines.show,
-                gridLineColor = gridlineStroke,
-                gridWidth = spec.gridlines.width,
-                labelAngle = 0,
-                tickCount = spec.yAxis.tickCount,
-                format = valueFormat,
-                labelSignal = if (spec.valueFormat == ValueDisplayFormat.CURRENCY &&
-                    spec.currencyCode != CurrencyCode.USD
-                ) {
-                    currencyAxisLabelSignal(spec.currencyCode)
-                } else {
-                    null
-                },
-                titleAnchor = spec.yAxis.titleAnchor,
-            ),
-        )
 
         val marks = JSONArray()
         when (spec.kind) {
@@ -230,6 +296,7 @@ object VegaSpecBuilder {
                 "signals",
                 JSONArray()
                     .put(JSONObject().put("name", "cloudyPlotHeight").put("value", heightDp))
+                    .put(JSONObject().put("name", "cloudyPlotWidth").put("value", widthDp))
                     .put(selectionSignal())
                     .put(hoverSignal()),
             )
@@ -241,6 +308,7 @@ object VegaSpecBuilder {
             .put("transparentExportBackground", spec.transparentExportBackground)
             .put("hiddenSeries", JSONArray(spec.hiddenSeries.toList()))
             .put("barStackMode", spec.barStackMode.name)
+            .put("barOrientation", spec.barOrientation.name)
             .put("legendInteractive", spec.kind != ChartKind.BAR)
             .put("series", JSONArray(spec.series.map { it.key }))
                     .put("units", spec.units ?: ""),
@@ -417,6 +485,9 @@ object VegaSpecBuilder {
         return axis
     }
 
+    private fun isHorizontalBar(spec: ChartSpec): Boolean =
+        spec.kind == ChartKind.BAR && spec.barOrientation == BarOrientation.HORIZONTAL
+
     private fun isGroupedBar(spec: ChartSpec): Boolean =
         spec.barHasSeries &&
             spec.barStackMode == BarStackMode.NONE &&
@@ -430,6 +501,16 @@ object VegaSpecBuilder {
 
     private fun barXEncode(spec: ChartSpec): JSONObject {
         val count = spec.series.size.coerceAtLeast(1)
+        if (isHorizontalBar(spec)) {
+            return if (isStackedBar(spec)) {
+                JSONObject().put(
+                    "signal",
+                    "scale('x', min(datum.stackBase, datum.stackBase + datum.y))",
+                )
+            } else {
+                JSONObject().put("signal", "scale('x', 0)")
+            }
+        }
         return when {
             isGroupedBar(spec) -> JSONObject().put(
                 "signal",
@@ -444,6 +525,16 @@ object VegaSpecBuilder {
         }
     }
 
+    private fun barX2Encode(spec: ChartSpec): JSONObject =
+        if (isStackedBar(spec)) {
+            JSONObject().put(
+                "signal",
+                "scale('x', max(datum.stackBase, datum.stackBase + datum.y))",
+            )
+        } else {
+            JSONObject().put("scale", "x").put("field", "y")
+        }
+
     private fun barWidthEncode(spec: ChartSpec): JSONObject {
         val count = spec.series.size.coerceAtLeast(1)
         return when {
@@ -453,6 +544,34 @@ object VegaSpecBuilder {
             )
             isStackedBar(spec) -> JSONObject().put("signal", "bandwidth('x') * 0.9")
             else -> JSONObject().put("scale", "x").put("band", 1)
+        }
+    }
+
+    private fun barYEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return when {
+            isGroupedBar(spec) -> JSONObject().put(
+                "signal",
+                "scale('y', datum.x) + bandwidth('y') * " +
+                    "(0.05 + datum.seriesIndex * 0.9 / $count)",
+            )
+            isStackedBar(spec) -> JSONObject().put(
+                "signal",
+                "scale('y', datum.x) + bandwidth('y') * 0.05",
+            )
+            else -> JSONObject().put("scale", "y").put("field", "x")
+        }
+    }
+
+    private fun barHeightEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return when {
+            isGroupedBar(spec) -> JSONObject().put(
+                "signal",
+                "bandwidth('y') * 0.9 / $count",
+            )
+            isStackedBar(spec) -> JSONObject().put("signal", "bandwidth('y') * 0.9")
+            else -> JSONObject().put("scale", "y").put("band", 1)
         }
     }
 
@@ -469,27 +588,47 @@ object VegaSpecBuilder {
         }
     }
 
-    private fun barMark(spec: ChartSpec): JSONObject {
-        val enter = JSONObject()
-            .put("x", barXEncode(spec))
-            .put("width", barWidthEncode(spec))
-        if (isStackedBar(spec)) {
-            enter.put(
-                "y",
-                JSONObject().put(
-                    "signal",
-                    "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
-                ),
-            ).put(
-                "y2",
-                JSONObject().put(
-                    "signal",
-                    "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
-                ),
+    private fun barLabelYEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return if (isGroupedBar(spec)) {
+            JSONObject().put(
+                "signal",
+                "scale('y', datum.x) + bandwidth('y') * " +
+                    "(0.05 + (datum.seriesIndex + 0.5) * 0.9 / $count)",
             )
         } else {
-            enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
-                .put("y2", JSONObject().put("scale", "y").put("value", 0))
+            JSONObject().put("scale", "y").put("field", "x").put("band", 0.5)
+        }
+    }
+
+    private fun barMark(spec: ChartSpec): JSONObject {
+        val enter = JSONObject()
+        if (isHorizontalBar(spec)) {
+            enter.put("x", barXEncode(spec))
+                .put("x2", barX2Encode(spec))
+                .put("y", barYEncode(spec))
+                .put("height", barHeightEncode(spec))
+        } else {
+            enter.put("x", barXEncode(spec))
+                .put("width", barWidthEncode(spec))
+            if (isStackedBar(spec)) {
+                enter.put(
+                    "y",
+                    JSONObject().put(
+                        "signal",
+                        "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
+                    ),
+                ).put(
+                    "y2",
+                    JSONObject().put(
+                        "signal",
+                        "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
+                    ),
+                )
+            } else {
+                enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
+            }
         }
         enter.put(
             "fill",
@@ -515,7 +654,8 @@ object VegaSpecBuilder {
         return when (spec.kind) {
             ChartKind.BAR -> {
                 val count = if (isGroupedBar(spec)) spec.series.size else 1
-                "$valid && bandwidth('x') >= ${spacing * count}"
+                val axis = if (isHorizontalBar(spec)) "y" else "x"
+                "$valid && bandwidth('$axis') >= ${spacing * count}"
             }
             ChartKind.LINE, ChartKind.AREA -> "$valid && bandwidth('x') >= $spacing"
         }
@@ -547,6 +687,7 @@ object VegaSpecBuilder {
     }
 
     private fun barLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
+        if (isHorizontalBar(spec)) return horizontalBarLabelMark(spec, textColor, dark)
         if (isStackedBar(spec)) return stackedBarLabelMark(spec, textColor, dark)
         val fontSize = spec.labels.fontSize ?: 11
         val endpoint = "scale('y', datum.y)"
@@ -604,6 +745,68 @@ object VegaSpecBuilder {
                             "defined",
                             JSONObject().put("signal", labelDefined(spec, fontSize)),
                         ),
+                ),
+            )
+    }
+
+    private fun horizontalBarLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
+        val fontSize = spec.labels.fontSize ?: 11
+        val endpoint = if (isStackedBar(spec)) {
+            "scale('x', datum.stackBase + datum.y)"
+        } else {
+            "scale('x', datum.y)"
+        }
+        val inside = spec.labels.position == LabelPosition.INSIDE_END
+        val startPixel = if (isStackedBar(spec)) {
+            "scale('x', datum.stackBase)"
+        } else {
+            "scale('x', 0)"
+        }
+        val towardEnd = "($endpoint >= $startPixel)"
+        val rawOffset = if (inside) {
+            "($towardEnd ? -6 : 6)"
+        } else {
+            "($towardEnd ? 6 : -6)"
+        }
+        val reserve = fontSize * 6 + 12
+        val minX = reserve
+        val maxX = "cloudyPlotWidth - $reserve"
+        val clamped = "(($endpoint + ($rawOffset) < $minX) ? ($minX - $endpoint) : " +
+            "(($endpoint + ($rawOffset) > $maxX) ? ($maxX - $endpoint) : ($rawOffset)))"
+        val align = if (inside) {
+            "($towardEnd ? 'right' : 'left')"
+        } else {
+            "($towardEnd ? 'left' : 'right')"
+        }
+        val insideFill = if (dark) "#101A1D" else "#FFFFFF"
+        val insideStroke = if (dark) "#FFFFFF" else "#101A1D"
+        val valueStart = if (isStackedBar(spec)) "datum.stackBase" else "0"
+        val valueEnd = if (isStackedBar(spec)) "datum.stackBase + datum.y" else "datum.y"
+        val labelActive = "(${labelDefined(spec, fontSize)}) && " +
+            "abs(scale('x', $valueStart) - scale('x', $valueEnd)) >= ${fontSize + 18}"
+        return JSONObject()
+            .put("type", "text")
+            .put("from", JSONObject().put("data", "table"))
+            .put("clip", true)
+            .put("interactive", false)
+            .put(
+                "encode",
+                JSONObject().put(
+                    "enter",
+                    JSONObject()
+                        .put(
+                            "x",
+                            JSONObject().put("signal", "($endpoint) + ($clamped)"),
+                        )
+                        .put("y", barLabelYEncode(spec))
+                        .put("text", valueText(spec, fontSize))
+                        .put("align", JSONObject().put("signal", align))
+                        .put("baseline", JSONObject().put("value", "middle"))
+                        .put("fill", JSONObject().put("value", if (inside) insideFill else textColor))
+                        .put("stroke", JSONObject().put("value", if (inside) insideStroke else "transparent"))
+                        .put("strokeWidth", JSONObject().put("value", if (inside) 1.25 else 0))
+                        .put("fontSize", JSONObject().put("value", fontSize))
+                        .put("defined", JSONObject().put("signal", labelActive)),
                 ),
             )
     }
@@ -899,25 +1102,32 @@ object VegaSpecBuilder {
     private fun barSelectionMark(spec: ChartSpec, textColor: String): JSONObject {
         val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
         val enter = JSONObject()
-            .put("x", barXEncode(spec))
-            .put("width", barWidthEncode(spec))
-        if (isStackedBar(spec)) {
-            enter.put(
-                "y",
-                JSONObject().put(
-                    "signal",
-                    "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
-                ),
-            ).put(
-                "y2",
-                JSONObject().put(
-                    "signal",
-                    "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
-                ),
-            )
+        if (isHorizontalBar(spec)) {
+            enter.put("x", barXEncode(spec))
+                .put("x2", barX2Encode(spec))
+                .put("y", barYEncode(spec))
+                .put("height", barHeightEncode(spec))
         } else {
-            enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
-                .put("y2", JSONObject().put("scale", "y").put("value", 0))
+            enter.put("x", barXEncode(spec))
+                .put("width", barWidthEncode(spec))
+            if (isStackedBar(spec)) {
+                enter.put(
+                    "y",
+                    JSONObject().put(
+                        "signal",
+                        "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
+                    ),
+                ).put(
+                    "y2",
+                    JSONObject().put(
+                        "signal",
+                        "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
+                    ),
+                )
+            } else {
+                enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
+            }
         }
         enter.put("fill", JSONObject().put("value", textColor))
             .put("fillOpacity", JSONObject().put("value", 0.22))

@@ -2,6 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.CurrencyCode
@@ -122,6 +123,7 @@ data class ChartSpec(
     val hiddenSeries: Set<String> = emptySet(),
     val barStackMode: BarStackMode = BarStackMode.NONE,
     val barHasSeries: Boolean = false,
+    val barOrientation: BarOrientation = BarOrientation.VERTICAL,
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

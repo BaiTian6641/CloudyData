@@ -14,6 +14,7 @@ import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.CategoryPalette
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
@@ -109,6 +110,7 @@ class ChartSettingsPersistenceTest {
                             legendMarkSample = LegendMarkSample.LINE,
                             categoryPalette = CategoryPalette.COLORBLIND,
                             barStackMode = BarStackMode.STACKED,
+                            barOrientation = BarOrientation.HORIZONTAL,
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -171,6 +173,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(CategoryPalette.COLORBLIND, reopenedSheet.chart.categoryPalette)
         assertEquals(BarStackMode.STACKED, reopenedSheet.chart.barStackMode)
+        assertEquals(BarOrientation.HORIZONTAL, reopenedSheet.chart.barOrientation)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(true, reopenedSheet.chart.markerBorder)
         assertEquals(2.0, reopenedSheet.chart.markerBorderWidth!!, 0.0)
@@ -322,6 +325,11 @@ class ChartSettingsPersistenceTest {
             BarStackMode.NONE,
             ChartOptions.fromJson(JSONObject().put("barStackMode", "NOT_A_MODE"))
                 .barStackMode,
+        )
+        assertEquals(
+            BarOrientation.VERTICAL,
+            ChartOptions.fromJson(JSONObject().put("barOrientation", "NOT_AN_ORIENTATION"))
+                .barOrientation,
         )
         val percentStacked = ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED)
         assertEquals(

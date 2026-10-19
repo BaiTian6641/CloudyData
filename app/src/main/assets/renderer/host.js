@@ -18,6 +18,7 @@
     transparentExportBackground: false,
     hiddenSeries: [],
     legendInteractive: true,
+    barOrientation: 'VERTICAL',
     series: [],
     pointerMode: 'replace',
     lasso: null,
@@ -123,10 +124,19 @@
           typeof sourceBase === 'number' && isFinite(sourceBase)) {
         sourceY = sourceBase + sourceY;
       }
-      x = origin[0] + scaleX(datum.x) + (scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0) + 10;
-      y = typeof sourceY === 'number' && isFinite(sourceY)
-        ? origin[1] + scaleY(sourceY) - 28
-        : origin[1] + 10;
+      if (state.barOrientation === 'HORIZONTAL') {
+        x = typeof sourceY === 'number' && isFinite(sourceY)
+          ? origin[0] + scaleX(sourceY) + 10
+          : origin[0] + 10;
+        y = origin[1] + scaleY(datum.x) +
+          (scaleY.bandwidth ? scaleY.bandwidth() / 2 : 0) - 20;
+      } else {
+        x = origin[0] + scaleX(datum.x) +
+          (scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0) + 10;
+        y = typeof sourceY === 'number' && isFinite(sourceY)
+          ? origin[1] + scaleY(sourceY) - 28
+          : origin[1] + 10;
+      }
     } catch (error) {
       x = 20;
       y = 20;
@@ -832,6 +842,10 @@
         : [];
       state.legendInteractive = !(message.spec.usermeta &&
         message.spec.usermeta.legendInteractive === false);
+      state.barOrientation = message.spec.usermeta &&
+        message.spec.usermeta.barOrientation === 'HORIZONTAL'
+        ? 'HORIZONTAL'
+        : 'VERTICAL';
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

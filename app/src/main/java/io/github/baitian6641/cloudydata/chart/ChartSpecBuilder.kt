@@ -151,6 +151,7 @@ object ChartSpecBuilder {
             hiddenSeries = emptySet(),
             barStackMode = stackMode,
             barHasSeries = barHasSeries,
+            barOrientation = options.barOrientation,
             rowCount = rows.size,
             truncated = result.result.truncated,
             units = units,

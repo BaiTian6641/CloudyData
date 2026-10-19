@@ -42,6 +42,7 @@ import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.CategoryPalette
+import io.github.baitian6641.cloudydata.model.BarOrientation
 import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
@@ -94,6 +95,8 @@ fun ChartSettingsDialog(
     var categoryPaletteExpanded by remember { mutableStateOf(false) }
     var barStackMode by remember { mutableStateOf(current.barStackMode) }
     var barStackModeExpanded by remember { mutableStateOf(false) }
+    var barOrientation by remember { mutableStateOf(current.barOrientation) }
+    var barOrientationExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -822,8 +825,14 @@ fun ChartSettingsDialog(
                     )
                 }
                 ChartToggleRow(
-                    title = "Reverse Y axis",
-                    description = "Put larger values toward the bottom of the plot.",
+                    title = "Reverse value axis",
+                    description = if (sheet.markType == MarkType.BAR &&
+                        barOrientation == BarOrientation.HORIZONTAL
+                    ) {
+                        "Put larger values toward the left of the plot."
+                    } else {
+                        "Put larger values toward the bottom of the plot."
+                    },
                     checked = reverseY,
                     onCheckedChange = { reverseY = it },
                 )
@@ -965,6 +974,49 @@ fun ChartSettingsDialog(
                     }
                 }
                 if (sheet.markType == MarkType.BAR) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Orientation",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                if (barOrientation == BarOrientation.HORIZONTAL) {
+                                    "Categories run down the left"
+                                } else {
+                                    "Categories run along the bottom"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { barOrientationExpanded = true }) {
+                            Text(
+                                if (barOrientation == BarOrientation.HORIZONTAL) "Horizontal" else "Vertical",
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = barOrientationExpanded,
+                            onDismissRequest = { barOrientationExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Vertical") },
+                                onClick = {
+                                    barOrientation = BarOrientation.VERTICAL
+                                    barOrientationExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Horizontal") },
+                                onClick = {
+                                    barOrientation = BarOrientation.HORIZONTAL
+                                    barOrientationExpanded = false
+                                },
+                            )
+                        }
+                    }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(
@@ -1114,6 +1166,7 @@ fun ChartSettingsDialog(
                             },
                             categoryPalette = categoryPalette,
                             barStackMode = barStackMode,
+                            barOrientation = barOrientation,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
