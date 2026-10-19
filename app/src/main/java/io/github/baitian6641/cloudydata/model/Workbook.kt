@@ -58,6 +58,7 @@ data class ChartOptions(
     val legendPosition: LegendPosition = LegendPosition.BOTTOM,
     val legendOrientation: LegendOrientation? = null,
     val showTooltip: Boolean = true,
+    val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
@@ -94,6 +95,15 @@ data class ChartOptions(
         .put("legendPosition", legendPosition.name)
         .put("legendOrientation", legendOrientation?.name ?: JSONObject.NULL)
         .put("showTooltip", showTooltip)
+        .put(
+            "hiddenSeries",
+            JSONArray(
+                hiddenSeries
+                    .filter { it.isNotEmpty() && it.length <= MAX_SERIES_KEY_CHARS }
+                    .take(MAX_HIDDEN_SERIES)
+                    .sorted(),
+            ),
+        )
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
@@ -107,6 +117,9 @@ data class ChartOptions(
 
     companion object {
         const val VERSION = 1
+        const val MAX_HIDDEN_SERIES = 100
+        const val MAX_HIDDEN_JSON_ENTRIES = 1000
+        const val MAX_SERIES_KEY_CHARS = 256
         const val MIN_TICK_COUNT = 2
         const val MAX_TICK_COUNT = 50
         const val MIN_LABEL_FONT_SIZE = 8
@@ -163,6 +176,15 @@ data class ChartOptions(
                 runCatching { LegendOrientation.valueOf(json.optString("legendOrientation")) }.getOrNull()
             },
             showTooltip = json.optBoolean("showTooltip", true),
+            hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
+                buildSet {
+                    for (index in 0 until array.length().coerceAtMost(MAX_HIDDEN_JSON_ENTRIES)) {
+                        if (size >= MAX_HIDDEN_SERIES) break
+                        val key = array.optString(index)
+                        if (key.isNotEmpty() && key.length <= MAX_SERIES_KEY_CHARS) add(key)
+                    }
+                }
+            } ?: emptySet(),
             yTickCount = if (json.isNull("yTickCount")) {
                 null
             } else {

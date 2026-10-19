@@ -80,6 +80,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.FilterMode
@@ -113,6 +114,7 @@ fun WorksheetView(
     onExcludeSelection: (Set<Int>) -> Unit,
     onClearFilter: () -> Unit,
     onViewData: (Set<Int>) -> Unit,
+    onChartOptionsChange: (ChartOptions) -> Unit,
     onChartSettings: () -> Unit,
     onRetry: () -> Unit,
     onCancelQuery: () -> Unit,
@@ -314,6 +316,7 @@ fun WorksheetView(
                         onSelectRow = onSelectRow,
                         onSelection = onSelection,
                         onSelectionSet = onSelectionSet,
+                        onChartOptionsChange = onChartOptionsChange,
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
                         chartId = "sheet-${sheet.id}",
                         title = sheet.chart.title?.takeIf { it.isNotBlank() } ?: chartTitle(current),

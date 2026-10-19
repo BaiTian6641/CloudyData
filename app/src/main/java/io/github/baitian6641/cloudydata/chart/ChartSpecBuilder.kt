@@ -129,6 +129,7 @@ object ChartSpecBuilder {
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = listOf(ChartSeries("Values", points)),
+            hiddenSeries = emptySet(),
             rowCount = rows.size,
             truncated = result.result.truncated,
             units = units,
@@ -265,6 +266,11 @@ object ChartSpecBuilder {
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
+            hiddenSeries = if (kind == ChartKind.LINE && series.size > 1) {
+                options.hiddenSeries.intersect(series.map { it.key }.toSet())
+            } else {
+                emptySet()
+            },
             rowCount = result.result.rows.size,
             truncated = result.result.truncated,
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,

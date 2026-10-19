@@ -339,6 +339,7 @@ fun WorkbookScreen(
                                     rowSelection = RowSelectionState()
                                 },
                                 onViewData = { rows -> viewModel.openViewData(sheet.id, rows) },
+                                onChartOptionsChange = viewModel::updateChartSettings,
                                 onChartSettings = { showChartSettings = true },
                                 onRetry = viewModel::retryQuery,
                                 onCancelQuery = viewModel::cancelQuery,

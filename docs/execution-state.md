@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `adc255e`. `main` tracks `origin/main`; the
-interactive-legend stage is pushed.
+**Source:** commits through `a2e221d`; the hidden-series persistence change is
+in the next local commit. `main` tracks `origin/main` at the pushed legend
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +55,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **58/58**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **59/59**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -113,6 +114,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-minor-gridlines.md`
 - `qualification/evidence/2026-10-19-cust06-percent-display.md`
 - `qualification/evidence/2026-10-19-cust05-interactive-legend.md`
+- `qualification/evidence/2026-10-19-cust05-persist-hidden-series.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -291,23 +293,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST05 persist hidden legend series.**
+**CUST03 persisted line/area markers.**
 
-- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: presentation-only
-  legend toggles, accessible Series menu, typed chart options and emulator
-  renderer coverage.
-- Files: `ChartOptions`, `ChartSpecBuilder`, `VegaChart`, workbook tests and
-  evidence.
-- Action: persist the hidden-series key set per worksheet, sanitize stale keys
-  against current series on load/build, and keep toggles/reset presentation-only
-  (no SQL rerun). Reopen must restore hidden state.
-- Acceptance: hidden state survives save/reopen, stale keys never hide an
-  unrelated future series, and query/table/selection semantics stay unchanged.
-  Emulator spec/persistence/render checks are required; visual/TalkBack review
-  remains unverified.
+- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line/Area symbol
+  lowering, point-count cap, typed chart options and emulator render probes.
+- Files: `ChartOptions`, `ChartSpec`/`LabelSpec` or marker spec,
+  `ChartSpecBuilder`, `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
+- Action: add a persisted marker-visibility toggle and bounded marker size for
+  Line/Area, preserving the current default marker appearance and 200-point cap.
+- Acceptance: default output is unchanged; disabling markers removes only point
+  symbols, never lines/data/selection; size persists and remains bounded.
+  Emulator spec/render checks are required; visual review remains unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent
-  and hidden-series visuals wait for an authorized visual session.
+  and marker visuals wait for an authorized visual session.
 
 ## Protected context
 

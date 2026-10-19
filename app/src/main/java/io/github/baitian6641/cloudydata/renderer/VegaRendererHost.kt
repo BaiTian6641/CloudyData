@@ -411,7 +411,7 @@ class VegaRendererHost(
                 val chartId = json.optString("chartId")
                 val revision = json.optLong("revision", -1)
                 if (!revisionGate.isCurrent(chartId, revision)) return
-                val series = json.optString("series").trim()
+                val series = json.optString("series")
                 if (series.isEmpty() || series.length > 256) return
                 listener.onLegendToggle(chartId, revision, series)
             }

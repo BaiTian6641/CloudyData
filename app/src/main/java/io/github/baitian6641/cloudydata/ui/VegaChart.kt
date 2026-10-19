@@ -84,6 +84,7 @@ fun VegaChartCard(
     onSelectRow: (Int) -> Unit,
     onSelection: (Int, SelectionMode) -> Unit,
     onSelectionSet: (Set<Int>, Boolean) -> Unit,
+    onChartOptionsChange: (ChartOptions) -> Unit,
     modifier: Modifier = Modifier,
     chartId: String = "worksheet-chart",
     title: String = chartTitle(result),
@@ -91,14 +92,11 @@ fun VegaChartCard(
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
-    var hiddenSeries by remember(chartId) { mutableStateOf(emptySet<String>()) }
-    val preview = remember(result, options, chartId, title, sourceNote, hiddenSeries) {
-        runCatching {
-            ChartSpecBuilder.build(chartId, 0, result, options, title, sourceNote)
-                .copy(hiddenSeries = hiddenSeries)
-        }
+    val preview = remember(result, options, chartId, title, sourceNote) {
+        runCatching { ChartSpecBuilder.build(chartId, 0, result, options, title, sourceNote) }
     }
     val spec = preview.getOrNull()
+    val hiddenSeries = spec?.hiddenSeries ?: options.hiddenSeries
     val specError = preview.exceptionOrNull()?.message
     val dark = colors.canvas.luminance() < 0.5f
     val palette = if (dark) CloudyTokens.Chart.categoricalDark else CloudyTokens.Chart.categoricalLight
@@ -116,6 +114,9 @@ fun VegaChartCard(
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
     val currentSelection = rememberUpdatedState(onSelection)
     val currentSelectionSet = rememberUpdatedState(onSelectionSet)
+    val currentOptions = rememberUpdatedState(options)
+    val currentHiddenSeries = rememberUpdatedState(hiddenSeries)
+    val currentOptionsChange = rememberUpdatedState(onChartOptionsChange)
     var appliedExport by remember { mutableStateOf<AppliedExport?>(null) }
     val context = LocalContext.current
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
@@ -353,11 +354,12 @@ fun VegaChartCard(
                                     )
                                 },
                                 onClick = {
-                                    hiddenSeries = if (hidden) {
+                                    val next = if (hidden) {
                                         hiddenSeries - series.key
                                     } else {
                                         hiddenSeries + series.key
                                     }
+                                    onChartOptionsChange(options.copy(hiddenSeries = next))
                                     showSeriesMenu = false
                                 },
                             )
@@ -366,7 +368,7 @@ fun VegaChartCard(
                             DropdownMenuItem(
                                 text = { Text("Show all series") },
                                 onClick = {
-                                    hiddenSeries = emptySet()
+                                    onChartOptionsChange(options.copy(hiddenSeries = emptySet()))
                                     showSeriesMenu = false
                                 },
                             )
@@ -444,11 +446,15 @@ fun VegaChartCard(
                                         revision: Long,
                                         series: String,
                                     ) {
-                                        hiddenSeries = if (series in hiddenSeries) {
-                                            hiddenSeries - series
+                                        val hidden = currentHiddenSeries.value
+                                        val next = if (series in hidden) {
+                                            hidden - series
                                         } else {
-                                            hiddenSeries + series
+                                            hidden + series
                                         }
+                                        currentOptionsChange.value(
+                                            currentOptions.value.copy(hiddenSeries = next),
+                                        )
                                     }
 
                                     override fun onSelectionIntent(
@@ -700,14 +706,9 @@ fun VegaChartCard(
         )
     }
 
-    LaunchedEffect(spec?.kind, spec?.series?.map { it.key }) {
-        if (spec?.kind != ChartKind.LINE) {
-            hiddenSeries = emptySet()
-            return@LaunchedEffect
-        }
-        val available = spec?.series?.map { it.key }?.toSet().orEmpty()
-        if (available.isNotEmpty() && hiddenSeries.any { it !in available }) {
-            hiddenSeries = hiddenSeries.intersect(available)
+    LaunchedEffect(spec, options.hiddenSeries) {
+        if (spec != null && options.hiddenSeries != spec.hiddenSeries) {
+            onChartOptionsChange(options.copy(hiddenSeries = spec.hiddenSeries))
         }
     }
 
@@ -733,7 +734,6 @@ fun VegaChartCard(
         requestRevision++
         val built = runCatching {
             ChartSpecBuilder.build(chartId, requestRevision.toLong(), result, options, title, sourceNote)
-                .copy(hiddenSeries = hiddenSeries)
         }.getOrElse {
             rendererError = "spec_rejected: ${it.message}"
             return@LaunchedEffect

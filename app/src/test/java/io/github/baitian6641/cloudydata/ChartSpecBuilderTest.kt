@@ -132,6 +132,64 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun hiddenSeriesAreSanitizedAgainstCurrentSeries() {
+        val hidden = ChartSpecBuilder.build(
+            "hidden", 0, lineResult(),
+            ChartOptions(hiddenSeries = setOf("South", "Ghost")),
+            "derived",
+        ).hiddenSeries
+        assertEquals(setOf("South"), hidden)
+        val barResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        assertEquals(
+            emptySet<String>(),
+            ChartSpecBuilder.build(
+                "hidden", 0, barResult,
+                ChartOptions(hiddenSeries = setOf("South")),
+                "derived",
+            ).hiddenSeries,
+        )
+        val singleLine = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        assertEquals(
+            emptySet<String>(),
+            ChartSpecBuilder.build(
+                "hidden", 0, singleLine,
+                ChartOptions(hiddenSeries = setOf("sales")),
+                "derived",
+            ).hiddenSeries,
+        )
+    }
+
+    @Test
     fun valueDisplayFormatIsCarriedAndDefaultsToNumber() {
         assertEquals(
             ValueDisplayFormat.PERCENT,

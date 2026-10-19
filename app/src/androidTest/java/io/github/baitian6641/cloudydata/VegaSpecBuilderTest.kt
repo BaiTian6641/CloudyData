@@ -311,9 +311,13 @@ class VegaSpecBuilderTest {
         )
         val spec = ChartSpecBuilder.build(
             "hidden", 0, result,
-            ChartOptions(legendVisible = true, legendPosition = LegendPosition.RIGHT),
+            ChartOptions(
+                legendVisible = true,
+                legendPosition = LegendPosition.RIGHT,
+                hiddenSeries = setOf("South", "Ghost"),
+            ),
             "derived",
-        ).copy(hiddenSeries = setOf("South"))
+        )
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A, 0x3559C7), 600f, 300f)
         val data = (0 until json.getJSONArray("data").length())
             .map { json.getJSONArray("data").getJSONObject(it) }
@@ -355,21 +359,25 @@ class VegaSpecBuilderTest {
                 result = EngineResult(
                     columns = listOf(
                         EngineColumn("row", "VARCHAR"),
+                        EngineColumn("series", "VARCHAR"),
                         EngineColumn("value", "BIGINT"),
                     ),
-                    rows = listOf(listOf<Any?>("A", 1L)),
+                    rows = listOf(
+                        listOf<Any?>("A", "a\nb", 1L),
+                        listOf<Any?>("A", "Other", 2L),
+                    ),
                     truncated = false,
                 ),
-                rowField = region,
+                rowField = month,
                 measureField = sales,
-                seriesField = null,
+                seriesField = region,
                 aggregation = Aggregation.SUM,
                 markType = MarkType.LINE,
                 sql = "test",
             ),
-            ChartOptions(),
+            ChartOptions(hiddenSeries = setOf("a\nb")),
             "derived",
-        ).copy(hiddenSeries = setOf("a\nb"))
+        )
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
         val visible = (0 until json.getJSONArray("data").length())
             .map { json.getJSONArray("data").getJSONObject(it) }

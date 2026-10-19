@@ -90,6 +90,7 @@ class ChartSettingsPersistenceTest {
                             minorGridlines = true,
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
                             valueFormat = ValueDisplayFormat.PERCENT,
+                            hiddenSeries = setOf("North", "South"),
                         ),
                     ),
                 ),
@@ -133,6 +134,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(true, reopenedSheet.chart.minorGridlines)
         assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
         assertEquals(ValueDisplayFormat.PERCENT, reopenedSheet.chart.valueFormat)
+        assertEquals(setOf("North", "South"), reopenedSheet.chart.hiddenSeries)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -167,6 +169,23 @@ class ChartSettingsPersistenceTest {
             ValueDisplayFormat.PERCENT,
             ChartOptions.fromJson(JSONObject().put("valueFormat", "PERCENT")).valueFormat,
         )
+    }
+
+    @Test
+    fun hiddenSeriesJsonPreservesKeysAndBounds() {
+        val options = ChartOptions.fromJson(
+            JSONObject().put(
+                "hiddenSeries",
+                org.json.JSONArray().put(" North ").put("").put("x".repeat(300)),
+            ),
+        )
+        assertEquals(setOf(" North "), options.hiddenSeries)
+        assertEquals(emptySet<String>(), ChartOptions.fromJson(JSONObject()).hiddenSeries)
+        val written = ChartOptions(hiddenSeries = setOf("South", " North "))
+            .toJson().getJSONArray("hiddenSeries")
+        assertEquals(2, written.length())
+        assertEquals(" North ", written.getString(0))
+        assertEquals("South", written.getString(1))
     }
 
     @Test
