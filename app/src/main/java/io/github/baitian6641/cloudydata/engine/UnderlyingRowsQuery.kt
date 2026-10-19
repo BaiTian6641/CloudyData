@@ -42,8 +42,12 @@ class UnderlyingRowsQuery(private val engine: DuckDbEngine) {
                 worksheetResult.seriesField?.name.takeIf { selection.seriesFieldId != null },
             ),
         )
-        val timeSeries = sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA
-        val usedSeriesId = worksheetResult.seriesField?.id.takeIf { timeSeries }
+        val seriesMarks = sheet.markType == MarkType.LINE ||
+            sheet.markType == MarkType.AREA ||
+            sheet.markType == MarkType.BAR
+        val usedSeriesId = worksheetResult.seriesField?.id.takeIf {
+            seriesMarks && worksheetResult.hasSeriesColumn
+        }
         val worksheetFilter = sheet.filter?.takeIf { filter ->
             filter.marks.isNotEmpty() &&
                 filter.rowFieldId == rowField.id &&

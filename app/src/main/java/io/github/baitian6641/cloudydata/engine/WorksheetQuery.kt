@@ -16,9 +16,9 @@ data class WorksheetResult(
     val sql: String,
     val sourceNote: String? = null,
 ) {
-    /** A series column exists only in the time-series query shape. */
+    /** A series column exists in line/area and color-series bar query shapes. */
     val hasSeriesColumn: Boolean
-        get() = (markType == MarkType.LINE || markType == MarkType.AREA) &&
+        get() = (markType == MarkType.LINE || markType == MarkType.AREA || markType == MarkType.BAR) &&
             rowField != null && measureField != null && seriesField != null
 
     /** Index of the numeric value column in [result]. */
@@ -38,7 +38,10 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
         val seriesField = sheet.seriesFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
         val source = "read_parquet(${Sql.string(snapshotPath)})"
         val timeSeries = sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA
-        val usedSeriesFieldId = if (timeSeries) seriesField?.id else null
+        val seriesMarks = timeSeries || sheet.markType == MarkType.BAR
+        val usedSeriesFieldId = seriesField?.id.takeIf {
+            seriesMarks && rowField != null && measureField != null
+        }
         val activeFilter = sheet.filter?.takeIf { filter ->
             filter.marks.isNotEmpty() &&
                 filter.rowFieldId == rowField?.id &&
@@ -64,6 +67,24 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
                 val order = if (series != null) "ORDER BY $x ASC NULLS LAST, $series ASC NULLS LAST" else "ORDER BY $x ASC NULLS LAST"
                 "SELECT $select FROM $source$filterWhere $group $order LIMIT 2001"
             }
+            sheet.markType == MarkType.BAR && rowField != null &&
+                measureField != null && usedSeriesFieldId != null -> {
+                val dimension = Sql.identifier(rowField.name)
+                val measure = Sql.identifier(measureField.name)
+                val series = Sql.identifier(seriesField!!.name)
+                val aggregate = aggregateSql(sheet.aggregation, measure)
+                val direction = if (sheet.sortDescending) "DESC" else "ASC"
+                "WITH grouped AS (" +
+                    "SELECT CAST($dimension AS VARCHAR) AS \"row\", " +
+                    "CAST($series AS VARCHAR) AS \"series\", $aggregate AS \"value\" " +
+                    "FROM $source$filterWhere GROUP BY 1, 2" +
+                    "), ranked AS (" +
+                    "SELECT \"row\", \"series\", \"value\", " +
+                    "SUM(\"value\") OVER (PARTITION BY \"row\") AS \"row_total\" FROM grouped" +
+                    ") SELECT \"row\", \"series\", \"value\" FROM ranked " +
+                    "ORDER BY \"row_total\" $direction NULLS LAST, \"row\" ASC NULLS LAST, " +
+                    "\"series\" ASC NULLS LAST LIMIT 2001"
+            }
             rowField != null && measureField != null -> {
                 val dimension = Sql.identifier(rowField.name)
                 val measure = Sql.identifier(measureField.name)
@@ -82,7 +103,8 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
             }
             else -> "SELECT * FROM $source LIMIT 100"
         }
-        val result = engine.execute(sql, maxRows = if (timeSeries) 2001 else 1000)
+        val colorSeriesBar = sheet.markType == MarkType.BAR && usedSeriesFieldId != null
+        val result = engine.execute(sql, maxRows = if (timeSeries || colorSeriesBar) 2001 else 1000)
         return WorksheetResult(
             result = result,
             rowField = rowField,

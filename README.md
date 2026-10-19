@@ -18,6 +18,8 @@ and the x86_64 API 37 emulator, the debug app can:
 - write and verify a local Parquet snapshot plus the original source copy;
 - place a dimension and measure on Rows/Values, choose an aggregation and a
   table/bar/line mark, and query DuckDB locally;
+- add an optional Color field to a bar and choose side-by-side grouped or
+  stacked segments with a category legend;
 - add an optional Color series to a line, with persisted chart/axis/legend
   titles, Y range, zero/log/reverse, gridlines, value labels and a right/bottom
   legend;
@@ -111,7 +113,9 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- The Vega renderer covers bar, line and single-series area marks; emulator renderer death,
+- The Vega renderer covers single, grouped and stacked bars, line and
+  single-series area marks; the native offline fallback draws only single bars
+  and refuses color-series bar shapes rather than showing a wrong chart. Emulator renderer death,
   generation retirement, automatic probe recreation/replay, recovery
   exhaustion, stale completion/failure rejection and exact surface/view sizes
   are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths

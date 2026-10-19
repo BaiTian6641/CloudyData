@@ -807,3 +807,26 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 12/12, eight-series palette render 1/1 in both
   themes; lint 0 errors/5 warnings. Googlebook untouched; visual/user CVD/export
   checks absent.
+
+## 2026-10-19 — CUST08 color-series grouped/stacked bars
+
+- Bar marks accept the Color shelf. DuckDB groups by category+series, ranks
+  categories by aggregate total and orders series deterministically. The builder
+  assigns category order and stack bases; grouped is the default and stacked is
+  persisted. Vega lowers side-by-side/stacked rects with a series legend and no
+  render-time aggregation. Bar legends are explicitly non-interactive.
+- Filter/selection identity now carries the series for bars. The native fallback
+  refuses color-series bars rather than drawing a single wrong bar; exact values
+  remain in the table and PDF.
+- The debug probe gained grouped/stacked fixtures and exposed an older probe bug
+  that reset `valueFormat` to NUMBER; it now preserves the probe spec unless an
+  explicit extra is supplied, restoring percent-label coverage.
+- Review-driven fixes: the Y scale now covers stack endpoints (`displayY`) so
+  the tallest stack is not clipped; bar legend controls are shown and Apply no
+  longer clears the legend; stacking is gated to Sum/Count; the grouped-bar query
+  uses the 2001-row engine limit; stacked labels honor inside-end; tooltips
+  anchor at the stack endpoint.
+- Validation: JVM 70/70; BarChartQueryTest 1/1 (ordering, totals, filter,
+  underlying row); VegaSpecBuilderTest 19/19; VegaRendererProbeTest 39/39;
+  ChartSettingsPersistenceTest 12/12. Googlebook untouched; visual, 100%,
+  horizontal and native color-series fallback remain open.

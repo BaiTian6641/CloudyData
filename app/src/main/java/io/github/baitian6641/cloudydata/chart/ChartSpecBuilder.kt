@@ -2,6 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -59,21 +60,103 @@ object ChartSpecBuilder {
         derivedTitle: String,
         sourceNote: String? = null,
     ): ChartSpec {
-        if (result.seriesField != null) {
-            throw ChartSpecException("Color series is only available for Line marks in this build.")
-        }
         if (options.logScale) {
             throw ChartSpecException("A logarithmic value axis is only available for Line marks in this build.")
         }
         val rows = result.result.rows
-        if (rows.size > MAX_BAR_CATEGORIES) {
+        val hasSeries = result.hasSeriesColumn
+        if (hasSeries && options.barStackMode == BarStackMode.STACKED &&
+            result.aggregation != Aggregation.SUM && result.aggregation != Aggregation.COUNT
+        ) {
+            throw ChartSpecException("Stacked bars require Sum or Count aggregation.")
+        }
+        val series = if (hasSeries) {
+            buildBarSeries(result, options)
+        } else {
+            listOf(ChartSeries("Values", buildSingleBarPoints(result)))
+        }
+        val xLabels = if (hasSeries) {
+            series.flatMap { it.points }.sortedBy { it.xOrder }.map { it.x }.distinct()
+        } else {
+            series.single().points.map { it.x }
+        }
+        if (xLabels.size > MAX_BAR_CATEGORIES) {
             throw ChartSpecException(
                 "Bar chart supports at most $MAX_BAR_CATEGORIES categories; use the table or aggregate further.",
             )
         }
+        val allPoints = series.flatMap { it.points }
+        if (allPoints.none { it.defined }) throw ChartSpecException("The current view has no numeric marks.")
+        validateYDomain(options, allPoints.mapNotNull { it.y })
+        val units = options.units?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
+        val yTitle = titleWithUnits(
+            options.yAxisTitle
+                ?: result.measureField?.let { "${aggregationLabel(result.aggregation)} of ${it.name}" }
+                ?: "Value",
+            units,
+        )
+        val barHasSeries = hasSeries && series.any { it.points.isNotEmpty() }
+        val stackMode = if (barHasSeries && options.barStackMode == BarStackMode.STACKED) {
+            BarStackMode.STACKED
+        } else {
+            BarStackMode.NONE
+        }
+        return ChartSpec(
+            chartId = chartId,
+            revision = revision,
+            kind = ChartKind.BAR,
+            title = options.title ?: derivedTitle,
+            subtitle = options.subtitle?.take(160),
+            caption = options.caption?.take(240),
+            xAxis = AxisSpec(
+                title = options.xAxisTitle ?: result.rowField?.name ?: "View",
+                reverse = false,
+                labelValues = AxisLabelSelection.thin(xLabels, options.xLabelCount),
+                titleAnchor = options.axisTitleAnchor,
+            ),
+            yAxis = axisFor(options, yTitle),
+            gridlines = GridlineSpec(
+                options.showGridlines,
+                options.gridlineWidth,
+                options.gridlineContrast,
+                options.minorGridlines,
+            ),
+            legend = LegendSpec(
+                visible = barHasSeries && options.legendVisible,
+                position = options.legendPosition,
+                title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
+                orientation = options.legendOrientation,
+                markSample = options.legendMarkSample,
+            ),
+            labels = LabelSpec(
+                show = options.showValueLabels,
+                fontSize = options.labelFontSize,
+                position = options.labelPosition,
+                collisionPolicy = options.labelCollisionPolicy,
+            ),
+            sourceNote = sourceNote,
+            tooltip = TooltipSpec(options.showTooltip),
+            series = series,
+            hiddenSeries = emptySet(),
+            barStackMode = stackMode,
+            barHasSeries = barHasSeries,
+            rowCount = rows.size,
+            truncated = result.result.truncated,
+            units = units,
+            valueDecimals = options.valueDecimals,
+            valueFormat = options.valueFormat,
+            currencyCode = options.currencyCode,
+            chartBorder = options.showChartBorder,
+            transparentExportBackground = options.transparentExportBackground,
+            padding = options.chartPadding,
+        )
+    }
+
+    private fun buildSingleBarPoints(result: WorksheetResult): List<ChartPoint> {
+        val rows = result.result.rows
         val valueColumn = if (result.rowField != null) 1 else 0
         val labelColumn = if (result.rowField != null) 0 else null
-        val points = rows.mapIndexed { index, row ->
+        return rows.mapIndexed { index, row ->
             val raw = row.getOrNull(valueColumn)
             val y = raw?.let { valueAsDouble(it) }
             if (raw != null && y == null) throw ChartSpecException("Bar value for row ${index + 1} is not numeric.")
@@ -86,61 +169,85 @@ object ChartSpecBuilder {
                 exactY = raw?.toString(),
                 defined = y != null,
                 sourceRowIndex = index,
+                stackBase = 0.0,
             )
         }
-        if (points.none { it.defined }) throw ChartSpecException("The current view has no numeric marks.")
-        validateYDomain(options, points.mapNotNull { it.y })
-        val units = options.units?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
-        val yTitle = titleWithUnits(
-            options.yAxisTitle
-                ?: result.measureField?.let { "${aggregationLabel(result.aggregation)} of ${it.name}" }
-                ?: "Value",
-            units,
-        )
-        return ChartSpec(
-            chartId = chartId,
-            revision = revision,
-            kind = ChartKind.BAR,
-            title = options.title ?: derivedTitle,
-            subtitle = options.subtitle?.take(160),
-            caption = options.caption?.take(240),
-            xAxis = AxisSpec(
-                title = options.xAxisTitle ?: result.rowField?.name ?: "View",
-                reverse = false,
-                labelValues = AxisLabelSelection.thin(points.map { it.x }, options.xLabelCount),
-                titleAnchor = options.axisTitleAnchor,
-            ),
-            yAxis = axisFor(options, yTitle),
-            gridlines = GridlineSpec(
-                options.showGridlines,
-                options.gridlineWidth,
-                options.gridlineContrast,
-                options.minorGridlines,
-            ),
-            // Category color legends are intentionally deferred until grouped
-            // bar semantics exist; the legend control applies to line series.
-            legend = LegendSpec(false, options.legendPosition, null),
-            labels = LabelSpec(
-                show = options.showValueLabels,
-                fontSize = options.labelFontSize,
-                position = options.labelPosition,
-                collisionPolicy = options.labelCollisionPolicy,
-            ),
-            sourceNote = sourceNote,
-            tooltip = TooltipSpec(options.showTooltip),
-            series = listOf(ChartSeries("Values", points)),
-            hiddenSeries = emptySet(),
-            rowCount = rows.size,
-            truncated = result.result.truncated,
-            units = units,
-            valueDecimals = options.valueDecimals,
-            valueFormat = options.valueFormat,
-            currencyCode = options.currencyCode,
-            chartBorder = options.showChartBorder,
-            transparentExportBackground = options.transparentExportBackground,
-            padding = options.chartPadding,
-        )
     }
+
+    private fun buildBarSeries(result: WorksheetResult, options: ChartOptions): List<ChartSeries> {
+        val xOrder = LinkedHashMap<String, Int>()
+        val seriesOrder = LinkedHashMap<String, Int>()
+        val byCategory = LinkedHashMap<String, LinkedHashMap<String, BarSegment>>()
+        result.result.rows.forEachIndexed { rowIndex, row ->
+            val x = display(row.getOrNull(0))
+            val categoryOrder = xOrder.getOrPut(x) { xOrder.size }
+            val series = display(row.getOrNull(1))
+            val seriesIndex = seriesOrder.getOrPut(series) { seriesOrder.size }
+            val raw = row.getOrNull(2)
+            val y = raw?.let { valueAsDouble(it) }
+            if (raw != null && y == null) {
+                throw ChartSpecException("Bar value for $x / $series is not numeric.")
+            }
+            if (y != null && !y.isFinite()) {
+                throw ChartSpecException("Bar value for $x / $series is not finite.")
+            }
+            byCategory.getOrPut(x) { LinkedHashMap() }[series] = BarSegment(
+                x = x,
+                xOrder = categoryOrder,
+                series = series,
+                seriesIndex = seriesIndex,
+                y = y,
+                exactY = raw?.toString(),
+                sourceRowIndex = rowIndex,
+            )
+        }
+        val stacked = options.barStackMode == BarStackMode.STACKED
+        val points = seriesOrder.keys.associateWith { mutableListOf<ChartPoint>() }
+        for ((x, categoryOrder) in xOrder) {
+            var positiveBase = 0.0
+            var negativeBase = 0.0
+            val category = byCategory[x].orEmpty()
+            for ((series, seriesIndex) in seriesOrder) {
+                val segment = category[series] ?: continue
+                val base = when {
+                    !stacked || segment.y == null -> 0.0
+                    segment.y >= 0.0 -> positiveBase
+                    else -> negativeBase
+                }
+                points.getValue(series).add(
+                    ChartPoint(
+                        x = x,
+                        xOrder = categoryOrder,
+                        series = series,
+                        y = segment.y,
+                        exactY = segment.exactY,
+                        defined = segment.y != null,
+                        sourceRowIndex = segment.sourceRowIndex,
+                        stackBase = base,
+                        seriesIndex = seriesIndex,
+                    ),
+                )
+                if (stacked && segment.y != null) {
+                    if (segment.y >= 0.0) {
+                        positiveBase += segment.y
+                    } else {
+                        negativeBase += segment.y
+                    }
+                }
+            }
+        }
+        return seriesOrder.keys.map { key -> ChartSeries(key, points.getValue(key)) }
+    }
+
+    private data class BarSegment(
+        val x: String,
+        val xOrder: Int,
+        val series: String,
+        val seriesIndex: Int,
+        val y: Double?,
+        val exactY: String?,
+        val sourceRowIndex: Int,
+    )
 
     private fun buildTimeSeries(
         chartId: String,

@@ -6,6 +6,7 @@ import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LineDashStyle
@@ -56,7 +57,7 @@ object VegaSpecBuilder {
         val xDomain = JSONArray(xOrder.values)
         val colorDomain = when (spec.kind) {
             ChartKind.LINE, ChartKind.AREA -> seriesDomain
-            ChartKind.BAR -> xDomain
+            ChartKind.BAR -> if (spec.barHasSeries) seriesDomain else xDomain
         }
         val colorScale = JSONObject()
             .put("name", "color")
@@ -78,7 +79,11 @@ object VegaSpecBuilder {
             yScale.put("domain", JSONArray().put(spec.yAxis.min).put(spec.yAxis.max))
             yScale.put("zero", false)
         } else {
-            yScale.put("domain", JSONObject().put("data", "table").put("field", "y"))
+            yScale.put(
+                "domain",
+                JSONObject().put("data", "table")
+                    .put("field", if (isStackedBar(spec)) "displayY" else "y"),
+            )
             spec.yAxis.min?.let { yScale.put("domainMin", it) }
             spec.yAxis.max?.let { yScale.put("domainMax", it) }
             if (!spec.yAxis.log) yScale.put("zero", spec.yAxis.zero)
@@ -172,9 +177,9 @@ object VegaSpecBuilder {
         val marks = JSONArray()
         when (spec.kind) {
             ChartKind.BAR -> {
-                marks.put(barMark())
+                marks.put(barMark(spec))
                 if (spec.labels.show) marks.put(barLabelMark(spec, textColor, dark))
-                marks.put(barSelectionMark(textColor))
+                marks.put(barSelectionMark(spec, textColor))
             }
             ChartKind.LINE -> {
                 marks.put(lineGroup(spec, textColor, visibleExpr))
@@ -235,6 +240,8 @@ object VegaSpecBuilder {
             .put("chartBorder", spec.chartBorder)
             .put("transparentExportBackground", spec.transparentExportBackground)
             .put("hiddenSeries", JSONArray(spec.hiddenSeries.toList()))
+            .put("barStackMode", spec.barStackMode.name)
+            .put("legendInteractive", spec.kind != ChartKind.BAR)
             .put("series", JSONArray(spec.series.map { it.key }))
                     .put("units", spec.units ?: ""),
             )
@@ -251,6 +258,16 @@ object VegaSpecBuilder {
         .put("sourceRowIndex", point.sourceRowIndex)
         .put("exactY", point.exactY ?: JSONObject.NULL)
         .put("defined", point.defined)
+        .put("stackBase", point.stackBase ?: JSONObject.NULL)
+        .put(
+            "displayY",
+            if (point.stackBase != null && point.y != null) {
+                point.stackBase + point.y
+            } else {
+                point.y ?: JSONObject.NULL
+            },
+        )
+        .put("seriesIndex", point.seriesIndex)
 
     private fun markerArea(spec: ChartSpec, default: Double): Double =
         spec.markers.size?.let { it * it } ?: default
@@ -400,23 +417,91 @@ object VegaSpecBuilder {
         return axis
     }
 
-    private fun barMark(): JSONObject = JSONObject()
-        .put("name", "cloudyBar")
-        .put("type", "rect")
-        .put("from", JSONObject().put("data", "table"))
-        .put("clip", true)
-        .put(
-            "encode",
+    private fun isGroupedBar(spec: ChartSpec): Boolean =
+        spec.barHasSeries &&
+            spec.barStackMode != BarStackMode.STACKED &&
+            spec.series.size > 1
+
+    private fun isStackedBar(spec: ChartSpec): Boolean =
+        spec.barHasSeries &&
+            spec.barStackMode == BarStackMode.STACKED &&
+            spec.series.size > 1
+
+    private fun barXEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return when {
+            isGroupedBar(spec) -> JSONObject().put(
+                "signal",
+                "scale('x', datum.x) + bandwidth('x') * " +
+                    "(0.05 + datum.seriesIndex * 0.9 / $count)",
+            )
+            isStackedBar(spec) -> JSONObject().put(
+                "signal",
+                "scale('x', datum.x) + bandwidth('x') * 0.05",
+            )
+            else -> JSONObject().put("scale", "x").put("field", "x")
+        }
+    }
+
+    private fun barWidthEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return when {
+            isGroupedBar(spec) -> JSONObject().put(
+                "signal",
+                "bandwidth('x') * 0.9 / $count",
+            )
+            isStackedBar(spec) -> JSONObject().put("signal", "bandwidth('x') * 0.9")
+            else -> JSONObject().put("scale", "x").put("band", 1)
+        }
+    }
+
+    private fun barLabelXEncode(spec: ChartSpec): JSONObject {
+        val count = spec.series.size.coerceAtLeast(1)
+        return if (isGroupedBar(spec)) {
             JSONObject().put(
-                "enter",
-                JSONObject()
-                    .put("x", JSONObject().put("scale", "x").put("field", "x"))
-                    .put("width", JSONObject().put("scale", "x").put("band", 1))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
-                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
-                    .put("fill", JSONObject().put("scale", "color").put("field", "x")),
-            ),
+                "signal",
+                "scale('x', datum.x) + bandwidth('x') * " +
+                    "(0.05 + (datum.seriesIndex + 0.5) * 0.9 / $count)",
+            )
+        } else {
+            JSONObject().put("scale", "x").put("field", "x").put("band", 0.5)
+        }
+    }
+
+    private fun barMark(spec: ChartSpec): JSONObject {
+        val enter = JSONObject()
+            .put("x", barXEncode(spec))
+            .put("width", barWidthEncode(spec))
+        if (isStackedBar(spec)) {
+            enter.put(
+                "y",
+                JSONObject().put(
+                    "signal",
+                    "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
+                ),
+            ).put(
+                "y2",
+                JSONObject().put(
+                    "signal",
+                    "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
+                ),
+            )
+        } else {
+            enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
+                .put("y2", JSONObject().put("scale", "y").put("value", 0))
+        }
+        enter.put(
+            "fill",
+            JSONObject().put("scale", "color")
+                .put("field", if (spec.barHasSeries) "series" else "x"),
         )
+        return JSONObject()
+            .put("name", "cloudyBar")
+            .put("type", "rect")
+            .put("from", JSONObject().put("data", "table"))
+            .put("clip", true)
+            .put("encode", JSONObject().put("enter", enter))
+    }
 
     private fun labelDefined(spec: ChartSpec, fontSize: Int): String {
         val valid = "isValid(datum.y)"
@@ -427,7 +512,10 @@ object VegaSpecBuilder {
             fontSize + 36
         }
         return when (spec.kind) {
-            ChartKind.BAR -> "$valid && bandwidth('x') >= $spacing"
+            ChartKind.BAR -> {
+                val count = if (isGroupedBar(spec)) spec.series.size else 1
+                "$valid && bandwidth('x') >= ${spacing * count}"
+            }
             ChartKind.LINE, ChartKind.AREA -> "$valid && bandwidth('x') >= $spacing"
         }
     }
@@ -458,6 +546,7 @@ object VegaSpecBuilder {
     }
 
     private fun barLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
+        if (isStackedBar(spec)) return stackedBarLabelMark(spec, textColor, dark)
         val fontSize = spec.labels.fontSize ?: 11
         val endpoint = "scale('y', datum.y)"
         val delta = "(scale('y', 0) - $endpoint)"
@@ -485,7 +574,7 @@ object VegaSpecBuilder {
                 JSONObject().put(
                     "enter",
                     JSONObject()
-                        .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                        .put("x", barLabelXEncode(spec))
                         .put(
                             "y",
                             JSONObject().put("scale", "y").put("field", "y")
@@ -514,6 +603,82 @@ object VegaSpecBuilder {
                             "defined",
                             JSONObject().put("signal", labelDefined(spec, fontSize)),
                         ),
+                ),
+            )
+    }
+
+    private fun stackedBarLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
+        val fontSize = spec.labels.fontSize ?: 11
+        val endpoint = "scale('y', datum.stackBase + datum.y)"
+        val segmentStart = "scale('y', datum.stackBase)"
+        val segmentPixels = "abs($segmentStart - $endpoint)"
+        val active = "(isValid(datum.y) && datum.y !== 0 && $segmentPixels >= ${fontSize + 12})"
+        val inside = spec.labels.position == LabelPosition.INSIDE_END
+        val rawOffset = if (inside) {
+            "(datum.y >= 0 ? 6 : -6)"
+        } else {
+            "(datum.y >= 0 ? -6 : 6)"
+        }
+        val minY = fontSize + 2
+        val maxY = "cloudyPlotHeight - ${fontSize + 2}"
+        val clamped = "(($endpoint + ($rawOffset) < $minY) ? ($minY - $endpoint) : " +
+            "(($endpoint + ($rawOffset) > $maxY) ? ($maxY - $endpoint) : ($rawOffset)))"
+        return JSONObject()
+            .put("type", "text")
+            .put("from", JSONObject().put("data", "table"))
+            .put("clip", true)
+            .put("interactive", false)
+            .put(
+                "encode",
+                JSONObject().put(
+                    "enter",
+                    JSONObject()
+                        .put("x", barLabelXEncode(spec))
+                        .put(
+                            "y",
+                            JSONObject().put("signal", "($endpoint) + ($clamped)"),
+                        )
+                        .put("text", valueText(spec, fontSize))
+                        .put("align", JSONObject().put("value", "center"))
+                        .put(
+                            "baseline",
+                            JSONObject().put(
+                                "signal",
+                                if (inside) {
+                                    "(datum.y >= 0) ? 'top' : 'bottom'"
+                                } else {
+                                    "(datum.y >= 0) ? 'bottom' : 'top'"
+                                },
+                            ),
+                        )
+                        .put(
+                            "fill",
+                            JSONObject().put(
+                                "value",
+                                if (inside) {
+                                    if (dark) "#101A1D" else "#FFFFFF"
+                                } else {
+                                    textColor
+                                },
+                            ),
+                        )
+                        .put(
+                            "stroke",
+                            JSONObject().put(
+                                "value",
+                                if (inside) {
+                                    if (dark) "#FFFFFF" else "#101A1D"
+                                } else {
+                                    "transparent"
+                                },
+                            ),
+                        )
+                        .put(
+                            "strokeWidth",
+                            JSONObject().put("value", if (inside) 1.25 else 0),
+                        )
+                        .put("fontSize", JSONObject().put("value", fontSize))
+                        .put("defined", JSONObject().put("signal", active)),
                 ),
             )
     }
@@ -730,29 +895,40 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun barSelectionMark(textColor: String): JSONObject {
+    private fun barSelectionMark(spec: ChartSpec, textColor: String): JSONObject {
         val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
+        val enter = JSONObject()
+            .put("x", barXEncode(spec))
+            .put("width", barWidthEncode(spec))
+        if (isStackedBar(spec)) {
+            enter.put(
+                "y",
+                JSONObject().put(
+                    "signal",
+                    "scale('y', max(datum.stackBase, datum.stackBase + datum.y))",
+                ),
+            ).put(
+                "y2",
+                JSONObject().put(
+                    "signal",
+                    "scale('y', min(datum.stackBase, datum.stackBase + datum.y))",
+                ),
+            )
+        } else {
+            enter.put("y", JSONObject().put("scale", "y").put("field", "y"))
+                .put("y2", JSONObject().put("scale", "y").put("value", 0))
+        }
+        enter.put("fill", JSONObject().put("value", textColor))
+            .put("fillOpacity", JSONObject().put("value", 0.22))
+            .put("stroke", JSONObject().put("value", contrastingStroke))
+            .put("strokeWidth", JSONObject().put("value", 3))
         return JSONObject()
             .put("name", "cloudySelectedBar")
             .put("type", "rect")
             .put("interactive", false)
             .put("from", JSONObject().put("data", "selected"))
             .put("clip", true)
-            .put(
-                "encode",
-                JSONObject().put(
-                    "enter",
-                    JSONObject()
-                        .put("x", JSONObject().put("scale", "x").put("field", "x"))
-                        .put("width", JSONObject().put("scale", "x").put("band", 1))
-                        .put("y", JSONObject().put("scale", "y").put("field", "y"))
-                        .put("y2", JSONObject().put("scale", "y").put("value", 0))
-                        .put("fill", JSONObject().put("value", textColor))
-                        .put("fillOpacity", JSONObject().put("value", 0.22))
-                        .put("stroke", JSONObject().put("value", contrastingStroke))
-                        .put("strokeWidth", JSONObject().put("value", 3)),
-                ),
-            )
+            .put("encode", JSONObject().put("enter", enter))
     }
 
     private fun selectedPointMark(spec: ChartSpec, textColor: String, visibleExpr: String): JSONObject {
@@ -847,7 +1023,10 @@ object VegaSpecBuilder {
         .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]")
 
     private fun legendJson(spec: ChartSpec, textColor: String, widthDp: Float): JSONObject? {
-        if (!spec.legend.visible || spec.kind != ChartKind.LINE) return null
+        if (!spec.legend.visible) return null
+        if (spec.kind != ChartKind.LINE && !(spec.kind == ChartKind.BAR && spec.barHasSeries)) {
+            return null
+        }
         val orient = when (spec.legend.position) {
             LegendPosition.BOTTOM -> "bottom"
             LegendPosition.RIGHT -> "right"
@@ -857,7 +1036,7 @@ object VegaSpecBuilder {
             LegendPosition.RIGHT -> "vertical"
         }
         val legend = JSONObject()
-            .put("stroke", "color")
+            .put(if (spec.kind == ChartKind.BAR) "fill" else "stroke", "color")
             .put("title", spec.legend.title ?: "")
             .put("orient", orient)
             .put("labelColor", textColor)
@@ -866,19 +1045,23 @@ object VegaSpecBuilder {
             .put("titleFontSize", 11)
         legend.put("direction", direction)
         legend.put("labelLimit", LegendLayout.labelLimitDp(widthDp))
-        when (spec.legend.markSample) {
-            LegendMarkSample.LINE -> {
-                legend.put("symbolType", "stroke")
-                    .put("symbolSize", 200)
-                    .put("symbolStrokeWidth", spec.lineWidth ?: 2.0)
-                spec.lineOpacity?.let { legend.put("symbolOpacity", it) }
-                lineDashArray(spec, 2.0)?.let { legend.put("symbolDash", it) }
-            }
-            LegendMarkSample.MARKER -> {
-                if (spec.markers.shape != MarkerShape.CIRCLE) {
-                    legend.put("symbolType", markerShapeName(spec.markers.shape))
+        if (spec.kind == ChartKind.BAR) {
+            legend.put("symbolType", "square")
+        } else {
+            when (spec.legend.markSample) {
+                LegendMarkSample.LINE -> {
+                    legend.put("symbolType", "stroke")
+                        .put("symbolSize", 200)
+                        .put("symbolStrokeWidth", spec.lineWidth ?: 2.0)
+                    spec.lineOpacity?.let { legend.put("symbolOpacity", it) }
+                    lineDashArray(spec, 2.0)?.let { legend.put("symbolDash", it) }
                 }
-                spec.markers.opacity?.let { legend.put("symbolOpacity", it) }
+                LegendMarkSample.MARKER -> {
+                    if (spec.markers.shape != MarkerShape.CIRCLE) {
+                        legend.put("symbolType", markerShapeName(spec.markers.shape))
+                    }
+                    spec.markers.opacity?.let { legend.put("symbolOpacity", it) }
+                }
             }
         }
         if (direction == "horizontal") {

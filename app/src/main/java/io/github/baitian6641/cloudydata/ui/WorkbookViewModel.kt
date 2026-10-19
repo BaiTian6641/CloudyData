@@ -15,6 +15,7 @@ import io.github.baitian6641.cloudydata.engine.UnderlyingRowsResult
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FilterMode
@@ -225,7 +226,13 @@ class WorkbookViewModel(
     }
 
     fun clearMeasureField() {
-        updateActiveSheet { it.copy(measureFieldId = null) }
+        updateActiveSheet { sheet ->
+            sheet.copy(
+                measureFieldId = null,
+                seriesFieldId = null,
+                filter = sheet.filter?.takeIf { it.seriesFieldId == null },
+            )
+        }
     }
 
     fun setSeriesField(field: FieldDef) {
@@ -237,15 +244,32 @@ class WorkbookViewModel(
     }
 
     fun setAggregation(aggregation: Aggregation) {
-        updateActiveSheet { it.copy(aggregation = aggregation) }
+        updateActiveSheet { sheet ->
+            sheet.copy(
+                aggregation = aggregation,
+                chart = if (aggregation == Aggregation.SUM || aggregation == Aggregation.COUNT) {
+                    sheet.chart
+                } else {
+                    // A stacked total is only meaningful for additive measures.
+                    sheet.chart.copy(barStackMode = BarStackMode.NONE)
+                },
+            )
+        }
     }
 
     fun setMarkType(markType: MarkType) {
         updateActiveSheet { sheet ->
-            if (markType == MarkType.LINE) {
-                sheet.copy(markType = markType)
+            if (markType == MarkType.LINE || markType == MarkType.BAR) {
+                sheet.copy(
+                    markType = markType,
+                    chart = if (markType == MarkType.BAR) {
+                        sheet.chart.copy(logScale = false)
+                    } else {
+                        sheet.chart
+                    },
+                )
             } else {
-                // Color is a Line series channel in this build; switching away
+                // Color is a Line/Bar channel in this build; switching away
                 // clears it instead of silently querying an unused column. A
                 // row-only filter remains meaningful; a pair filter does not.
                 sheet.copy(
@@ -276,7 +300,10 @@ class WorkbookViewModel(
         val result = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
         // Only derive the filter from a result produced for this sheet shape.
         if (result.rowField?.id != sheet.rowFieldId) return
-        val expectedSeriesId = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+        val expectedSeriesId = if (sheet.markType == MarkType.LINE ||
+            sheet.markType == MarkType.AREA ||
+            sheet.markType == MarkType.BAR
+        ) {
             sheet.seriesFieldId
         } else {
             null
@@ -340,7 +367,10 @@ class WorkbookViewModel(
         if (selectedRows.isEmpty()) return
         val accepted = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
         if (accepted.rowField?.id != sheet.rowFieldId) return
-        val expectedSeriesId = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+        val expectedSeriesId = if (sheet.markType == MarkType.LINE ||
+            sheet.markType == MarkType.AREA ||
+            sheet.markType == MarkType.BAR
+        ) {
             sheet.seriesFieldId
         } else {
             null

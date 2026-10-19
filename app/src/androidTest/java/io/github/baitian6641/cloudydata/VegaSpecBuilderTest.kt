@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
@@ -1218,4 +1219,82 @@ class VegaSpecBuilderTest {
         assertNotNull("selected bar overlay missing", selectedBar)
         assertFalse("selected bar overlay must not intercept marks", selectedBar!!.getBoolean("interactive"))
     }
+    @Test
+    fun groupedAndStackedBarSeriesUseSeriesColorDomainAndStackGeometry() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("Mar", "North", 30L),
+                    listOf<Any?>("Feb", "North", 20L),
+                    listOf<Any?>("Feb", "South", 2L),
+                    listOf<Any?>("Jan", "North", 10L),
+                    listOf<Any?>("Jan", "South", 1L),
+                    listOf<Any?>("Apr", "South", 4L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val groupedSpec = ChartSpecBuilder.build(
+            "bar-grouped", 0, result,
+            ChartOptions(seriesTitle = "Region", showValueLabels = true),
+            "derived",
+        )
+        val grouped = VegaSpecBuilder.build(
+            groupedSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals("NONE", grouped.getJSONObject("usermeta").getString("barStackMode"))
+        assertFalse(grouped.getJSONObject("usermeta").getBoolean("legendInteractive"))
+        assertEquals(
+            listOf("North", "South"),
+            (0 until grouped.getJSONArray("scales").getJSONObject(2).getJSONArray("domain").length())
+                .map { grouped.getJSONArray("scales").getJSONObject(2).getJSONArray("domain").getString(it) },
+        )
+        assertEquals("color", grouped.getJSONArray("legends").getJSONObject(0).getString("fill"))
+        assertEquals("square", grouped.getJSONArray("legends").getJSONObject(0).getString("symbolType"))
+        val groupedBar = grouped.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(groupedBar.getJSONObject("x").has("signal"))
+        assertTrue(groupedBar.getJSONObject("width").getString("signal").contains("0.9"))
+
+        val stackedSpec = ChartSpecBuilder.build(
+            "bar-stacked", 0, result,
+            ChartOptions(barStackMode = BarStackMode.STACKED),
+            "derived",
+        )
+        val stacked = VegaSpecBuilder.build(
+            stackedSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals("STACKED", stacked.getJSONObject("usermeta").getString("barStackMode"))
+        assertEquals(
+            "displayY",
+            stacked.getJSONArray("scales").getJSONObject(1)
+                .getJSONObject("domain").getString("field"),
+        )
+        val stackedBar = stacked.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(stackedBar.getJSONObject("y").getString("signal").contains("datum.stackBase"))
+        assertTrue(stackedBar.getJSONObject("y2").getString("signal").contains("datum.stackBase"))
+        assertTrue(stackedBar.getJSONObject("x").getString("signal").contains("bandwidth"))
+        val stackedRows = stacked.getJSONArray("data").getJSONObject(0).getJSONArray("values")
+        assertEquals(6, stackedRows.length())
+        val southFebruary = (0 until stackedRows.length())
+            .map { stackedRows.getJSONObject(it) }
+            .single { it.getString("series") == "South" && it.getString("x") == "Feb" }
+        assertEquals(20.0, southFebruary.getDouble("stackBase"), 0.0)
+        assertEquals(22.0, southFebruary.getDouble("displayY"), 0.0)
+    }
+
+
+
 }

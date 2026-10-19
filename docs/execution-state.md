@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `8eec9d2`; the categorical-palette change is in the
-next local commit. `main` tracks `origin/main` at the pushed header-divider
-baseline.
+**Source:** commits through `8047a85`; the color-series bar change is in the
+next local commit. `main` tracks `origin/main` at the pushed palette baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -25,7 +24,7 @@ unless stated otherwise.
 - Workbook create, atomic metadata save, process-restart reopen, and local
   worksheet query. Worksheet tab selection commits the active sheet and requeries
   it, clearing the previous sheet's accepted result while loading.
-- Rows/Values/Line-Color placements, aggregate selection (SUM verified; others
+- Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
 - Typed `ChartSpec` and multi-series line rendering with facet-separated series,
@@ -55,15 +54,15 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **67/67**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **70/70**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
-  title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
-  crowded-label, transparent-export and chart-border cases. Emulator renderer
-  probe: 17/17 (pre-lasso); Vega spec builder: 18/18;
-  keep/exclude query suite plus engine and line regressions: 9/9;
-  table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
-  suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
-  not instrumented after device handoff; see **Implemented but unverified**. A three-device connected run still hits a
+  title/caption, units/anchor, padding, X-label, gridline-width/contrast,
+  decimal-format, chart-border, crowded-label, palette and bar-stacking cases.
+  Emulator renderer probe: **39/39**; Vega spec builder: **19/19**;
+  chart-settings persistence: **12/12**; color-series bar query: **1/1**.
+  Earlier keep/exclude, table-selection and View Data runs remain valid for the
+  unchanged paths. The lasso/Y-tick/device visual assertions still lack a
+  post-handoff device run; see **Implemented but unverified**. A three-device connected run still hits a
   physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
   device timeouts; the emulator suites are clean.
 - Emulator-first rerun: manual instrumentation on `emulator-5580` (API36,
@@ -260,6 +259,12 @@ unless stated otherwise.
   shared resolver, first-appearance cycle mapping, persisted selection, token
   generator/contrast checks, simulated CVD distance tests and a two-theme
   eight-series emulator render; visual/user CVD checks were not run.
+- **Color-series bars.** A persisted Color field produces side-by-side grouped
+  bars or stacked segments with exact builder-owned stack bases, a complete
+  automatic Y domain, a category legend and source-row/filter identity. Stacked
+  mode is gated to Sum/Count and legend controls persist. Query, spec, renderer
+  and persistence checks pass; the native fallback refuses the shape and
+  visual/100%/negative checks were not run.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -356,24 +361,24 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST08 color-series bars with stacked mode.**
+**CUST08 100% stacked bars.**
 
-- Requirements/stage: CUST08, S02/S03, F36/F38, Q21. Prerequisites: bar/line
-  color-series query semantics, stable palette, legend, exact source-row
-  selection and typed chart specs.
-- Files: semantic query result/grouping, `WorksheetDef` series validation,
-  `ChartSpecBuilder`, Vega bar lowering, legend, selection/hit targets, tests.
-- Action: allow the Color field on Bar marks and add a persisted NONE/STACKED
-  mode. NONE preserves current single-series bars; STACKED groups by X plus
-  color series and lowers stacked rect segments with a color legend.
-- Acceptance: default bar output unchanged; stacked sums remain exact,
-  category/series order and source-row selection stay coherent; invalid/missing
-  modes fall back to NONE; no implicit filters or SQL-runner logic in renderer.
-  Emulator query/spec/render/selection checks required; visual review unverified.
+- Requirements/stage: CUST08, CH01, F34, S06/S11. Prerequisites: grouped/stacked
+  color-series query, persisted stack mode, typed stack bases, exact values and
+  percent formatting.
+- Files: `BarStackMode`, `ChartSpecBuilder` normalization, Vega bar lowering,
+  chart settings, tests.
+- Action: add a persisted 100% mode that divides positive segments by each
+  category's positive total, forces a 0–1 axis with percent formatting, and keeps
+  exact values in the result/table/inspector.
+- Acceptance: totals equal 1.0 within floating tolerance per category; zero or
+  negative totals are diagnosed rather than divided; grouped/default output is
+  unchanged; invalid modes fall back to NONE. Emulator query/spec/render checks
+  required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, palette, interpolation, dash, opacity, legend-sample and table visuals
-  wait for an authorized visual session.
+  marker, palette, interpolation, dash, opacity, legend-sample, bar and table
+  visuals wait for an authorized visual session.
 
 ## Protected context
 

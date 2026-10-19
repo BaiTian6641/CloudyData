@@ -197,7 +197,9 @@ fun WorksheetView(
                 aggregation = sheet.aggregation,
                 onAggregation = onAggregation,
             )
-            if (sheet.markType == MarkType.LINE) {
+            if ((sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR) &&
+                sheet.measureFieldId != null
+            ) {
                 ShelfRow(
                     label = "Color",
                     field = seriesField,
@@ -575,6 +577,15 @@ internal fun NativeBarChartCard(
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
+    if (result.hasSeriesColumn) {
+        Text(
+            "Color-series bars need the offline renderer. Exact values remain in the table.",
+            style = MaterialTheme.typography.labelSmall,
+            color = colors.warning,
+            modifier = modifier.padding(density.spaceMedium),
+        )
+        return
+    }
     val engineResult = result.result
     val rows = engineResult.rows
     val valueColumn = if (result.rowField != null) 1 else 0

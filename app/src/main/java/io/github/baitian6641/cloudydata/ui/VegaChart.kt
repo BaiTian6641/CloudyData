@@ -386,7 +386,7 @@ fun VegaChartCard(
         } else if (rendererError != null) {
             Text(
                 "Renderer unavailable: $rendererError. " +
-                    if (result.markType == MarkType.BAR) {
+                    if (result.markType == MarkType.BAR && !result.hasSeriesColumn) {
                         "The native chart is shown with the same result."
                     } else {
                         "Use the exact-value table below until the renderer recovers."
@@ -394,7 +394,7 @@ fun VegaChartCard(
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.warning,
             )
-            if (result.markType == MarkType.BAR) {
+            if (result.markType == MarkType.BAR && !result.hasSeriesColumn) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     NativeBarChartCard(
                         result,

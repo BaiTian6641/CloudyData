@@ -22,6 +22,7 @@ import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.GridlineSpec
 import io.github.baitian6641.cloudydata.chart.LabelSpec
 import io.github.baitian6641.cloudydata.chart.LegendSpec
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.io.File
@@ -71,12 +72,11 @@ class RendererProbeActivity : Activity() {
         intent.getBooleanExtra(EXTRA_HIDE_MARKERS, false)
     }
     private val requestValueFormat by lazy {
-        runCatching {
-            io.github.baitian6641.cloudydata.model.ValueDisplayFormat.valueOf(
-                intent.getStringExtra(EXTRA_VALUE_FORMAT)
-                    ?: io.github.baitian6641.cloudydata.model.ValueDisplayFormat.NUMBER.name,
-            )
-        }.getOrDefault(io.github.baitian6641.cloudydata.model.ValueDisplayFormat.NUMBER)
+        intent.getStringExtra(EXTRA_VALUE_FORMAT)?.let { extra ->
+            runCatching {
+                io.github.baitian6641.cloudydata.model.ValueDisplayFormat.valueOf(extra)
+            }.getOrNull()
+        }
     }
     private val requestCurrencyCode by lazy {
         runCatching {
@@ -169,7 +169,7 @@ class RendererProbeActivity : Activity() {
             lineDashStyle = requestLineDash,
             lineOpacity = requestLineOpacity,
             legend = baseSpec.legend.copy(markSample = requestLegendSample),
-            valueFormat = requestValueFormat,
+            valueFormat = requestValueFormat ?: baseSpec.valueFormat,
             currencyCode = requestCurrencyCode,
         )
         val root = LinearLayout(this).apply {
@@ -615,6 +615,7 @@ class RendererProbeActivity : Activity() {
             rowCount = 6,
             truncated = false,
         )
+        "groupedbar", "stackedbar" -> barSeriesSpec(probeKind == "stackedbar")
         "palette" -> ChartSpec(
             chartId = "probe-palette",
             revision = 1,
@@ -827,7 +828,57 @@ class RendererProbeActivity : Activity() {
         )
     }
 
+    private fun barSeriesSpec(stacked: Boolean): ChartSpec {
+        fun point(x: String, order: Int, series: String, y: Double, base: Double, row: Int) =
+            ChartPoint(
+                x = x,
+                xOrder = order,
+                series = series,
+                y = y,
+                exactY = y.toString(),
+                defined = true,
+                sourceRowIndex = row,
+                stackBase = base,
+                seriesIndex = if (series == "North") 0 else 1,
+            )
+        val north = ChartSeries(
+            "North",
+            listOf(
+                point("Jan", 0, "North", 10.0, 0.0, 0),
+                point("Feb", 1, "North", 20.0, 0.0, 1),
+                point("Mar", 2, "North", 30.0, 0.0, 2),
+            ),
+        )
+        val south = ChartSeries(
+            "South",
+            listOf(
+                point("Jan", 0, "South", 5.0, if (stacked) 10.0 else 0.0, 3),
+                point("Feb", 1, "South", 7.0, if (stacked) 20.0 else 0.0, 4),
+                point("Mar", 2, "South", 2.0, if (stacked) 30.0 else 0.0, 5),
+            ),
+        )
+        return ChartSpec(
+            chartId = if (stacked) "probe-stacked-bar" else "probe-grouped-bar",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = if (stacked) "Stacked sales" else "Grouped sales",
+            xAxis = AxisSpec("Category"),
+            yAxis = AxisSpec("Value", min = 0.0),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(true, LegendPosition.BOTTOM, "Series"),
+            labels = LabelSpec(false),
+            sourceNote = "Source: probe fixture",
+            series = listOf(north, south),
+            barStackMode = if (stacked) BarStackMode.STACKED else BarStackMode.NONE,
+            barHasSeries = true,
+            rowCount = 6,
+            truncated = false,
+        )
+    }
+
     private fun accessibleSummary(): String = when (probeKind) {
+        "groupedbar" -> "Accessible summary: North and South across Jan, Feb, Mar."
+        "stackedbar" -> "Accessible summary: stacked North and South across Jan, Feb, Mar."
         "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."

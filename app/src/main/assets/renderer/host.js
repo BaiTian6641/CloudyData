@@ -17,6 +17,7 @@
     chartBorder: false,
     transparentExportBackground: false,
     hiddenSeries: [],
+    legendInteractive: true,
     series: [],
     pointerMode: 'replace',
     lasso: null,
@@ -42,6 +43,7 @@
   }
 
   function setupLegendToggle(chartId, revision) {
+    if (!state.legendInteractive) return;
     var labels = document.querySelectorAll('#view svg .role-legend-label');
     Array.prototype.forEach.call(labels, function (labelNode, index) {
       var label = String(labelNode.textContent || '').trim();
@@ -105,14 +107,21 @@
       var scaleX = state.view.scale('x');
       var scaleY = state.view.scale('y');
       var sourceY = datum.y;
-      if (typeof sourceY !== 'number' || !isFinite(sourceY)) {
+      var sourceBase = datum.stackBase;
+      if (typeof sourceY !== 'number' || !isFinite(sourceY) ||
+          typeof sourceBase !== 'number' || !isFinite(sourceBase)) {
         var rows = state.view.data('table') || [];
         for (var i = 0; i < rows.length; i++) {
           if (rows[i] && rows[i].sourceRowIndex === datum.sourceRowIndex) {
             sourceY = rows[i].y;
+            sourceBase = rows[i].stackBase;
             break;
           }
         }
+      }
+      if (typeof sourceY === 'number' && isFinite(sourceY) &&
+          typeof sourceBase === 'number' && isFinite(sourceBase)) {
+        sourceY = sourceBase + sourceY;
       }
       x = origin[0] + scaleX(datum.x) + (scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0) + 10;
       y = typeof sourceY === 'number' && isFinite(sourceY)
@@ -821,6 +830,8 @@
       state.series = message.spec.usermeta && Array.isArray(message.spec.usermeta.series)
         ? message.spec.usermeta.series.map(String)
         : [];
+      state.legendInteractive = !(message.spec.usermeta &&
+        message.spec.usermeta.legendInteractive === false);
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

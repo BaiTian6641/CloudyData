@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
@@ -1038,6 +1039,116 @@ class ChartSpecBuilderTest {
             io.github.baitian6641.cloudydata.ui.measureLabelWithUnits(Aggregation.SUM, "Sales", null),
         )
     }
+
+
+    @Test
+    fun barSeriesBuildsGroupedBarsAndStackedBasesInQueryOrder() {
+        val result = barSeriesResult()
+        val grouped = ChartSpecBuilder.build(
+            "bar-grouped", 0, result,
+            ChartOptions(seriesTitle = "Region", legendVisible = true),
+            "derived",
+        )
+        assertEquals(ChartKind.BAR, grouped.kind)
+        assertEquals(listOf("North", "South"), grouped.series.map { it.key })
+        assertEquals(
+            listOf("Mar", "Feb", "Jan", "Apr"),
+            grouped.series.flatMap { it.points }.sortedBy { it.xOrder }.map { it.x }.distinct(),
+        )
+        assertEquals(true, grouped.barHasSeries)
+        assertEquals(BarStackMode.NONE, grouped.barStackMode)
+        assertTrue(grouped.legend.visible)
+        assertEquals("Region", grouped.legend.title)
+        val groupedSouth = grouped.series.first { it.key == "South" }
+        assertEquals(listOf("Feb", "Jan", "Apr"), groupedSouth.points.map { it.x })
+        assertEquals(listOf(0.0, 0.0, 0.0), groupedSouth.points.map { it.stackBase })
+        assertEquals(1, groupedSouth.points.first().seriesIndex)
+        assertEquals(22.0, grouped.series.flatMap { it.points }.filter { it.x == "Feb" }.sumOf { it.y!! }, 0.0)
+
+        val stacked = ChartSpecBuilder.build(
+            "bar-stacked", 0, result,
+            ChartOptions(barStackMode = BarStackMode.STACKED),
+            "derived",
+        )
+        assertEquals(BarStackMode.STACKED, stacked.barStackMode)
+        val stackedSouth = stacked.series.first { it.key == "South" }
+        assertEquals(listOf(20.0, 10.0, 0.0), stackedSouth.points.map { it.stackBase })
+        val stackedNorth = stacked.series.first { it.key == "North" }
+        assertEquals(listOf(0.0, 0.0, 0.0), stackedNorth.points.map { it.stackBase })
+        assertEquals(listOf(30.0, 20.0, 10.0), stackedNorth.points.map { it.y })
+        assertEquals(
+            listOf("Mar", "Feb", "Jan", "Apr"),
+            stacked.series.flatMap { it.points }.sortedBy { it.xOrder }.map { it.x }.distinct(),
+        )
+    }
+
+    @Test
+    fun stackedModeWithoutColorDoesNotFakeSeries() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(listOf<Any?>("A", 2L), listOf<Any?>("B", 3L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "bar", 0, result, ChartOptions(barStackMode = BarStackMode.STACKED), "derived",
+        )
+        assertEquals(false, spec.barHasSeries)
+        assertEquals(BarStackMode.NONE, spec.barStackMode)
+        assertEquals(1, spec.series.size)
+    }
+
+
+    @Test
+    fun stackedBarRequiresAdditiveAggregationButGroupedDoesNot() {
+        val average = barSeriesResult().copy(aggregation = Aggregation.AVG)
+        val grouped = ChartSpecBuilder.build(
+            "bar-grouped-avg", 0, average, ChartOptions(), "derived",
+        )
+        assertEquals(BarStackMode.NONE, grouped.barStackMode)
+        try {
+            ChartSpecBuilder.build(
+                "bar-stacked-avg", 0, average,
+                ChartOptions(barStackMode = BarStackMode.STACKED),
+                "derived",
+            )
+            throw AssertionError("stacked average bar was accepted")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("Sum or Count"))
+        }
+    }
+
+    private fun barSeriesResult(): WorksheetResult = WorksheetResult(
+        result = EngineResult(
+            columns = listOf(
+                EngineColumn("row", "VARCHAR"),
+                EngineColumn("series", "VARCHAR"),
+                EngineColumn("value", "BIGINT"),
+            ),
+            rows = listOf(
+                listOf<Any?>("Mar", "North", 30L),
+                listOf<Any?>("Feb", "North", 20L),
+                listOf<Any?>("Feb", "South", 2L),
+                listOf<Any?>("Jan", "North", 10L),
+                listOf<Any?>("Jan", "South", 1L),
+                listOf<Any?>("Apr", "South", 4L),
+            ),
+            truncated = false,
+        ),
+        rowField = month,
+        measureField = sales,
+        seriesField = region,
+        aggregation = Aggregation.SUM,
+        markType = MarkType.BAR,
+        sql = "test",
+    )
 
     private fun lineResult(): WorksheetResult = WorksheetResult(
         result = EngineResult(

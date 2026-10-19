@@ -593,6 +593,34 @@ class VegaRendererProbeTest {
         assertTrue("marker border width missing", bordered.svg.contains("stroke-width=\"2\""))
     }
 
+
+    @Test
+    fun groupedAndStackedColorSeriesBarsRenderDistinctGeometry() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(kind: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, kind)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("$kind render did not complete", result != null)
+                assertNull("$kind render failed: ${result!!.error}", result.error)
+                assertEquals("$kind did not draw six segments", 6, result.markCount)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("$kind export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val grouped = render("groupedbar")
+        val stacked = render("stackedbar")
+        assertTrue("grouped bar rect missing", (grouped.result.sceneMarks["rect"] ?: 0) > 0)
+        assertEquals(grouped.result.sceneMarks["rect"], stacked.result.sceneMarks["rect"])
+        assertFalse("grouped and stacked geometry are identical", grouped.svg == stacked.svg)
+    }
+
     @Test
     fun colorblindPaletteEmitsAllEightExpectedColorsInBothThemes() {
         data class Rendered(val result: RendererProbeState.Result, val svg: String)

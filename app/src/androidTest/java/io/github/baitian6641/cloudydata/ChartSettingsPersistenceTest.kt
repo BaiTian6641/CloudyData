@@ -14,6 +14,7 @@ import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.CategoryPalette
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
@@ -107,6 +108,7 @@ class ChartSettingsPersistenceTest {
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
                             categoryPalette = CategoryPalette.COLORBLIND,
+                            barStackMode = BarStackMode.STACKED,
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -168,6 +170,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(CategoryPalette.COLORBLIND, reopenedSheet.chart.categoryPalette)
+        assertEquals(BarStackMode.STACKED, reopenedSheet.chart.barStackMode)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(true, reopenedSheet.chart.markerBorder)
         assertEquals(2.0, reopenedSheet.chart.markerBorderWidth!!, 0.0)
@@ -314,6 +317,11 @@ class ChartSettingsPersistenceTest {
             CategoryPalette.CLOUDY,
             ChartOptions.fromJson(JSONObject().put("categoryPalette", "NOT_A_PALETTE"))
                 .categoryPalette,
+        )
+        assertEquals(
+            BarStackMode.NONE,
+            ChartOptions.fromJson(JSONObject().put("barStackMode", "NOT_A_MODE"))
+                .barStackMode,
         )
         assertEquals(
             CategoryPalette.COLORBLIND,

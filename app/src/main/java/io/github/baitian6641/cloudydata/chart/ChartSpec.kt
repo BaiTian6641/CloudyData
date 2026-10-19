@@ -2,6 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
@@ -30,6 +31,10 @@ data class ChartPoint(
     val defined: Boolean,
     /** Index into the underlying EngineResult rows for selection reconciliation. */
     val sourceRowIndex: Int,
+    /** Bar segment start in data coordinates; null for non-bar marks. */
+    val stackBase: Double? = null,
+    /** Position of this series within the color domain. */
+    val seriesIndex: Int = 0,
 )
 
 data class ChartSeries(
@@ -115,6 +120,8 @@ data class ChartSpec(
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
     val currencyCode: CurrencyCode = CurrencyCode.USD,
     val hiddenSeries: Set<String> = emptySet(),
+    val barStackMode: BarStackMode = BarStackMode.NONE,
+    val barHasSeries: Boolean = false,
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

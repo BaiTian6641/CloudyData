@@ -51,3 +51,12 @@ material risks before a line mark could be considered complete.
   axes and the remaining chart families are still open.
 - Renderer death, matched resize and TalkBack traversal remain pending; this ADR
   does not complete S11.C0 or S11.
+
+## Amendment — 2026-10-19
+
+Color-series bars now use the same typed query/IR path: the semantic query groups
+by category and series, and `ChartSpecBuilder` fixes each segment's stack base
+before rendering. Grouped bars are the unstacked default; stacked bars use a
+persisted `barStackMode`. The renderer lowers the supplied bases and never
+re-aggregates. Bar color legends are enabled for this shape. The native fallback
+does not draw color-series bars and states that the table remains authoritative.

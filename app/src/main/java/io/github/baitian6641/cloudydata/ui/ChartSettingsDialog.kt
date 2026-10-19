@@ -36,11 +36,13 @@ import io.github.baitian6641.cloudydata.design.CloudyTextField
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.CategoryPalette
+import io.github.baitian6641.cloudydata.model.BarStackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -90,6 +92,8 @@ fun ChartSettingsDialog(
     var currencyExpanded by remember { mutableStateOf(false) }
     var categoryPalette by remember { mutableStateOf(current.categoryPalette) }
     var categoryPaletteExpanded by remember { mutableStateOf(false) }
+    var barStackMode by remember { mutableStateOf(current.barStackMode) }
+    var barStackModeExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -823,7 +827,7 @@ fun ChartSettingsDialog(
                     checked = reverseY,
                     onCheckedChange = { reverseY = it },
                 )
-                if (sheet.markType == MarkType.LINE) {
+                if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR) {
                     ChartToggleRow(
                         title = "Legend",
                         description = "Show a legend for the Color series.",
@@ -918,6 +922,7 @@ fun ChartSettingsDialog(
                             )
                         }
                     }
+                    if (sheet.markType == MarkType.LINE) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text("Legend sample", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
@@ -953,6 +958,66 @@ fun ChartSettingsDialog(
                                 onClick = {
                                     legendMarkSample = LegendMarkSample.LINE
                                     legendMarkSampleExpanded = false
+                                },
+                            )
+                        }
+                    }
+                    }
+                }
+                if (sheet.markType == MarkType.BAR) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Bar layout",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                when {
+                                    sheet.rowFieldId == null ||
+                                        sheet.measureFieldId == null ||
+                                        sheet.seriesFieldId == null ->
+                                        "Add Rows, Values and Color to group or stack bars"
+                                    sheet.aggregation != Aggregation.SUM &&
+                                        sheet.aggregation != Aggregation.COUNT ->
+                                        "Stacking requires Sum or Count"
+                                    barStackMode == BarStackMode.STACKED ->
+                                        "Series segments stack to the category total"
+                                    else -> "Series bars sit side by side"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(
+                            onClick = { barStackModeExpanded = true },
+                            enabled = sheet.rowFieldId != null &&
+                                sheet.measureFieldId != null &&
+                                sheet.seriesFieldId != null &&
+                                (sheet.aggregation == Aggregation.SUM ||
+                                    sheet.aggregation == Aggregation.COUNT),
+                        ) {
+                            Text(
+                                if (barStackMode == BarStackMode.STACKED) "Stacked" else "Grouped",
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = barStackModeExpanded,
+                            onDismissRequest = { barStackModeExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Grouped") },
+                                onClick = {
+                                    barStackMode = BarStackMode.NONE
+                                    barStackModeExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Stacked") },
+                                onClick = {
+                                    barStackMode = BarStackMode.STACKED
+                                    barStackModeExpanded = false
                                 },
                             )
                         }
@@ -1027,13 +1092,15 @@ fun ChartSettingsDialog(
                             zeroBaseline = zeroBaseline || sheet.markType == MarkType.AREA,
                             logScale = logScale && sheet.markType == MarkType.LINE,
                             reverseY = reverseY,
-                            legendVisible = legendVisible && sheet.markType == MarkType.LINE,
+                            legendVisible = legendVisible &&
+                                (sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR),
                             legendMarkSample = if (sheet.markType == MarkType.LINE) {
                                 legendMarkSample
                             } else {
                                 LegendMarkSample.MARKER
                             },
                             categoryPalette = categoryPalette,
+                            barStackMode = barStackMode,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
