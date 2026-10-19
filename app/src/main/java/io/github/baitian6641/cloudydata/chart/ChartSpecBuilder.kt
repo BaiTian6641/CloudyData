@@ -125,6 +125,7 @@ object ChartSpecBuilder {
             rowCount = rows.size,
             truncated = result.result.truncated,
             units = units,
+            padding = options.chartPadding,
         )
     }
 
@@ -251,6 +252,7 @@ object ChartSpecBuilder {
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
             lineWidth = options.lineWidth,
             units = units,
+            padding = options.chartPadding,
         )
     }
 
@@ -285,6 +287,12 @@ object ChartSpecBuilder {
         ) {
             throw ChartSpecException(
                 "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
+        }
+        if (options.chartPadding !in ChartOptions.MIN_CHART_PADDING..ChartOptions.MAX_CHART_PADDING) {
+            throw ChartSpecException(
+                "Chart padding must be between ${ChartOptions.MIN_CHART_PADDING} and " +
+                    "${ChartOptions.MAX_CHART_PADDING}.",
             )
         }
         if (options.labelFontSize != null &&

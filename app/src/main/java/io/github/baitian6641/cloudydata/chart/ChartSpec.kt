@@ -82,6 +82,7 @@ data class ChartSpec(
     val missingPolicy: MissingPolicy = MissingPolicy.CONNECT_OBSERVED,
     val lineWidth: Double? = null,
     val units: String? = null,
+    val padding: Int = 8,
     val version: Int = SPEC_VERSION,
 ) {
     val pointCount: Int get() = series.sumOf { it.points.size }

@@ -134,7 +134,7 @@ object VegaSpecBuilder {
             .put("version", spec.version)
             .put("width", widthDp)
             .put("height", heightDp)
-            .put("padding", 8)
+            .put("padding", spec.padding)
             .put(
                 "data",
                 JSONArray()

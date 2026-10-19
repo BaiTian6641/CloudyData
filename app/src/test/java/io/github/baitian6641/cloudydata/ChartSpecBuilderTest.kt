@@ -74,6 +74,28 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun chartPaddingDefaultsAndIsValidated() {
+        val default = ChartSpecBuilder.build("padding", 0, lineResult(), ChartOptions(), "derived")
+        assertEquals(8, default.padding)
+        val custom = ChartSpecBuilder.build(
+            "padding", 0, lineResult(),
+            ChartOptions(chartPadding = 0),
+            "derived",
+        )
+        assertEquals(0, custom.padding)
+        try {
+            ChartSpecBuilder.build(
+                "padding", 0, lineResult(),
+                ChartOptions(chartPadding = 33),
+                "derived",
+            )
+            throw AssertionError("expected chart-padding rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("0 and 32"))
+        }
+    }
+
+    @Test
     fun unitsAndAxisTitleAnchorAreCarried() {
         val spec = ChartSpecBuilder.build(
             "units", 0, lineResult(),

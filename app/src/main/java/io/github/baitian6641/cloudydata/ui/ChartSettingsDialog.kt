@@ -57,6 +57,7 @@ fun ChartSettingsDialog(
     var units by remember { mutableStateOf(current.units.orEmpty()) }
     var axisTitleAnchor by remember { mutableStateOf(current.axisTitleAnchor) }
     var axisAnchorExpanded by remember { mutableStateOf(false) }
+    var chartPadding by remember { mutableStateOf(current.chartPadding.toString()) }
     var xAxisTitle by remember { mutableStateOf(current.xAxisTitle.orEmpty()) }
     var yAxisTitle by remember { mutableStateOf(current.yAxisTitle.orEmpty()) }
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
@@ -84,6 +85,7 @@ fun ChartSettingsDialog(
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    val parsedChartPadding = chartPadding.trim().toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
         yMax.trim().isNotEmpty() && (parsedMax == null || !parsedMax.isFinite()) -> "Y maximum must be a finite number."
@@ -100,6 +102,10 @@ fun ChartSettingsDialog(
         lineWidth.trim().isNotEmpty() && (parsedLineWidth == null || !parsedLineWidth.isFinite() ||
             parsedLineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH) ->
             "Line width must be from ${ChartOptions.MIN_LINE_WIDTH} to ${ChartOptions.MAX_LINE_WIDTH}."
+        parsedChartPadding == null ||
+            parsedChartPadding !in ChartOptions.MIN_CHART_PADDING..ChartOptions.MAX_CHART_PADDING ->
+            "Chart padding must be a whole number from ${ChartOptions.MIN_CHART_PADDING} to " +
+                "${ChartOptions.MAX_CHART_PADDING}."
         else -> null
     }
 
@@ -199,6 +205,14 @@ fun ChartSettingsDialog(
                         )
                     }
                 }
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = chartPadding,
+                    onValueChange = { chartPadding = it.filter(Char::isDigit).take(2) },
+                    label = "Chart padding",
+                    supportingText = "${ChartOptions.MIN_CHART_PADDING}–${ChartOptions.MAX_CHART_PADDING} dp; default ${ChartOptions.DEFAULT_CHART_PADDING}.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
                     value = xAxisTitle,
@@ -464,6 +478,7 @@ fun ChartSettingsDialog(
                             caption = clean(caption)?.take(240),
                             units = clean(units)?.take(16),
                             axisTitleAnchor = axisTitleAnchor,
+                            chartPadding = parsedChartPadding ?: ChartOptions.DEFAULT_CHART_PADDING,
                             xAxisTitle = clean(xAxisTitle),
                             yAxisTitle = clean(yAxisTitle),
                             seriesTitle = clean(seriesTitle),

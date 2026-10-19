@@ -52,6 +52,7 @@ data class ChartOptions(
     val labelPosition: LabelPosition = LabelPosition.TOP,
     val units: String? = null,
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
+    val chartPadding: Int = DEFAULT_CHART_PADDING,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -78,6 +79,7 @@ data class ChartOptions(
         .put("labelPosition", labelPosition.name)
         .put("units", units ?: JSONObject.NULL)
         .put("axisTitleAnchor", axisTitleAnchor.name)
+        .put("chartPadding", chartPadding)
 
     companion object {
         const val VERSION = 1
@@ -87,6 +89,9 @@ data class ChartOptions(
         const val MAX_LABEL_FONT_SIZE = 16
         const val MIN_LINE_WIDTH = 1.0
         const val MAX_LINE_WIDTH = 8.0
+        const val MIN_CHART_PADDING = 0
+        const val MAX_CHART_PADDING = 32
+        const val DEFAULT_CHART_PADDING = 8
 
         fun fromJson(json: JSONObject): ChartOptions = ChartOptions(
             title = if (json.isNull("title")) null else json.optString("title").takeIf { it.isNotEmpty() },
@@ -138,6 +143,9 @@ data class ChartOptions(
             axisTitleAnchor = runCatching {
                 AxisTitleAnchor.valueOf(json.optString("axisTitleAnchor", AxisTitleAnchor.AUTO.name))
             }.getOrDefault(AxisTitleAnchor.AUTO),
+            chartPadding = json.optInt("chartPadding", DEFAULT_CHART_PADDING)
+                .takeIf { it in MIN_CHART_PADDING..MAX_CHART_PADDING }
+                ?: DEFAULT_CHART_PADDING,
         )
     }
 }

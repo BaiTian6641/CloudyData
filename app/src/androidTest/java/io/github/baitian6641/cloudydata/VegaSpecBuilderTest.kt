@@ -72,11 +72,13 @@ class VegaSpecBuilderTest {
                 lineWidth = 3.5,
                 units = "USD",
                 axisTitleAnchor = AxisTitleAnchor.END,
+                chartPadding = 12,
             ),
             "derived",
         )
         val json = VegaSpecBuilder.build(spec, dark = false, palette = listOf(0x006A6A, 0x3559C7), widthDp = 600f, heightDp = 300f)
         assertEquals(1, json.getInt("version"))
+        assertEquals(12, json.getInt("padding"))
         assertEquals("end", json.getJSONArray("axes").getJSONObject(1).getString("titleAnchor"))
         assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
         val group = json.getJSONArray("marks").getJSONObject(0)

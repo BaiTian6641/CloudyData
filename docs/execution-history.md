@@ -486,3 +486,11 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   already contains the units text. Design-contract gap wording was refreshed.
 - JVM 46/46; lint 0 errors/5 warnings; debug/test APKs compile. Instrumentation,
   export rendering and device placement/clipping checks were not run.
+
+## 2026-10-19 — CUST14 chart padding
+
+- Added persisted 0–32 dp chart padding (default 8), validated through chart
+  options/spec and consumed by the Vega root layout. Export SVG/PNG/PDF inherit
+  the same layout while chart width/height and data semantics remain unchanged.
+- JVM 47/47; lint 0 errors/5 warnings; debug/test APKs compile. Vega/persistence
+  instrumentation and device/export clipping/dimension checks were not run.
