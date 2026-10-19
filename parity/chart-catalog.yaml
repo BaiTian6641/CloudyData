@@ -29,7 +29,7 @@ families:
     family: Area
     variants: [single, stacked, 100_percent]
     status: partial
-    note: Single series with zero-baseline area, outline, point symbols, value labels, exact table selection and persisted mark choice. Stacked/100%/multi-series area, color series and visual export are pending.
+    note: Area marks accept a Color series and persist overlay, stacked or 100% layout. Stacked/percent bands use builder-owned bases and exact values remain in the table; observed gaps, outline, point symbols, labels, legend, selection and mark choice persist. Negative stacked areas, 100% edge diagnostics on device and visual export remain pending.
   - id: CH04
     family: Combo / dual axis
     variants: [bar_line, dual_measure, synchronized]
@@ -141,7 +141,7 @@ customization:
     area: Marks and lines
     controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]
     status: partial
-    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Persisted marker shape/size/visibility/opacity/border, linear/step/monotone interpolation, solid/dashed/dotted strokes and line/area paint opacity exist. Color-series bar grouped/stacked/100% layout and vertical/horizontal orientation are implemented for bars; 100% stacking on other marks and device visual qualification remain pending.
+    note: Linear line, observed-point markers up to 200 points with persisted visibility and 2–12 px size, and a persisted 1–8 line width for Line/Area (Area uses it for the outline) exist. Persisted marker shape/size/visibility/opacity/border, linear/step/monotone interpolation, solid/dashed/dotted strokes and line/area paint opacity exist. Color-series bar grouped/stacked/100% layout, vertical/horizontal orientation and area overlay/stacked/100% layout are implemented; device visual qualification remains pending.
   - id: CUST09
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]

@@ -864,3 +864,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   warnings. One full renderer run had a transient process crash; immediate
   reruns passed. Googlebook untouched; visual/long-label and native fallback
   remain open.
+
+## 2026-10-19 — CUST08 stacked/100% area and shared stack mode
+
+- Renamed the internal stack enum to `StackMode`, added persisted
+  `areaStackMode`, allowed Color on Area, and computed cumulative/percent bases
+  before rendering. Area bands use explicit y/y2, outlines/symbols/labels use
+  the stack endpoint, the automatic domain uses displayY, and the legend uses
+  fill swatches. Hidden-series toggles now cover Area. Negative/zero-total
+  stacked areas and non-additive stacking are diagnosed.
+- Validation: JVM 72/72; VegaSpecBuilderTest 20/20; VegaRendererProbeTest
+  42/42; ChartSettingsPersistenceTest 12/12; BarChartQueryTest 1/1; lint 0
+  errors/5 warnings.

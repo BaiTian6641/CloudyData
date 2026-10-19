@@ -23,7 +23,7 @@ import io.github.baitian6641.cloudydata.chart.GridlineSpec
 import io.github.baitian6641.cloudydata.chart.LabelSpec
 import io.github.baitian6641.cloudydata.chart.LegendSpec
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.io.File
@@ -619,6 +619,8 @@ class RendererProbeActivity : Activity() {
         "groupedbar", "stackedbar" -> barSeriesSpec(probeKind == "stackedbar")
         "percentbar" -> percentBarSpec()
         "horizontalbar" -> horizontalBarSpec()
+        "stackedarea" -> areaSeriesSpec(io.github.baitian6641.cloudydata.model.StackMode.STACKED)
+        "percentarea" -> areaSeriesSpec(io.github.baitian6641.cloudydata.model.StackMode.PERCENT_STACKED)
         "palette" -> ChartSpec(
             chartId = "probe-palette",
             revision = 1,
@@ -831,6 +833,55 @@ class RendererProbeActivity : Activity() {
         )
     }
 
+    private fun areaSeriesSpec(mode: io.github.baitian6641.cloudydata.model.StackMode): ChartSpec {
+        val percent = mode == io.github.baitian6641.cloudydata.model.StackMode.PERCENT_STACKED
+        val north = if (percent) listOf(0.6, 0.5, 0.4) else listOf(10.0, 20.0, 30.0)
+        val south = if (percent) listOf(0.4, 0.5, 0.6) else listOf(5.0, 7.0, 2.0)
+        fun points(
+            values: List<Double>,
+            bases: List<Double>,
+            series: String,
+            offset: Int,
+        ): List<ChartPoint> = values.mapIndexed { index, value ->
+            ChartPoint(
+                x = "M${index + 1}",
+                xOrder = index,
+                series = series,
+                y = value,
+                exactY = value.toString(),
+                defined = true,
+                sourceRowIndex = offset + index,
+                stackBase = bases[index],
+                seriesIndex = if (series == "North") 0 else 1,
+            )
+        }
+        return ChartSpec(
+            chartId = if (percent) "probe-percent-area" else "probe-stacked-area",
+            revision = 1,
+            kind = ChartKind.AREA,
+            title = if (percent) "100% stacked area" else "Stacked area",
+            xAxis = AxisSpec("Month"),
+            yAxis = AxisSpec("Value", min = 0.0, max = if (percent) 1.0 else null),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(true, LegendPosition.BOTTOM, "Series"),
+            labels = LabelSpec(percent),
+            sourceNote = "Source: probe fixture",
+            series = listOf(
+                ChartSeries("North", points(north, List(3) { 0.0 }, "North", 0)),
+                ChartSeries("South", points(south, north, "South", 3)),
+            ),
+            rowCount = 6,
+            truncated = false,
+            valueFormat = if (percent) {
+                io.github.baitian6641.cloudydata.model.ValueDisplayFormat.PERCENT
+            } else {
+                io.github.baitian6641.cloudydata.model.ValueDisplayFormat.NUMBER
+            },
+            valueDecimals = if (percent) 1 else null,
+            areaStackMode = mode,
+        )
+    }
+
     private fun horizontalBarSpec(): ChartSpec = ChartSpec(
         chartId = "probe-horizontal-bar",
         revision = 1,
@@ -858,7 +909,7 @@ class RendererProbeActivity : Activity() {
         ),
         rowCount = 2,
         truncated = false,
-        barStackMode = BarStackMode.STACKED,
+        barStackMode = StackMode.STACKED,
         barHasSeries = true,
         barOrientation = BarOrientation.HORIZONTAL,
     )
@@ -892,7 +943,7 @@ class RendererProbeActivity : Activity() {
         truncated = false,
         valueDecimals = 1,
         valueFormat = io.github.baitian6641.cloudydata.model.ValueDisplayFormat.PERCENT,
-        barStackMode = BarStackMode.PERCENT_STACKED,
+        barStackMode = StackMode.PERCENT_STACKED,
         barHasSeries = true,
     )
 
@@ -937,7 +988,7 @@ class RendererProbeActivity : Activity() {
             labels = LabelSpec(false),
             sourceNote = "Source: probe fixture",
             series = listOf(north, south),
-            barStackMode = if (stacked) BarStackMode.STACKED else BarStackMode.NONE,
+            barStackMode = if (stacked) StackMode.STACKED else StackMode.NONE,
             barHasSeries = true,
             rowCount = 6,
             truncated = false,
@@ -949,6 +1000,8 @@ class RendererProbeActivity : Activity() {
         "stackedbar" -> "Accessible summary: stacked North and South across Jan, Feb, Mar."
         "percentbar" -> "Accessible summary: Jan is 60% North and 40% South."
         "horizontalbar" -> "Accessible summary: Jan has North 60 and South 40."
+        "stackedarea" -> "Accessible summary: stacked North and South across three months."
+        "percentarea" -> "Accessible summary: 100% stacked North and South across three months."
         "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."

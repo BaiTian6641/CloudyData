@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `e49db87`; the horizontal-bar change is in the next
-local commit. `main` tracks `origin/main` at the pushed 100%-geometry baseline.
+**Source:** commits through `6f91aaf`; the area-stacking change is in the next
+local commit. `main` tracks `origin/main` at the pushed horizontal-bar baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -58,7 +58,7 @@ unless stated otherwise.
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
   decimal-format, chart-border, crowded-label, palette and bar-stacking cases.
-  Emulator renderer probe: **39/39**; Vega spec builder: **19/19**;
+  Emulator renderer probe: **42/42**; Vega spec builder: **20/20**;
   chart-settings persistence: **12/12**; color-series bar query: **1/1**.
   Earlier keep/exclude, table-selection and View Data runs remain valid for the
   unchanged paths. The lasso/Y-tick/device visual assertions still lack a
@@ -266,6 +266,10 @@ unless stated otherwise.
   0–1 percent axis and rejects negative/zero-total categories. Query, spec,
   renderer and persistence checks pass; the native fallback refuses non-vertical
   or color-series shapes and visual/negative checks were not run.
+- **Area series and stacking.** Area accepts Color with overlay, stacked or 100%
+  layout, builder-owned bases, display-Y domain, fill legend, exact values and
+  hidden-series support. Negative/zero-total stacked cases are diagnosed;
+  emulator spec/render/persistence checks pass; visual/gap checks were not run.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -362,24 +366,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST08 stacked and 100% area with a Color series.**
+**CUST09 combo bar+line and dual axis.**
 
-- Requirements/stage: CUST08, CH02/CH03, F34, S06/S11. Prerequisites: line/area
-  stack geometry, color-series query, palette/legend, exact values and percent
-  normalization from bars.
-- Files: `WorksheetResult` series shape for Area, `ChartSpecBuilder` area
-  builder, Vega area/line lowering, settings, selection and tests.
-- Action: allow Color on Area and add persisted stacked/100% modes. Lower
-  cumulative area bands with explicit bases and a series legend while keeping
-  observed gaps and exact source-row identity.
-- Acceptance: single-area default unchanged; stacked/100% totals and gaps are
-  coherent, labels/tooltips/selection identify the exact segment, and no
-  render-time aggregation occurs. Emulator query/spec/render checks required;
-  visual review unverified.
+- Requirements/stage: CUST09, CH04, F34/F36, S06/S11. Prerequisites: typed
+  measures/axes, bar/line specs, legends, selection and persistence.
+- Files: workbook schema for a second measure/layer, semantic query shape,
+  `ChartSpec` layers/axes, Vega lowering, settings, tests.
+- Action: add one persisted bar+line combo layer with a second measure, separate
+  value axes and synchronized/independent domain choice; keep the existing
+  single-mark path unchanged.
+- Acceptance: two exact measures retain independent fields/aggregation and
+  source-row inspection; axes/scales do not silently share domains; default
+  single-mark specs, persistence and selection remain valid. Emulator
+  query/spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, palette, interpolation, dash, opacity, legend-sample, bar/table and
-  horizontal visuals wait for an authorized visual session.
+  marker, palette, interpolation, dash, opacity, legend-sample, bar/area/table
+  and horizontal visuals wait for an authorized visual session.
 
 ## Protected context
 

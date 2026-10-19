@@ -9,7 +9,7 @@ import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
@@ -1270,7 +1270,7 @@ class VegaSpecBuilderTest {
 
         val stackedSpec = ChartSpecBuilder.build(
             "bar-stacked", 0, result,
-            ChartOptions(barStackMode = BarStackMode.STACKED),
+            ChartOptions(barStackMode = StackMode.STACKED),
             "derived",
         )
         val stacked = VegaSpecBuilder.build(
@@ -1297,7 +1297,7 @@ class VegaSpecBuilderTest {
 
         val percentSpec = ChartSpecBuilder.build(
             "bar-percent", 0, result,
-            ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+            ChartOptions(barStackMode = StackMode.PERCENT_STACKED),
             "derived",
         )
         val percent = VegaSpecBuilder.build(
@@ -1325,7 +1325,7 @@ class VegaSpecBuilderTest {
             "bar-horizontal", 0, result,
             ChartOptions(
                 barOrientation = BarOrientation.HORIZONTAL,
-                barStackMode = BarStackMode.STACKED,
+                barStackMode = StackMode.STACKED,
                 xAxisTitle = "Category",
                 yAxisTitle = "Value",
                 showValueLabels = true,
@@ -1373,6 +1373,76 @@ class VegaSpecBuilderTest {
         )
     }
 
+
+
+    @Test
+    fun stackedAreaUsesBasesAndPercentAxis() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("Jan", "North", 10L),
+                    listOf<Any?>("Jan", "South", 1L),
+                    listOf<Any?>("Feb", "North", 20L),
+                    listOf<Any?>("Feb", "South", 2L),
+                    listOf<Any?>("Mar", "North", 30L),
+                    listOf<Any?>("Apr", "South", 4L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val stackedSpec = ChartSpecBuilder.build(
+            "area-stacked", 0, result,
+            ChartOptions(
+                areaStackMode = StackMode.STACKED,
+                showValueLabels = true,
+                legendVisible = true,
+            ),
+            "derived",
+        )
+        assertEquals(StackMode.STACKED, stackedSpec.areaStackMode)
+        assertTrue(stackedSpec.legend.visible)
+        val stacked = VegaSpecBuilder.build(
+            stackedSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals(
+            "displayY",
+            stacked.getJSONArray("scales").getJSONObject(1)
+                .getJSONObject("domain").getString("field"),
+        )
+        assertEquals("color", stacked.getJSONArray("legends").getJSONObject(0).getString("fill"))
+        assertEquals("square", stacked.getJSONArray("legends").getJSONObject(0).getString("symbolType"))
+        val areaMark = stacked.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(areaMark.getJSONObject("y").getString("signal").contains("datum.stackBase + datum.y"))
+        assertTrue(areaMark.getJSONObject("y2").getString("signal").contains("datum.stackBase"))
+        val areaLabel = stacked.getJSONArray("marks").getJSONObject(3)
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("displayY", areaLabel.getJSONObject("y").getString("field"))
+
+        val percentSpec = ChartSpecBuilder.build(
+            "area-percent", 0, result,
+            ChartOptions(areaStackMode = StackMode.PERCENT_STACKED),
+            "derived",
+        )
+        val percent = VegaSpecBuilder.build(
+            percentSpec, false, listOf(0x006A6A, 0x3559C7), 600f, 320f,
+        )
+        assertEquals("PERCENT_STACKED", percent.getJSONObject("usermeta").getString("areaStackMode"))
+        assertEquals(",.1%", percent.getJSONArray("axes").getJSONObject(1).getString("format"))
+        assertEquals(1.0, percent.getJSONArray("scales").getJSONObject(1)
+            .getJSONArray("domain").getDouble(1), 0.0)
+    }
 
 
 }

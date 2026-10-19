@@ -43,7 +43,7 @@ import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.CategoryPalette
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -97,6 +97,8 @@ fun ChartSettingsDialog(
     var barStackModeExpanded by remember { mutableStateOf(false) }
     var barOrientation by remember { mutableStateOf(current.barOrientation) }
     var barOrientationExpanded by remember { mutableStateOf(false) }
+    var areaStackMode by remember { mutableStateOf(current.areaStackMode) }
+    var areaStackExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -836,7 +838,10 @@ fun ChartSettingsDialog(
                     checked = reverseY,
                     onCheckedChange = { reverseY = it },
                 )
-                if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR) {
+                if (sheet.markType == MarkType.LINE ||
+                    sheet.markType == MarkType.BAR ||
+                    sheet.markType == MarkType.AREA
+                ) {
                     ChartToggleRow(
                         title = "Legend",
                         description = "Show a legend for the Color series.",
@@ -973,6 +978,78 @@ fun ChartSettingsDialog(
                     }
                     }
                 }
+                if (sheet.markType == MarkType.AREA) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Area layout",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                when {
+                                    sheet.rowFieldId == null ||
+                                        sheet.measureFieldId == null ||
+                                        sheet.seriesFieldId == null ->
+                                        "Add Rows, Values and Color to stack areas"
+                                    sheet.aggregation != Aggregation.SUM &&
+                                        sheet.aggregation != Aggregation.COUNT ->
+                                        "Stacking requires Sum or Count"
+                                    areaStackMode == StackMode.STACKED ->
+                                        "Series fill to the cumulative total"
+                                    areaStackMode == StackMode.PERCENT_STACKED ->
+                                        "Series fill to 100% per category"
+                                    else -> "Series areas overlay"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(
+                            onClick = { areaStackExpanded = true },
+                            enabled = sheet.rowFieldId != null &&
+                                sheet.measureFieldId != null &&
+                                sheet.seriesFieldId != null &&
+                                (sheet.aggregation == Aggregation.SUM ||
+                                    sheet.aggregation == Aggregation.COUNT),
+                        ) {
+                            Text(
+                                when (areaStackMode) {
+                                    StackMode.STACKED -> "Stacked"
+                                    StackMode.PERCENT_STACKED -> "100%"
+                                    else -> "Overlay"
+                                },
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = areaStackExpanded,
+                            onDismissRequest = { areaStackExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Overlay") },
+                                onClick = {
+                                    areaStackMode = StackMode.NONE
+                                    areaStackExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Stacked") },
+                                onClick = {
+                                    areaStackMode = StackMode.STACKED
+                                    areaStackExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("100% stacked") },
+                                onClick = {
+                                    areaStackMode = StackMode.PERCENT_STACKED
+                                    areaStackExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
                 if (sheet.markType == MarkType.BAR) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
@@ -1033,9 +1110,9 @@ fun ChartSettingsDialog(
                                     sheet.aggregation != Aggregation.SUM &&
                                         sheet.aggregation != Aggregation.COUNT ->
                                         "Stacking requires Sum or Count"
-                                    barStackMode == BarStackMode.STACKED ->
+                                    barStackMode == StackMode.STACKED ->
                                         "Series segments stack to the category total"
-                                    barStackMode == BarStackMode.PERCENT_STACKED ->
+                                    barStackMode == StackMode.PERCENT_STACKED ->
                                         "Series segments stack to 100% per category"
                                     else -> "Series bars sit side by side"
                                 },
@@ -1053,8 +1130,8 @@ fun ChartSettingsDialog(
                         ) {
                             Text(
                                 when (barStackMode) {
-                                    BarStackMode.STACKED -> "Stacked"
-                                    BarStackMode.PERCENT_STACKED -> "100%"
+                                    StackMode.STACKED -> "Stacked"
+                                    StackMode.PERCENT_STACKED -> "100%"
                                     else -> "Grouped"
                                 },
                                 color = colors.primary,
@@ -1067,21 +1144,21 @@ fun ChartSettingsDialog(
                             DropdownMenuItem(
                                 text = { Text("Grouped") },
                                 onClick = {
-                                    barStackMode = BarStackMode.NONE
+                                    barStackMode = StackMode.NONE
                                     barStackModeExpanded = false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text("Stacked") },
                                 onClick = {
-                                    barStackMode = BarStackMode.STACKED
+                                    barStackMode = StackMode.STACKED
                                     barStackModeExpanded = false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text("100% stacked") },
                                 onClick = {
-                                    barStackMode = BarStackMode.PERCENT_STACKED
+                                    barStackMode = StackMode.PERCENT_STACKED
                                     barStackModeExpanded = false
                                 },
                             )
@@ -1158,7 +1235,9 @@ fun ChartSettingsDialog(
                             logScale = logScale && sheet.markType == MarkType.LINE,
                             reverseY = reverseY,
                             legendVisible = legendVisible &&
-                                (sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR),
+                                (sheet.markType == MarkType.LINE ||
+                                    sheet.markType == MarkType.BAR ||
+                                    sheet.markType == MarkType.AREA),
                             legendMarkSample = if (sheet.markType == MarkType.LINE) {
                                 legendMarkSample
                             } else {
@@ -1167,6 +1246,7 @@ fun ChartSettingsDialog(
                             categoryPalette = categoryPalette,
                             barStackMode = barStackMode,
                             barOrientation = barOrientation,
+                            areaStackMode = areaStackMode,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

@@ -113,8 +113,8 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- The Vega renderer covers single, grouped and stacked bars, line and
-  single-series area marks; the native offline fallback draws only single bars
+- The Vega renderer covers single, grouped and stacked bars, line, and overlay,
+  stacked or 100% area marks; the native offline fallback draws only single bars
   and refuses color-series bar shapes rather than showing a wrong chart. Emulator renderer death,
   generation retirement, automatic probe recreation/replay, recovery
   exhaustion, stale completion/failure rejection and exact surface/view sizes

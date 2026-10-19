@@ -15,7 +15,7 @@ import io.github.baitian6641.cloudydata.engine.UnderlyingRowsResult
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FilterMode
@@ -251,7 +251,10 @@ class WorkbookViewModel(
                     sheet.chart
                 } else {
                     // A stacked total is only meaningful for additive measures.
-                    sheet.chart.copy(barStackMode = BarStackMode.NONE)
+                    sheet.chart.copy(
+                        barStackMode = StackMode.NONE,
+                        areaStackMode = StackMode.NONE,
+                    )
                 },
             )
         }
@@ -259,10 +262,10 @@ class WorkbookViewModel(
 
     fun setMarkType(markType: MarkType) {
         updateActiveSheet { sheet ->
-            if (markType == MarkType.LINE || markType == MarkType.BAR) {
+            if (markType == MarkType.LINE || markType == MarkType.BAR || markType == MarkType.AREA) {
                 sheet.copy(
                     markType = markType,
-                    chart = if (markType == MarkType.BAR) {
+                    chart = if (markType == MarkType.BAR || markType == MarkType.AREA) {
                         sheet.chart.copy(logScale = false)
                     } else {
                         sheet.chart

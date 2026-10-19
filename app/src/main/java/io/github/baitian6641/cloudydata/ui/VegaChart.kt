@@ -59,7 +59,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.chart.categoryPaletteColors
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.SelectionMode
@@ -329,7 +329,9 @@ fun VegaChartCard(
                     }
                 }
             }
-            if (spec != null && spec.kind == ChartKind.LINE && spec.series.size > 1 &&
+            if (spec != null &&
+                (spec.kind == ChartKind.LINE || spec.kind == ChartKind.AREA) &&
+                spec.series.size > 1 &&
                 (spec.legend.visible || hiddenSeries.isNotEmpty())
             ) {
                 Spacer(Modifier.width(density.spaceSmall))
@@ -771,7 +773,10 @@ fun VegaChartCard(
 }
 
 private fun summaryValue(spec: ChartSpec, value: Double?): String =
-    if (spec.barStackMode == BarStackMode.PERCENT_STACKED && value != null && value.isFinite()) {
+    if (((spec.kind == ChartKind.BAR && spec.barStackMode == StackMode.PERCENT_STACKED) ||
+            (spec.kind == ChartKind.AREA && spec.areaStackMode == StackMode.PERCENT_STACKED)) &&
+        value != null && value.isFinite()
+    ) {
         String.format(java.util.Locale.US, "%.${spec.valueDecimals ?: 1}f%%", value * 100.0)
     } else {
         displayValue(value)

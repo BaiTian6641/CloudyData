@@ -314,7 +314,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Text/table, vertical bar, color-series vertical/horizontal grouped/stacked/100% bar and multi-series line exist. Line includes typed multi-series grouping, axis titles/range/zero/log/reverse, gridlines, value labels, legend position and observed-gap handling; bars share those controls with a persisted grouped/stacked layout. Other families remain in parity/chart-catalog.yaml."
+    note: "Text/table, vertical bar, color-series vertical/horizontal grouped/stacked/100% bars, stacked/100% areas and multi-series line exist. Line includes typed multi-series grouping, axis titles/range/zero/log/reverse, gridlines, value labels, legend position and observed-gap handling; bars share those controls with a persisted grouped/stacked layout. Other families remain in parity/chart-catalog.yaml."
   - id: F35
     family: "Crosstabs and totals"
     outcome: "Pivoted row/column headers, subtotals and grand totals computed at the correct grain; copy/export respects selection and exact values."

@@ -3,7 +3,7 @@ package io.github.baitian6641.cloudydata.chart
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
@@ -121,9 +121,10 @@ data class ChartSpec(
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
     val currencyCode: CurrencyCode = CurrencyCode.USD,
     val hiddenSeries: Set<String> = emptySet(),
-    val barStackMode: BarStackMode = BarStackMode.NONE,
+    val barStackMode: StackMode = StackMode.NONE,
     val barHasSeries: Boolean = false,
     val barOrientation: BarOrientation = BarOrientation.VERTICAL,
+    val areaStackMode: StackMode = StackMode.NONE,
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

@@ -8,7 +8,7 @@ import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
@@ -736,12 +736,33 @@ class ChartSpecBuilderTest {
         assertTrue(spec.yAxis.zero)
     }
 
-    @Test(expected = ChartSpecException::class)
-    fun areaColorSeriesIsRejected() {
-        ChartSpecBuilder.build(
-            "area", 0, lineResult().copy(markType = MarkType.AREA),
-            ChartOptions(), "derived",
+    @Test
+    fun areaColorSeriesStacksAndNormalizes() {
+        val result = lineResult().copy(markType = MarkType.AREA)
+        val stacked = ChartSpecBuilder.build(
+            "area-stacked", 0, result,
+            ChartOptions(areaStackMode = StackMode.STACKED),
+            "derived",
         )
+        assertEquals(ChartKind.AREA, stacked.kind)
+        assertEquals(StackMode.STACKED, stacked.areaStackMode)
+        assertTrue(stacked.legend.visible)
+        val south = stacked.series.first { it.key == "South" }
+        assertEquals(listOf(10.0, 20.0, 0.0), south.points.map { it.stackBase })
+        assertEquals(listOf(1.0, 2.0, 4.0), south.points.map { it.y })
+
+        val percent = ChartSpecBuilder.build(
+            "area-percent", 0, result,
+            ChartOptions(areaStackMode = StackMode.PERCENT_STACKED),
+            "derived",
+        )
+        assertEquals(StackMode.PERCENT_STACKED, percent.areaStackMode)
+        assertEquals(ValueDisplayFormat.PERCENT, percent.valueFormat)
+        assertEquals(0.0, percent.yAxis.min!!, 0.0)
+        assertEquals(1.0, percent.yAxis.max!!, 0.0)
+        percent.series.flatMap { it.points }.groupBy { it.x }.forEach { (x, points) ->
+            assertEquals("$x does not total 100%", 1.0, points.sumOf { it.y ?: 0.0 }, 0.000001)
+        }
     }
 
     @Test(expected = ChartSpecException::class)
@@ -1056,7 +1077,7 @@ class ChartSpecBuilderTest {
             grouped.series.flatMap { it.points }.sortedBy { it.xOrder }.map { it.x }.distinct(),
         )
         assertEquals(true, grouped.barHasSeries)
-        assertEquals(BarStackMode.NONE, grouped.barStackMode)
+        assertEquals(StackMode.NONE, grouped.barStackMode)
         assertTrue(grouped.legend.visible)
         assertEquals("Region", grouped.legend.title)
         val groupedSouth = grouped.series.first { it.key == "South" }
@@ -1067,10 +1088,10 @@ class ChartSpecBuilderTest {
 
         val stacked = ChartSpecBuilder.build(
             "bar-stacked", 0, result,
-            ChartOptions(barStackMode = BarStackMode.STACKED),
+            ChartOptions(barStackMode = StackMode.STACKED),
             "derived",
         )
-        assertEquals(BarStackMode.STACKED, stacked.barStackMode)
+        assertEquals(StackMode.STACKED, stacked.barStackMode)
         val stackedSouth = stacked.series.first { it.key == "South" }
         assertEquals(listOf(20.0, 10.0, 0.0), stackedSouth.points.map { it.stackBase })
         val stackedNorth = stacked.series.first { it.key == "North" }
@@ -1098,10 +1119,10 @@ class ChartSpecBuilderTest {
             sql = "test",
         )
         val spec = ChartSpecBuilder.build(
-            "bar", 0, result, ChartOptions(barStackMode = BarStackMode.STACKED), "derived",
+            "bar", 0, result, ChartOptions(barStackMode = StackMode.STACKED), "derived",
         )
         assertEquals(false, spec.barHasSeries)
-        assertEquals(BarStackMode.NONE, spec.barStackMode)
+        assertEquals(StackMode.NONE, spec.barStackMode)
         assertEquals(1, spec.series.size)
     }
 
@@ -1112,11 +1133,11 @@ class ChartSpecBuilderTest {
         val grouped = ChartSpecBuilder.build(
             "bar-grouped-avg", 0, average, ChartOptions(), "derived",
         )
-        assertEquals(BarStackMode.NONE, grouped.barStackMode)
+        assertEquals(StackMode.NONE, grouped.barStackMode)
         try {
             ChartSpecBuilder.build(
                 "bar-stacked-avg", 0, average,
-                ChartOptions(barStackMode = BarStackMode.STACKED),
+                ChartOptions(barStackMode = StackMode.STACKED),
                 "derived",
             )
             throw AssertionError("stacked average bar was accepted")
@@ -1131,10 +1152,10 @@ class ChartSpecBuilderTest {
         val result = barSeriesResult()
         val spec = ChartSpecBuilder.build(
             "bar-percent", 0, result,
-            ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+            ChartOptions(barStackMode = StackMode.PERCENT_STACKED),
             "derived",
         )
-        assertEquals(BarStackMode.PERCENT_STACKED, spec.barStackMode)
+        assertEquals(StackMode.PERCENT_STACKED, spec.barStackMode)
         assertEquals(ValueDisplayFormat.PERCENT, spec.valueFormat)
         assertEquals(0.0, spec.yAxis.min!!, 0.0)
         assertEquals(1.0, spec.yAxis.max!!, 0.0)
@@ -1166,7 +1187,7 @@ class ChartSpecBuilderTest {
         try {
             ChartSpecBuilder.build(
                 "bar-percent-negative", 0, negative,
-                ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+                ChartOptions(barStackMode = StackMode.PERCENT_STACKED),
                 "derived",
             )
             throw AssertionError("negative 100% stack was accepted")
@@ -1185,7 +1206,7 @@ class ChartSpecBuilderTest {
         try {
             ChartSpecBuilder.build(
                 "bar-percent-zero", 0, zero,
-                ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED),
+                ChartOptions(barStackMode = StackMode.PERCENT_STACKED),
                 "derived",
             )
             throw AssertionError("zero-total 100% stack was accepted")

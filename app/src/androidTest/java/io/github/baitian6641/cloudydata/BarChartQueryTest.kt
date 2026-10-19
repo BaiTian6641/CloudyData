@@ -13,7 +13,7 @@ import io.github.baitian6641.cloudydata.engine.MarkFilters
 import io.github.baitian6641.cloudydata.engine.UnderlyingRowsQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.model.Aggregation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -68,7 +68,7 @@ class BarChartQueryTest {
                 xAxisTitle = "Event date",
                 yAxisTitle = "Sales",
                 seriesTitle = "Region",
-                barStackMode = BarStackMode.STACKED,
+                barStackMode = StackMode.STACKED,
             ),
         )
         val saved = store.save(applied.copy(worksheets = listOf(sheet)))
@@ -76,7 +76,7 @@ class BarChartQueryTest {
         val reopenedSheet = reopened.worksheets.single()
         assertEquals(series.id, reopenedSheet.seriesFieldId)
         assertEquals(MarkType.BAR, reopenedSheet.markType)
-        assertEquals(BarStackMode.STACKED, reopenedSheet.chart.barStackMode)
+        assertEquals(StackMode.STACKED, reopenedSheet.chart.barStackMode)
 
         val path = store.resolveInsideWorkbook(reopened.id, snapshot.snapshotFile).absolutePath
         DuckDbEngine.open(":memory:", memoryLimitMb = 256, threads = 2).use { engine ->
@@ -105,7 +105,7 @@ class BarChartQueryTest {
                 derivedTitle = "derived",
             )
             assertEquals(ChartKind.BAR, spec.kind)
-            assertEquals(BarStackMode.STACKED, spec.barStackMode)
+            assertEquals(StackMode.STACKED, spec.barStackMode)
             assertTrue(spec.barHasSeries)
             assertEquals(listOf("North", "South"), spec.series.map { it.key })
             assertEquals(

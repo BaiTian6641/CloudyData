@@ -2,7 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -40,13 +40,11 @@ object ChartSpecBuilder {
             MarkType.LINE -> buildTimeSeries(
                 chartId, revision, result, options, derivedTitle,
                 kind = ChartKind.LINE,
-                allowSeries = true,
                 sourceNote = sourceNote,
             )
             MarkType.AREA -> buildTimeSeries(
                 chartId, revision, result, options, derivedTitle,
                 kind = ChartKind.AREA,
-                allowSeries = false,
                 sourceNote = sourceNote,
             )
             else -> buildBar(chartId, revision, result, options, derivedTitle, sourceNote)
@@ -66,8 +64,8 @@ object ChartSpecBuilder {
         }
         val rows = result.result.rows
         val hasSeries = result.hasSeriesColumn
-        val wantsStacking = options.barStackMode == BarStackMode.STACKED ||
-            options.barStackMode == BarStackMode.PERCENT_STACKED
+        val wantsStacking = options.barStackMode == StackMode.STACKED ||
+            options.barStackMode == StackMode.PERCENT_STACKED
         if (hasSeries && wantsStacking &&
             result.aggregation != Aggregation.SUM && result.aggregation != Aggregation.COUNT
         ) {
@@ -102,9 +100,9 @@ object ChartSpecBuilder {
         val stackMode = if (barHasSeries && wantsStacking) {
             options.barStackMode
         } else {
-            BarStackMode.NONE
+            StackMode.NONE
         }
-        val percentStacked = stackMode == BarStackMode.PERCENT_STACKED
+        val percentStacked = stackMode == StackMode.PERCENT_STACKED
         val baseAxis = axisFor(options, yTitle)
         val yAxis = if (percentStacked) {
             baseAxis.copy(min = 0.0, max = 1.0, zero = true, log = false)
@@ -213,8 +211,8 @@ object ChartSpecBuilder {
                 sourceRowIndex = rowIndex,
             )
         }
-        val percentStacked = options.barStackMode == BarStackMode.PERCENT_STACKED
-        val stacked = percentStacked || options.barStackMode == BarStackMode.STACKED
+        val percentStacked = options.barStackMode == StackMode.PERCENT_STACKED
+        val stacked = percentStacked || options.barStackMode == StackMode.STACKED
         if (percentStacked) {
             byCategory.forEach { (category, segments) ->
                 if (segments.values.any { it.y != null && it.y < 0.0 }) {
@@ -297,7 +295,6 @@ object ChartSpecBuilder {
         options: ChartOptions,
         derivedTitle: String,
         kind: ChartKind,
-        allowSeries: Boolean,
         sourceNote: String?,
     ): ChartSpec {
         val label = if (kind == ChartKind.AREA) "Area" else "Line"
@@ -331,9 +328,6 @@ object ChartSpecBuilder {
             throw ChartSpecException(
                 "$label chart supports at most $MAX_LINE_POINTS observed points; narrow the view or aggregate further.",
             )
-        }
-        if (result.seriesField != null && !allowSeries) {
-            throw ChartSpecException("Area charts do not support a color series in this build.")
         }
         val hasSeries = result.seriesField != null
         if (result.seriesField != null) {
@@ -374,7 +368,55 @@ object ChartSpecBuilder {
         if (grouped.values.flatten().none { it.defined }) {
             throw ChartSpecException("The current view has no numeric $label points.")
         }
-        val series = grouped.map { (key, points) -> ChartSeries(key, points.sortedBy { it.xOrder }) }
+        val areaStacked = kind == ChartKind.AREA &&
+            hasSeries &&
+            options.areaStackMode != StackMode.NONE
+        if (areaStacked &&
+            result.aggregation != Aggregation.SUM && result.aggregation != Aggregation.COUNT
+        ) {
+            throw ChartSpecException("Stacked area charts require Sum or Count aggregation.")
+        }
+        val percentArea = areaStacked && options.areaStackMode == StackMode.PERCENT_STACKED
+        val effectiveAreaStackMode = if (areaStacked) options.areaStackMode else StackMode.NONE
+        val series = if (areaStacked) {
+            val allPoints = grouped.values.flatten()
+            val negative = allPoints.firstOrNull { it.y != null && it.y < 0.0 }
+            if (negative != null) {
+                throw ChartSpecException(
+                    "Stacked area charts require non-negative values; ${negative.x} has a negative value.",
+                )
+            }
+            val totals = xOrder.keys.associateWith { x ->
+                allPoints.filter { it.x == x }.sumOf { it.y ?: 0.0 }.also { total ->
+                    if (percentArea && total <= 0.0) {
+                        throw ChartSpecException(
+                            "100% area charts need a positive point total; $x has $total.",
+                        )
+                    }
+                }
+            }
+            val rawBySeries = grouped.mapValues { (_, points) -> points.associateBy { it.x } }
+            val stackedPoints = grouped.keys.associateWith { mutableListOf<ChartPoint>() }
+            for (x in xOrder.keys) {
+                var base = 0.0
+                for (key in grouped.keys) {
+                    val point = rawBySeries.getValue(key)[x] ?: continue
+                    val rawY = point.y
+                    val plotY = if (percentArea && rawY != null) {
+                        rawY / totals.getValue(x)
+                    } else {
+                        rawY
+                    }
+                    stackedPoints.getValue(key).add(
+                        point.copy(y = plotY, stackBase = base),
+                    )
+                    if (plotY != null) base += plotY
+                }
+            }
+            grouped.keys.map { key -> ChartSeries(key, stackedPoints.getValue(key)) }
+        } else {
+            grouped.map { (key, points) -> ChartSeries(key, points.sortedBy { it.xOrder }) }
+        }
         val units = options.units?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
         val yTitle = titleWithUnits(
             options.yAxisTitle ?: "${aggregationLabel(result.aggregation)} of ${measure.name}",
@@ -395,11 +437,15 @@ object ChartSpecBuilder {
                 titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = if (kind == ChartKind.AREA) {
-                baseAxis.copy(
-                    min = baseAxis.min?.coerceAtMost(0.0),
-                    max = baseAxis.max?.coerceAtLeast(0.0),
-                    zero = true,
-                )
+                if (percentArea) {
+                    baseAxis.copy(min = 0.0, max = 1.0, zero = true)
+                } else {
+                    baseAxis.copy(
+                        min = baseAxis.min?.coerceAtMost(0.0),
+                        max = baseAxis.max?.coerceAtLeast(0.0),
+                        zero = true,
+                    )
+                }
             } else {
                 baseAxis
             },
@@ -410,7 +456,8 @@ object ChartSpecBuilder {
                 options.minorGridlines,
             ),
             legend = LegendSpec(
-                visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,
+                visible = options.legendVisible && series.size > 1 &&
+                    (kind == ChartKind.LINE || (kind == ChartKind.AREA && hasSeries)),
                 position = options.legendPosition,
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
                 orientation = options.legendOrientation,
@@ -433,7 +480,7 @@ object ChartSpecBuilder {
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
-            hiddenSeries = if (kind == ChartKind.LINE && series.size > 1) {
+            hiddenSeries = if ((kind == ChartKind.LINE || kind == ChartKind.AREA) && series.size > 1) {
                 options.hiddenSeries.intersect(series.map { it.key }.toSet())
             } else {
                 emptySet()
@@ -447,8 +494,9 @@ object ChartSpecBuilder {
             lineOpacity = options.lineOpacity,
             units = units,
             valueDecimals = options.valueDecimals,
-            valueFormat = options.valueFormat,
+            valueFormat = if (percentArea) ValueDisplayFormat.PERCENT else options.valueFormat,
             currencyCode = options.currencyCode,
+            areaStackMode = effectiveAreaStackMode,
             chartBorder = options.showChartBorder,
             transparentExportBackground = options.transparentExportBackground,
             padding = options.chartPadding,

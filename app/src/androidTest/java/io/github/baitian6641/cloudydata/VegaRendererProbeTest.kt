@@ -596,6 +596,39 @@ class VegaRendererProbeTest {
 
 
 
+
+    @Test
+    fun stackedAndPercentAreaRenderBandsAndPercentLabels() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(kind: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, kind)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("$kind render did not complete", result != null)
+                assertNull("$kind render failed: ${result!!.error}", result.error)
+                assertEquals(6, result.markCount)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("$kind export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val stacked = render("stackedarea")
+        val percent = render("percentarea")
+        assertTrue("stacked area fill missing", stacked.svg.contains("#006A6A"))
+        assertTrue("stacked area fill missing", stacked.svg.contains("#3559C7"))
+        assertTrue(
+            "percent area labels missing: ${percent.result.svgTexts}",
+            percent.result.svgTexts.any { it == "60.0%" } &&
+                percent.result.svgTexts.any { it == "40.0%" },
+        )
+        assertFalse("stacked and 100% area geometry are identical", stacked.svg == percent.svg)
+    }
+
     @Test
     fun horizontalStackedBarRendersSwappedGeometry() {
         RendererProbeState.reset()

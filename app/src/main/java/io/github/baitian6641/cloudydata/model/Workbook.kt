@@ -44,7 +44,7 @@ enum class TableDividerContrast { DEFAULT, STRONG }
 
 enum class CategoryPalette { CLOUDY, COLORBLIND }
 
-enum class BarStackMode { NONE, STACKED, PERCENT_STACKED }
+enum class StackMode { NONE, STACKED, PERCENT_STACKED }
 
 enum class BarOrientation { VERTICAL, HORIZONTAL }
 
@@ -78,8 +78,9 @@ data class ChartOptions(
     val legendOrientation: LegendOrientation? = null,
     val legendMarkSample: LegendMarkSample = LegendMarkSample.MARKER,
     val categoryPalette: CategoryPalette = CategoryPalette.CLOUDY,
-    val barStackMode: BarStackMode = BarStackMode.NONE,
+    val barStackMode: StackMode = StackMode.NONE,
     val barOrientation: BarOrientation = BarOrientation.VERTICAL,
+    val areaStackMode: StackMode = StackMode.NONE,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -136,6 +137,7 @@ data class ChartOptions(
         .put("categoryPalette", categoryPalette.name)
         .put("barStackMode", barStackMode.name)
         .put("barOrientation", barOrientation.name)
+        .put("areaStackMode", areaStackMode.name)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -252,15 +254,20 @@ data class ChartOptions(
                 )
             }.getOrDefault(CategoryPalette.CLOUDY),
             barStackMode = runCatching {
-                BarStackMode.valueOf(
-                    json.optString("barStackMode", BarStackMode.NONE.name),
+                StackMode.valueOf(
+                    json.optString("barStackMode", StackMode.NONE.name),
                 )
-            }.getOrDefault(BarStackMode.NONE),
+            }.getOrDefault(StackMode.NONE),
             barOrientation = runCatching {
                 BarOrientation.valueOf(
                     json.optString("barOrientation", BarOrientation.VERTICAL.name),
                 )
             }.getOrDefault(BarOrientation.VERTICAL),
+            areaStackMode = runCatching {
+                StackMode.valueOf(
+                    json.optString("areaStackMode", StackMode.NONE.name),
+                )
+            }.getOrDefault(StackMode.NONE),
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {

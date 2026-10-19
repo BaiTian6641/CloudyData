@@ -15,7 +15,7 @@ import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.CategoryPalette
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
@@ -109,7 +109,7 @@ class ChartSettingsPersistenceTest {
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
                             categoryPalette = CategoryPalette.COLORBLIND,
-                            barStackMode = BarStackMode.STACKED,
+                            barStackMode = StackMode.STACKED,
                             barOrientation = BarOrientation.HORIZONTAL,
                             markerOpacity = 0.5,
                             markerBorder = true,
@@ -172,7 +172,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(CategoryPalette.COLORBLIND, reopenedSheet.chart.categoryPalette)
-        assertEquals(BarStackMode.STACKED, reopenedSheet.chart.barStackMode)
+        assertEquals(StackMode.STACKED, reopenedSheet.chart.barStackMode)
         assertEquals(BarOrientation.HORIZONTAL, reopenedSheet.chart.barOrientation)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(true, reopenedSheet.chart.markerBorder)
@@ -322,7 +322,7 @@ class ChartSettingsPersistenceTest {
                 .categoryPalette,
         )
         assertEquals(
-            BarStackMode.NONE,
+            StackMode.NONE,
             ChartOptions.fromJson(JSONObject().put("barStackMode", "NOT_A_MODE"))
                 .barStackMode,
         )
@@ -331,9 +331,9 @@ class ChartSettingsPersistenceTest {
             ChartOptions.fromJson(JSONObject().put("barOrientation", "NOT_AN_ORIENTATION"))
                 .barOrientation,
         )
-        val percentStacked = ChartOptions(barStackMode = BarStackMode.PERCENT_STACKED)
+        val percentStacked = ChartOptions(barStackMode = StackMode.PERCENT_STACKED)
         assertEquals(
-            BarStackMode.PERCENT_STACKED,
+            StackMode.PERCENT_STACKED,
             ChartOptions.fromJson(percentStacked.toJson()).barStackMode,
         )
         assertEquals(

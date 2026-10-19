@@ -7,7 +7,7 @@ import io.github.baitian6641.cloudydata.chart.LegendLayout
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.BarOrientation
-import io.github.baitian6641.cloudydata.model.BarStackMode
+import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LineDashStyle
@@ -86,7 +86,7 @@ object VegaSpecBuilder {
                 scale.put(
                     "domain",
                     JSONObject().put("data", "table")
-                        .put("field", if (isStackedBar(spec)) "displayY" else "y"),
+                        .put("field", if (usesStackedValueDomain(spec)) "displayY" else "y"),
                 )
                 spec.yAxis.min?.let { scale.put("domainMin", it) }
                 spec.yAxis.max?.let { scale.put("domainMax", it) }
@@ -309,6 +309,7 @@ object VegaSpecBuilder {
             .put("hiddenSeries", JSONArray(spec.hiddenSeries.toList()))
             .put("barStackMode", spec.barStackMode.name)
             .put("barOrientation", spec.barOrientation.name)
+            .put("areaStackMode", spec.areaStackMode.name)
             .put("legendInteractive", spec.kind != ChartKind.BAR)
             .put("series", JSONArray(spec.series.map { it.key }))
                     .put("units", spec.units ?: ""),
@@ -485,18 +486,22 @@ object VegaSpecBuilder {
         return axis
     }
 
+    private fun usesStackedValueDomain(spec: ChartSpec): Boolean =
+        isStackedBar(spec) ||
+            (spec.kind == ChartKind.AREA && spec.areaStackMode != StackMode.NONE)
+
     private fun isHorizontalBar(spec: ChartSpec): Boolean =
         spec.kind == ChartKind.BAR && spec.barOrientation == BarOrientation.HORIZONTAL
 
     private fun isGroupedBar(spec: ChartSpec): Boolean =
         spec.barHasSeries &&
-            spec.barStackMode == BarStackMode.NONE &&
+            spec.barStackMode == StackMode.NONE &&
             spec.series.size > 1
 
     private fun isStackedBar(spec: ChartSpec): Boolean =
         spec.barHasSeries &&
-            (spec.barStackMode == BarStackMode.STACKED ||
-                spec.barStackMode == BarStackMode.PERCENT_STACKED) &&
+            (spec.barStackMode == StackMode.STACKED ||
+                spec.barStackMode == StackMode.PERCENT_STACKED) &&
             spec.series.size > 1
 
     private fun barXEncode(spec: ChartSpec): JSONObject {
@@ -989,6 +994,12 @@ object VegaSpecBuilder {
             .put("marks", childMarks)
     }
 
+    private fun areaStackEnd(spec: ChartSpec): String =
+        if (spec.areaStackMode == StackMode.NONE) "datum.y" else "datum.stackBase + datum.y"
+
+    private fun areaStackStart(spec: ChartSpec): String =
+        if (spec.areaStackMode == StackMode.NONE) "0" else "datum.stackBase"
+
     private fun areaMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "area")
         .put("from", JSONObject().put("data", "visible"))
@@ -999,8 +1010,20 @@ object VegaSpecBuilder {
                 "enter",
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
-                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
+                    .put(
+                        "y",
+                        JSONObject().put(
+                            "signal",
+                            "scale('y', ${areaStackEnd(spec)})",
+                        ),
+                    )
+                    .put(
+                        "y2",
+                        JSONObject().put(
+                            "signal",
+                            "scale('y', ${areaStackStart(spec)})",
+                        ),
+                    )
                     .put("fill", JSONObject().put("scale", "color").put("field", "series"))
                     .put(
                         "opacity",
@@ -1028,7 +1051,13 @@ object VegaSpecBuilder {
                 "enter",
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put(
+                        "y",
+                        JSONObject().put(
+                            "signal",
+                            "scale('y', ${areaStackEnd(spec)})",
+                        ),
+                    )
                     .put("stroke", JSONObject().put("scale", "color").put("field", "series"))
                     .put("strokeWidth", JSONObject().put("value", spec.lineWidth ?: 1.5))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
@@ -1046,7 +1075,7 @@ object VegaSpecBuilder {
                 "enter",
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("y", JSONObject().put("scale", "y").put("field", "displayY"))
                     .put("fill", JSONObject().put("scale", "color").put("field", "series"))
                     .put("size", JSONObject().put("value", markerArea(spec, 24.0)))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)"))
@@ -1083,7 +1112,7 @@ object VegaSpecBuilder {
                 "enter",
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
+                    .put("y", JSONObject().put("scale", "y").put("field", "displayY").put("offset", -8))
                     .put("text", valueText(spec, spec.labels.fontSize ?: 10))
                     .put("align", JSONObject().put("value", "center"))
                     .put("baseline", JSONObject().put("value", "bottom"))
@@ -1156,7 +1185,20 @@ object VegaSpecBuilder {
                     "enter",
                     JSONObject()
                         .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                        .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                        .put(
+                            "y",
+                            JSONObject().put("scale", "y")
+                                .put(
+                                    "field",
+                                    if (spec.kind == ChartKind.AREA &&
+                                        spec.areaStackMode != StackMode.NONE
+                                    ) {
+                                        "displayY"
+                                    } else {
+                                        "y"
+                                    },
+                                ),
+                        )
                         .put("fill", JSONObject().put("value", textColor))
                         .put("stroke", JSONObject().put("value", contrastingStroke))
                         .put("strokeWidth", JSONObject().put("value", 2))
@@ -1183,7 +1225,20 @@ object VegaSpecBuilder {
                 "enter",
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put(
+                        "y",
+                        JSONObject().put("scale", "y")
+                            .put(
+                                "field",
+                                if (spec.kind == ChartKind.AREA &&
+                                    spec.areaStackMode != StackMode.NONE
+                                ) {
+                                    "displayY"
+                                } else {
+                                    "y"
+                                },
+                            ),
+                    )
                     .put("fill", JSONObject().put("value", "#000000"))
                     .put("size", JSONObject().put("value", 180))
                     .put("opacity", JSONObject().put("value", 0.001))
@@ -1235,7 +1290,10 @@ object VegaSpecBuilder {
 
     private fun legendJson(spec: ChartSpec, textColor: String, widthDp: Float): JSONObject? {
         if (!spec.legend.visible) return null
-        if (spec.kind != ChartKind.LINE && !(spec.kind == ChartKind.BAR && spec.barHasSeries)) {
+        if (spec.kind != ChartKind.LINE &&
+            !(spec.kind == ChartKind.BAR && spec.barHasSeries) &&
+            spec.kind != ChartKind.AREA
+        ) {
             return null
         }
         val orient = when (spec.legend.position) {
@@ -1247,7 +1305,7 @@ object VegaSpecBuilder {
             LegendPosition.RIGHT -> "vertical"
         }
         val legend = JSONObject()
-            .put(if (spec.kind == ChartKind.BAR) "fill" else "stroke", "color")
+            .put(if (spec.kind == ChartKind.BAR || spec.kind == ChartKind.AREA) "fill" else "stroke", "color")
             .put("title", spec.legend.title ?: "")
             .put("orient", orient)
             .put("labelColor", textColor)
@@ -1256,7 +1314,7 @@ object VegaSpecBuilder {
             .put("titleFontSize", 11)
         legend.put("direction", direction)
         legend.put("labelLimit", LegendLayout.labelLimitDp(widthDp))
-        if (spec.kind == ChartKind.BAR) {
+        if (spec.kind == ChartKind.BAR || spec.kind == ChartKind.AREA) {
             legend.put("symbolType", "square")
         } else {
             when (spec.legend.markSample) {

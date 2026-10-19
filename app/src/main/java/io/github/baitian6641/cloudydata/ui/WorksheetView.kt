@@ -197,7 +197,9 @@ fun WorksheetView(
                 aggregation = sheet.aggregation,
                 onAggregation = onAggregation,
             )
-            if ((sheet.markType == MarkType.LINE || sheet.markType == MarkType.BAR) &&
+            if ((sheet.markType == MarkType.LINE ||
+                    sheet.markType == MarkType.BAR ||
+                    sheet.markType == MarkType.AREA) &&
                 sheet.measureFieldId != null
             ) {
                 ShelfRow(
