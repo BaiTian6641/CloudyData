@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `5704ef1`; the gridline-width change is in the next
-local commit. `main` tracks `origin/main` at the pushed X-label baseline.
+**Source:** commits through `a1f09a3`. `main` tracks `origin/main`; the
+gridline-width stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
