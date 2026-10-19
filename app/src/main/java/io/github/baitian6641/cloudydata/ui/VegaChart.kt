@@ -151,6 +151,10 @@ fun VegaChartCard(
                                         svgPaths: Int,
                                         svgNodes: Int,
                                         vegaVersion: String,
+                                        surfaceWidth: Int,
+                                        surfaceHeight: Int,
+                                        viewWidth: Int,
+                                        viewHeight: Int,
                                     ) {
                                         rendered = true
                                     }

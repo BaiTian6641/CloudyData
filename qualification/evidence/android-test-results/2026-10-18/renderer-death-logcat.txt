@@ -1,0 +1,1253 @@
+--------- beginning of main
+10-18 19:42:10.406  1020  1020 D CarrierSvcBindHelper: onHandleForceStop: [io.github.baitian6641.cloudydata.test]
+10-18 19:42:10.406  1020  1020 D CarrierSvcBindHelper: No carrier app for: 0
+--------- beginning of system
+10-18 19:42:10.410   635  1151 V ActivityManager: Got obituary of 28811:io.github.baitian6641.cloudydata.test
+10-18 19:42:10.410   635   658 W ActivityManager: setHasOverlayUi called on unknown pid: 28811
+10-18 19:42:10.410 25645 25645 I adbd    : Remote process closed the socket (on MSG_PEEK)
+10-18 19:42:10.411   443   443 I Zygote  : Process 28811 exited due to signal 9 (Killed)
+10-18 19:42:10.411 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:am start -n io.github.baitian6641.cloudydata/.debug.RendererProbeActivity -e probe_kind line -e view_width_dp 640 -e view_height_dp 400'
+10-18 19:42:10.415   635   666 I libprocessgroup: Removed cgroup /sys/fs/cgroup/apps/uid_10308/pid_28811
+10-18 19:42:10.424   635  1789 W ActivityTaskManager: callingPackage for (uid=0, pid=29047) has no WPC
+10-18 19:42:10.424   635  1789 V GrammaticalInflectionUtils: AttributionSource: AttributionSource { uid = 10307, packageName = null, attributionTag = null, token = android.os.Binder@30f0c69, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 19:42:10.425  1050  1050 D RecentsView: onTaskDisplayChanged: 714, new displayId = 0
+10-18 19:42:10.426   508   689 I libbinder.BpBinder: onLastStrongRef automatically unlinking death recipients for binder (0x76b974614d70) with descriptor: '(not cached)'
+10-18 19:42:10.427   561   614 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:10.427   561   614 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:10.428   902  1028 D SplashScreenView: Build android.window.SplashScreenView{2a9e613 V.E...... ......ID 0,0-0,0}
+10-18 19:42:10.428   902  1028 D SplashScreenView: Icon: view: android.widget.ImageView{c22f050 V.ED..... ......I. 0,0-0,0 #1020575 android:id/splashscreen_icon_view} drawable: com.android.wm.shell.startingsurface.SplashscreenIconDrawableFactory$ImmobileIconDrawable@df8e249 size: 240
+10-18 19:42:10.428   902  1028 D SplashScreenView: Branding: view: android.view.View{560c74e G.ED..... ......I. 0,0-0,0 #1020574 android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+10-18 19:42:10.429   635  1789 D CorePackageUpdate: onRecentTaskRemoved Removing task: 712
+10-18 19:42:10.429   635  1789 D CorePackageUpdate: Couldn't find a persistent state for task= 712
+10-18 19:42:10.430   635  1789 V ActivityTaskManager: TaskLaunchParamsModifier: phase=3 task=Task{b62e8e4 #714 type=standard A=10307:io.github.baitian6641.cloudydata} activity=ActivityRecord{185259127 u0 io.github.baitian6641.cloudydata/.debug.RendererProbeActivity t-1} display-from-task=0 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@65622667 inherit-from-task=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@65622667 skip-bounds-fullscreen
+10-18 19:42:10.430   635  1789 I ActivityTaskManager: START u0 {flg=0x10000000 xflg=0x4 cmp=io.github.baitian6641.cloudydata/.debug.RendererProbeActivity (has extras)} with LAUNCH_MULTIPLE from uid 0 (com.android.shell) (BAL_ALLOW_ALLOWLISTED_UID) result code=0
+10-18 19:42:10.430   902   967 V WindowManagerShell: Transition requested (#1223): android.os.BinderProxy@fd6048b TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=714 effectiveUid=10307 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=io.github.baitian6641.cloudydata/.debug.RendererProbeActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=28913838 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@2047968} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{7559181 io.github.baitian6641.cloudydata.debug.RendererProbeActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isInteractive=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=null leafTaskBoundsFromOptions= false capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 2880, 1800) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransitionInfo = null, displayChanges = null, requestedLocation = null, userChange = null, windowingLayerChange = null, fullscreenRequestChange = null, flags = 0, debugId = 1223 }
+10-18 19:42:10.430   902   967 W DisconnectHandler: No disconnect change found in the transition, not handling request.
+10-18 19:42:10.430   902   967 V ShellDesktopMode: DesktopTasksController: skipping handleRequest reason=triggerTask's display doesn't support desktop mode
+10-18 19:42:10.430   902   967 D ShellSplitScreen: logExit: no-op, mLoggerSessionId is null
+10-18 19:42:10.430   635  1781 W InputChannel-JNI: Channel already disposed.
+10-18 19:42:10.431   635   658 V GrammaticalInflectionUtils: AttributionSource: AttributionSource { uid = 10307, packageName = null, attributionTag = null, token = android.os.Binder@30f0c69, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 19:42:10.432   635   708 I AppsFilter: interaction: PackageSetting{acf27b9 io.github.baitian6641.cloudy.console/10234} -> PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} BLOCKED
+10-18 19:42:10.432   635   708 I AppsFilter: interaction: PackageSetting{5caab5f com.android.microdroid.empty_payload/10222} -> PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} BLOCKED
+10-18 19:42:10.432   902   967 V RecentTasksController: Notify recent tasks changed
+10-18 19:42:10.432   635   708 I AppsFilter: interaction: PackageSetting{1fc19ac io.github.baitian6641.cloudy.terminal.test/10236} -> PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} BLOCKED
+10-18 19:42:10.432  1050  1050 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 1783
+10-18 19:42:10.432   635   708 I AppsFilter: interaction: PackageSetting{447010c io.github.baitian6641.cloudy.console.test/10235} -> PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} BLOCKED
+10-18 19:42:10.432   902   967 D ShellDesktopMode: DesktopRepository(0): Removes freeform task: taskId=712
+10-18 19:42:10.432   902   967 W ShellDesktopMode: DesktopRepository(0): No display id found for task: taskId=712
+10-18 19:42:10.432   902   967 V RecentTasksController: Notify recent tasks changed
+10-18 19:42:10.432  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 19:42:10.432  1050  1050 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: -1
+10-18 19:42:10.432  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: tried to reload while loading recents tasks
+10-18 19:42:10.432   635   708 I AppsFilter: interaction: PackageSetting{28c160a io.github.baitian6641.cloudy.testing.ime.test/10237} -> PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} BLOCKED
+10-18 19:42:10.433   902   967 V RecentTasksController: generateList(getRecentTasks)
+10-18 19:42:10.433   902   967 V RecentTasksController: initializeDesksMap - allDeskIds: []
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 714 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 714
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 555 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 555
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 713 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 713
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 700 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 700
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 698 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 698
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 666 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 666
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 664 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 664
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 647 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 647
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 645 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 645
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 616 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 616
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 614 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 614
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 597 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 597
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 595 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 595
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 584 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 584
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 582 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 582
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 565 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 565
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 563 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 563
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 553 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 553
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 538 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 538
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 547 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 547
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 545 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 545
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 519 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 519
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 512 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 512
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 507 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 507
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 504 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 504
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 479 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 479
+10-18 19:42:10.434   902   967 V RecentTasksController: Task 478 is not an active desktop task
+10-18 19:42:10.434   902   967 V RecentTasksController: Added fullscreen task: 478
+10-18 19:42:10.434   902   967 V RecentTasksController: generateList - complete
+10-18 19:42:10.435  1050  1132 D RecentTasksList: loadTasksInBackground - isDeviceLocked(0): false
+10-18 19:42:10.435  1050  1132 D RecentTasksList: getTasks - loadTasksInBackground: 1784
+10-18 19:42:10.435  1050  1050 D RecentTasksList: getTasks - updating mResultsUi: 1784
+10-18 19:42:10.435  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: reload recents tasks
+10-18 19:42:10.435  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 19:42:10.436   635   708 D WindowManager: setClientSurface Surface(name=VRI-Splash Screen io.github.baitian6641.cloudydata#7989)/@0x690707c for 6d7af50 Splash Screen io.github.baitian6641.cloudydata
+10-18 19:42:10.436   902   967 V RecentTasksController: generateList(getRecentTasks)
+10-18 19:42:10.436   902   967 V RecentTasksController: initializeDesksMap - allDeskIds: []
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 714 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 714
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 555 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 555
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 713 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 713
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 700 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 700
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 698 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 698
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 666 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 666
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 664 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 664
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 647 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 647
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 645 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 645
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 616 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 616
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 614 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 614
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 597 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 597
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 595 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 595
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 584 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 584
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 582 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 582
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 565 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 565
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 563 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 563
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 553 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 553
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 538 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 538
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 547 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 547
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 545 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 545
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 519 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 519
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 512 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 512
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 507 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 507
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 504 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 504
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 479 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 479
+10-18 19:42:10.436   902   967 V RecentTasksController: Task 478 is not an active desktop task
+10-18 19:42:10.436   902   967 V RecentTasksController: Added fullscreen task: 478
+10-18 19:42:10.436   902   967 V RecentTasksController: generateList - complete
+10-18 19:42:10.437  1050  1132 D RecentTasksList: loadTasksInBackground - isDeviceLocked(0): false
+10-18 19:42:10.438  1050  1132 D RecentTasksList: getTasks - loadTasksInBackground: 1785
+10-18 19:42:10.438  1050  1050 D RecentTasksList: getTasks - updating mResultsUi: 1785
+10-18 19:42:10.439   902  1027 I Surface : Creating surface for consumer unnamed-902-344 with slotExpansion=1 for 64 slots
+10-18 19:42:10.439   902  1027 I Surface : Creating surface for consumer VRI[cloudydata]#344(BLAST Consumer)344 with slotExpansion=1 for 64 slots
+10-18 19:42:10.442   635   824 I AppWidgetServiceImpl: Received broadcast: android.intent.action.PACKAGE_UNSTOPPED on user 0
+10-18 19:42:10.442   635   824 I AppWidgetServiceImpl: Updating package stopped masked state for uid 10307 package io.github.baitian6641.cloudydata isStopped false
+10-18 19:42:10.449   443   443 D Zygote  : Forked child process 29051
+10-18 19:42:10.450   635   665 I ActivityManager: Start proc 29051:io.github.baitian6641.cloudydata/u0a307 for next-top-activity {io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity}
+10-18 19:42:10.452 29051 29051 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_10307/pid_29051
+10-18 19:42:10.453   902  1492 V WindowManagerShell: onTransitionReady(transaction=2727304306276)
+10-18 19:42:10.454   902   967 V WindowManagerShell: onTransitionReady (#1223) android.os.BinderProxy@fd6048b: {id=1223 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+10-18 19:42:10.454   902   967 V WindowManagerShell:         {m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=714#7986)/@0x108ce75 sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0},
+10-18 19:42:10.454   902   967 V WindowManagerShell:         {m=TO_BACK f=FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=555#4281)/@0x325be0a sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0}
+10-18 19:42:10.454   902   967 V WindowManagerShell:     ]}
+10-18 19:42:10.454   902   967 V WindowManagerShell: FocusTransitionObserver: Updating focus state for transition #1223
+10-18 19:42:10.454   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.454   902   967 D WindowManagerShell: FocusTransitionObserver: Task id=555 is already focused on displayId=0. Skip notifying.
+10-18 19:42:10.454   902   967 D WindowManagerShell: FocusTransitionObserver: Focus updated on displayId=0 to taskId=714
+10-18 19:42:10.454   902   967 V WindowManagerShell: FocusTransitionObserver: Notifying local listeners of task focus change: taskId=714, isFocusedOnDisplay=true, isFocusedGlobally=true
+10-18 19:42:10.455   902   967 V WindowManagerShell: FocusTransitionObserver: Notifying local listeners of task focus change: taskId=555, isFocusedOnDisplay=false, isFocusedGlobally=false
+10-18 19:42:10.455   902   967 V ShellDesktopMode: DesktopModeLogger: taskInfo map after processing changes 0
+10-18 19:42:10.455   902   967 D ShellDesktopMode: DesktopTaskChangeListener: onTaskMovingToBack for taskId=555, displayId=0 - desktop not supported
+10-18 19:42:10.455   902   967 D ShellDesktopMode: DesktopTaskChangeListener: onTaskOpening for taskId=714, displayId=0 userId=0 currentUserId=0 parentTaskId=-1 isFreeform=false isActive=false isMinimized=false isPinned=false
+10-18 19:42:10.455   902   967 D ShellDesktopMode: DesktopTaskChangeListener: onTaskOpening for taskId=714, displayId=0 - desktop not supported
+10-18 19:42:10.455   902   967 V WindowManagerShell: Playing animation for (#1223) android.os.BinderProxy@fd6048b@0
+10-18 19:42:10.456   902   967 D ShellSplitScreen: startAnimation: transition=1223 isSplitActive=false
+10-18 19:42:10.456   902   967 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+10-18 19:42:10.456   902   967 V ShellDesktopMode: DesktopMixedTransitionHandler: No pending desktop transition
+10-18 19:42:10.456   902   967 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=1223 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=714#7986)/@0x108ce75 sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=555#4281)/@0x325be0a sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0}]}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@1d63837 windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@ee0e1a4, appThread = android.app.IApplicationThread$Stub$Proxy@3583b0d, debugName = overlayBackTransition, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@1d63837 windowingMode=undefined isCrossDisplayMove=false}]} }}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@79d4ac2, appThread = android.app.IApplicationThread$Stub$Proxy@ecc20d3, debugName = LauncherToDream, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} }}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=false modes=[CHANGE] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=true}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@51c7410, appThread = android.app.IApplicationThread$Stub$Proxy@cda7b09, debugName = QuickstepDisplayMove, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=false modes=[CHANGE] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=true}]} }}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@c79510e, appThread = android.app.IApplicationThread$Stub$Proxy@52df72f, debugName = QuickstepLaunchHome, filter = {types=[] flags=0x0 notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} }}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Checking filter Pair{{types=[OPEN,TO_FRONT] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=freeform isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@33cc13c, appThread = null, debugName = DesktopWindowLimitUnminimize, filter = {types=[OPEN,TO_FRONT] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=freeform isCrossDisplayMove=false}]} }}
+10-18 19:42:10.456   902   967 V WindowManagerShell:  Delegate animation for (#1223) to null
+10-18 19:42:10.456   902   967 V WindowManagerShell: start default transition animation, info = {id=1223 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=714#7986)/@0x108ce75 sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=555#4281)/@0x325be0a sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0}]}
+10-18 19:42:10.456   902   967 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@d65af57 animAttr=0x9 type=OPEN isEntrance=false
+10-18 19:42:10.457 29051 29051 I Zygote  : Process 29051 created for io.github.baitian6641.cloudydata
+10-18 19:42:10.457 29051 29051 I 6641.cloudydata: Late-enabling -Xcheck:jni
+10-18 19:42:10.457   635   655 V WindowManager: Sent Transition (#1223) createdAt=10-18 19:42:10.424 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=714 effectiveUid=10307 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=io.github.baitian6641.cloudydata/.debug.RendererProbeActivity } baseActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} topActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} origActivity=null realActivity=ComponentInfo{io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=28913838 supportsMultiWindow=true supportsMultiWindowWithoutConstraints=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{2ca944 Task{b62e8e4 #714 type=standard A=10307:io.github.baitian6641.cloudydata}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{d2efa2d io.github.baitian6641.cloudydata.debug.RendererProbeActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isInteractive=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=null leafTaskBoundsFromOptions= false capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= true topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 2880, 1800) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransitionInfo = null, displayChanges = null, requestedLocation = null, userChange = null, windowingLayerChange = null, fullscreenRequestChange = null, flags = 0, debugId = 1223 }
+10-18 19:42:10.457   635   655 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] flags= 0 errorCallbackToken=null taskFragmentOrganizer=null }
+10-18 19:42:10.458   635   655 V WindowManager:     info={id=1223 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+10-18 19:42:10.458   635   655 V WindowManager:         {WCT{RemoteToken{2ca944 Task{b62e8e4 #714 type=standard A=10307:io.github.baitian6641.cloudydata}}} m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=714#7986)/@0x6164ff1 sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0},
+10-18 19:42:10.458   635   655 V WindowManager:         {WCT{RemoteToken{c870ab1 Task{2603ce6 #555 type=standard A=10234:io.github.baitian6641.cloudy.console}}} m=TO_BACK f=FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=555#4281)/@0xb558cca sb=Rect(0, 0 - 2880, 1800) eb=Rect(0, 0 - 2880, 1800) epz=Point(2880, 1800) d=0 taskParent=-1 winMode=1 userId=0}
+10-18 19:42:10.458   635   655 V WindowManager:     ]}
+10-18 19:42:10.458   902   967 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@119572d animAttr=0x8 type=OPEN isEntrance=true
+10-18 19:42:10.460   902   967 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@97c903c
+10-18 19:42:10.460   902   967 V ShellTaskOrganizer: Task appeared taskId=714 listener=FullscreenTaskListener
+10-18 19:42:10.460   902   967 V ShellTaskOrganizer: Fullscreen Task Appeared: #714
+10-18 19:42:10.460   902   967 D ShellPackageUpdate: PackageUpdateController: Setting handlePackageUpdate for task: 714
+10-18 19:42:10.461   635   708 E TransitionChain: Can't collect into a chain with no transition
+10-18 19:42:10.464   902   967 V RecentTasksController: Notify recent tasks changed
+10-18 19:42:10.464  1050  1050 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 1785
+10-18 19:42:10.464  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 19:42:10.465   902   967 V RecentTasksController: generateList(getRecentTasks)
+10-18 19:42:10.465   902   967 V RecentTasksController: initializeDesksMap - allDeskIds: []
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 714 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 714
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 555 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 555
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 713 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 713
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 700 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 700
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 698 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 698
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 666 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 666
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 664 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 664
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 647 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 647
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 645 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 645
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 616 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 616
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 614 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 614
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 597 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 597
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 595 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 595
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 584 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 584
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 582 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 582
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 565 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 565
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 563 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 563
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 553 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 553
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 538 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 538
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 547 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 547
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 545 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 545
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 519 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 519
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 512 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 512
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 507 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 507
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 504 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 504
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 479 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 479
+10-18 19:42:10.465   902   967 V RecentTasksController: Task 478 is not an active desktop task
+10-18 19:42:10.465   902   967 V RecentTasksController: Added fullscreen task: 478
+10-18 19:42:10.465   902   967 V RecentTasksController: generateList - complete
+10-18 19:42:10.467  1050  1132 D RecentTasksList: loadTasksInBackground - isDeviceLocked(0): false
+10-18 19:42:10.467  1050  1132 D RecentTasksList: getTasks - loadTasksInBackground: 1786
+10-18 19:42:10.467  1050  1050 D RecentTasksList: getTasks - updating mResultsUi: 1786
+10-18 19:42:10.474 29051 29051 I 6641.cloudydata: Using generational CollectorTypeCMC GC.
+10-18 19:42:10.474 29051 29051 W 6641.cloudydata: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:10.474 29051 29051 W 6641.cloudydata: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:10.477 25645 25651 I adbd    : jdwp connection from 29051
+10-18 19:42:10.481 29051 29051 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:10.498 29051 29051 D CompatChangeReporter: Compat change id reported: 333566037; UID 10307; state: ENABLED
+10-18 19:42:10.499 29051 29051 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-18 19:42:10.499 29051 29051 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-18 19:42:10.533   902   967 V RecentTasksController: Notify recent tasks changed
+10-18 19:42:10.534  1050  1050 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: 1786
+10-18 19:42:10.534  1050  1050 V TaskbarRecentAppsController: reloadRecentTasksIfNeeded: load recents tasks
+10-18 19:42:10.534   902   967 V RecentTasksController: generateList(getRecentTasks)
+10-18 19:42:10.534   902   967 V RecentTasksController: initializeDesksMap - allDeskIds: []
+10-18 19:42:10.534   902   967 V RecentTasksController: Task 714 is not an active desktop task
+10-18 19:42:10.535   902   967 V RecentTasksController: Added fullscreen task: 714
+10-18 19:42:10.535   902   967 V RecentTasksController: Task 555 is not an active desktop task
+10-18 19:42:10.535   902   967 V RecentTasksController: Added fullscreen task: 555
+10-18 19:42:10.535   902   967 V RecentTasksController: Task 713 is not an active desktop task
+10-18 19:42:10.535   902   967 V RecentTasksController: Added fullscreen task: 713
+10-18 19:42:10.535   902   967 V RecentTasksController: Task 700 is not an active desktop task
+10-18 19:42:10.535   902   967 V RecentTasksController: Added fullscreen task: 700
+10-18 19:42:10.535   902   967 V RecentTasksController: Task 698 is not an active desktop task
+10-18 19:42:10.535   902   967 V RecentTasksController: Added fullscreen task: 698
+10-18 19:42:10.537   902   967 V RecentTasksController: Task 666 is not an active desktop task
+10-18 19:42:10.537   902   967 V RecentTasksController: Added fullscreen task: 666
+10-18 19:42:10.537   902   967 V RecentTasksController: Task 664 is not an active desktop task
+10-18 19:42:10.537   902   967 V RecentTasksController: Added fullscreen task: 664
+10-18 19:42:10.537   902   967 V RecentTasksController: Task 647 is not an active desktop task
+10-18 19:42:10.537   902   967 V RecentTasksController: Added fullscreen task: 647
+10-18 19:42:10.537   902   967 V RecentTasksController: generateList - complete
+10-18 19:42:10.538   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.538  1050  1132 D PreloadThumbnailUseCase: Preloading thumbnails for task ids: [[id=647 windowingMode=1 user=0 lastActiveTime=28350250] null, [id=664 windowingMode=1 user=0 lastActiveTime=28446801] null, [id=666 windowingMode=1 user=0 lastActiveTime=28447634] null, [id=698 windowingMode=1 user=0 lastActiveTime=28892068] null, [id=700 windowingMode=1 user=0 lastActiveTime=28893001] null, [id=713 windowingMode=1 user=0 lastActiveTime=28912885] null, [id=555 windowingMode=1 user=0 lastActiveTime=28913834] null, [id=714 windowingMode=1 user=0 lastActiveTime=28913838] null]
+10-18 19:42:10.540   902   967 V RecentTasksController: generateList(getRecentTasks)
+10-18 19:42:10.540   902   967 V RecentTasksController: initializeDesksMap - allDeskIds: []
+10-18 19:42:10.540   902   967 V RecentTasksController: Task 714 is not an active desktop task
+10-18 19:42:10.540   902   967 V RecentTasksController: Added fullscreen task: 714
+10-18 19:42:10.540   902   967 V RecentTasksController: Task 555 is not an active desktop task
+10-18 19:42:10.540   902   967 V RecentTasksController: Added fullscreen task: 555
+10-18 19:42:10.540   902   967 V RecentTasksController: Task 713 is not an active desktop task
+10-18 19:42:10.540   902   967 V RecentTasksController: Added fullscreen task: 713
+10-18 19:42:10.540   902   967 V RecentTasksController: Task 700 is not an active desktop task
+10-18 19:42:10.540   902   967 V RecentTasksController: Added fullscreen task: 700
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 698 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 698
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 666 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 666
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 664 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 664
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 647 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 647
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 645 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 645
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 616 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 616
+10-18 19:42:10.541   902   967 V RecentTasksController: Task 614 is not an active desktop task
+10-18 19:42:10.541   902   967 V RecentTasksController: Added fullscreen task: 614
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 597 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 597
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 595 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 595
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 584 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 584
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 582 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 582
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 565 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 565
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 563 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 563
+10-18 19:42:10.542   902   967 V RecentTasksController: Task 553 is not an active desktop task
+10-18 19:42:10.542   902   967 V RecentTasksController: Added fullscreen task: 553
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 538 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 538
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 547 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 547
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 545 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 545
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 519 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 519
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 512 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 512
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 507 is not an active desktop task
+10-18 19:42:10.543   902   967 V RecentTasksController: Added fullscreen task: 507
+10-18 19:42:10.543   902   967 V RecentTasksController: Task 504 is not an active desktop task
+10-18 19:42:10.544   902   967 V RecentTasksController: Added fullscreen task: 504
+10-18 19:42:10.544   902   967 V RecentTasksController: Task 479 is not an active desktop task
+10-18 19:42:10.544   902   967 V RecentTasksController: Added fullscreen task: 479
+10-18 19:42:10.544   902   967 V RecentTasksController: Task 478 is not an active desktop task
+10-18 19:42:10.544   902   967 V RecentTasksController: Added fullscreen task: 478
+10-18 19:42:10.544   902   967 V RecentTasksController: generateList - complete
+10-18 19:42:10.545  1050  1132 D RecentTasksList: loadTasksInBackground - isDeviceLocked(0): false
+10-18 19:42:10.545  1050  1132 D RecentTasksList: getTasks - loadTasksInBackground: 1787
+10-18 19:42:10.545  1050  1050 D RecentTasksList: getTasks - updating mResultsUi: 1787
+10-18 19:42:10.638   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.677 29051 29051 D nativeloader: Configuring clns-9 for other apk /data/app/~~CYZKt2BKkEwwG4j9qJysjw==/io.github.baitian6641.cloudydata-javMLo9rvNrXoWhkbsp4Fg==/base.apk. target_sdk_version=37, uses_libraries=, library_path=/data/app/~~CYZKt2BKkEwwG4j9qJysjw==/io.github.baitian6641.cloudydata-javMLo9rvNrXoWhkbsp4Fg==/lib/x86_64:/data/app/~~CYZKt2BKkEwwG4j9qJysjw==/io.github.baitian6641.cloudydata-javMLo9rvNrXoWhkbsp4Fg==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/io.github.baitian6641.cloudydata
+10-18 19:42:10.682 29051 29051 V GraphicsEnvironment: Currently set values for:
+10-18 19:42:10.682 29051 29051 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+10-18 19:42:10.682 29051 29051 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+10-18 19:42:10.682 29051 29051 V GraphicsEnvironment: io.github.baitian6641.cloudydata is not listed in per-application setting
+10-18 19:42:10.683 29051 29051 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+10-18 19:42:10.683 29051 29051 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+10-18 19:42:10.685 29051 29051 D CompatChangeReporter: Compat change id reported: 407952621; UID 10307; state: ENABLED
+10-18 19:42:10.685 29051 29051 D CompatChangeReporter: Compat change id reported: 419020719; UID 10307; state: ENABLED
+10-18 19:42:10.702   635   708 D CorePackageUpdate: Couldn't find a persistent state for task= 714
+10-18 19:42:10.704 29051 29051 D CompatChangeReporter: Compat change id reported: 458413887; UID 10307; state: ENABLED
+10-18 19:42:10.705 29051 29064 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+10-18 19:42:10.711 29051 29051 D DesktopExperienceFlags: Toggle override initialized to: false
+10-18 19:42:10.728 29051 29051 I WebViewFactory: Loading com.google.android.webview version 145.0.7632.218 (code 763221809)
+10-18 19:42:10.729 29051 29064 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv1_CM_emulation.so
+10-18 19:42:10.729 29051 29064 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv2_emulation.so
+10-18 19:42:10.731 29051 29064 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.731 29051 29051 V ResourcesManager: The following library key has been added: ResourcesKey{ mHash=d8322624 mResDir=null mSplitDirs=[] mOverlayDirs=[] mLibDirs=[/data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk,/system/framework/android.test.base.jar,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v37 mCompatInfo={240dpi always-compat} mLoaders=[]}
+10-18 19:42:10.732 29051 29051 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+10-18 19:42:10.732 29051 29051 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-18 19:42:10.734 29051 29051 D nativeloader: Configuring clns-10 for other apk /data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/lib/x86_64:/data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+10-18 19:42:10.734 29051 29064 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+10-18 19:42:10.738   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.758 29051 29051 D CompatChangeReporter: Compat change id reported: 418924588; UID 10307; state: ENABLED
+10-18 19:42:10.762 29051 29051 I cr_WVCFactoryProvider: version=145.0.7632.218 (763221809) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+10-18 19:42:10.770 29051 29051 D nativeloader: Load /data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk!/lib/x86_64/libwebviewchromium.so using class loader ns clns-10 (caller=/data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk): ok
+10-18 19:42:10.771 29051 29051 D nativeloader: Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-10 (caller=/data/app/~~LZljDwIXctAwZXmBbtQKmw==/com.google.android.webview-4kpYg7ipMHL1scKP_wqgIg==/WebViewGoogle.apk): ok
+10-18 19:42:10.774 29051 29071 I chromium: [1018/194210.773730:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+10-18 19:42:10.774 29051 29071 I cr_VariationsUtils: Failed reading seed file "/data/user/0/io.github.baitian6641.cloudydata/app_webview/variations_seed_new"
+10-18 19:42:10.774 29051 29051 D CompatChangeReporter: Compat change id reported: 364980165; UID 10307; state: ENABLED
+10-18 19:42:10.774 29051 29051 D CompatChangeReporter: Compat change id reported: 371034303; UID 10307; state: ENABLED
+10-18 19:42:10.780 29051 29051 I cr_LibraryLoader: Successfully loaded native library
+10-18 19:42:10.780 29051 29051 I cr_CachingUmaRecorder: Flushed 18 samples from 18 histograms, 0 samples were dropped.
+10-18 19:42:10.781 29051 29051 I cr_ChildProcLH: ScopedServiceBindingBatch.tryActivate: false
+10-18 19:42:10.781 29051 29051 I cr_VariationsUtils: Loaded seed with age 39794s
+10-18 19:42:10.782 29051 29051 I cr_CombinedPProvider: #registerProvider() provider:WV.qk@a22fe72 isPolicyCacheEnabled:false policyProvidersSize:0
+10-18 19:42:10.783 29051 29051 I cr_PolicyProvider: #setManagerAndSource() 0
+10-18 19:42:10.784 29051 29051 I cr_DisplayManager: Is Display Topology available: false
+10-18 19:42:10.789   635  1781 V GrammaticalInflectionUtils: AttributionSource: AttributionSource { uid = 99113, packageName = null, attributionTag = null, token = android.os.Binder@30f0c69, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 19:42:10.794 29051 29051 I cr_CombinedPProvider: #linkNativeInternal() 1
+10-18 19:42:10.794 29051 29051 I cr_AppResProvider: #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+10-18 19:42:10.794 29051 29051 I cr_PolicyProvider: #notifySettingsAvailable() 0
+10-18 19:42:10.794 29051 29051 I cr_CombinedPProvider: #onSettingsAvailable() 0
+10-18 19:42:10.794 29051 29051 I cr_CombinedPProvider: #flushPolicies()
+10-18 19:42:10.796   953   953 D Zygote  : Forked child process 29075
+10-18 19:42:10.798 29075 29075 I Zygote  : Process 29075 created for com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-18 19:42:10.799 29075 29075 I ocessService0:0: Using generational CollectorTypeCMC GC.
+10-18 19:42:10.799 29075 29075 W ocessService0:0: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:10.799 29075 29075 W ocessService0:0: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:10.802 29075 29075 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:10.805   635   869 I ActivityManager: Start proc 29075:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i113 for bound-service {io.github.baitian6641.cloudydata/org.chromium.content.app.SandboxedProcessService0:0}
+10-18 19:42:10.809 29075 29075 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+10-18 19:42:10.809 29075 29075 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-18 19:42:10.811 29075 29075 E ActivityThread: ConnectivityService is null in handleBindApplication!
+--------- beginning of kernel
+10-18 19:42:10.912     0     0 W servicemanager: Isolated app with UID 99113 requested 'network_management', but the service is not allowed for isolated apps.
+10-18 19:42:10.914     0     0 W servicemanager: Isolated app with UID 99113 requested 'connectivity', but the service is not allowed for isolated apps.
+10-18 19:42:10.814   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99113
+10-18 19:42:10.815 29075 29075 I cr_WebViewApkApp: version=145.0.7632.218 (763221809) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 splits=<none>
+10-18 19:42:10.816   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99113/pid_29075
+10-18 19:42:10.819 29075 29075 I cr_ChildProcessService: Creating new ChildProcessService pid=29075
+10-18 19:42:10.922     0     0 W servicemanager: Isolated app with UID 99113 requested 'content_capture', but the service is not allowed for isolated apps.
+10-18 19:42:10.832 29051 29085 W chromium: [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+10-18 19:42:10.837 29051 29051 W chromium: [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+10-18 19:42:10.838   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.841  1553  1553 D BoundBrokerSvc: onRebind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+10-18 19:42:10.864   635  1789 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{1fc19ac io.github.baitian6641.cloudy.terminal.test/10236} BLOCKED
+10-18 19:42:10.864   635  1789 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{acf27b9 io.github.baitian6641.cloudy.console/10234} BLOCKED
+10-18 19:42:10.864   635  1789 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{28c160a io.github.baitian6641.cloudy.testing.ime.test/10237} BLOCKED
+10-18 19:42:10.873 29051 29095 W cr_media: BLUETOOTH_CONNECT permission is missing.
+10-18 19:42:10.873 29051 29095 W cr_media: getBluetoothAdapter() requires BLUETOOTH permission
+10-18 19:42:10.873 29051 29095 W cr_media: registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+10-18 19:42:10.875 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.log"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.log.level"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.log.prefix"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.gallium.print.options"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.log.file.auto"
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.log.file"
+10-18 19:42:10.876 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.876 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.876 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.877 29051 29095 D AudioSystem: onNewService: media.audio_policy service obtained 0x7d203821fde0
+10-18 19:42:10.878 29051 29095 D AudioSystem: getService: IAudioPolicyService retrieved: 0x7d203821fde0  cached: 0x7d203821fde0
+10-18 19:42:10.882 29075 29092 I cr_LibraryLoader: Successfully loaded native library
+10-18 19:42:10.882 29075 29092 I cr_CachingUmaRecorder: Flushed 2 samples from 2 histograms, 0 samples were dropped.
+10-18 19:42:10.884 29051 29051 W HWUI    : Unknown dataspace 0
+10-18 19:42:10.988     0     0 I servicemanager: Caller(pid=29051,uid=10307,sid=u:r:untrusted_app:s0:c51,c257,c512,c768) Found android.hardware.graphics.allocator.IAllocator/default in device VINTF manifest.
+10-18 19:42:10.888 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.888 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.889   635  1789 W InputChannel-JNI: Channel already disposed.
+10-18 19:42:10.889 29051 29105 D vulkan  : searching for layers in '/data/app/~~CYZKt2BKkEwwG4j9qJysjw==/io.github.baitian6641.cloudydata-javMLo9rvNrXoWhkbsp4Fg==/lib/x86_64'
+10-18 19:42:10.889 29051 29105 D vulkan  : searching for layers in '/data/app/~~CYZKt2BKkEwwG4j9qJysjw==/io.github.baitian6641.cloudydata-javMLo9rvNrXoWhkbsp4Fg==/base.apk!/lib/x86_64'
+10-18 19:42:10.889 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.890 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.890 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.890 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.891 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.891 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.891 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.991     0     0 I servicemanager: Caller(pid=29051,uid=10307,sid=u:r:untrusted_app:s0:c51,c257,c512,c768) Found android.hardware.graphics.allocator.IAllocator/default in device VINTF manifest.
+10-18 19:42:10.995     0     0 I servicemanager: Caller(pid=29051,uid=10307,sid=u:r:untrusted_app:s0:c51,c257,c512,c768) Found mapper/ranchu in device VINTF manifest.
+10-18 19:42:10.893 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.893 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.893 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.trace"
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.trace.per.submit"
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.trace.frame"
+10-18 19:42:10.893 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.trace.trigger"
+10-18 19:42:10.896 29051 29112 I CameraManagerGlobal: Connecting to camera service
+10-18 19:42:10.902 29051 29109 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.926 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.wsi.debug"
+10-18 19:42:10.926 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.926 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.926 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.926 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.928 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.wsi.present.mode"
+10-18 19:42:10.928 29051 29105 W libc    : Access denied finding property "vendor.mesa.vk.wsi.headless.swapchain"
+10-18 19:42:10.928 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.929 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.929 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.929 29051 29105 E MESA    : Failed to open rendernode: No such file or directory
+10-18 19:42:10.930 29051 29105 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+10-18 19:42:10.934 29051 29051 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@e27b74a
+10-18 19:42:10.935   635  1789 D CoreBackPreview: Window{d5fcdcc u0 io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@7d80a64, mPriority=-1, mIsAnimationCallback=false, mOverrideBehavior=0}
+10-18 19:42:10.936 29075 29092 W chromium: [WARNING:content/child/runtime_features.cc:564] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+10-18 19:42:10.936 29075 29092 W chromium: [WARNING:content/child/runtime_features.cc:589] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+10-18 19:42:10.936 29075 29092 W chromium: [WARNING:content/child/runtime_features.cc:610] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+10-18 19:42:10.939   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:10.945 29051 29051 D VRI[RendererProbeActivity]: WindowInsets changed: 2880x1800 statusBars:[0,36,0,0] navigationBars:[0,0,0,48] mandatorySystemGestures:[0,36,0,48] 
+10-18 19:42:10.949 29051 29051 I HWUI    : Using FreeType backend (prop=Auto)
+10-18 19:42:10.956   635   869 D WindowManager: setClientSurface Surface(name=VRI-io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity#7996)/@0x8b933ce for d5fcdcc io.github.baitian6641.cloudydata/io.github.baitian6641.cloudydata.debug.RendererProbeActivity
+10-18 19:42:10.963 29051 29051 I Surface : Creating surface for consumer unnamed-29051-0 with slotExpansion=1 for 64 slots
+10-18 19:42:10.964 29051 29051 I Surface : Creating surface for consumer VRI[RendererProbeActivity]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+10-18 19:42:10.965  1238  2030 I FontLog : Received query name=Google Sans&weight=700&besteffort=false, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:10.965  1238  2030 I FontLog : Query [name=Google Sans&weight=700&besteffort=false] resolved to {Google Sans, wdth 100.0, wght 700, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.968  1238  2030 I FontLog : Font PFD returned from cache for {Google Sans, wdth 100.0, wght 700, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.969  1238  2030 I FontLog : Fetch {Google Sans, wdth 100.0, wght 700, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:10.972  1238  2030 I FontLog : Pulling font file for id = 401, cache size = 19 [CONTEXT service_id=132 ]
+10-18 19:42:10.974  1238  2030 I FontLog : Received query name=Noto Color Emoji Compat&weight=400&besteffort=false, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:10.974  1238  2030 I FontLog : Query [name=Noto Color Emoji Compat&weight=400&besteffort=false] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.975  1238  2030 I FontLog : Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:10.976  1238  2030 I FontLog : Pulling font file for id = 402, cache size = 18 [CONTEXT service_id=132 ]
+10-18 19:42:10.977  1238  1252 I FontLog : Received query name=Google Sans Flex&weight=400&besteffort=false, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:10.977  1238  1252 I FontLog : Query [name=Google Sans Flex&weight=400&besteffort=false] resolved to {Google Sans Flex, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.977  1238  1252 I FontLog : Font PFD returned from cache for {Google Sans Flex, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.978  1238  1252 I FontLog : Fetch {Google Sans Flex, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:10.978  1238  1252 I FontLog : Pulling font file for id = 403, cache size = 19 [CONTEXT service_id=132 ]
+10-18 19:42:10.979  1238  1252 I FontLog : Received query name=Google Sans&weight=400&besteffort=false, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:10.979  1238  1252 I FontLog : Query [name=Google Sans&weight=400&besteffort=false] resolved to {Google Sans, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.980  1238  1252 I FontLog : Font PFD returned from cache for {Google Sans, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.980  1238  1252 I FontLog : Fetch {Google Sans, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:10.981  1238  1252 I FontLog : Pulling font file for id = 404, cache size = 17 [CONTEXT service_id=132 ]
+10-18 19:42:10.982  1238  1252 I FontLog : Received query name=Google Sans&weight=500&besteffort=false, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:10.982  1238  1252 I FontLog : Query [name=Google Sans&weight=500&besteffort=false] resolved to {Google Sans, wdth 100.0, wght 500, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.982  1238  1252 I FontLog : Font PFD returned from cache for {Google Sans, wdth 100.0, wght 500, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:10.982  1238  1252 I FontLog : Fetch {Google Sans, wdth 100.0, wght 500, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:10.983  1238  1252 I FontLog : Pulling font file for id = 405, cache size = 18 [CONTEXT service_id=132 ]
+10-18 19:42:10.984   902   995 W Looper  : Slow dispatch took 31ms wmshell.anim app=com.android.systemui main=false group=TOP_APP h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@ca4952e m=0
+10-18 19:42:10.987   902   967 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#1223) android.os.BinderProxy@fd6048b@0
+10-18 19:42:10.991   635   655 V WindowManager: Finish Transition (#1223): created at 10-18 19:42:10.424 collect-started=0.025ms request-sent=5.107ms started=6.183ms ready=26.25ms sent=27.042ms commit=16.847ms finished=565.994ms
+10-18 19:42:10.996   902   967 V WindowManagerShell: Track 0 became idle
+10-18 19:42:10.996   902   967 V WindowManagerShell: All active transition animations finished
+10-18 19:42:10.997 20386 20386 D VRI[WorkspaceActivity]: visibilityChanged oldVisibility=true newVisibility=false
+10-18 19:42:10.999   635   788 D WifiClientModeImpl[8694:wlan0]: updateLinkLayerStatsRssiSpeedFrequencyCapabilities rssi=-50 TxLinkspeed=6 freq=2437 RxLinkSpeed=2
+10-18 19:42:11.000   635   788 D WifiDataStall: tx tput in kbps: 37000
+10-18 19:42:11.000   635   788 D WifiDataStall: rx tput in kbps: 37000
+10-18 19:42:11.000   635   788 V WifiConfigManager: Updating scan detail cache freq=2437 BSSID=02:15:b2:00:00:01 RSSI=-50 for "AndroidWifi"NONE
+10-18 19:42:11.000   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:11.000   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:11.000   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:11.000   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:11.001   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:11.001   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:11.001   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:11.001   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:11.008   635   788 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+10-18 19:42:11.008   635   788 D WifiScoreCard: BSSID update SIGNAL_POLL ID: 598476588 SSID: "AndroidWifi", BSSID: 02:15:b2:00:00:01, MAC: 02:15:cc:00:00:00, IP: /10.0.2.16, Security type: 0, Supplicant state: COMPLETED, Wi-Fi standard: legacy, RSSI: -50, Link speed: 6Mbps, Tx Link speed: 6Mbps, Max Supported Tx Link speed: 54Mbps, Calculated Tx : 0Mbps, Rx Link speed: 2Mbps, Max Supported Rx Link speed: 54Mbps, Calculated Rx : 0Mbps, Frequency: 2437MHz, Net ID: 0, Metered hint: false, score: 100, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>"AndroidWifi"openMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>
+10-18 19:42:11.008   635   788 D WifiScoreCard: txRate: 1 txSpeed: 6
+10-18 19:42:11.008   635   788 D WifiScoreCard: network update SIGNAL_POLL "AndroidWifi" ID: 42308526 RSSI -50 txSpeed -1
+10-18 19:42:11.008   635   788 D WifiClientModeImpl[8694:wlan0]:  ClientModeImpl$L2ConnectedState screen=on 1 0 "AndroidWifi" 02:15:b2:00:00:01 rssi=-50 f=2437 sc=100 link=6 tx=0.0, 0.0, 0.0 rx=0.0 bcn=0 [on:0 tx:0 rx:0 period:3015] from screen [on:0 period:1369168576] score=100
+10-18 19:42:11.038   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.095   635   655 I ActivityTaskManager: Displayed io.github.baitian6641.cloudydata/.debug.RendererProbeActivity for user 0: +670ms
+10-18 19:42:11.108 29051 29051 I CloudyRendererProbe: apply probe-line r1 640.0x400.0dp
+10-18 19:42:11.132   635   749 I ImeTracker: io.github.baitian6641.cloudydata:51f13060: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false userId 0 displayId 0
+10-18 19:42:11.142   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.142   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.143 29051 29051 D InsetsController: hide(ime())
+10-18 19:42:11.143 29051 29051 I ImeTracker: io.github.baitian6641.cloudydata:51f13060: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-18 19:42:11.158   635  1781 W InputChannel-JNI: Channel already disposed.
+10-18 19:42:11.160   635  1781 I ImeTracker: system_server:5cbb3610: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false displayId 0
+10-18 19:42:11.162  1545  1545 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2259 
+10-18 19:42:11.163   635   658 I ImeTracker: system_server:5cbb3610: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-18 19:42:11.164  1545  1545 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():103 repeatCheckTimes = 0, locked = false
+10-18 19:42:11.165  1545  1545 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1446 onStartInput(EditorInfo{EditorInfo{packageName=io.github.baitian6641.cloudydata, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=12000000, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-18 19:42:11.166  1545  1545 I AndroidIME: LatinIMEBase.updateInputViewCoverNavigation():322 Update input view padding, isNavbarOverInputWindow=true, bottom inset=84
+10-18 19:42:11.167  1545  1545 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():103 repeatCheckTimes = 1, locked = false
+10-18 19:42:11.168   635  1781 W PackageConfigPersister: App-specific configuration not found for packageName: io.github.baitian6641.cloudydata and userId: 0
+10-18 19:42:11.241   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.242   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.303   635   876 I Surface : Creating surface for consumer unnamed-635-280 with slotExpansion=1 for 64 slots
+10-18 19:42:11.303   635   876 I Surface : Creating surface for consumer ImageReader-2304x1440f1m1-635-268 with slotExpansion=1 for 64 slots
+10-18 19:42:11.303   635   876 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+10-18 19:42:11.344   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.344   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.359   635   663 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:11.371   635   876 E ConsumerBase: [ImageReader-2304x1440f1m1-635-268] abandonLocked: ConsumerBase is abandoned!
+10-18 19:42:11.391  1238  2030 I FontLog : Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-18 19:42:11.391  1238  2030 I FontLog : Query [emojicompat-emoji-font] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} [CONTEXT service_id=132 ]
+10-18 19:42:11.392  1238  2030 I FontLog : Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false}, isVf false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-18 19:42:11.393  1238  2030 I FontLog : Pulling font file for id = 406, cache size = 18 [CONTEXT service_id=132 ]
+10-18 19:42:11.398  1238  2030 I FontLog : Pulling font file for id = 406, cache size = 18 [CONTEXT service_id=132 ]
+10-18 19:42:11.446   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.446   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.473   561   614 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:11.477   561   614 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:11.546   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.546   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.609 29051 29055 I 6641.cloudydata: Compiler allocated 5239KB to compile void android.view.ViewRootImpl.performTraversals(long)
+10-18 19:42:11.647   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.647   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.747   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:11.854   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:12.570   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:12.670   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:12.771   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:12.871   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:12.985   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 19:42:12.985   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 19:42:12.985   635   794 D InetDiagMessage: Destroyed live tcp sockets for uids={10151} in 0ms
+10-18 19:42:12.985   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 19:42:12.986   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 19:42:12.986   635   794 D InetDiagMessage: Destroyed live tcp sockets for uids={20151} in 1ms
+10-18 19:42:14.012   635   788 D WifiClientModeImpl[8694:wlan0]: updateLinkLayerStatsRssiSpeedFrequencyCapabilities rssi=-50 TxLinkspeed=6 freq=2437 RxLinkSpeed=2
+10-18 19:42:14.012   635   788 D WifiDataStall: tx tput in kbps: 37000
+10-18 19:42:14.012   635   788 D WifiDataStall: rx tput in kbps: 37000
+10-18 19:42:14.012   635   788 V WifiConfigManager: Updating scan detail cache freq=2437 BSSID=02:15:b2:00:00:01 RSSI=-50 for "AndroidWifi"NONE
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:14.012   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:14.013   635   788 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+10-18 19:42:14.014   635   788 D WifiScoreCard: BSSID update SIGNAL_POLL ID: 598476588 SSID: "AndroidWifi", BSSID: 02:15:b2:00:00:01, MAC: 02:15:cc:00:00:00, IP: /10.0.2.16, Security type: 0, Supplicant state: COMPLETED, Wi-Fi standard: legacy, RSSI: -50, Link speed: 6Mbps, Tx Link speed: 6Mbps, Max Supported Tx Link speed: 54Mbps, Calculated Tx : 0Mbps, Rx Link speed: 2Mbps, Max Supported Rx Link speed: 54Mbps, Calculated Rx : 0Mbps, Frequency: 2437MHz, Net ID: 0, Metered hint: false, score: 100, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>"AndroidWifi"openMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>
+10-18 19:42:14.014   635   788 D WifiScoreCard: txRate: 1 txSpeed: 6
+10-18 19:42:14.014   635   788 D WifiScoreCard: network update SIGNAL_POLL "AndroidWifi" ID: 42308526 RSSI -50 txSpeed -1
+10-18 19:42:14.014   635   788 D WifiClientModeImpl[8694:wlan0]:  ClientModeImpl$L2ConnectedState screen=on 1 0 "AndroidWifi" 02:15:b2:00:00:01 rssi=-50 f=2437 sc=100 link=6 tx=0.0, 0.0, 0.0 rx=0.0 bcn=0 [on:0 tx:0 rx:0 period:3006] from screen [on:0 period:1369171582] score=100
+10-18 19:42:14.115   635  1668 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+10-18 19:42:15.131  1020  1185 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+10-18 19:42:15.131  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+10-18 19:42:15.131  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.131  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.131  1020  1185 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+10-18 19:42:15.133  1020  1185 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+10-18 19:42:15.133  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+10-18 19:42:15.133  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.133  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.133  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+10-18 19:42:15.134  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+10-18 19:42:15.134  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.134  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.134  1020  1185 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+10-18 19:42:15.134  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+10-18 19:42:15.134  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.134  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.134  1020  1185 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+10-18 19:42:15.134  1020  1185 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+10-18 19:42:15.134  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+10-18 19:42:15.134  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.134  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.134  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+10-18 19:42:15.134  1020  1185 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+10-18 19:42:15.134  1020  1185 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+10-18 19:42:15.134  1020  1185 V SatelliteController: satelliteConfigParser is not ready
+10-18 19:42:15.134  1020  1185 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+10-18 19:42:15.438 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:uiautomator dump /sdcard/cloudy-renderer-ui.xml'
+10-18 19:42:15.538 29129 29129 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 0 <<<<<<
+10-18 19:42:15.543 29129 29129 I AndroidRuntime: Using default boot image
+10-18 19:42:15.543 29129 29129 I AndroidRuntime: Leaving lock profiling enabled
+10-18 19:42:15.545 29129 29129 I app_process: Core platform API enforcement enabled from the hiddenapi_platform_enforcement flag and the device API level
+10-18 19:42:15.545 29129 29129 I app_process: Using generational CollectorTypeCMC GC.
+10-18 19:42:15.652 29129 29129 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-18 19:42:15.663 29129 29129 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:15.663 29129 29129 D app_process: u_setTimeZoneFilesDirectory("/apex/com.android.tzdata/etc/tz/versioned/10/icu") succeeded. 
+10-18 19:42:15.663 29129 29129 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt78l.dat
+10-18 19:42:15.664 29129 29129 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:15.665 29129 29129 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:15.665 29129 29129 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+10-18 19:42:15.666 29129 29129 W app_process: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:15.666 29129 29129 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:15.667 29129 29129 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*736588042]#PCL[/system/framework/android.test.mock.jar*4008448454]} | PCL[])
+10-18 19:42:15.668 29129 29129 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*805256125]{PCL[/system/framework/android.test.base.jar*736588042]#PCL[/system/framework/android.test.mock.jar*4008448454]}#PCL[/system/framework/android.test.base.jar*736588042]} | PCL[/system/framework/android.test.runner.jar*805256125])
+10-18 19:42:15.686 29129 29129 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:15.687 29129 29129 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-18 19:42:15.689 29129 29129 I AconfigPackage: android.media.swcodec.flags is mapped to com.android.media.swcodec
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.permission.flags is mapped to com.android.permission
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.permissioncontroller.flags is mapped to com.android.permission
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.google.android.widevine.flags is mapped to com.google.android.widevine
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.icu is mapped to com.android.i18n
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.appsearch.flags is mapped to com.android.appsearch
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.uprobestats.flags is mapped to com.android.uprobestats
+10-18 19:42:15.690 29129 29129 I AconfigPackage: android.uprobestats.mainline.flags is mapped to com.android.uprobestats
+10-18 19:42:15.690 29129 29129 I AconfigPackage: com.android.crashrecovery.flags is mapped to com.android.crashrecovery
+10-18 19:42:15.691 29129 29129 I AconfigPackage: android.provider.flags is mapped to com.android.configinfrastructure
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.server.deviceconfig is mapped to com.android.configinfrastructure
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.compos.flags is mapped to com.android.compos
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.art.flags is mapped to com.android.art
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.art.rw.flags is mapped to com.android.art
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.libcore is mapped to com.android.art
+10-18 19:42:15.691 29129 29129 I AconfigPackage: android.telecom.flags is mapped to com.android.telephonycore
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.internal.telecom.flags is mapped to com.android.telephonycore
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.telephony.flags is mapped to com.android.telephonycore
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.media.extractor.flags is mapped to com.android.media
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.media.metrics.flags is mapped to com.android.media
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.media.mainline.flags is mapped to com.android.media
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.wifi.flags is mapped to com.android.wifi
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.org.conscrypt.flags is mapped to com.android.conscrypt
+10-18 19:42:15.691 29129 29129 I AconfigPackage: com.android.org.conscrypt.net.flags is mapped to com.android.conscrypt
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.healthfitness.flags is mapped to com.android.healthfitness
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.ipsec.flags is mapped to com.android.ipsec
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.nfc.module.flags is mapped to com.android.nfcservices
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.nfc.module.nonexported.flags is mapped to com.android.nfcservices
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.adservices.ondevicepersonalization.flags is mapped to com.android.ondevicepersonalization
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.adbd.flags is mapped to com.android.adbd
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.bluetooth.beta.flags is mapped to com.android.bt
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.bluetooth.flags is mapped to com.android.bt
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.devicelock.flags is mapped to com.android.devicelock
+10-18 19:42:15.692 29129 29129 I AconfigPackage: android.os.profiling is mapped to com.android.profiling
+10-18 19:42:15.692 29129 29129 I AconfigPackage: android.os.profiling.anomaly.flags is mapped to com.android.profiling
+10-18 19:42:15.692 29129 29129 I AconfigPackage: com.android.os.statsd.flags is mapped to com.android.os.statsd
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.webapp.flags is mapped to com.android.webapp
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.rkpd.flags is mapped to com.android.rkpd
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.cellbroadcastreceiver.flags is mapped to com.android.cellbroadcast
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.adservices.flags is mapped to com.android.adservices
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.sdksandbox.flags is mapped to com.android.adservices
+10-18 19:42:15.693 29129 29129 I AconfigPackage: android.app.sdksandbox.flags is mapped to com.android.adservices
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.uwb.flags is mapped to com.android.uwb
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.ranging.flags is mapped to com.android.uwb
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.npumanager is mapped to com.android.npumanager
+10-18 19:42:15.693 29129 29129 I AconfigPackage: android.graphics.pdf.flags is mapped to com.android.mediaprovider
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.providers.media.flags is mapped to com.android.mediaprovider
+10-18 19:42:15.693 29129 29129 I AconfigPackage: android.graphics.pdf.flags.readonly is mapped to com.android.mediaprovider
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.tethering.mainline.beta is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: android.net.http is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.tethering.readonly.flags is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: android.net.vcn is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.net.flags is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.tethering.flags is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.tethering.beta.test is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.nearby.flags is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.net.thread.flags is mapped to com.android.tethering
+10-18 19:42:15.693 29129 29129 I AconfigPackage: com.android.net.ct.flags is mapped to com.android.tethering
+10-18 19:42:15.694 29129 29129 I AconfigPackage: com.android.system.virtualmachine.flags is mapped to com.android.virt
+10-18 19:42:15.694 29129 29129 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+10-18 19:42:15.695 29129 29129 D UiAutomationConnection: Created on user UserHandle{0}
+10-18 19:42:15.695 29129 29129 I UiAutomation: Initialized for user 0 on display 0
+10-18 19:42:15.695 29129 29129 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-18 19:42:15.696   635   708 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-18 19:42:15.696   635   708 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation, flags=0x0) when called by user 0
+10-18 19:42:15.696   635   708 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:15.698  1605  2241 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:15.698   635   708 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:15.698   635   708 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:15.699   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.699 29129 29141 V UiAutomation: Init UiAutomation@4aa2eee[id=264, displayId=0, flags=0]
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.700   635  1789 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:15.700   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:15.701  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.701   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:15.701   635  1789 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:15.701  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.701  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.701  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.701  1605  2241 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:15.701   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.701   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.702   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.702   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.702   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.702  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.702  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.703   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.703   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.703  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:15.703  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:15.703  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:15.703  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:15.703  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:15.703  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:15.703  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:15.703   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:15.703   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.703   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.703   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.704   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.704   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.705   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.705   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.705   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.705   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.705   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.706  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:15.706  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:15.706  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:15.706  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:15.708  1307  1331 D AccessibilitySourceService: enabled a11y services count 0
+10-18 19:42:15.708  1307  1331 D AccessibilitySourceService: a11y source sending 0 issue to sc
+10-18 19:42:15.708   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.708   635  1151 D SafetySourceDataValidat: No cert check requested for package com.google.android.permissioncontroller
+10-18 19:42:15.709   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.709   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.709   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.709   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.709   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:15.709   635   869 D AccessibilityManagerService: .getAccessibilityShortcutTargets {shortcutType=32, userId=0}
+10-18 19:42:15.710   635   635 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-18 19:42:15.710   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:15.711   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:15.804   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:16.139 29051 29143 D ProfileInstaller: Installing profile for io.github.baitian6641.cloudydata
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed live tcp sockets for uids={10234} in 1ms
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 19:42:16.156   635   794 D InetDiagMessage: Destroyed live tcp sockets for uids={20234} in 1ms
+10-18 19:42:16.718 29051 29051 I cr_A11yState: Enabled accessibility services list updated. []
+10-18 19:42:16.718 29051 29051 D AutofillManager: Fill dialog is enabled:false, hints=[]
+10-18 19:42:16.719 29051 29051 I cr_A11yState: Informing listeners of changes.
+10-18 19:42:16.719 29051 29051 I cr_A11yState: New AccessibilityState: State{isComplexUserInteractionServiceEnabled=false, isTouchExplorationEnabled=false, isPerformGesturesEnabled=false, isAnyAccessibilityServiceEnabled=false, isAccessibilityToolPresent=false, isTextShowPasswordEnabled=true, isOnlyAutofillRunning=false, isOnlyPasswordManagersEnabled=false, isKnownScreenReaderEnabled=false}
+10-18 19:42:16.720 29129 29129 W AccessibilityNodeInfoDumper: Fetch time: 10ms
+10-18 19:42:16.721   635  1781 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:16.721   635  1781 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:16.721   635  1781 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-18 19:42:16.721   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.721   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722  1605  1979 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:16.722 29129 29138 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:16.722 29129 29142 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:16.722  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:16.722  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:16.722  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:16.722  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:16.722  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:16.722  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:16.722   635   635 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-18 19:42:16.722 29129 29129 D AndroidRuntime: Shutting down VM
+10-18 19:42:16.723 29129 29139 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:16.723  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:16.723  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:16.723  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:16.723  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:16.723  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:16.724  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:16.724  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:16.724  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:16.724  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:16.724   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:16.737   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:16.837   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:16.860  1553  1553 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.feedback.internal.IFeedbackService dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+10-18 19:42:17.018   635   788 D WifiClientModeImpl[8694:wlan0]: updateLinkLayerStatsRssiSpeedFrequencyCapabilities rssi=-50 TxLinkspeed=6 freq=2437 RxLinkSpeed=2
+10-18 19:42:17.018   635   788 D WifiDataStall: tx tput in kbps: 37000
+10-18 19:42:17.018   635   788 D WifiDataStall: rx tput in kbps: 37000
+10-18 19:42:17.018   635   788 V WifiConfigManager: Updating scan detail cache freq=2437 BSSID=02:15:b2:00:00:01 RSSI=-50 for "AndroidWifi"NONE
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:17.018   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:17.019   635   788 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+10-18 19:42:17.019   635   788 D WifiScoreCard: BSSID update SIGNAL_POLL ID: 598476588 SSID: "AndroidWifi", BSSID: 02:15:b2:00:00:01, MAC: 02:15:cc:00:00:00, IP: /10.0.2.16, Security type: 0, Supplicant state: COMPLETED, Wi-Fi standard: legacy, RSSI: -50, Link speed: 6Mbps, Tx Link speed: 6Mbps, Max Supported Tx Link speed: 54Mbps, Calculated Tx : 0Mbps, Rx Link speed: 2Mbps, Max Supported Rx Link speed: 54Mbps, Calculated Rx : 0Mbps, Frequency: 2437MHz, Net ID: 0, Metered hint: false, score: 100, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>"AndroidWifi"openMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>
+10-18 19:42:17.019   635   788 D WifiScoreCard: txRate: 1 txSpeed: 6
+10-18 19:42:17.019   635   788 D WifiScoreCard: network update SIGNAL_POLL "AndroidWifi" ID: 42308526 RSSI -50 txSpeed -1
+10-18 19:42:17.019   635   788 D WifiClientModeImpl[8694:wlan0]:  ClientModeImpl$L2ConnectedState screen=on 1 0 "AndroidWifi" 02:15:b2:00:00:01 rssi=-50 f=2437 sc=100 link=6 tx=0.0, 0.0, 0.0 rx=0.0 bcn=0 [on:0 tx:0 rx:0 period:3005] from screen [on:0 period:1369174587] score=100
+10-18 19:42:17.541 25645 25645 I adbd    : adbd service requested 'sync:'
+10-18 19:42:17.547 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:ps -A -o PID,NAME'
+10-18 19:42:17.584 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:kill -9 29075'
+10-18 19:42:17.597   635  1781 I ActivityManager: Process com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 (pid 29075) has died: fg BTOP
+10-18 19:42:17.597   953   953 I Zygote  : Process 29075 exited due to signal 9 (Killed)
+10-18 19:42:17.597 29051 29073 W cr_ChildProcessConn: onServiceDisconnected (crash or killed by oom): pid=29075 bindings:W  S
+10-18 19:42:17.598   635   666 I libprocessgroup: Removed cgroup /sys/fs/cgroup/apps/uid_99113/pid_29075
+10-18 19:42:17.598   635  1781 W ActivityManager: Scheduling restart of crashed service io.github.baitian6641.cloudydata/org.chromium.content.app.SandboxedProcessService0:0 in 1000ms for connection
+10-18 19:42:17.598   635   666 I libprocessgroup: Removed cgroup /sys/fs/cgroup/apps/uid_99113
+10-18 19:42:17.600 29051 29051 E chromium: [ERROR:android_webview/browser/aw_browser_terminator.cc:175] Renderer process (29075) crash detected (code -1).
+10-18 19:42:17.600 29051 29051 I CloudyRendererProbe: reported renderer death 1; recreating
+10-18 19:42:17.606 29051 29051 I ImeTracker: io.github.baitian6641.cloudydata:d509f0d: onRequestHide at ORIGIN_CLIENT reason HIDE_CLOSE_CURRENT_SESSION fromUser false userId 0 displayId 0
+10-18 19:42:17.606   635  1789 V GrammaticalInflectionUtils: AttributionSource: AttributionSource { uid = 99114, packageName = null, attributionTag = null, token = android.os.Binder@30f0c69, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 19:42:17.606 29051 29051 D InsetsController: hide(ime())
+10-18 19:42:17.607 29051 29051 I ImeTracker: io.github.baitian6641.cloudydata:d509f0d: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-18 19:42:17.614   953   953 D Zygote  : Forked child process 29149
+10-18 19:42:17.615   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99114
+10-18 19:42:17.615   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99114/pid_29149
+10-18 19:42:17.619 29149 29149 I Zygote  : Process 29149 created for com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1
+10-18 19:42:17.619 29149 29149 I ocessService0:1: Using generational CollectorTypeCMC GC.
+10-18 19:42:17.620   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:17.620 29149 29149 W ocessService0:1: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:17.620 29149 29149 W ocessService0:1: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:17.624 29149 29149 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:17.626   635  1151 I ActivityManager: Start proc 29149:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1/u0i114 for bound-service {io.github.baitian6641.cloudydata/org.chromium.content.app.SandboxedProcessService0:1}
+10-18 19:42:17.626   441  3288 I netd    : tetherGetStats() -> {[]} <1.43ms>
+10-18 19:42:17.632 29149 29149 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+10-18 19:42:17.632 29149 29149 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-18 19:42:17.635 29149 29149 E ActivityThread: ConnectivityService is null in handleBindApplication!
+10-18 19:42:17.735     0     0 W servicemanager: Isolated app with UID 99114 requested 'network_management', but the service is not allowed for isolated apps.
+10-18 19:42:17.738     0     0 W servicemanager: Isolated app with UID 99114 requested 'connectivity', but the service is not allowed for isolated apps.
+10-18 19:42:17.637 29149 29149 I cr_WebViewApkApp: version=145.0.7632.218 (763221809) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 splits=<none>
+10-18 19:42:17.640 29149 29149 I cr_ChildProcessService: Creating new ChildProcessService pid=29149
+10-18 19:42:17.643 29149 29159 I cr_LibraryLoader: Successfully loaded native library
+10-18 19:42:17.643 29149 29149 I cr_ChildProcessService: Destroying ChildProcessService pid=29149
+10-18 19:42:17.643   635  1789 I ActivityManager: Killing 29149:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1/u0a307i114 (adj 0): isolated not needed
+10-18 19:42:17.743     0     0 W servicemanager: Isolated app with UID 99114 requested 'content_capture', but the service is not allowed for isolated apps.
+10-18 19:42:17.751     0     0 W binder_debug: 4 callbacks suppressed
+10-18 19:42:17.751     0     0 I binder  : undelivered transaction 5534399, process died.
+10-18 19:42:17.648   953   953 I Zygote  : Process 29149 exited due to signal 9 (Killed)
+10-18 19:42:17.651   635   665 E libprocessgroup: Failed to write '29149' to /sys/fs/cgroup/apps/uid_99114/pid_29149/cgroup.procs: No such process
+10-18 19:42:17.652   635   665 E ActivityManager: Unable to create process group for com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 (uid: 99114, pid: 29149), errno: -3
+10-18 19:42:17.652   291   291 W lowmemorykiller: Failed to open /proc/29149/oom_score_adj; errno=2: process 29149 might have been killed
+10-18 19:42:17.757   635   644 I system_server: Background young concurrent mark compact GC freed 21MB AllocSpace bytes, 81(1876KB) LOS objects, 34% free, 45MB/69MB, paused 693us,1.749ms total 104.136ms
+10-18 19:42:17.857   635  1781 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{1fc19ac io.github.baitian6641.cloudy.terminal.test/10236} BLOCKED
+10-18 19:42:17.857   635  1781 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{acf27b9 io.github.baitian6641.cloudy.console/10234} BLOCKED
+10-18 19:42:17.857   635  1781 I AppsFilter: interaction: PackageSetting{c51db6f io.github.baitian6641.cloudydata/10307} -> PackageSetting{28c160a io.github.baitian6641.cloudy.testing.ime.test/10237} BLOCKED
+10-18 19:42:17.860   635  1781 V GrammaticalInflectionUtils: AttributionSource: AttributionSource { uid = 99115, packageName = null, attributionTag = null, token = android.os.Binder@30f0c69, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+10-18 19:42:17.866   953   953 D Zygote  : Forked child process 29162
+10-18 19:42:17.866   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99115
+10-18 19:42:17.867   635   665 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_99115/pid_29162
+10-18 19:42:17.869 29162 29162 I Zygote  : Process 29162 created for com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2
+10-18 19:42:17.869 29162 29162 I ocessService0:2: Using generational CollectorTypeCMC GC.
+10-18 19:42:17.870 29162 29162 W ocessService0:2: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:17.870 29162 29162 W ocessService0:2: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:17.872 29162 29162 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:17.874   635  1781 I ActivityManager: Start proc 29162:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2/u0i115 for bound-service {io.github.baitian6641.cloudydata/org.chromium.content.app.SandboxedProcessService0:2}
+10-18 19:42:17.879 29162 29162 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+10-18 19:42:17.879 29162 29162 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-18 19:42:17.982     0     0 W servicemanager: Isolated app with UID 99115 requested 'network_management', but the service is not allowed for isolated apps.
+10-18 19:42:17.880 29162 29162 E ActivityThread: ConnectivityService is null in handleBindApplication!
+10-18 19:42:17.882 29162 29162 I cr_WebViewApkApp: version=145.0.7632.218 (763221809) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2 splits=<none>
+10-18 19:42:17.984     0     0 W servicemanager: Isolated app with UID 99115 requested 'connectivity', but the service is not allowed for isolated apps.
+10-18 19:42:17.987     0     0 W servicemanager: Isolated app with UID 99115 requested 'content_capture', but the service is not allowed for isolated apps.
+10-18 19:42:17.885 29162 29162 I cr_ChildProcessService: Creating new ChildProcessService pid=29162
+10-18 19:42:17.885 29051 29051 I CloudyRendererProbe: apply probe-line r1 640.0x400.0dp
+10-18 19:42:17.888   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:17.890 29162 29172 I cr_LibraryLoader: Successfully loaded native library
+10-18 19:42:17.891 29162 29172 I cr_CachingUmaRecorder: Flushed 2 samples from 2 histograms, 0 samples were dropped.
+10-18 19:42:17.903 29162 29172 W chromium: [WARNING:content/child/runtime_features.cc:564] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+10-18 19:42:17.903 29162 29172 W chromium: [WARNING:content/child/runtime_features.cc:589] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+10-18 19:42:17.903 29162 29172 W chromium: [WARNING:content/child/runtime_features.cc:610] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+10-18 19:42:17.988   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:18.089   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:18.189   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:18.598 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:uiautomator dump /sdcard/cloudy-renderer-ui.xml'
+10-18 19:42:18.655 29183 29183 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 0 <<<<<<
+10-18 19:42:18.658 29183 29183 I AndroidRuntime: Using default boot image
+10-18 19:42:18.659 29183 29183 I AndroidRuntime: Leaving lock profiling enabled
+10-18 19:42:18.660 29183 29183 I app_process: Core platform API enforcement enabled from the hiddenapi_platform_enforcement flag and the device API level
+10-18 19:42:18.661 29183 29183 I app_process: Using generational CollectorTypeCMC GC.
+10-18 19:42:18.741 29183 29183 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-18 19:42:18.749 29183 29183 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:18.749 29183 29183 D app_process: u_setTimeZoneFilesDirectory("/apex/com.android.tzdata/etc/tz/versioned/10/icu") succeeded. 
+10-18 19:42:18.749 29183 29183 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt78l.dat
+10-18 19:42:18.749 29183 29183 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:18.750 29183 29183 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-18 19:42:18.751 29183 29183 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+10-18 19:42:18.751 29183 29183 W app_process: Unexpected CPU variant for x86: x86_64.
+10-18 19:42:18.751 29183 29183 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default
+10-18 19:42:18.752 29183 29183 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*736588042]#PCL[/system/framework/android.test.mock.jar*4008448454]} | PCL[])
+10-18 19:42:18.753 29183 29183 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*805256125]{PCL[/system/framework/android.test.base.jar*736588042]#PCL[/system/framework/android.test.mock.jar*4008448454]}#PCL[/system/framework/android.test.base.jar*736588042]} | PCL[/system/framework/android.test.runner.jar*805256125])
+10-18 19:42:18.767 29183 29183 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-18 19:42:18.768 29183 29183 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-18 19:42:18.770 29183 29183 I AconfigPackage: android.media.swcodec.flags is mapped to com.android.media.swcodec
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.permission.flags is mapped to com.android.permission
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.permissioncontroller.flags is mapped to com.android.permission
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.google.android.widevine.flags is mapped to com.google.android.widevine
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.icu is mapped to com.android.i18n
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.appsearch.flags is mapped to com.android.appsearch
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.uprobestats.flags is mapped to com.android.uprobestats
+10-18 19:42:18.770 29183 29183 I AconfigPackage: android.uprobestats.mainline.flags is mapped to com.android.uprobestats
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.crashrecovery.flags is mapped to com.android.crashrecovery
+10-18 19:42:18.770 29183 29183 I AconfigPackage: android.provider.flags is mapped to com.android.configinfrastructure
+10-18 19:42:18.770 29183 29183 I AconfigPackage: com.android.server.deviceconfig is mapped to com.android.configinfrastructure
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.compos.flags is mapped to com.android.compos
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.art.flags is mapped to com.android.art
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.art.rw.flags is mapped to com.android.art
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.libcore is mapped to com.android.art
+10-18 19:42:18.771 29183 29183 I AconfigPackage: android.telecom.flags is mapped to com.android.telephonycore
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.internal.telecom.flags is mapped to com.android.telephonycore
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.telephony.flags is mapped to com.android.telephonycore
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.media.extractor.flags is mapped to com.android.media
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.media.metrics.flags is mapped to com.android.media
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.media.mainline.flags is mapped to com.android.media
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.wifi.flags is mapped to com.android.wifi
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.org.conscrypt.flags is mapped to com.android.conscrypt
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.org.conscrypt.net.flags is mapped to com.android.conscrypt
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.healthfitness.flags is mapped to com.android.healthfitness
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.ipsec.flags is mapped to com.android.ipsec
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.nfc.module.flags is mapped to com.android.nfcservices
+10-18 19:42:18.771 29183 29183 I AconfigPackage: com.android.nfc.module.nonexported.flags is mapped to com.android.nfcservices
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.adservices.ondevicepersonalization.flags is mapped to com.android.ondevicepersonalization
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.adbd.flags is mapped to com.android.adbd
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.bluetooth.beta.flags is mapped to com.android.bt
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.bluetooth.flags is mapped to com.android.bt
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.devicelock.flags is mapped to com.android.devicelock
+10-18 19:42:18.772 29183 29183 I AconfigPackage: android.os.profiling is mapped to com.android.profiling
+10-18 19:42:18.772 29183 29183 I AconfigPackage: android.os.profiling.anomaly.flags is mapped to com.android.profiling
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.os.statsd.flags is mapped to com.android.os.statsd
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.webapp.flags is mapped to com.android.webapp
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.rkpd.flags is mapped to com.android.rkpd
+10-18 19:42:18.772 29183 29183 I AconfigPackage: com.android.cellbroadcastreceiver.flags is mapped to com.android.cellbroadcast
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.adservices.flags is mapped to com.android.adservices
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.sdksandbox.flags is mapped to com.android.adservices
+10-18 19:42:18.773 29183 29183 I AconfigPackage: android.app.sdksandbox.flags is mapped to com.android.adservices
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.uwb.flags is mapped to com.android.uwb
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.ranging.flags is mapped to com.android.uwb
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.npumanager is mapped to com.android.npumanager
+10-18 19:42:18.773 29183 29183 I AconfigPackage: android.graphics.pdf.flags is mapped to com.android.mediaprovider
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.providers.media.flags is mapped to com.android.mediaprovider
+10-18 19:42:18.773 29183 29183 I AconfigPackage: android.graphics.pdf.flags.readonly is mapped to com.android.mediaprovider
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.tethering.mainline.beta is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: android.net.http is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.tethering.readonly.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: android.net.vcn is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.net.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.tethering.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.tethering.beta.test is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.nearby.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.net.thread.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.net.ct.flags is mapped to com.android.tethering
+10-18 19:42:18.773 29183 29183 I AconfigPackage: com.android.system.virtualmachine.flags is mapped to com.android.virt
+10-18 19:42:18.773 29183 29183 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+10-18 19:42:18.774 29183 29183 D UiAutomationConnection: Created on user UserHandle{0}
+10-18 19:42:18.774 29183 29183 I UiAutomation: Initialized for user 0 on display 0
+10-18 19:42:18.774 29183 29183 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-18 19:42:18.775   635  1789 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-18 19:42:18.775   635  1789 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation, flags=0x0) when called by user 0
+10-18 19:42:18.775   635  1789 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:18.776   635  1789 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:18.776  1605  2241 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.777  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.777  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.778  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:18.778  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:18.778  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:18.778   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.778   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779 29183 29195 V UiAutomation: Init UiAutomation@c51dd89[id=265, displayId=0, flags=0]
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635  1789 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:18.779   635  1789 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.779   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.780   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.781   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.782   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.782   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.782   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.782   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:18.783   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:18.783   635  1151 D AccessibilityManagerService: .getAccessibilityShortcutTargets {shortcutType=32, userId=0}
+10-18 19:42:18.784  1307  1331 D AccessibilitySourceService: enabled a11y services count 0
+10-18 19:42:18.784  1307  1331 D AccessibilitySourceService: a11y source sending 0 issue to sc
+10-18 19:42:18.784   635   635 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-18 19:42:18.786   635  1135 D SafetySourceDataValidat: No cert check requested for package com.google.android.permissioncontroller
+10-18 19:42:18.787   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:18.788  1605  2241 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:18.790  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.790  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.790  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.790  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.790  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.790  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.790  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.790  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.790  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.790  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.791  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:18.791  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:18.791  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:18.791  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:18.791  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:18.791  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:18.791  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:18.791  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:18.791   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:18.887   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:19.489   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:19.587   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:19.687   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:19.787   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:19.789 29183 29183 W AccessibilityNodeInfoDumper: Fetch time: 4ms
+10-18 19:42:19.789   635  1135 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+10-18 19:42:19.791   635  1135 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-18 19:42:19.791   635  1135 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-18 19:42:19.791   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792 29183 29183 D AndroidRuntime: Shutting down VM
+10-18 19:42:19.792 29183 29192 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:19.792  1605  2241 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-18 19:42:19.792 29183 29196 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:19.792 29183 29194 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.792  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:19.793  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:19.793   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.793   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.793  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:19.793   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.793   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.793   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.793  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:19.793  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:19.793  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:19.793  1605  1832 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+10-18 19:42:19.793  1605  1832 I AiAiEcho: EchoTargets: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: Filtered by AiAi flag check: 
+10-18 19:42:19.793  1605  1832 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+10-18 19:42:19.793  1605  1832 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+10-18 19:42:19.793  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-18 19:42:19.793  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+10-18 19:42:19.794  1605  1832 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-18 19:42:19.794   902  1073 I AmbientCueRepository: Receiving SmartSpace targets # 0
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+10-18 19:42:19.794   635   635 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-18 19:42:19.888   508   559 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+10-18 19:42:20.023   635   788 D WifiClientModeImpl[8694:wlan0]: updateLinkLayerStatsRssiSpeedFrequencyCapabilities rssi=-50 TxLinkspeed=6 freq=2437 RxLinkSpeed=2
+10-18 19:42:20.023   635   788 D WifiDataStall: tx tput in kbps: 37000
+10-18 19:42:20.024   635   788 D WifiDataStall: rx tput in kbps: 37000
+10-18 19:42:20.024   635   788 V WifiConfigManager: Updating scan detail cache freq=2437 BSSID=02:15:b2:00:00:01 RSSI=-50 for "AndroidWifi"NONE
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  utilization (LLS) 80 isBluetoothConnected: false final utilization: 80
+10-18 19:42:20.024   635   788 D WifiThroughputPredictor:  BW: 0 RSSI: -50 Nss: 1 Mode: 1 symDur: 4000 snrDb 30 bitPerTone: 4500 rate: 54 throughput: 37
+10-18 19:42:20.025   635   788 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+10-18 19:42:20.025   635   788 D WifiScoreCard: BSSID update SIGNAL_POLL ID: 598476588 SSID: "AndroidWifi", BSSID: 02:15:b2:00:00:01, MAC: 02:15:cc:00:00:00, IP: /10.0.2.16, Security type: 0, Supplicant state: COMPLETED, Wi-Fi standard: legacy, RSSI: -50, Link speed: 6Mbps, Tx Link speed: 6Mbps, Max Supported Tx Link speed: 54Mbps, Calculated Tx : 0Mbps, Rx Link speed: 2Mbps, Max Supported Rx Link speed: 54Mbps, Calculated Rx : 0Mbps, Frequency: 2437MHz, Net ID: 0, Metered hint: false, score: 100, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>"AndroidWifi"openMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>
+10-18 19:42:20.025   635   788 D WifiScoreCard: txRate: 1 txSpeed: 6
+10-18 19:42:20.025   635   788 D WifiScoreCard: network update SIGNAL_POLL "AndroidWifi" ID: 42308526 RSSI -50 txSpeed -1
+10-18 19:42:20.025   635   788 D WifiClientModeImpl[8694:wlan0]:  ClientModeImpl$L2ConnectedState screen=on 1 0 "AndroidWifi" 02:15:b2:00:00:01 rssi=-50 f=2437 sc=100 link=6 tx=0.0, 0.0, 0.0 rx=0.0 bcn=0 [on:0 tx:0 rx:0 period:3005] from screen [on:0 period:1369177593] score=100
+10-18 19:42:20.442   635   728 D ActivityManager: freezing 1389 android.process.acore
+10-18 19:42:20.443   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+10-18 19:42:20.444   635   794 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+10-18 19:42:20.444   635   794 D InetDiagMessage: Destroyed live tcp sockets for uids={10106} in 1ms
+10-18 19:42:20.611 25645 25645 I adbd    : adbd service requested 'sync:'
+10-18 19:42:20.619 25645 25645 I adbd    : adbd service requested 'shell,v2,TERM=dumb:export ANDROID_LOG_TAGS="''"; exec logcat '-d' '-t' '1200''

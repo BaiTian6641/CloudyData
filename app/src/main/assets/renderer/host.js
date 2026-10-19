@@ -3,9 +3,7 @@
 
   var state = {
     view: null,
-    ready: false,
-    lastChartId: null,
-    lastRevision: null
+    ready: false
   };
 
   function post(message) {
@@ -17,8 +15,13 @@
     }
   }
 
-  function fail(code, detail) {
-    post({ type: 'RendererError', code: code, detail: String(detail || 'renderer failure') });
+  function fail(code, detail, chartId, revision) {
+    var message = { type: 'RendererError', code: code, detail: String(detail || 'renderer failure') };
+    if (typeof chartId === 'string' && typeof revision === 'number') {
+      message.chartId = chartId;
+      message.revision = revision;
+    }
+    post(message);
   }
 
   function ready() {
@@ -70,8 +73,8 @@
     }
     try {
       disposeView();
-      state.lastChartId = message.chartId;
-      state.lastRevision = message.revision;
+      var chartId = message.chartId;
+      var revision = message.revision;
       var runtime = vega.parse(message.spec, null, { ast: true });
       var view = new vega.View(runtime, {
         expr: vega.expressionInterpreter,
@@ -91,21 +94,36 @@
         countMarks(view.scenegraph().root.items, sceneMarks);
         var svgPaths = document.querySelectorAll('#view svg path').length;
         var svgNodes = document.querySelectorAll('#view svg *').length;
+        var surfaceWidth = document.documentElement.clientWidth || window.innerWidth || 0;
+        var surfaceHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+        var viewWidth = 0;
+        var viewHeight = 0;
+        try {
+          viewWidth = view.width();
+          viewHeight = view.height();
+        } catch (error) {
+          viewWidth = 0;
+          viewHeight = 0;
+        }
         post({
           type: 'RenderComplete',
-          chartId: state.lastChartId,
-          revision: state.lastRevision,
+          chartId: chartId,
+          revision: revision,
           markCount: rows.length,
           sceneMarks: sceneMarks,
           svgPaths: svgPaths,
           svgNodes: svgNodes,
-          vegaVersion: vega.version
+          vegaVersion: vega.version,
+          surfaceWidth: surfaceWidth,
+          surfaceHeight: surfaceHeight,
+          viewWidth: viewWidth,
+          viewHeight: viewHeight
         });
       }).catch(function (error) {
-        fail('render_failed', error && error.message ? error.message : error);
+        fail('render_failed', error && error.message ? error.message : error, chartId, revision);
       });
     } catch (error) {
-      fail('spec_rejected', error && error.message ? error.message : error);
+      fail('spec_rejected', error && error.message ? error.message : error, chartId, revision);
     }
   }
 

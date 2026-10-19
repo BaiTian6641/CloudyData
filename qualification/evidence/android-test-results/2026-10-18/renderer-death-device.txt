@@ -1,0 +1,4 @@
+serial=emulator-5580 api=37 model=sdk_gphone64_x86_64 app_uid=uid:10307
+List of devices attached
+emulator-5580	device
+

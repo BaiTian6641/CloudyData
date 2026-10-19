@@ -108,9 +108,11 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- The Vega renderer covers only the bar mark; renderer-death/matched-resize/
-  chart-selection/export and the full chart-family/customization catalog remain
-  incomplete. No Arrow IPC transfer; no query service process, virtualized
+- The Vega renderer covers bar and line marks; emulator renderer death,
+  generation retirement, automatic probe recreation/replay, recovery
+  exhaustion, stale completion/failure rejection and exact surface/view sizes
+  are qualified. Chart selection, product auto-recovery, live OS-window resize,
+  export, focus/TalkBack and the full chart catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
   million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.

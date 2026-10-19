@@ -39,6 +39,10 @@ class VegaRendererHost(
             svgPaths: Int,
             svgNodes: Int,
             vegaVersion: String,
+            surfaceWidth: Int,
+            surfaceHeight: Int,
+            viewWidth: Int,
+            viewHeight: Int,
         )
         fun onRendererError(code: String, detail: String)
         fun onExternalRequestBlocked(url: String)
@@ -57,8 +61,7 @@ class VegaRendererHost(
     private var initialized = false
     private var ready = false
     private var pendingSpec: PendingSpec? = null
-    private var lastChartId: String? = null
-    private var lastRevision: Long = -1
+    private val revisionGate = RendererRevisionGate()
 
     private data class PendingSpec(
         val spec: ChartSpec,
@@ -181,8 +184,7 @@ class VegaRendererHost(
             )
             return
         }
-        lastChartId = request.spec.chartId
-        lastRevision = request.spec.revision
+        revisionGate.dispatch(request.spec.chartId, request.spec.revision)
         mainHandler.post {
             if (!disposed && webView === view) {
                 view.evaluateJavascript(
@@ -239,7 +241,7 @@ class VegaRendererHost(
             "RenderComplete" -> {
                 val chartId = json.optString("chartId")
                 val revision = json.optLong("revision", -1)
-                if (chartId != lastChartId || revision != lastRevision) {
+                if (!revisionGate.isCurrent(chartId, revision)) {
                     // A superseded render is discarded without error; the current
                     // request remains pending and will report its own completion.
                     return
@@ -258,12 +260,25 @@ class VegaRendererHost(
                     json.optInt("svgPaths", -1),
                     json.optInt("svgNodes", -1),
                     json.optString("vegaVersion"),
+                    json.optInt("surfaceWidth", 0),
+                    json.optInt("surfaceHeight", 0),
+                    json.optInt("viewWidth", 0),
+                    json.optInt("viewHeight", 0),
                 )
             }
-            "RendererError" -> listener.onRendererError(
-                json.optString("code", "renderer_error"),
-                json.optString("detail", "Renderer failed."),
-            )
+            "RendererError" -> {
+                val errorChartId = json.optString("chartId")
+                val errorRevision = json.optLong("revision", -1)
+                if (errorChartId.isNotEmpty() && errorRevision >= 0 &&
+                    !revisionGate.isCurrent(errorChartId, errorRevision)
+                ) {
+                    return
+                }
+                listener.onRendererError(
+                    json.optString("code", "renderer_error"),
+                    json.optString("detail", "Renderer failed."),
+                )
+            }
             else -> listener.onRendererError("unsupported_message", "Unsupported renderer message type.")
         }
     }

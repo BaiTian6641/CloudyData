@@ -54,3 +54,34 @@ screenshot shows the chart and a native accessible summary. See
 - Protection against a malicious Cloudy-authored spec beyond the constrained
   generator; no imported spec is accepted in product code.
 - Renderer memory/performance envelopes or a D1 dashboard scene count.
+
+## Amendment — 2026-10-18 renderer lifecycle
+
+A rootable API 37 emulator was used to kill the actual WebView sandboxed
+renderer process. The host received `onRenderProcessGone`, the probe disposed the
+dead host, created a fresh host and replayed the current six-point line spec.
+Evidence: `qualification/evidence/2026-10-18-s01-renderer-lifecycle.md` and
+`renderer-death-logcat.txt`.
+
+Verified in this increment:
+
+- real renderer termination is reported, not mistaken for completion;
+- the dead host's generation is retired before disposal, so queued callbacks
+  cannot publish a completion as the recovered result;
+- a fresh host (generation 3 after one death) can replay the accepted
+  `ChartSpec`; the recovered status and logcat identify the host/apply sequence;
+- recovery is bounded to two attempts; a third death publishes a typed terminal
+  error and the instrumentation suite exercises that bound;
+- `RendererRevisionGate` rejects stale chart/revision completions and
+  apply-scoped failures; JS stamps completions with the identity captured at
+  dispatch rather than the latest global state;
+- the renderer reports its CSS surface and Vega view size. The 360×240 and
+  640×400 dp tests assert exact Android px, CSS surface, Vega view and applied dp
+  sizes, not only WebView layout; the real death run reports
+  `surface=640x400 · view=640x400`;
+- offline/origin/blocked-network behavior is unchanged.
+
+Still pending: selection/hover/context-menu intents, product auto-recovery,
+tooltip, export/print, focus exit, TalkBack traversal, live OS-window resize,
+memory measurement and physical-device/WebView-provider qualification. This does
+not complete S01.7.

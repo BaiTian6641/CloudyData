@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.baitian6641.cloudydata.SqlAndTypeTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-18T22:48:09.044Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.003">
+<testsuite name="io.github.baitian6641.cloudydata.SqlAndTypeTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-19T00:42:00.933Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.002">
   <properties/>
   <testcase name="identifiersEscapeDoubleQuotes" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.001"/>
-  <testcase name="stringLiteralsEscapeQuotes" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.001"/>
+  <testcase name="stringLiteralsEscapeQuotes" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.0"/>
   <testcase name="decimalTypesPreserveParameterizedName" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.001"/>
   <testcase name="timestampsAreDimensionsAndDoublesAreMeasures" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.0"/>
   <testcase name="leadingZeroFriendlyTextStaysText" classname="io.github.baitian6641.cloudydata.SqlAndTypeTest" time="0.0"/>

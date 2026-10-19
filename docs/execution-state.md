@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits through `51812f0`; remote push not performed/authorized in
-this session.
+**Source:** commits through `423e512`, plus the pending S01.7 lifecycle
+increment; remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -53,9 +53,9 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 18/18. Emulator instrumentation:
-  27/27, 0 failures. The physical Googlebook was removed by the owner; new
-  line-chart evidence is emulator-only.
+- Lint: 0 errors (warnings documented). JVM tests: 19/19. Emulator instrumentation:
+  30/30, 0 failures. The physical Googlebook was removed by the owner; new
+  lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -68,6 +68,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s01-import-and-worksheet.md`
 - `qualification/evidence/2026-10-18-token-contrast.md`
 - `qualification/evidence/2026-10-18-s11-line-chart.md`
+- `qualification/evidence/2026-10-18-s01-renderer-lifecycle.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -85,17 +86,23 @@ unless stated otherwise.
   process; cross-window/conflict behavior is not implemented or tested.
 - The chart's label-hash category colors are stable only for unchanged labels;
   no persisted palette map exists.
-- Renderer death, matched resize/input runs, chart selection, export,
-  focus/TalkBack and memory limits are unverified. The native summary/table is
-  the current accessible equivalent.
+- Renderer death/recreation/replay, generation retirement, recovery exhaustion,
+  stale completion/failure rejection and two exact renderer surface sizes are
+  verified on the rootable emulator. The real kill run reports
+  `surface=640x400 · view=640x400 · host=3 · recovered after 1 death(s)`.
+  Selection/hover/context-menu intents, product auto-recovery, export,
+  focus/TalkBack, live OS-window resize and memory limits remain unverified. The
+  native summary/table is the current accessible equivalent.
 
 ## Not implemented / blocked
 
 - S01.6 Arrow IPC, S01.8 million-row virtualized grid, S01.10 multiwindow,
   S01.11 16 KiB runtime. S01.4 has a native interrupt probe and UI action but no
   worker/process-death qualification; S01.5 covers constructed recovery states,
-  not real process kills; S01.7 has an offline bar/line probe but no renderer
-  death/matched-resize/selection/export qualification.
+  not real process kills; S01.7 now verifies emulator renderer death/recovery,
+  generation retirement, recovery exhaustion, stale completion/failure
+  rejection and exact surface/view sizes, but still lacks
+  selection/export/focus/TalkBack/live-window qualification.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -107,21 +114,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S01.7 renderer lifecycle completion (emulator-first).**
+**S11.C0 renderer selection intent + accessible focus path (emulator-first).**
 
-- Files: `renderer/VegaRendererHost.kt`, `renderer-web/` host, debug probe,
-  instrumentation tests.
-- Action: force or observe renderer termination through a supported mechanism;
-  create a fresh renderer and replay the accepted `ChartSpec`; test matched
-  resize and a stale/selection-intent path with revision rejection. If
-  termination cannot be forced safely, record the blocker and keep the gate
-  partial rather than claiming a pass.
-- Acceptance: no false render completion after death; fresh host renders the
-  current spec; stale intents are discarded; no network/origin regression;
-  native summary/table remains available. Emulator evidence only unless the
-  physical device returns.
-- Then: next chart family/customization increment (scatter or area) and
-  S03 coordinator/window revision work.
+- Files: `app/src/main/assets/renderer/host.js`, `VegaSpecBuilder.kt`, `VegaRendererHost.kt`,
+  `VegaChart.kt`, debug probe, instrumentation tests; preserve the native
+  summary/table equivalent.
+- Action: emit typed `SelectionIntent`/`FocusExitIntent` messages from generated
+  bar/line marks, validate chart ID/revision and main-frame/origin, map the
+  selected series/x to the exact table row, and reject stale intents. Provide a
+  native keyboard route to move selection and exit the WebView.
+- Acceptance: actual emulator click/selection updates the same row as the table;
+  stale/dead-renderer intents are discarded; focus is visible and exits; no
+  renderer SQL/file/network authority; native table remains exact.
+- Then: renderer export, focus/TalkBack qualification and the next chart family
+  (scatter or area).
 
 ## Protected context
 

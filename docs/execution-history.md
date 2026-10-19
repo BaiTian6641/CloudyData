@@ -174,3 +174,26 @@ shape; line-only log/legend controls are gated/normalized for bars; the probe
 asserts real line marks; 2000/2001 boundary and document-level v1 migration are
 tested in the final run.
 Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
+
+## 2026-10-18 — renderer lifecycle and stale-result gate
+
+- Verified real renderer termination on the rootable API 37 emulator by killing
+  the WebView sandboxed renderer PID for the probe. The host received
+  `onRenderProcessGone`, the probe recreated the host and replayed the six-point
+  line spec; the final status reports "recovered after 1 death(s)".
+- Added bounded recovery (two attempts), a debug-only simulated-death trigger for
+  deterministic instrumentation, fixed viewport extras for surface-size tests,
+  and `RendererRevisionGate` for stale chart/revision completions.
+- Independent review found and we fixed: queued callbacks from the dead host
+  generation could publish a stale completion; JS stamped completions with the
+  latest global chart/revision rather than the dispatched identity; viewport
+  tests proved layout but not renderer surface; the kill script was not scoped
+  and accepted weak evidence.
+- The recovered status now records `surface=640x400 · view=640x400 · host=3`;
+  the script requires the crash, death/recreation log, two applies, the full
+  recovered status and no renderer error.
+- Full emulator suite: 30/30; JVM: 19/19. The root-kill tool refuses
+  non-emulator serials unless explicitly opted in and is documented as a
+  qualification operation, not a sandbox.
+- Still open: selection/hover/context-menu intents, product auto-recovery,
+  export/print, focus/TalkBack, live OS-window resize and memory limits.
