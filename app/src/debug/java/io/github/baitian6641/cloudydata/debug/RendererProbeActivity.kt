@@ -127,6 +127,7 @@ class RendererProbeActivity : Activity() {
                     sceneMarks: Map<String, Int>,
                     svgPaths: Int,
                     svgNodes: Int,
+                    svgTexts: List<String>,
                     vegaVersion: String,
                     surfaceWidth: Int,
                     surfaceHeight: Int,
@@ -151,6 +152,7 @@ class RendererProbeActivity : Activity() {
                                 sceneMarks = sceneMarks,
                                 svgPaths = svgPaths,
                                 svgNodes = svgNodes,
+                                svgTexts = svgTexts,
                                 interpreterAvailable = true,
                                 blockedRequests = RendererProbeState.blockedRequests.get(),
                                 error = null,
@@ -494,6 +496,30 @@ class RendererProbeActivity : Activity() {
             rowCount = 6,
             truncated = false,
         )
+        "format" -> ChartSpec(
+            chartId = "probe-format",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = "Formatted values",
+            xAxis = AxisSpec("Region"),
+            yAxis = AxisSpec("Sales"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(true),
+            sourceNote = "Source: probe fixture",
+            series = listOf(
+                ChartSeries(
+                    "Values",
+                    listOf(
+                        point("A", 1234.567, "Values", 0),
+                        point("B", 2000.0, "Values", 1),
+                    ),
+                ),
+            ),
+            rowCount = 2,
+            truncated = false,
+            valueDecimals = 2,
+        )
         "area" -> ChartSpec(
             chartId = "probe-area",
             revision = 1,
@@ -547,6 +573,7 @@ class RendererProbeActivity : Activity() {
     private fun accessibleSummary(): String = when (probeKind) {
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."
+        "format" -> "Accessible summary: A = 1234.567, B = 2000.0."
         "area" -> "Accessible summary: 2026-01-01 = 10, 2026-02-01 = 20, " +
             "2026-03-01 = 30, 2026-04-01 = 40."
         else -> "Accessible summary: region A = 40, region B = 60."
@@ -588,6 +615,7 @@ object RendererProbeState {
         val sceneMarks: Map<String, Int>,
         val svgPaths: Int,
         val svgNodes: Int,
+        val svgTexts: List<String> = emptyList(),
         val interpreterAvailable: Boolean,
         val blockedRequests: Int,
         val error: String?,

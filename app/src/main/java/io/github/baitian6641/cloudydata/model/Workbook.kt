@@ -35,6 +35,7 @@ data class ChartOptions(
     val showGridlines: Boolean = true,
     val gridlineWidth: Double? = null,
     val showValueLabels: Boolean = false,
+    val valueDecimals: Int? = null,
     val xAxisTitle: String? = null,
     val yAxisTitle: String? = null,
     val seriesTitle: String? = null,
@@ -64,6 +65,7 @@ data class ChartOptions(
         .put("showGridlines", showGridlines)
         .put("gridlineWidth", gridlineWidth ?: JSONObject.NULL)
         .put("showValueLabels", showValueLabels)
+        .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
         .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
         .put("seriesTitle", seriesTitle ?: JSONObject.NULL)
@@ -91,6 +93,8 @@ data class ChartOptions(
         const val MAX_TICK_COUNT = 50
         const val MIN_LABEL_FONT_SIZE = 8
         const val MAX_LABEL_FONT_SIZE = 16
+        const val MIN_VALUE_DECIMALS = 0
+        const val MAX_VALUE_DECIMALS = 6
         const val MIN_LINE_WIDTH = 1.0
         const val MAX_LINE_WIDTH = 8.0
         const val MIN_GRIDLINE_WIDTH = 0.5
@@ -112,6 +116,11 @@ data class ChartOptions(
                 }
             },
             showValueLabels = json.optBoolean("showValueLabels", false),
+            valueDecimals = if (json.isNull("valueDecimals")) {
+                null
+            } else {
+                json.optInt("valueDecimals").takeIf { it in MIN_VALUE_DECIMALS..MAX_VALUE_DECIMALS }
+            },
             xAxisTitle = if (json.isNull("xAxisTitle")) null else json.optString("xAxisTitle").takeIf { it.isNotEmpty() },
             yAxisTitle = if (json.isNull("yAxisTitle")) null else json.optString("yAxisTitle").takeIf { it.isNotEmpty() },
             seriesTitle = if (json.isNull("seriesTitle")) null else json.optString("seriesTitle").takeIf { it.isNotEmpty() },

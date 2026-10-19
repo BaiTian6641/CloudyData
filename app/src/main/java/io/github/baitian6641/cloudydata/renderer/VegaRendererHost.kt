@@ -41,6 +41,7 @@ class VegaRendererHost(
             sceneMarks: Map<String, Int>,
             svgPaths: Int,
             svgNodes: Int,
+            svgTexts: List<String>,
             vegaVersion: String,
             surfaceWidth: Int,
             surfaceHeight: Int,
@@ -395,6 +396,9 @@ class VegaRendererHost(
                     marks,
                     json.optInt("svgPaths", -1),
                     json.optInt("svgNodes", -1),
+                    json.optJSONArray("svgTexts")?.let { arr ->
+                        buildList { for (i in 0 until arr.length()) add(arr.optString(i)) }
+                    } ?: emptyList(),
                     json.optString("vegaVersion"),
                     json.optInt("surfaceWidth", 0),
                     json.optInt("surfaceHeight", 0),

@@ -797,6 +797,10 @@
         countMarks(view.scenegraph().root.items, sceneMarks);
         var svgPaths = document.querySelectorAll('#view svg path').length;
         var svgNodes = document.querySelectorAll('#view svg *').length;
+        var svgTexts = [];
+        document.querySelectorAll('#view svg text').forEach(function (node) {
+          if (svgTexts.length < 200) svgTexts.push(node.textContent || '');
+        });
         var surfaceWidth = document.documentElement.clientWidth || window.innerWidth || 0;
         var surfaceHeight = document.documentElement.clientHeight || window.innerHeight || 0;
         var viewWidth = 0;
@@ -816,6 +820,7 @@
           sceneMarks: sceneMarks,
           svgPaths: svgPaths,
           svgNodes: svgNodes,
+          svgTexts: svgTexts,
           vegaVersion: vega.version,
           surfaceWidth: surfaceWidth,
           surfaceHeight: surfaceHeight,

@@ -129,6 +129,34 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun valueDecimalsAreCarriedAndBounded() {
+        val spec = ChartSpecBuilder.build(
+            "format", 0, lineResult(),
+            ChartOptions(valueDecimals = 2),
+            "derived",
+        )
+        assertEquals(2, spec.valueDecimals)
+        assertEquals(null, ChartSpecBuilder.build(
+            "format", 0, lineResult(),
+            ChartOptions(),
+            "derived",
+        ).valueDecimals)
+
+        for (invalid in listOf(-1, 7)) {
+            try {
+                ChartSpecBuilder.build(
+                    "format", 0, lineResult(),
+                    ChartOptions(valueDecimals = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected value decimals rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Value decimals"))
+            }
+        }
+    }
+
+    @Test
     fun gridlineWidthIsCarriedAndBounded() {
         val spec = ChartSpecBuilder.build(
             "grid", 0, lineResult(),

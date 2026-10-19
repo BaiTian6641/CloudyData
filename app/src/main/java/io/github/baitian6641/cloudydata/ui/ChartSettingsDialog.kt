@@ -68,6 +68,7 @@ fun ChartSettingsDialog(
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var gridlineWidth by remember { mutableStateOf(current.gridlineWidth?.toString().orEmpty()) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
+    var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -91,6 +92,7 @@ fun ChartSettingsDialog(
     } else {
         null
     }
+    val parsedValueDecimals = valueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
@@ -111,6 +113,10 @@ fun ChartSettingsDialog(
             parsedGridlineWidth !in ChartOptions.MIN_GRIDLINE_WIDTH..ChartOptions.MAX_GRIDLINE_WIDTH) ->
             "Gridline width must be from ${ChartOptions.MIN_GRIDLINE_WIDTH} to " +
                 "${ChartOptions.MAX_GRIDLINE_WIDTH}."
+        valueDecimals.trim().isNotEmpty() && (parsedValueDecimals == null ||
+            parsedValueDecimals !in ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS) ->
+            "Value decimals must be a whole number from ${ChartOptions.MIN_VALUE_DECIMALS} to " +
+                "${ChartOptions.MAX_VALUE_DECIMALS}."
         labelFontSize.trim().isNotEmpty() && (parsedLabelFontSize == null ||
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
@@ -317,6 +323,14 @@ fun ChartSettingsDialog(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     )
                 }
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = valueDecimals,
+                    onValueChange = { valueDecimals = it },
+                    label = "Value decimals",
+                    supportingText = "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank keeps automatic axis/label formatting.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
                 ChartToggleRow(
                     title = "Value labels",
                     description = "Show values on bars or line points. Bar labels can sit above or inside; the exact table remains available.",
@@ -536,6 +550,7 @@ fun ChartSettingsDialog(
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
+                            valueDecimals = parsedValueDecimals,
                             labelFontSize = parsedLabelFontSize,
                             labelPosition = if (sheet.markType == MarkType.BAR) {
                                 labelPosition

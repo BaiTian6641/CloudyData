@@ -76,6 +76,7 @@ object VegaSpecBuilder {
             .put("paddingInner", if (spec.kind == ChartKind.BAR) 0.2 else 0.05)
 
         val visibleXLabels = spec.xAxis.labelValues?.size ?: xDomain.length()
+        val valueFormat = spec.valueDecimals?.let { ",.${it}f" }
         val axes = JSONArray()
             .put(
                 axisJson(
@@ -101,6 +102,7 @@ object VegaSpecBuilder {
                     gridWidth = spec.gridlines.width,
                     labelAngle = 0,
                     tickCount = spec.yAxis.tickCount,
+                    format = valueFormat,
                     titleAnchor = spec.yAxis.titleAnchor,
                 ),
             )
@@ -185,6 +187,7 @@ object VegaSpecBuilder {
         tickCount: Int? = null,
         titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
         labelValues: List<String>? = null,
+        format: String? = null,
     ): JSONObject {
         val axis = JSONObject()
             .put("orient", orient)
@@ -198,6 +201,9 @@ object VegaSpecBuilder {
             .put("labelAngle", labelAngle)
         if (gridWidth != null && grid) {
             axis.put("gridWidth", gridWidth)
+        }
+        if (format != null) {
+            axis.put("format", format)
         }
         if (tickCount != null) {
             axis.put("tickCount", tickCount).put("labelOverlap", "greedy")
@@ -235,6 +241,15 @@ object VegaSpecBuilder {
             ),
         )
 
+    private fun valueText(spec: ChartSpec): JSONObject {
+        val decimals = spec.valueDecimals ?: return JSONObject().put("field", "y")
+        // Vega text marks ignore format on a field reference; format explicitly.
+        return JSONObject().put(
+            "signal",
+            "isValid(datum.y) ? format(datum.y, ',.${decimals}f') : ''",
+        )
+    }
+
     private fun barLabelMark(spec: ChartSpec, textColor: String, dark: Boolean): JSONObject {
         val fontSize = spec.labels.fontSize ?: 11
         val endpoint = "scale('y', datum.y)"
@@ -269,7 +284,7 @@ object VegaSpecBuilder {
                             JSONObject().put("scale", "y").put("field", "y")
                                 .put("offset", JSONObject().put("signal", clamped)),
                         )
-                        .put("text", JSONObject().put("field", "y"))
+                        .put("text", valueText(spec))
                         .put("align", JSONObject().put("value", "center"))
                         .put("baseline", JSONObject().put("signal", baseline))
                         .put(
@@ -346,7 +361,7 @@ object VegaSpecBuilder {
                             JSONObject()
                                 .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                                 .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
-                                .put("text", JSONObject().put("field", "y"))
+                                .put("text", valueText(spec))
                                 .put("align", JSONObject().put("value", "center"))
                                 .put("baseline", JSONObject().put("value", "bottom"))
                                 .put("fill", JSONObject().put("value", textColor))
@@ -446,7 +461,7 @@ object VegaSpecBuilder {
                 JSONObject()
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                     .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
-                    .put("text", JSONObject().put("field", "y"))
+                    .put("text", valueText(spec))
                     .put("align", JSONObject().put("value", "center"))
                     .put("baseline", JSONObject().put("value", "bottom"))
                     .put("fill", JSONObject().put("value", textColor))

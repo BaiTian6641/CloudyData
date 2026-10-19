@@ -126,6 +126,7 @@ object ChartSpecBuilder {
             rowCount = rows.size,
             truncated = result.result.truncated,
             units = units,
+            valueDecimals = options.valueDecimals,
             padding = options.chartPadding,
         )
     }
@@ -254,6 +255,7 @@ object ChartSpecBuilder {
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
             lineWidth = options.lineWidth,
             units = units,
+            valueDecimals = options.valueDecimals,
             padding = options.chartPadding,
         )
     }
@@ -289,6 +291,14 @@ object ChartSpecBuilder {
         ) {
             throw ChartSpecException(
                 "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
+        }
+        if (options.valueDecimals != null &&
+            options.valueDecimals !in ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS
+        ) {
+            throw ChartSpecException(
+                "Value decimals must be between ${ChartOptions.MIN_VALUE_DECIMALS} and " +
+                    "${ChartOptions.MAX_VALUE_DECIMALS}.",
             )
         }
         if (options.gridlineWidth != null &&

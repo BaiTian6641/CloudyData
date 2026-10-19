@@ -67,6 +67,7 @@ class VegaSpecBuilderTest {
                 yMax = 40.0,
                 showValueLabels = true,
                 gridlineWidth = 2.5,
+                valueDecimals = 2,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
@@ -92,6 +93,16 @@ class VegaSpecBuilderTest {
             2.5,
             json.getJSONArray("axes").getJSONObject(1).getDouble("gridWidth"),
             0.0,
+        )
+        assertEquals(",.2f", json.getJSONArray("axes").getJSONObject(1).getString("format"))
+        val labelMarks = json.getJSONArray("marks").getJSONObject(0).getJSONArray("marks")
+        val valueLabel = (0 until labelMarks.length())
+            .map { labelMarks.getJSONObject(it) }
+            .first { it.getString("type") == "text" }
+        assertEquals(
+            "isValid(datum.y) ? format(datum.y, ',.2f') : ''",
+            valueLabel.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("text").getString("signal"),
         )
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))

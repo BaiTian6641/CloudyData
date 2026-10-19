@@ -370,6 +370,7 @@ fun VegaChartCard(
                                         sceneMarks: Map<String, Int>,
                                         svgPaths: Int,
                                         svgNodes: Int,
+                                        svgTexts: List<String>,
                                         vegaVersion: String,
                                         surfaceWidth: Int,
                                         surfaceHeight: Int,

@@ -48,6 +48,27 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun fixedDecimalValueLabelsRenderFormattedSvgText() {
+        RendererProbeState.reset()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, RendererProbeActivity::class.java)
+            .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "format")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("format renderer did not complete", result != null)
+            assertNull(result!!.error)
+            assertTrue(
+                "formatted label text missing from SVG: ${result.svgTexts}",
+                result.svgTexts.any { it == "1,234.57" },
+            )
+            assertTrue(
+                "formatted whole value missing from SVG: ${result.svgTexts}",
+                result.svgTexts.any { it == "2,000.00" },
+            )
+        }
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

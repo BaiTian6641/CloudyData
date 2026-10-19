@@ -86,6 +86,7 @@ data class ChartSpec(
     val missingPolicy: MissingPolicy = MissingPolicy.CONNECT_OBSERVED,
     val lineWidth: Double? = null,
     val units: String? = null,
+    val valueDecimals: Int? = null,
     val padding: Int = 8,
     val version: Int = SPEC_VERSION,
 ) {

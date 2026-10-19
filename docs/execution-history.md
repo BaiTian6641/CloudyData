@@ -514,3 +514,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 51/51; VegaSpecBuilderTest 5/5 and ChartSettingsPersistenceTest 5/5 on the
   physical HP Googlebook; lint 0 errors/5 warnings; debug/test APKs compile.
   Visual, export and high-contrast checks were not run.
+
+## 2026-10-19 — CUST06 fixed-decimal value formatting
+
+- Added optional persisted 0–6 decimal formatting for Y-axis ticks and
+  Bar/Line/Area value labels using Vega/d3 `,.Nf`. Independent review caught
+  that Vega ignores `format` on text field references; labels now use a guarded
+  `format(datum.y, ...)` signal. Exact tooltip values, data, aggregation and
+  scales are unchanged.
+- Added SVG text capture to the renderer probe completion for render-level
+  assertions. JVM 52/52; VegaSpecBuilderTest 5/5, ChartSettingsPersistenceTest
+  5/5 and a focused packaged-Vega format render 1/1 on the physical HP
+  Googlebook; lint 0 errors/5 warnings; debug/test APKs compile. Visual
+  collision, locale, extreme-magnitude and export rendering were not run.
