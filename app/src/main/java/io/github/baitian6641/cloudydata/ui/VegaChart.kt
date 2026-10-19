@@ -1,6 +1,9 @@
 package io.github.baitian6641.cloudydata.ui
 
+import android.content.Context
 import android.graphics.Color
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -59,6 +62,8 @@ import io.github.baitian6641.cloudydata.renderer.ExportBundleWriter
 import io.github.baitian6641.cloudydata.renderer.ExportWriteResult
 import io.github.baitian6641.cloudydata.renderer.FrozenExport
 import io.github.baitian6641.cloudydata.renderer.PdfExportWriter
+import io.github.baitian6641.cloudydata.renderer.PdfPrintAdapter
+import io.github.baitian6641.cloudydata.renderer.PdfTable
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.Dispatchers
@@ -97,11 +102,14 @@ fun VegaChartCard(
     val focusManager = LocalFocusManager.current
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
     val currentSelectRow = rememberUpdatedState(onSelectRow)
+    var appliedExport by remember { mutableStateOf<AppliedExport?>(null) }
     val context = LocalContext.current
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
+    val currentExportModel = rememberUpdatedState(exportModel)
     val scope = rememberCoroutineScope()
     var exportStatus by remember { mutableStateOf<String?>(null) }
     var showExportMenu by remember { mutableStateOf(false) }
+    var exportInFlight by remember { mutableStateOf(false) }
     fun writeFrozenBundle(uri: android.net.Uri?) {
         val frozen = exportModel.frozenBundle
         exportModel.frozenBundle = null
@@ -166,6 +174,25 @@ fun VegaChartCard(
     val savePdf = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("application/pdf"),
     ) { savePending(it, format = "pdf") }
+    fun pdfTable(applied: AppliedExport): PdfTable {
+        val resultNow = applied.result
+        return PdfTable(
+            title = applied.title,
+            sourceNote = applied.sourceNote,
+            summary = accessibleSummary(applied.spec),
+            columns = resultNow.result.columns.map { it.name },
+            rows = resultNow.result.rows.map { row ->
+                row.map { it?.toString() ?: "NULL" }
+            },
+            rasterNotice = if (resultNow.result.truncated) {
+                "Page 1 is a rasterized chart image for a truncated result; " +
+                    "the exact rows below are the accepted captured result."
+            } else {
+                "Page 1 is a rasterized chart image. This page provides " +
+                    "accessible title, provenance and exact rows."
+            },
+        )
+    }
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -186,6 +213,7 @@ fun VegaChartCard(
                         rendererError = null
                         rendererReady = false
                         rendered = false
+                        exportInFlight = false
                         retryToken++
                     })
                 }
@@ -202,10 +230,28 @@ fun VegaChartCard(
                     ) {
                         DropdownMenuItem(
                             text = { Text("All formats — SVG, PNG, PDF") },
+                            enabled = !exportInFlight,
                             onClick = {
                                 showExportMenu = false
                                 exportStatus = null
+                                exportModel.bundleAction = BundleAction.SAVE_ALL
+                                exportInFlight = true
                                 hostRef.get()?.requestExportBundle() ?: run {
+                                    exportInFlight = false
+                                    exportStatus = "Renderer is unavailable."
+                                }
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Print worksheet…") },
+                            enabled = !exportInFlight,
+                            onClick = {
+                                showExportMenu = false
+                                exportStatus = null
+                                exportModel.bundleAction = BundleAction.PRINT
+                                exportInFlight = true
+                                hostRef.get()?.requestExportBundle() ?: run {
+                                    exportInFlight = false
                                     exportStatus = "Renderer is unavailable."
                                 }
                             },
@@ -314,7 +360,7 @@ fun VegaChartCard(
 
                                     override fun onSvgExport(chartId: String, revision: Long, svg: String) {
                                         if (hostRef.get() == null) return
-                                        exportModel.pendingSvg = PendingExport(
+                                        currentExportModel.value.pendingSvg = PendingExport(
                                             bytes = svg.toByteArray(Charsets.UTF_8),
                                             label = "SVG",
                                         )
@@ -334,10 +380,17 @@ fun VegaChartCard(
                                         if (purpose == "pdf") {
                                             scope.launch {
                                                 exportStatus = "Preparing PDF."
+                                                val applied = appliedExport
                                                 withContext(Dispatchers.IO) {
-                                                    runCatching { PdfExportWriter.fromPng(png) }
+                                                    runCatching {
+                                                        if (applied != null) {
+                                                            PdfExportWriter.fromPngWithTable(png, pdfTable(applied)).bytes
+                                                        } else {
+                                                            PdfExportWriter.fromPng(png)
+                                                        }
+                                                    }
                                                 }.onSuccess { pdf ->
-                                                    exportModel.pendingPdf = PendingExport(
+                                                    currentExportModel.value.pendingPdf = PendingExport(
                                                         bytes = pdf,
                                                         label = "PDF",
                                                     )
@@ -348,7 +401,7 @@ fun VegaChartCard(
                                                 }
                                             }
                                         } else {
-                                            exportModel.pendingPng = PendingExport(
+                                            currentExportModel.value.pendingPng = PendingExport(
                                                 bytes = png,
                                                 label = "PNG",
                                             )
@@ -366,31 +419,73 @@ fun VegaChartCard(
                                         height: Int,
                                     ) {
                                         if (hostRef.get() == null) return
+                                        val applied = appliedExport
+                                        if (applied == null) {
+                                            exportInFlight = false
+                                            exportStatus = "Export scene is unavailable."
+                                            return
+                                        }
+                                        val titleNow = applied.title
+                                        val table = pdfTable(applied)
                                         scope.launch {
                                             exportStatus = "Preparing the frozen export bundle."
                                             withContext(Dispatchers.IO) {
-                                                runCatching { PdfExportWriter.fromPng(png) }
+                                                runCatching { PdfExportWriter.fromPngWithTable(png, table) }
                                             }.onSuccess { pdf ->
-                                                exportModel.frozenBundle = FrozenExport(
-                                                    svg = svg.toByteArray(Charsets.UTF_8),
-                                                    png = png,
-                                                    pdf = pdf,
-                                                    width = width,
-                                                    height = height,
-                                                )
-                                                exportStatus = "Choose a folder for the three frozen files."
-                                                saveBundle.launch(null)
+                                                exportInFlight = false
+                                                if (currentExportModel.value.bundleAction == BundleAction.PRINT) {
+                                                    val printManager = context.getSystemService(PrintManager::class.java)
+                                                    if (printManager == null) {
+                                                        exportStatus = "Printing is unavailable on this device."
+                                                        return@onSuccess
+                                                    }
+                                                    runCatching {
+                                                        printManager.print(
+                                                            "Cloudy Data — ${titleNow.take(80)}",
+                                                            PdfPrintAdapter(
+                                                                pdf = pdf.bytes,
+                                                                jobName = "cloudy-chart",
+                                                                pageCount = pdf.pageCount,
+                                                            ),
+                                                            PrintAttributes.Builder()
+                                                                .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                                                                .build(),
+                                                        )
+                                                    }.onSuccess { job ->
+                                                        exportStatus = if (job != null) {
+                                                            "Print dialog opened; printing is not yet confirmed."
+                                                        } else {
+                                                            "Printing is unavailable on this device."
+                                                        }
+                                                    }.onFailure { error ->
+                                                        exportStatus = "Print failed: ${error.message}"
+                                                    }
+                                                } else {
+                                                    currentExportModel.value.frozenBundle = FrozenExport(
+                                                        svg = svg.toByteArray(Charsets.UTF_8),
+                                                        png = png,
+                                                        pdf = pdf.bytes,
+                                                        pdfPages = pdf.pageCount,
+                                                        width = width,
+                                                        height = height,
+                                                    )
+                                                    exportStatus = "Choose a folder for the three frozen files."
+                                                    saveBundle.launch(null)
+                                                }
                                             }.onFailure { error ->
+                                                exportInFlight = false
                                                 exportStatus = "Export failed: ${error.message}"
                                             }
                                         }
                                     }
 
                                     override fun onExportError(message: String) {
+                                        exportInFlight = false
                                         exportStatus = "Export failed: $message"
                                     }
 
                                     override fun onRendererError(code: String, detail: String) {
+                                        exportInFlight = false
                                         rendererError = "$code: $detail"
                                     }
 
@@ -466,6 +561,8 @@ fun VegaChartCard(
             rendererError = "spec_rejected: ${it.message}"
             return@LaunchedEffect
         }
+        appliedExport = AppliedExport(result, built, title, sourceNote)
+        exportInFlight = false
         runCatching {
             hostRef.get()?.applyChartSpec(
                 spec = built,
@@ -499,7 +596,17 @@ internal data class PendingExport(
     val label: String,
 )
 
+internal data class AppliedExport(
+    val result: WorksheetResult,
+    val spec: ChartSpec,
+    val title: String,
+    val sourceNote: String?,
+)
+
+internal enum class BundleAction { SAVE_ALL, PRINT }
+
 internal class ChartExportViewModel : ViewModel() {
+    var bundleAction: BundleAction = BundleAction.SAVE_ALL
     var frozenBundle: FrozenExport? = null
     var pendingSvg: PendingExport? = null
     var pendingPng: PendingExport? = null

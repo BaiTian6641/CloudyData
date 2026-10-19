@@ -26,16 +26,13 @@ class MediaStoreFixtureTest {
             put(MediaStore.MediaColumns.MIME_TYPE, "text/csv")
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
-        val existing = resolver.query(
+        // Remove every previously published copy/auto-renamed variant so repeated
+        // qualification runs cannot exhaust MediaStore's unique-name generator.
+        resolver.delete(
             MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.MediaColumns._ID),
-            "${MediaStore.MediaColumns.DISPLAY_NAME}=?",
-            arrayOf("cloudy_ui_q06.csv"),
-            null,
-        )?.use { cursor -> if (cursor.moveToFirst()) cursor.getLong(0) else null }
-        if (existing != null) {
-            resolver.delete(MediaStore.Downloads.EXTERNAL_CONTENT_URI, "${MediaStore.MediaColumns._ID}=?", arrayOf(existing.toString()))
-        }
+            "${MediaStore.MediaColumns.DISPLAY_NAME} LIKE ?",
+            arrayOf("cloudy_ui_q06%"),
+        )
         val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
             ?: error("Could not create Downloads entry")
         instrumentation.context.assets.open("csv/q06_lod.csv").use { input ->

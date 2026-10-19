@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-19T04:25:08.653Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.033">
+<testsuite name="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-19T05:13:36.827Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.042">
   <properties/>
-  <testcase name="areaExplicitRangeIncludesZeroForTheAreaBaseline" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.017"/>
+  <testcase name="areaExplicitRangeIncludesZeroForTheAreaBaseline" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.021"/>
   <testcase name="lineSpecGroupsSeriesAndPreservesObservedOrder" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
   <testcase name="logarithmicAxisRejectsZero" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
   <testcase name="invalidYRangeIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
-  <testcase name="areaLogScaleIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
-  <testcase name="linePointBoundaryAccepts2000AndRejects2001" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.009"/>
+  <testcase name="areaLogScaleIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
+  <testcase name="linePointBoundaryAccepts2000AndRejects2001" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.013"/>
   <testcase name="seriesColumnAndValueIndexFollowActualQueryShape" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
   <testcase name="nullAggregateBecomesUndefinedGapWithoutChangingObservedOrder" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
   <testcase name="areaSpecIsSingleSeriesAndForcesZeroBaselineWithoutLegend" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
-  <testcase name="barSpecUsesObservedCategoriesAndExceedsCapIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
+  <testcase name="barSpecUsesObservedCategoriesAndExceedsCapIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
   <testcase name="barLogScaleIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
-  <testcase name="areaColorSeriesIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
+  <testcase name="areaColorSeriesIsRejected" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
   <testcase name="truncatedResultIsNeverDrawnAsPartialLine" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
-  <testcase name="tooltipVisibilityIsCarriedOnTheSpec" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.0"/>
+  <testcase name="tooltipVisibilityIsCarriedOnTheSpec" classname="io.github.baitian6641.cloudydata.ChartSpecBuilderTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -1,0 +1,113 @@
+Long row test
+Source: long-row.csv
+
+Accessible chart data
+One exact row spans multiple table pages.
+Page 1 is a rasterized chart image. This page provides accessible title, provenance and data.
+Date
+
+Long value
+
+2026-01-01
+
+preﬁx lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+
+Page 2 · Cloudy Data
+
+Long row test · continued
+Date
+
+Long value
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
+ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
+dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit
+amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+END-OF-LONG-ROW
+
+Page 3 · Cloudy Data
+
+

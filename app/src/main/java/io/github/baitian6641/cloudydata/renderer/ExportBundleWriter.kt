@@ -13,6 +13,7 @@ data class FrozenExport(
     val svg: ByteArray,
     val png: ByteArray,
     val pdf: ByteArray,
+    val pdfPages: Int,
     val width: Int,
     val height: Int,
 )

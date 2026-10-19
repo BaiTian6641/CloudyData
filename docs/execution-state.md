@@ -54,7 +54,7 @@ unless stated otherwise.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (warnings documented). JVM tests: 24/24. Emulator instrumentation:
-  41/41, 0 failures. The physical Googlebook was removed by the owner; new
+  43/43, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -76,6 +76,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s16-product-export.md`
 - `qualification/evidence/2026-10-18-s16-titled-export.md`
 - `qualification/evidence/2026-10-18-s16-frozen-bundle.md`
+- `qualification/evidence/2026-10-18-s16-print-accessible.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -133,8 +134,11 @@ unless stated otherwise.
   verified for all three; reopening them in the product remains unverified.
   Title/source/snapshot provenance and matching dimensions are embedded in the
   latest exports; one frozen multi-format export into a SAF folder is verified.
-  Pointer hover, remaining Q18 failure injections, accessible PDF, print,
-  additive/range selection, TalkBack and live-window qualification remain.
+  The bundle PDF now includes a searchable A4 table and the product exposes a
+  native Print worksheet flow; a real Save-as-PDF print produced a two-page,
+  text-extractable PDF. PDF tagging, print-spooler completion, pointer hover,
+  remaining Q18 failures, additive/range selection, TalkBack and live-window
+  qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -146,18 +150,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S16/F60 accessible PDF + worksheet print flow.**
+**CUST13 additive/range chart selection.**
 
-- Files: `PdfExportWriter`/export orchestration, `AndroidManifest.xml`, print
-  adapter, tests.
-- Action: label/bundle the raster PDF with accessible source/summary metadata (or
-  implement a tagged text layer), add a native Android print path for the current
-  worksheet, and keep title/provenance/page size frozen.
-- Acceptance: a real print/export produces a readable page with title/provenance
-  and accessible text or an explicit rasterized label; cancellation/failure
-  leaves no false completion; independent readers verify the output.
-- Then: remaining Q18 failure injection, pointer-hover qualification and
-  additive/range selection.
+- Files: `host.js`/renderer signals, `VegaRendererHost.kt`, `VegaChart.kt`,
+  renderer/selection state, tests.
+- Action: extend the existing exact-row selection to additive and range
+  selection (click modifier and keyboard range), preserve source-row mapping and
+  stale-revision rejection, and keep the native table/inspector authoritative.
+- Acceptance: real emulator additive/range gestures select the intended exact
+  rows; stale sets are rejected; accessible table remains exact.
+- Then: pointer-hover qualification, remaining Q18 injections, tagged PDF and
+  dashboard/story print.
 
 ## Protected context
 

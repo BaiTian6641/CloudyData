@@ -27,6 +27,7 @@ class ExportBundleWriterTest {
                 svg = "<svg xmlns=\"http://www.w3.org/2000/svg\"/>".toByteArray(),
                 png = byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47),
                 pdf = "%PDF-".toByteArray(),
+                pdfPages = 1,
                 width = 1,
                 height = 1,
             ),

@@ -164,3 +164,12 @@ SAF folder with a shared timestamp. Host validation cross-checks PNG/SVG
 dimensions; cancellation and unknown-tree provider failure are explicit.
 Evidence: `qualification/evidence/2026-10-18-s16-frozen-bundle.md`. SAF writes
 are not transactional and PDF remains raster-only.
+
+### Printable/accessibility addendum
+
+The frozen PDF now appends paginated A4 text pages with title, provenance,
+rasterization notice, summary and exact rows. `PdfPrintAdapter` serves the frozen
+PDF to Android's print spooler and the product exposes **Print worksheet…**. A
+real `Save as PDF` print produced a two-page, text-extractable A4 PDF. The PDF is
+not tagged and print-spooler completion is not observed. Evidence:
+`qualification/evidence/2026-10-18-s16-print-accessible.md`.

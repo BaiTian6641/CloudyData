@@ -1,0 +1,504 @@
+Accessible test chart
+Source: accessible-ﬁxture.csv · 80 rows · snapshot abcdef12
+
+Accessible chart data
+Accessible summary: the chart is rasterized on page one; exact rows follow.
+Page 1 is a rasterized chart image. This page provides accessible title, provenance and data.
+Date
+
+Category
+
+Value
+
+2026-01-02
+
+Category with a long descriptive label 1
+
+1
+
+2026-01-03
+
+Category with a long descriptive label 2
+
+2
+
+2026-01-04
+
+Category with a long descriptive label 3
+
+3
+
+2026-01-05
+
+Category with a long descriptive label 4
+
+4
+
+2026-01-06
+
+Category with a long descriptive label 5
+
+5
+
+2026-01-07
+
+Category with a long descriptive label 6
+
+6
+
+2026-01-08
+
+Category with a long descriptive label 7
+
+7
+
+2026-01-09
+
+Category with a long descriptive label 8
+
+8
+
+2026-01-10
+
+Category with a long descriptive label 9
+
+9
+
+2026-01-11
+
+Category with a long descriptive label 10
+
+10
+
+2026-01-12
+
+Category with a long descriptive label 11
+
+11
+
+2026-01-13
+
+Category with a long descriptive label 12
+
+12
+
+2026-01-14
+
+Category with a long descriptive label 13
+
+13
+
+2026-01-15
+
+Category with a long descriptive label 14
+
+14
+
+2026-01-16
+
+Category with a long descriptive label 15
+
+15
+
+2026-01-17
+
+Category with a long descriptive label 16
+
+16
+
+2026-01-18
+
+Category with a long descriptive label 17
+
+17
+
+2026-01-19
+
+Category with a long descriptive label 18
+
+18
+
+2026-01-20
+
+Category with a long descriptive label 19
+
+19
+
+2026-01-21
+
+Category with a long descriptive label 20
+
+20
+
+2026-01-22
+
+Category with a long descriptive label 21
+
+21
+
+2026-01-23
+
+Category with a long descriptive label 22
+
+22
+
+2026-01-24
+
+Category with a long descriptive label 23
+
+23
+
+2026-01-25
+
+Category with a long descriptive label 24
+
+24
+
+2026-01-26
+
+Category with a long descriptive label 25
+
+25
+
+2026-01-27
+
+Category with a long descriptive label 26
+
+26
+
+2026-01-28
+
+Category with a long descriptive label 27
+
+27
+
+2026-01-01
+
+Category with a long descriptive label 28
+
+28
+
+2026-01-02
+
+Category with a long descriptive label 29
+
+29
+
+2026-01-03
+
+Category with a long descriptive label 30
+
+30
+
+2026-01-04
+
+Category with a long descriptive label 31
+
+31
+
+2026-01-05
+
+Category with a long descriptive label 32
+
+32
+
+2026-01-06
+
+Category with a long descriptive label 33
+
+33
+
+2026-01-07
+
+Category with a long descriptive label 34
+
+34
+
+2026-01-08
+
+Category with a long descriptive label 35
+
+35
+
+2026-01-09
+
+Category with a long descriptive label 36
+
+36
+
+2026-01-10
+
+Category with a long descriptive label 37
+
+37
+
+2026-01-11
+
+Category with a long descriptive label 38
+
+38
+
+2026-01-12
+
+Category with a long descriptive label 39
+
+39
+
+2026-01-13
+
+Category with a long descriptive label 40
+
+40
+
+2026-01-14
+
+Category with a long descriptive label 41
+
+41
+
+2026-01-15
+
+Category with a long descriptive label 42
+
+42
+
+2026-01-16
+
+Category with a long descriptive label 43
+
+43
+
+2026-01-17
+
+Category with a long descriptive label 44
+
+44
+
+2026-01-18
+
+Category with a long descriptive label 45
+
+45
+
+2026-01-19
+
+Category with a long descriptive label 46
+
+46
+
+Page 2 · Cloudy Data
+
+Accessible test chart · continued
+Date
+
+Category
+
+Value
+
+2026-01-20
+
+Category with a long descriptive label 47
+
+47
+
+2026-01-21
+
+Category with a long descriptive label 48
+
+48
+
+2026-01-22
+
+Category with a long descriptive label 49
+
+49
+
+2026-01-23
+
+Category with a long descriptive label 50
+
+50
+
+2026-01-24
+
+Category with a long descriptive label 51
+
+51
+
+2026-01-25
+
+Category with a long descriptive label 52
+
+52
+
+2026-01-26
+
+Category with a long descriptive label 53
+
+53
+
+2026-01-27
+
+Category with a long descriptive label 54
+
+54
+
+2026-01-28
+
+Category with a long descriptive label 55
+
+55
+
+2026-01-01
+
+Category with a long descriptive label 56
+
+56
+
+2026-01-02
+
+Category with a long descriptive label 57
+
+57
+
+2026-01-03
+
+Category with a long descriptive label 58
+
+58
+
+2026-01-04
+
+Category with a long descriptive label 59
+
+59
+
+2026-01-05
+
+Category with a long descriptive label 60
+
+60
+
+2026-01-06
+
+Category with a long descriptive label 61
+
+61
+
+2026-01-07
+
+Category with a long descriptive label 62
+
+62
+
+2026-01-08
+
+Category with a long descriptive label 63
+
+63
+
+2026-01-09
+
+Category with a long descriptive label 64
+
+64
+
+2026-01-10
+
+Category with a long descriptive label 65
+
+65
+
+2026-01-11
+
+Category with a long descriptive label 66
+
+66
+
+2026-01-12
+
+Category with a long descriptive label 67
+
+67
+
+2026-01-13
+
+Category with a long descriptive label 68
+
+68
+
+2026-01-14
+
+Category with a long descriptive label 69
+
+69
+
+2026-01-15
+
+Category with a long descriptive label 70
+
+70
+
+2026-01-16
+
+Category with a long descriptive label 71
+
+71
+
+2026-01-17
+
+Category with a long descriptive label 72
+
+72
+
+2026-01-18
+
+Category with a long descriptive label 73
+
+73
+
+2026-01-19
+
+Category with a long descriptive label 74
+
+74
+
+2026-01-20
+
+Category with a long descriptive label 75
+
+75
+
+2026-01-21
+
+Category with a long descriptive label 76
+
+76
+
+2026-01-22
+
+Category with a long descriptive label 77
+
+77
+
+2026-01-23
+
+Category with a long descriptive label 78
+
+78
+
+2026-01-24
+
+Category with a long descriptive label 79
+
+79
+
+2026-01-25
+
+Category with a long descriptive label 80
+
+80
+
+Page 3 · Cloudy Data
+
+

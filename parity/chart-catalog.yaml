@@ -163,12 +163,12 @@ customization:
     area: Selection and inspect
     controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
     status: partial
-    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range/lasso/keep-exclude/drill and visual mark highlight remain absent; CUST12 covers the tooltip.
+    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range selection is the next increment; lasso/keep-exclude/drill and visual mark highlight remain absent; CUST12 covers the tooltip.
   - id: CUST14
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]
     status: partial
-    note: Live size/fit plus bounded SVG, PNG and one-page PDF export, including one frozen multi-format SAF bundle with embedded title/source provenance; accessible PDF, print, remaining provider-failure injection, persisted geometry and pixel comparison are pending.
+    note: Bounded SVG, PNG and frozen multi-format SAF bundle; PDF includes a searchable table and the current worksheet has a native print flow. Tagged PDF, multi-page dashboard/story print, remaining provider-failure injection, persisted geometry and pixel comparison are pending.
   - id: CUST15
     area: Accessibility
     controls: [native_summary, data_table, keyboard_exploration, focus_exit, screen_reader]

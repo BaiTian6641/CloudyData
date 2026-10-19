@@ -271,3 +271,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   tree produced an explicit failure.
 - API37 suite 41/41; JVM 24/24; lint 0/5. PDF remains raster-only; accessible/
   tagged output, print and storage-full/mid-write injection remain pending.
+
+## 2026-10-18 — printable accessible worksheet PDF
+
+- Added paginated A4 text table pages to the frozen PDF and a native Android
+  print adapter/action. Real Save-as-PDF output: 2 pages, 55,772 bytes, A4, no
+  JavaScript, searchable title/source/summary/rows; print cancellation created
+  no file.
+- Accessible bundle and PDF-only exports: 2 pages, 55,082 bytes, same searchable
+  text. 80-row writer test with wrapped labels: 3 pages. Print adapter writes in
+  cancellable chunks off the main thread; print action is serialized and checks
+  null PrintManager results. API37 suite 43/43; JVM 24/24; lint 0/5.
+- PDF remains untagged; worksheet-only print and spooler completion remain
+  partial. The MediaStore qualification helper now removes all prior
+  `cloudy_ui_q06*` copies to prevent unique-name exhaustion on repeated runs.

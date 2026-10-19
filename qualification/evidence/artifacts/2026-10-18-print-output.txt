@@ -1,0 +1,30 @@
+Observed sales
+Source: chart_line_series.csv · 6 rows · snapshot 5fbbe640
+
+Accessible chart data
+Area summary: value: 2026-01-01 = 11, 2026-02-01 = 22, 2026-03-01 = 30, 2026-04-01 = 4. Click a mark or use arrow keys to select a
+table row; Escape leaves the chart.
+Page 1 is a rasterized chart image. This page provides accessible title, provenance and exact rows.
+row
+
+value
+
+2026-01-01
+
+11
+
+2026-02-01
+
+22
+
+2026-03-01
+
+30
+
+2026-04-01
+
+4
+
+Page 2 · Cloudy Data
+
+
