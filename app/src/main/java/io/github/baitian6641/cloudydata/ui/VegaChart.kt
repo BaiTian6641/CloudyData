@@ -3,6 +3,8 @@ package io.github.baitian6641.cloudydata.ui
 import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,11 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.ChartSpecBuilder
@@ -49,6 +55,9 @@ import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun VegaChartCard(
@@ -81,6 +90,34 @@ fun VegaChartCard(
     val focusManager = LocalFocusManager.current
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
     val currentSelectRow = rememberUpdatedState(onSelectRow)
+    val context = LocalContext.current
+    val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
+    val scope = rememberCoroutineScope()
+    var exportStatus by remember { mutableStateOf<String?>(null) }
+    val saveSvg = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("image/svg+xml"),
+    ) { uri ->
+        val svg = exportModel.pendingSvg
+        exportModel.pendingSvg = null
+        if (uri == null) {
+            exportStatus = null
+        } else if (svg == null) {
+            exportStatus = "Export was lost when the screen was recreated. Try again."
+        } else {
+            scope.launch {
+                exportStatus = withContext(Dispatchers.IO) {
+                    runCatching {
+                        context.contentResolver.openOutputStream(uri)?.use { stream ->
+                            stream.write(svg.toByteArray(Charsets.UTF_8))
+                        } ?: error("The destination could not be opened.")
+                        "Exported SVG (${svg.length} characters)."
+                    }.getOrElse { error ->
+                        "Export failed: ${error.message}"
+                    }
+                }
+            }
+        }
+    }
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -106,6 +143,15 @@ fun VegaChartCard(
                 }
                 rendered -> CloudyBadge("Offline Vega", tone = CloudyBadgeTone.Neutral)
                 else -> CloudyBadge("Loading renderer", tone = CloudyBadgeTone.Neutral)
+            }
+            if (rendered && specError == null && rendererError == null) {
+                Spacer(Modifier.width(density.spaceSmall))
+                CloudyTextButton("Export SVG", {
+                    exportStatus = null
+                    hostRef.get()?.requestSvgExport() ?: run {
+                        exportStatus = "Renderer is unavailable."
+                    }
+                })
             }
         }
         if (specError != null) {
@@ -182,6 +228,17 @@ fun VegaChartCard(
                                         focusManager.clearFocus(force = true)
                                     }
 
+                                    override fun onSvgExport(chartId: String, revision: Long, svg: String) {
+                                        if (hostRef.get() == null) return
+                                        exportModel.pendingSvg = svg
+                                        exportStatus = "Choose a destination for the SVG."
+                                        saveSvg.launch("cloudy-chart.svg")
+                                    }
+
+                                    override fun onExportError(message: String) {
+                                        exportStatus = "Export failed: $message"
+                                    }
+
                                     override fun onRendererError(code: String, detail: String) {
                                         rendererError = "$code: $detail"
                                     }
@@ -220,6 +277,14 @@ fun VegaChartCard(
             color = colors.textSecondary,
             maxLines = 2,
         )
+        exportStatus?.let { status ->
+            Text(
+                status,
+                style = MaterialTheme.typography.labelSmall,
+                color = if (status.startsWith("Export failed")) colors.warning else colors.textSecondary,
+                maxLines = 2,
+            )
+        }
     }
 
     DisposableEffect(retryToken) {
@@ -237,6 +302,7 @@ fun VegaChartCard(
         options,
     ) {
         if (!rendererReady || spec == null || viewSize.width < 32 || viewSize.height < 32) return@LaunchedEffect
+        rendered = false
         val widthDp = with(localDensity) { viewSize.width.toDp().value }
         val heightDp = with(localDensity) { viewSize.height.toDp().value }
         requestRevision++
@@ -272,4 +338,8 @@ private fun accessibleSummary(spec: ChartSpec): String {
         ChartKind.AREA -> "Area"
     }
     return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; Escape leaves the chart."
+}
+
+internal class ChartExportViewModel : ViewModel() {
+    var pendingSvg: String? = null
 }

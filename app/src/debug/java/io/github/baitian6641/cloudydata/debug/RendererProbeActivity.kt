@@ -21,6 +21,7 @@ import io.github.baitian6641.cloudydata.chart.LabelSpec
 import io.github.baitian6641.cloudydata.chart.LegendSpec
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
+import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -181,6 +182,30 @@ class RendererProbeActivity : Activity() {
                     }
                 }
 
+                override fun onSvgExport(chartId: String, revision: Long, svg: String) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        val written = runCatching {
+                            File(filesDir, "exported-chart.svg").writeText(svg, Charsets.UTF_8)
+                        }.isSuccess
+                        if (written) {
+                            RendererProbeState.completeSvg(svg)
+                            status.text = "Exported SVG $chartId r$revision · ${svg.length} chars"
+                        } else {
+                            RendererProbeState.failExport("Could not write the probe export file")
+                            status.text = "Export write failed"
+                        }
+                    }
+                }
+
+                override fun onExportError(message: String) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        RendererProbeState.failExport(message)
+                        status.text = "Export failed: $message"
+                    }
+                }
+
                 override fun onRendererError(code: String, detail: String) {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
@@ -295,6 +320,10 @@ class RendererProbeActivity : Activity() {
     }
 
     fun focusRendererForTest(): Boolean = host?.webView?.requestFocus() == true
+
+    fun exportForTest() {
+        host?.requestSvgExport()
+    }
 
 
     fun rendererBoundsForTest(): Rect? {
@@ -487,14 +516,44 @@ object RendererProbeState {
     val selectionCount = AtomicInteger(0)
     val focusExitCount = AtomicInteger(0)
 
+    @Volatile
+    var exportedSvg: String? = null
+        private set
+
+    @Volatile
+    private var svgLatch: CountDownLatch = CountDownLatch(1)
+
+    @Volatile
+    var exportError: String? = null
+        private set
+
     fun reset() {
         result = null
         blockedRequests.set(0)
         selectionRow.set(-1)
         selectionCount.set(0)
         focusExitCount.set(0)
+        exportedSvg = null
+        exportError = null
+        svgLatch = CountDownLatch(1)
         latch = CountDownLatch(1)
         recoveryLatch = CountDownLatch(1)
+    }
+
+    fun completeSvg(svg: String) {
+        exportedSvg = svg
+        exportError = null
+        svgLatch.countDown()
+    }
+
+    fun failExport(message: String) {
+        exportError = message
+        svgLatch.countDown()
+    }
+
+    fun awaitSvg(timeoutSeconds: Long): String? {
+        svgLatch.await(timeoutSeconds, TimeUnit.SECONDS)
+        return exportedSvg
     }
 
     fun noteRendererDeath() {

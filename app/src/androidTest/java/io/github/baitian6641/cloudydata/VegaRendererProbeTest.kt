@@ -10,8 +10,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.debug.RendererProbeActivity
 import io.github.baitian6641.cloudydata.debug.RendererProbeState
+import io.github.baitian6641.cloudydata.renderer.SvgExportValidator
+import java.io.File
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import kotlin.math.abs
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -219,6 +223,22 @@ class VegaRendererProbeTest {
         return condition()
     }
 
+    @Test
+    fun svgValidatorIgnoresTextUrlsButRejectsActiveContent() {
+        val safe = "<svg xmlns=\"http://www.w3.org/2000/svg\">" +
+            "<text>href=\"http://example.invalid\" url(http://example.invalid)</text>" +
+            "<rect fill=\"url(#paint)\"/></svg>"
+        assertNull(SvgExportValidator.validate(safe))
+        assertNotNull(SvgExportValidator.validate("<svg><script/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg><foreignObject/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg><image href=\"https://example.invalid/x\"/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg><a href=\"https://example.invalid\"/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg><rect style=\"fill:url(http://example.invalid)\"/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg onload=\"alert(1)\"/></svg>"))
+        assertNotNull(SvgExportValidator.validate("<svg><rect onclick=\"alert(1)\"/></svg>"))
+        assertNotNull(SvgExportValidator.validate("not an svg"))
+    }
+
     private fun renderAt(widthDp: Float, heightDp: Float): RendererProbeState.Result {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -246,6 +266,30 @@ class VegaRendererProbeTest {
             assertEquals("Vega did not draw an area", 1, result.sceneMarks["area"])
             assertEquals("Vega did not draw the area outline", 1, result.sceneMarks["line"])
             assertEquals("renderer made an external request", 0, result.blockedRequests)
+        }
+    }
+
+    @Test
+    fun exportsCurrentChartSvgWithoutScriptsOrRemoteReferences() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            scenario.onActivity { it.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertNull("export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertTrue("SVG export did not complete", svg != null)
+            assertTrue("export is not an SVG document", svg!!.trimStart().startsWith("<svg"))
+            assertNull("export failed validation: ${SvgExportValidator.validate(svg)}", SvgExportValidator.validate(svg))
+            assertTrue("current bar category A is missing", svg.contains(">A<"))
+            assertTrue("current bar category B is missing", svg.contains(">B<"))
+            assertTrue("current axis title is missing", svg.contains(">Region<"))
+            assertTrue("export is unexpectedly small: ${svg.length}", svg.length > 500)
+            assertTrue("export exceeded the bounded limit", svg.length <= 2 * 1024 * 1024)
+            val fileSvg = File(
+                InstrumentationRegistry.getInstrumentation().targetContext.filesDir,
+                "exported-chart.svg",
+            ).readText()
+            assertEquals("probe evidence file does not match the exported payload", svg, fileSvg)
         }
     }
 

@@ -54,7 +54,7 @@ unless stated otherwise.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (warnings documented). JVM tests: 24/24. Emulator instrumentation:
-  35/35, 0 failures. The physical Googlebook was removed by the owner; new
+  37/37, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -72,6 +72,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s11-renderer-selection.md`
 - `qualification/evidence/2026-10-18-s11-area-chart.md`
 - `qualification/evidence/2026-10-18-s11-tooltip.md`
+- `qualification/evidence/2026-10-18-s11-svg-export.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -115,9 +116,10 @@ unless stated otherwise.
   generation retirement, recovery exhaustion, stale completion/failure
   rejection and exact surface/view sizes. Selection and Escape focus-exit are
   verified; single-series Area is implemented and persists across reopen; a
-  bounded exact-value tooltip works on selection/focus with persisted show/hide.
-  Pointer hover, additive/range selection, export, TalkBack and live-window
-  qualification remain.
+  bounded exact-value tooltip works on selection/focus with persisted show/hide;
+  bounded SVG export is implemented and produces a valid self-contained document.
+  Pointer hover, product end-to-end save/open, PNG/PDF/print, additive/range
+  selection, TalkBack and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -129,17 +131,16 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST14 visual export (SVG first, emulator-first).**
+**CUST14 product export end-to-end + PNG raster export (emulator-first).**
 
-- Files: `host.js`/`index.html`, `VegaRendererHost.kt`, `VegaChart.kt`, export
-  UI/store, tests.
-- Action: request the renderer's SVG for the current chart/revision, validate a
-  bounded document, and save it through a user-chosen destination; keep a
-  native/offline fallback if the renderer fails. Do not export a stale revision.
-- Acceptance: actual export produces a valid SVG of the current chart with no
-  external references; stale/failed renders are rejected; a saved file opens.
-- Then: PNG/PDF/print, pointer-hover tooltip qualification and additive/range
-  selection.
+- Files: `VegaChart.kt`, export UI/store, `VegaRendererHost.kt`, probe/tests.
+- Action: exercise the SaveDocument callback through an actual product
+  worksheet, reopen the saved SVG, then add a bounded PNG export path (renderer
+  or native raster from the same SVG) with the same stale-revision and size
+  limits.
+- Acceptance: a real product export writes a file the app can reopen; stale
+  renders cannot be exported; no network/script reference; bounded payload.
+- Then: PDF/print, pointer-hover qualification and additive/range selection.
 
 ## Protected context
 

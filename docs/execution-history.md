@@ -230,3 +230,12 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   2026-01-01 = 10.0`; show/hide persistence tested.
 - Pointer hover did not qualify through adb mouse injection and remains open.
   JVM 24/24; emulator 35/35; lint 0 errors. CUST12 partial.
+
+## 2026-10-18 — SVG chart export
+
+- Added typed ExportSvg/SvgExport, bounded/validated serialization and a
+  SaveDocument SVG path; debug export produced a valid 7.6 KiB document with no
+  scripts or remote references.
+- Added a stale-revision check and 2 MiB limit; product save/open was not
+  exercised end-to-end after the AVD data reset.
+- JVM 24/24; emulator 37/37; lint 0 errors. CUST14 remains partial.

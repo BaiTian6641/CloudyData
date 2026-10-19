@@ -122,3 +122,12 @@ Selection still uses the validated chart/revision path; the native table remains
 authoritative. Evidence: `qualification/evidence/2026-10-18-s11-tooltip.md`.
 Pointer hover, field/format choices, collision policy and TalkBack announcement
 remain pending; CUST12 is partial.
+
+## Amendment — 2026-10-18 SVG export
+
+Added a typed ExportSvg/SvgExport path. The renderer serializes its current SVG;
+the host gates chart/revision, bounds the document at 2 MiB and rejects scripts,
+foreignObject, remote href and url(http). The worksheet opens a CreateDocument
+picker and writes image/svg+xml. Debug export evidence:
+`qualification/evidence/2026-10-18-s11-svg-export.md`. Product end-to-end
+save/open, PNG/PDF/print and pixel comparison remain pending; CUST14 is partial.

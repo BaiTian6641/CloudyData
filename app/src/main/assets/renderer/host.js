@@ -173,6 +173,28 @@
     return out;
   }
 
+  function exportSvg() {
+    if (!state.view) {
+      fail('not_ready', 'Export requested before a chart was rendered');
+      return;
+    }
+    var svg = document.querySelector('#view svg');
+    if (!svg) {
+      fail('export_unavailable', 'The chart SVG is not available');
+      return;
+    }
+    var clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    var text = new XMLSerializer().serializeToString(clone);
+    post({
+      type: 'SvgExport',
+      chartId: state.activeChartId,
+      revision: state.activeRevision,
+      svg: text
+    });
+  }
+
   function disposeView() {
     hideTooltip();
     if (state.view) {
@@ -299,6 +321,9 @@
         break;
       case 'ApplyChartSpec':
         applyChartSpec(message);
+        break;
+      case 'ExportSvg':
+        exportSvg();
         break;
       case 'Dispose':
         disposeView();

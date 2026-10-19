@@ -52,6 +52,8 @@ class VegaRendererHost(
             x: String,
         )
         fun onFocusExit()
+        fun onSvgExport(chartId: String, revision: Long, svg: String)
+        fun onExportError(message: String)
         fun onRendererError(code: String, detail: String)
         fun onExternalRequestBlocked(url: String)
     }
@@ -165,6 +167,23 @@ class VegaRendererHost(
         dispatch(request)
     }
 
+    fun requestSvgExport() {
+        val view = webView
+        if (view == null || !ready || disposed) {
+            listener.onExportError("The renderer is not ready to export.")
+            return
+        }
+        val message = JSONObject().put("type", "ExportSvg")
+        mainHandler.post {
+            if (!disposed && webView === view) {
+                view.evaluateJavascript(
+                    "window.cloudyReceive(${JSONObject.quote(message.toString())})",
+                    null,
+                )
+            }
+        }
+    }
+
     private fun dispatch(request: PendingSpec) {
         val view = webView ?: error("renderer is not initialized")
         val specJson = try {
@@ -220,6 +239,7 @@ class VegaRendererHost(
     }
 
     private fun validateAndDispatch(message: WebMessageCompat, sourceOrigin: Uri, isMainFrame: Boolean) {
+        if (disposed) return
         if (!isMainFrame || sourceOrigin.toString() != "https://$ASSET_DOMAIN" || message.type != WebMessageCompat.TYPE_STRING) {
             listener.onRendererError("invalid_message_origin", "Rejected a renderer message with an unexpected origin or frame.")
             return
@@ -296,6 +316,21 @@ class VegaRendererHost(
                 }
                 listener.onFocusExit()
             }
+            "SvgExport" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val svg = json.optString("svg")
+                if (svg.length !in 1..MAX_SVG_CHARS) {
+                    listener.onExportError("The exported SVG is empty or too large.")
+                    return
+                }
+                SvgExportValidator.validate(svg)?.let { error ->
+                    listener.onExportError(error)
+                    return
+                }
+                listener.onSvgExport(chartId, revision, svg)
+            }
             "RendererError" -> {
                 val errorChartId = json.optString("chartId")
                 val errorRevision = json.optLong("revision", -1)
@@ -328,8 +363,9 @@ class VegaRendererHost(
         const val ASSET_DOMAIN = "appassets.androidplatform.net"
         const val BRIDGE_NAME = "CloudyBridge"
         const val MAX_CHART_POINTS = 2000
-        const val MAX_MESSAGE_CHARS = 64 * 1024
+        const val MAX_MESSAGE_CHARS = 3 * 1024 * 1024
         const val MAX_SPEC_CHARS = 512 * 1024
+        const val MAX_SVG_CHARS = 2 * 1024 * 1024
         private const val MAX_SOURCE_ROW_INDEX = 1_000_000
         private const val MAX_SELECTION_LABEL = 512
     }

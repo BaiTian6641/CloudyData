@@ -168,7 +168,7 @@ customization:
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]
     status: partial
-    note: Live size and fit only; no persisted geometry or visual export.
+    note: Live size/fit and bounded SVG export through the renderer; PNG/PDF/print, persisted geometry, product end-to-end save/open and pixel comparison are pending.
   - id: CUST15
     area: Accessibility
     controls: [native_summary, data_table, keyboard_exploration, focus_exit, screen_reader]
