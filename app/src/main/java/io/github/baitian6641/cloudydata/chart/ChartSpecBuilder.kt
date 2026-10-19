@@ -111,7 +111,11 @@ object ChartSpecBuilder {
                 titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = axisFor(options, yTitle),
-            gridlines = GridlineSpec(options.showGridlines, options.gridlineWidth),
+            gridlines = GridlineSpec(
+                options.showGridlines,
+                options.gridlineWidth,
+                options.gridlineContrast,
+            ),
             // Category color legends are intentionally deferred until grouped
             // bar semantics exist; the legend control applies to line series.
             legend = LegendSpec(false, options.legendPosition, null),
@@ -236,7 +240,11 @@ object ChartSpecBuilder {
             } else {
                 baseAxis
             },
-            gridlines = GridlineSpec(options.showGridlines, options.gridlineWidth),
+            gridlines = GridlineSpec(
+                options.showGridlines,
+                options.gridlineWidth,
+                options.gridlineContrast,
+            ),
             legend = LegendSpec(
                 visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,
                 position = options.legendPosition,

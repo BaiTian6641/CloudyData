@@ -2,6 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
@@ -44,6 +45,7 @@ data class AxisSpec(
 data class GridlineSpec(
     val show: Boolean,
     val width: Double? = null,
+    val contrast: GridlineContrast = GridlineContrast.DEFAULT,
 )
 
 data class LegendSpec(

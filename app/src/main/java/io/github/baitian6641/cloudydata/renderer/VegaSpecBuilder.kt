@@ -4,7 +4,9 @@ import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
+import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
+import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
@@ -25,7 +27,7 @@ object VegaSpecBuilder {
     ): JSONObject {
         require(palette.isNotEmpty()) { "palette is empty" }
         val textColor = if (dark) "#E1EBED" else "#182427"
-        val gridColor = if (dark) "#35515A" else "#D3DFE2"
+        val gridColor = colorHex(if (dark) CloudyTokens.Dark.divider else CloudyTokens.Light.divider)
         val rows = JSONArray()
         val xOrder = TreeMap<Int, String>()
         val seriesDomain = JSONArray()
@@ -77,6 +79,11 @@ object VegaSpecBuilder {
 
         val visibleXLabels = spec.xAxis.labelValues?.size ?: xDomain.length()
         val valueFormat = spec.valueDecimals?.let { ",.${it}f" }
+        val gridlineStroke = when (spec.gridlines.contrast) {
+            GridlineContrast.DEFAULT -> gridColor
+            GridlineContrast.STRONG ->
+                colorHex(if (dark) CloudyTokens.Dark.outline else CloudyTokens.Light.outline)
+        }
         val axes = JSONArray()
             .put(
                 axisJson(
@@ -99,6 +106,7 @@ object VegaSpecBuilder {
                     textColor = textColor,
                     gridColor = gridColor,
                     grid = spec.gridlines.show,
+                    gridLineColor = gridlineStroke,
                     gridWidth = spec.gridlines.width,
                     labelAngle = 0,
                     tickCount = spec.yAxis.tickCount,
@@ -176,6 +184,9 @@ object VegaSpecBuilder {
         .put("exactY", point.exactY ?: JSONObject.NULL)
         .put("defined", point.defined)
 
+    private fun colorHex(value: Long): String =
+        "#%06X".format(value.toInt() and 0xFFFFFF)
+
     private fun axisJson(
         orient: String,
         scale: String,
@@ -183,6 +194,7 @@ object VegaSpecBuilder {
         textColor: String,
         gridColor: String,
         grid: Boolean,
+        gridLineColor: String = gridColor,
         gridWidth: Double? = null,
         labelAngle: Int,
         tickCount: Int? = null,
@@ -198,7 +210,7 @@ object VegaSpecBuilder {
             .put("domainColor", gridColor)
             .put("tickColor", gridColor)
             .put("grid", grid)
-            .put("gridColor", gridColor)
+            .put("gridColor", gridLineColor)
             .put("labelAngle", labelAngle)
         if (gridWidth != null && grid) {
             axis.put("gridWidth", gridWidth)

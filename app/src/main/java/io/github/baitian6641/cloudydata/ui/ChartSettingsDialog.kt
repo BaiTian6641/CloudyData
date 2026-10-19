@@ -37,6 +37,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -68,6 +69,7 @@ fun ChartSettingsDialog(
     var xLabelCount by remember { mutableStateOf(current.xLabelCount?.toString().orEmpty()) }
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var gridlineWidth by remember { mutableStateOf(current.gridlineWidth?.toString().orEmpty()) }
+    var gridlineContrast by remember { mutableStateOf(current.gridlineContrast) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
@@ -329,6 +331,14 @@ fun ChartSettingsDialog(
                         supportingText = "${ChartOptions.MIN_GRIDLINE_WIDTH}–${ChartOptions.MAX_GRIDLINE_WIDTH} dp, blank for the renderer default.",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     )
+                    ChartToggleRow(
+                        title = "Strong gridlines",
+                        description = "Use the theme outline color instead of the default divider.",
+                        checked = gridlineContrast == GridlineContrast.STRONG,
+                        onCheckedChange = {
+                            gridlineContrast = if (it) GridlineContrast.STRONG else GridlineContrast.DEFAULT
+                        },
+                    )
                 }
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -548,6 +558,7 @@ fun ChartSettingsDialog(
                             yMax = parsedMax,
                             showGridlines = showGridlines,
                             gridlineWidth = parsedGridlineWidth,
+                            gridlineContrast = gridlineContrast,
                             showValueLabels = showValueLabels,
                             zeroBaseline = zeroBaseline || sheet.markType == MarkType.AREA,
                             logScale = logScale && sheet.markType == MarkType.LINE,

@@ -9,6 +9,7 @@ import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -126,6 +127,26 @@ class ChartSpecBuilderTest {
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("2 and 50"))
         }
+    }
+
+    @Test
+    fun gridlineContrastIsCarriedAndDefaultsToDivider() {
+        assertEquals(
+            GridlineContrast.STRONG,
+            ChartSpecBuilder.build(
+                "contrast", 0, lineResult(),
+                ChartOptions(gridlineContrast = GridlineContrast.STRONG),
+                "derived",
+            ).gridlines.contrast,
+        )
+        assertEquals(
+            GridlineContrast.DEFAULT,
+            ChartSpecBuilder.build(
+                "contrast", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).gridlines.contrast,
+        )
     }
 
     @Test

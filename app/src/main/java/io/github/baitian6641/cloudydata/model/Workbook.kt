@@ -28,12 +28,15 @@ enum class LabelPosition { TOP, INSIDE_END }
 
 enum class AxisTitleAnchor { AUTO, START, END }
 
+enum class GridlineContrast { DEFAULT, STRONG }
+
 data class ChartOptions(
     val title: String? = null,
     val subtitle: String? = null,
     val caption: String? = null,
     val showGridlines: Boolean = true,
     val gridlineWidth: Double? = null,
+    val gridlineContrast: GridlineContrast = GridlineContrast.DEFAULT,
     val showValueLabels: Boolean = false,
     val valueDecimals: Int? = null,
     val xAxisTitle: String? = null,
@@ -65,6 +68,7 @@ data class ChartOptions(
         .put("caption", caption ?: JSONObject.NULL)
         .put("showGridlines", showGridlines)
         .put("gridlineWidth", gridlineWidth ?: JSONObject.NULL)
+        .put("gridlineContrast", gridlineContrast.name)
         .put("showValueLabels", showValueLabels)
         .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
@@ -117,6 +121,11 @@ data class ChartOptions(
                     it.isFinite() && it in MIN_GRIDLINE_WIDTH..MAX_GRIDLINE_WIDTH
                 }
             },
+            gridlineContrast = runCatching {
+                GridlineContrast.valueOf(
+                    json.optString("gridlineContrast", GridlineContrast.DEFAULT.name),
+                )
+            }.getOrDefault(GridlineContrast.DEFAULT),
             showValueLabels = json.optBoolean("showValueLabels", false),
             valueDecimals = if (json.isNull("valueDecimals")) {
                 null

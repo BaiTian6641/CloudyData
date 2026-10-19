@@ -538,3 +538,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   focused exported-SVG border render 1/1 on the physical HP Googlebook; lint
   0 errors/5 warnings. Native visual contrast, density, PNG/PDF pixel
   comparison and export-header geometry were not visually reviewed.
+
+## 2026-10-19 — CUST04 gridline contrast
+
+- Added persisted DEFAULT/STRONG gridline contrast using the theme divider and
+  outline tokens. Only the value-axis grid color changes; domain/tick chrome and
+  chart data/dimensions remain unchanged. Invalid/missing JSON falls back to
+  DEFAULT.
+- Colors now derive from `CloudyTokens`; invalid/missing JSON fallback and the
+  DEFAULT renderer branch are asserted. JVM 54/54, VegaSpecBuilderTest 5/5 and
+  ChartSettingsPersistenceTest 6/6 on the physical HP Googlebook; lint 0
+  errors/5 warnings; debug/test APKs compile. Dark-theme, export, contrast and
+  device visual checks were not run.

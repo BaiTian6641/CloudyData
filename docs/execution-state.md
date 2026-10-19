@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `6fe64c6`. `main` tracks `origin/main`; the chart-border
-stage is pushed.
+**Source:** commits through `79d259a`; the gridline-contrast change is in the
+next local commit. `main` tracks `origin/main` at the pushed border baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,10 +54,10 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **53/53**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **54/54**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
-  title/caption, units/anchor, padding, X-label, gridline-width, decimal-format and chart-border cases. Emulator renderer
-  probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
+  title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format and chart-border cases. Emulator renderer
+  probe: 17/17 (pre-lasso); Vega spec builder: 5/5;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
   suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
@@ -103,6 +103,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-gridline-width.md`
 - `qualification/evidence/2026-10-19-cust06-value-decimals.md`
 - `qualification/evidence/2026-10-19-cust14-chart-border.md`
+- `qualification/evidence/2026-10-19-cust04-gridline-contrast.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -150,10 +151,10 @@ unless stated otherwise.
   axis `values` subset with first/last retained; domain/data/selection are
   unchanged. JVM selection/validation and focused Vega/persistence
   instrumentation pass; device collision/accessibility checks were not run.
-- **Major-gridline width.** Optional 0.5–3.0 dp `gridWidth` is applied only when
-  gridlines are visible and persists; data/ticks/dimensions are unchanged. JVM
-  and focused physical spec/persistence checks pass; visual/export checks were
-  not run.
+- **Major-gridline width/contrast.** Optional 0.5–3.0 dp `gridWidth` and a
+  divider/outline contrast choice apply only to visible value-axis grids;
+  data/ticks/dimensions are unchanged. JVM and focused physical
+  spec/persistence checks pass; visual/export checks were not run.
 - **Fixed-decimal value format.** Optional 0–6 decimals format Y-axis ticks and
   Bar/Line/Area value labels; labels use an explicit guarded `format(datum.y)`
   signal because Vega ignores text field `format`. Exact tooltip/data/export

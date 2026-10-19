@@ -6,6 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import io.github.baitian6641.cloudydata.data.WorkbookStore
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
@@ -82,6 +83,7 @@ class ChartSettingsPersistenceTest {
                             gridlineWidth = 2.5,
                             valueDecimals = 2,
                             showChartBorder = true,
+                            gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                         ),
                     ),
                 ),
@@ -117,6 +119,10 @@ class ChartSettingsPersistenceTest {
         assertEquals(2.5, reopenedSheet.chart.gridlineWidth!!, 0.0)
         assertEquals(2, reopenedSheet.chart.valueDecimals)
         assertEquals(true, reopenedSheet.chart.showChartBorder)
+        assertEquals(
+            io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
+            reopenedSheet.chart.gridlineContrast,
+        )
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -125,6 +131,19 @@ class ChartSettingsPersistenceTest {
         assertFalse(rawSheet.has("chartTitle"))
         assertFalse(rawSheet.has("showGridlines"))
         assertFalse(rawSheet.has("showValueLabels"))
+    }
+
+    @Test
+    fun invalidGridlineContrastFallsBackToDefault() {
+        assertEquals(GridlineContrast.DEFAULT, ChartOptions.fromJson(JSONObject()).gridlineContrast)
+        assertEquals(
+            GridlineContrast.DEFAULT,
+            ChartOptions.fromJson(JSONObject().put("gridlineContrast", "NOT_A_CONTRAST")).gridlineContrast,
+        )
+        assertEquals(
+            GridlineContrast.STRONG,
+            ChartOptions.fromJson(JSONObject().put("gridlineContrast", "STRONG")).gridlineContrast,
+        )
     }
 
     @Test

@@ -67,6 +67,7 @@ class VegaSpecBuilderTest {
                 yMax = 40.0,
                 showValueLabels = true,
                 gridlineWidth = 2.5,
+                gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                 valueDecimals = 2,
                 showChartBorder = true,
                 legendVisible = true,
@@ -97,6 +98,20 @@ class VegaSpecBuilderTest {
             0.0,
         )
         assertEquals(",.2f", json.getJSONArray("axes").getJSONObject(1).getString("format"))
+        assertEquals("#667A80", json.getJSONArray("axes").getJSONObject(1).getString("gridColor"))
+        assertEquals("#D3DFE2", json.getJSONArray("axes").getJSONObject(1).getString("domainColor"))
+        assertEquals("#D3DFE2", json.getJSONArray("axes").getJSONObject(1).getString("tickColor"))
+        val defaultJson = VegaSpecBuilder.build(
+            ChartSpecBuilder.build("line-default", 0, result, ChartOptions(), "derived"),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        assertEquals(
+            "#D3DFE2",
+            defaultJson.getJSONArray("axes").getJSONObject(1).getString("gridColor"),
+        )
         val labelMarks = json.getJSONArray("marks").getJSONObject(0).getJSONArray("marks")
         val valueLabel = (0 until labelMarks.length())
             .map { labelMarks.getJSONObject(it) }
