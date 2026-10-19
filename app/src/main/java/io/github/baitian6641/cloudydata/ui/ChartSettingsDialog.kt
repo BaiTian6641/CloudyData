@@ -82,6 +82,8 @@ fun ChartSettingsDialog(
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
+    var showMarkers by remember { mutableStateOf(current.showMarkers) }
+    var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
@@ -104,6 +106,11 @@ fun ChartSettingsDialog(
     val parsedValueDecimals = valueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    val parsedMarkerSize = if (showMarkers) {
+        markerSize.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    } else {
+        null
+    }
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
@@ -130,6 +137,9 @@ fun ChartSettingsDialog(
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
                 "${ChartOptions.MAX_LABEL_FONT_SIZE}."
+        showMarkers && markerSize.trim().isNotEmpty() && (parsedMarkerSize == null || !parsedMarkerSize.isFinite() ||
+            parsedMarkerSize !in ChartOptions.MIN_MARKER_SIZE..ChartOptions.MAX_MARKER_SIZE) ->
+            "Marker size must be from ${ChartOptions.MIN_MARKER_SIZE} to ${ChartOptions.MAX_MARKER_SIZE}."
         lineWidth.trim().isNotEmpty() && (parsedLineWidth == null || !parsedLineWidth.isFinite() ||
             parsedLineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH) ->
             "Line width must be from ${ChartOptions.MIN_LINE_WIDTH} to ${ChartOptions.MAX_LINE_WIDTH}."
@@ -456,6 +466,21 @@ fun ChartSettingsDialog(
                         supportingText = "${ChartOptions.MIN_LINE_WIDTH}–${ChartOptions.MAX_LINE_WIDTH}, blank for mark default.",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     )
+                    ChartToggleRow(
+                        title = "Markers",
+                        description = "Show observed-point markers up to the 200-point cap.",
+                        checked = showMarkers,
+                        onCheckedChange = { showMarkers = it },
+                    )
+                    if (showMarkers) {
+                        CloudyTextField(
+                            value = markerSize,
+                            onValueChange = { markerSize = it },
+                            label = "Marker size",
+                            supportingText = "${ChartOptions.MIN_MARKER_SIZE}–${ChartOptions.MAX_MARKER_SIZE} px diameter, blank for mark default.",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        )
+                    }
                 }
                 ChartToggleRow(
                     title = "Tooltip",
@@ -631,6 +656,8 @@ fun ChartSettingsDialog(
                             } else {
                                 null
                             },
+                            showMarkers = showMarkers,
+                            markerSize = if (showMarkers) parsedMarkerSize else null,
                         ),
                     )
                 },

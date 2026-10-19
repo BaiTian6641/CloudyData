@@ -91,6 +91,8 @@ class ChartSettingsPersistenceTest {
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
                             valueFormat = ValueDisplayFormat.PERCENT,
                             hiddenSeries = setOf("North", "South"),
+                            showMarkers = true,
+                            markerSize = 6.0,
                         ),
                     ),
                 ),
@@ -135,6 +137,8 @@ class ChartSettingsPersistenceTest {
         assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
         assertEquals(ValueDisplayFormat.PERCENT, reopenedSheet.chart.valueFormat)
         assertEquals(setOf("North", "South"), reopenedSheet.chart.hiddenSeries)
+        assertEquals(true, reopenedSheet.chart.showMarkers)
+        assertEquals(6.0, reopenedSheet.chart.markerSize!!, 0.0)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -155,6 +159,18 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             GridlineContrast.STRONG,
             ChartOptions.fromJson(JSONObject().put("gridlineContrast", "STRONG")).gridlineContrast,
+        )
+    }
+
+    @Test
+    fun invalidMarkerSizeFallsBackToAutomatic() {
+        assertEquals(6.0, ChartOptions.fromJson(JSONObject().put("markerSize", 6.0)).markerSize!!, 0.0)
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerSize", 1.0)).markerSize)
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerSize", 13.0)).markerSize)
+        assertEquals(true, ChartOptions.fromJson(JSONObject()).showMarkers)
+        assertEquals(
+            false,
+            ChartOptions.fromJson(JSONObject().put("showMarkers", false)).showMarkers,
         )
     }
 

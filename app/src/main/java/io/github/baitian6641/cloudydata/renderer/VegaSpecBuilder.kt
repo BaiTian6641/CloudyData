@@ -175,7 +175,7 @@ object VegaSpecBuilder {
             ChartKind.AREA -> {
                 marks.put(areaMark())
                 marks.put(areaLineMark(spec))
-                if (spec.pointCount <= 200) marks.put(areaSymbolMark())
+                if (spec.pointCount <= 200 && spec.markers.show) marks.put(areaSymbolMark(spec))
                 if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
                 marks.put(selectedPointMark(spec, textColor, visibleExpr))
                 marks.put(lineHitMark(spec, visibleExpr))
@@ -235,6 +235,9 @@ object VegaSpecBuilder {
         .put("sourceRowIndex", point.sourceRowIndex)
         .put("exactY", point.exactY ?: JSONObject.NULL)
         .put("defined", point.defined)
+
+    private fun markerArea(spec: ChartSpec, default: Double): Double =
+        spec.markers.size?.let { it * it } ?: default
 
     private fun escapeVegaString(value: String): String =
         value.replace("\\", "\\\\")
@@ -437,7 +440,7 @@ object VegaSpecBuilder {
                     ),
                 ),
         )
-        if (spec.pointCount <= 200) {
+        if (spec.pointCount <= 200 && spec.markers.show) {
             childMarks.put(
                 JSONObject()
                     .put("type", "symbol")
@@ -451,7 +454,7 @@ object VegaSpecBuilder {
                                 .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                                 .put("y", JSONObject().put("scale", "y").put("field", "y"))
                                 .put("fill", JSONObject().put("scale", "color").put("field", "series"))
-                                .put("size", JSONObject().put("value", 30))
+                                .put("size", JSONObject().put("value", markerArea(spec, 30.0)))
                                 .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
                         ),
                     ),
@@ -547,7 +550,7 @@ object VegaSpecBuilder {
             ),
         )
 
-    private fun areaSymbolMark(): JSONObject = JSONObject()
+    private fun areaSymbolMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "symbol")
         .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
@@ -559,7 +562,7 @@ object VegaSpecBuilder {
                     .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
                     .put("y", JSONObject().put("scale", "y").put("field", "y"))
                     .put("fill", JSONObject().put("scale", "color").put("field", "series"))
-                    .put("size", JSONObject().put("value", 24))
+                    .put("size", JSONObject().put("value", markerArea(spec, 24.0)))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )

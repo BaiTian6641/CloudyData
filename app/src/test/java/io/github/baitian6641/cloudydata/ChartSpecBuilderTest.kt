@@ -190,6 +190,37 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun markerOptionsAreCarriedAndBounded() {
+        val spec = ChartSpecBuilder.build(
+            "markers", 0, lineResult(),
+            ChartOptions(showMarkers = false, markerSize = 6.0),
+            "derived",
+        )
+        assertEquals(false, spec.markers.show)
+        assertEquals(6.0, spec.markers.size!!, 0.0)
+        assertEquals(
+            true,
+            ChartSpecBuilder.build(
+                "markers", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).markers.show,
+        )
+        for (invalid in listOf(1.0, 13.0, Double.NaN)) {
+            try {
+                ChartSpecBuilder.build(
+                    "markers", 0, lineResult(),
+                    ChartOptions(markerSize = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected marker size rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Marker size"))
+            }
+        }
+    }
+
+    @Test
     fun valueDisplayFormatIsCarriedAndDefaultsToNumber() {
         assertEquals(
             ValueDisplayFormat.PERCENT,

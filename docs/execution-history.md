@@ -631,3 +631,15 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   (save/reopen), hidden render 1/1, real legend taps 1/1; lint 0 errors/5
   warnings. Googlebook untouched; Compose product wiring and visual/TalkBack
   checks remain absent.
+
+## 2026-10-19 — CUST03 marker visibility/size
+
+- Added persisted Line/Area marker show/hide and 2–12 px diameter. Defaults
+  remain 30/24 area units; custom size uses diameter². The 200-point cap,
+  lines, hit targets, selection overlays, labels and query semantics remain
+  unchanged. Invalid/missing sizes fall back to automatic; UI validation is
+  gated by the marker toggle.
+- Emulator-first validation: JVM 60/60; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 11/11, ChartSettingsPersistenceTest 10/10,
+  hidden-marker render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
+  visual/shape/export checks absent.

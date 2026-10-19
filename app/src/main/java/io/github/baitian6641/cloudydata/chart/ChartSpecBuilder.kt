@@ -263,6 +263,7 @@ object ChartSpecBuilder {
                 position = LabelPosition.TOP,
                 collisionPolicy = options.labelCollisionPolicy,
             ),
+            markers = MarkerSpec(options.showMarkers, options.markerSize),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
@@ -323,6 +324,15 @@ object ChartSpecBuilder {
             throw ChartSpecException(
                 "Value decimals must be between ${ChartOptions.MIN_VALUE_DECIMALS} and " +
                     "${ChartOptions.MAX_VALUE_DECIMALS}.",
+            )
+        }
+        if (options.markerSize != null &&
+            (!options.markerSize.isFinite() ||
+                options.markerSize !in ChartOptions.MIN_MARKER_SIZE..ChartOptions.MAX_MARKER_SIZE)
+        ) {
+            throw ChartSpecException(
+                "Marker size must be between ${ChartOptions.MIN_MARKER_SIZE} and " +
+                    "${ChartOptions.MAX_MARKER_SIZE}.",
             )
         }
         if (options.gridlineWidth != null &&

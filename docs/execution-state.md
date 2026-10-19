@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `b62a947`. `main` tracks `origin/main`; the
-hidden-series persistence stage is pushed.
+**Source:** commits through `67bb677`; the marker-option change is in the next
+local commit. `main` tracks `origin/main` at the pushed persistence baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **59/59**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **60/60**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -114,6 +114,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust06-percent-display.md`
 - `qualification/evidence/2026-10-19-cust05-interactive-legend.md`
 - `qualification/evidence/2026-10-19-cust05-persist-hidden-series.md`
+- `qualification/evidence/2026-10-19-cust03-marker-options.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -204,6 +205,10 @@ unless stated otherwise.
 - **Line width.** Persisted 1–8 width is carried through Line/Area specs and
   renderer strokes with 2.0/1.5 defaults. JVM validation passes; instrumentation
   and device thickness/legend/export checks were not run.
+- **Marker visibility/size.** Persisted show/hide and 2–12 px diameter apply to
+  Line/Area symbols under the existing 200-point cap; lines/hit targets/selection
+  remain. Emulator spec/persistence/render checks pass; shape/visual checks were
+  not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -292,17 +297,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted line/area markers.**
+**CUST03 persisted marker shape.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line/Area symbol
-  lowering, point-count cap, typed chart options and emulator render probes.
-- Files: `ChartOptions`, `ChartSpec`/`LabelSpec` or marker spec,
-  `ChartSpecBuilder`, `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
-- Action: add a persisted marker-visibility toggle and bounded marker size for
-  Line/Area, preserving the current default marker appearance and 200-point cap.
-- Acceptance: default output is unchanged; disabling markers removes only point
-  symbols, never lines/data/selection; size persists and remains bounded.
-  Emulator spec/render checks are required; visual review remains unverified.
+- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: marker
+  visibility/size, Vega symbol lowering, typed chart options, emulator probes.
+- Files: `ChartOptions`, `ChartSpec`/`MarkerSpec`, builders,
+  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
+- Action: add a bounded persisted marker-shape choice (circle/default, square,
+  diamond, cross) for Line/Area markers, preserving default output and the
+  200-point visibility rules.
+- Acceptance: default remains unchanged; shape persists and affects only point
+  symbols, not lines/data/selection; invalid values fall back to default.
+  Emulator spec/render checks required; visual review remains unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent
   and marker visuals wait for an authorized visual session.

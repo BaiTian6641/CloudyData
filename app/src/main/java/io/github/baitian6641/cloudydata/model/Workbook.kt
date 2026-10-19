@@ -62,6 +62,8 @@ data class ChartOptions(
     val yTickCount: Int? = null,
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
+    val showMarkers: Boolean = true,
+    val markerSize: Double? = null,
     val labelPosition: LabelPosition = LabelPosition.TOP,
     val units: String? = null,
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
@@ -107,6 +109,8 @@ data class ChartOptions(
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
+        .put("showMarkers", showMarkers)
+        .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("labelPosition", labelPosition.name)
         .put("units", units ?: JSONObject.NULL)
         .put("axisTitleAnchor", axisTitleAnchor.name)
@@ -128,6 +132,8 @@ data class ChartOptions(
         const val MAX_VALUE_DECIMALS = 6
         const val MIN_LINE_WIDTH = 1.0
         const val MAX_LINE_WIDTH = 8.0
+        const val MIN_MARKER_SIZE = 2.0
+        const val MAX_MARKER_SIZE = 12.0
         const val MIN_GRIDLINE_WIDTH = 0.5
         const val MAX_GRIDLINE_WIDTH = 3.0
         const val MIN_CHART_PADDING = 0
@@ -209,6 +215,14 @@ data class ChartOptions(
                 null
             } else {
                 json.optDouble("lineWidth").takeIf { it.isFinite() && it in MIN_LINE_WIDTH..MAX_LINE_WIDTH }
+            },
+            showMarkers = json.optBoolean("showMarkers", true),
+            markerSize = if (json.isNull("markerSize")) {
+                null
+            } else {
+                json.optDouble("markerSize").takeIf {
+                    it.isFinite() && it in MIN_MARKER_SIZE..MAX_MARKER_SIZE
+                }
             },
             labelPosition = runCatching {
                 LabelPosition.valueOf(json.optString("labelPosition", LabelPosition.TOP.name))

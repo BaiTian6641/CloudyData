@@ -58,6 +58,11 @@ data class LegendSpec(
     val orientation: LegendOrientation? = null,
 )
 
+data class MarkerSpec(
+    val show: Boolean = true,
+    val size: Double? = null,
+)
+
 data class LabelSpec(
     val show: Boolean,
     val fontSize: Int? = null,
@@ -84,6 +89,7 @@ data class ChartSpec(
     val gridlines: GridlineSpec,
     val legend: LegendSpec,
     val labels: LabelSpec,
+    val markers: MarkerSpec = MarkerSpec(),
     val sourceNote: String? = null,
     val tooltip: TooltipSpec = TooltipSpec(true),
     val series: List<ChartSeries>,

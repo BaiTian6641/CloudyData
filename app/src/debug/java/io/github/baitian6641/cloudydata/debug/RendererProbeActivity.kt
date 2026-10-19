@@ -67,6 +67,9 @@ class RendererProbeActivity : Activity() {
     private val requestedHiddenSeries: String? by lazy {
         intent.getStringExtra(EXTRA_HIDDEN_SERIES)
     }
+    private val requestHideMarkers: Boolean by lazy {
+        intent.getBooleanExtra(EXTRA_HIDE_MARKERS, false)
+    }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -87,6 +90,7 @@ class RendererProbeActivity : Activity() {
             transparentExportBackground = requestTransparentExport,
             gridlines = baseSpec.gridlines.copy(minor = requestMinorGrid),
             hiddenSeries = requestedHiddenSeries?.let(::setOf) ?: emptySet(),
+            markers = baseSpec.markers.copy(show = baseSpec.markers.show && !requestHideMarkers),
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -728,6 +732,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_TRANSPARENT_EXPORT = "transparent_export"
         const val EXTRA_MINOR_GRID = "minor_grid"
         const val EXTRA_HIDDEN_SERIES = "hidden_series"
+        const val EXTRA_HIDE_MARKERS = "hide_markers"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

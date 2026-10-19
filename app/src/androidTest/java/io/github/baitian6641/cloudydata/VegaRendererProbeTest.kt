@@ -321,6 +321,33 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun hiddenMarkersRemoveSymbolsButKeepLines() {
+        fun symbols(hide: Boolean): RendererProbeState.Result {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_HIDE_MARKERS, hide)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use {
+                val result = RendererProbeState.await(30)
+                assertTrue("marker probe did not complete", result != null)
+                assertNull(result!!.error)
+                return result
+            }
+        }
+        val visible = symbols(false)
+        val hidden = symbols(true)
+        assertTrue(
+            "markers were not rendered: ${visible.sceneMarks}",
+            (visible.sceneMarks["symbol"] ?: 0) > (hidden.sceneMarks["symbol"] ?: 0),
+        )
+        assertEquals("hiding markers changed the series lines", visible.sceneMarks["line"], hidden.sceneMarks["line"])
+        assertEquals(6, visible.markCount)
+        assertEquals(6, hidden.markCount)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

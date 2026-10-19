@@ -20,6 +20,7 @@ import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.renderer.VegaSpecBuilder
 import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -147,6 +148,13 @@ class VegaSpecBuilderTest {
         assertEquals("series", facet.getJSONArray("groupby").getString(0))
         val line = group.getJSONArray("marks").getJSONObject(0)
         assertEquals("line", line.getString("type"))
+        assertEquals(
+            30.0,
+            group.getJSONArray("marks").getJSONObject(1)
+                .getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("size").getDouble("value"),
+            0.0,
+        )
         assertEquals("series", line.getJSONObject("from").getString("data"))
         assertEquals(
             "isValid(datum.y)",
@@ -283,6 +291,59 @@ class VegaSpecBuilderTest {
         assertEquals("Sales", major.getString("title"))
         assertEquals(true, major.getBoolean("grid"))
         assertEquals(2, json.getJSONArray("data").getJSONObject(0).getJSONArray("values").length())
+    }
+
+    @Test
+    fun markerVisibilityAndSizeAreLowered() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("A", "North", 1L),
+                    listOf<Any?>("A", "South", 2L),
+                    listOf<Any?>("B", "North", 3L),
+                    listOf<Any?>("B", "South", 4L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        fun childMarks(options: ChartOptions): List<JSONObject> {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build("markers", 0, result, options, "derived"),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            val marks = json.getJSONArray("marks").getJSONObject(0).getJSONArray("marks")
+            return (0 until marks.length()).map { marks.getJSONObject(it) }
+        }
+        assertTrue(
+            "default line markers missing",
+            childMarks(ChartOptions()).any { it.getString("type") == "symbol" },
+        )
+        assertTrue(
+            "markers were not removed",
+            childMarks(ChartOptions(showMarkers = false)).none { it.getString("type") == "symbol" },
+        )
+        val sized = childMarks(ChartOptions(markerSize = 6.0))
+            .first { it.getString("type") == "symbol" }
+        assertEquals(
+            36.0,
+            sized.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("size").getDouble("value"),
+            0.0,
+        )
     }
 
     @Test
