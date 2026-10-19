@@ -58,7 +58,7 @@ unless stated otherwise.
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
-  probe: 17/17 (pre-lasso); Vega spec builder: 15/15;
+  probe: 17/17 (pre-lasso); Vega spec builder: 16/16;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
   suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
