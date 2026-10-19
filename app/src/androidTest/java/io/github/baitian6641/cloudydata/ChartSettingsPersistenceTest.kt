@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import io.github.baitian6641.cloudydata.data.WorkbookStore
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
@@ -74,6 +75,8 @@ class ChartSettingsPersistenceTest {
                             labelFontSize = 14,
                             lineWidth = 3.5,
                             labelPosition = LabelPosition.INSIDE_END,
+                            units = "USD",
+                            axisTitleAnchor = AxisTitleAnchor.END,
                         ),
                     ),
                 ),
@@ -102,6 +105,8 @@ class ChartSettingsPersistenceTest {
         assertEquals(14, reopenedSheet.chart.labelFontSize)
         assertEquals(3.5, reopenedSheet.chart.lineWidth!!, 0.0)
         assertEquals(LabelPosition.INSIDE_END, reopenedSheet.chart.labelPosition)
+        assertEquals("USD", reopenedSheet.chart.units)
+        assertEquals(AxisTitleAnchor.END, reopenedSheet.chart.axisTitleAnchor)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

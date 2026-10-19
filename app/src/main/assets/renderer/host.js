@@ -8,6 +8,7 @@
     activeRevision: null,
     selectedRow: -1,
     tooltipEnabled: true,
+    units: '',
     exportTitle: '',
     exportSubtitle: '',
     exportCaption: '',
@@ -49,7 +50,8 @@
       ? String(datum.exactY)
       : (typeof datum.y === 'number' && isFinite(datum.y) ? String(datum.y) : 'NULL');
     var series = datum.series ? String(datum.series) + ' · ' : '';
-    tooltip.textContent = series + String(datum.x || '') + ' = ' + exact;
+    tooltip.textContent = series + String(datum.x || '') + ' = ' + exact +
+      (state.units ? ' ' + state.units : '');
     tooltip.hidden = false;
     var x = 20;
     var y = 20;
@@ -741,6 +743,9 @@
       state.activeRevision = revision;
       state.selectedRow = -1;
       state.tooltipEnabled = !(message.spec.usermeta && message.spec.usermeta.tooltip === false);
+      state.units = message.spec.usermeta && typeof message.spec.usermeta.units === 'string'
+        ? message.spec.usermeta.units
+        : '';
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

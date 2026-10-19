@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.model.LabelPosition
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
@@ -36,6 +37,7 @@ data class AxisSpec(
     val log: Boolean = false,
     val reverse: Boolean = false,
     val tickCount: Int? = null,
+    val titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
 )
 
 data class GridlineSpec(val show: Boolean)
@@ -79,6 +81,7 @@ data class ChartSpec(
     val truncated: Boolean,
     val missingPolicy: MissingPolicy = MissingPolicy.CONNECT_OBSERVED,
     val lineWidth: Double? = null,
+    val units: String? = null,
     val version: Int = SPEC_VERSION,
 ) {
     val pointCount: Int get() = series.sumOf { it.points.size }

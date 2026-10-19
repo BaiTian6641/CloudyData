@@ -26,6 +26,8 @@ enum class LegendOrientation { VERTICAL, HORIZONTAL }
 
 enum class LabelPosition { TOP, INSIDE_END }
 
+enum class AxisTitleAnchor { AUTO, START, END }
+
 data class ChartOptions(
     val title: String? = null,
     val subtitle: String? = null,
@@ -48,6 +50,8 @@ data class ChartOptions(
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
     val labelPosition: LabelPosition = LabelPosition.TOP,
+    val units: String? = null,
+    val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -72,6 +76,8 @@ data class ChartOptions(
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
         .put("labelPosition", labelPosition.name)
+        .put("units", units ?: JSONObject.NULL)
+        .put("axisTitleAnchor", axisTitleAnchor.name)
 
     companion object {
         const val VERSION = 1
@@ -124,6 +130,14 @@ data class ChartOptions(
             labelPosition = runCatching {
                 LabelPosition.valueOf(json.optString("labelPosition", LabelPosition.TOP.name))
             }.getOrDefault(LabelPosition.TOP),
+            units = if (json.isNull("units")) {
+                null
+            } else {
+                json.optString("units").trim().take(16).takeIf { it.isNotEmpty() }
+            },
+            axisTitleAnchor = runCatching {
+                AxisTitleAnchor.valueOf(json.optString("axisTitleAnchor", AxisTitleAnchor.AUTO.name))
+            }.getOrDefault(AxisTitleAnchor.AUTO),
         )
     }
 }

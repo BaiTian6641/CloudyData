@@ -345,6 +345,7 @@ fun WorksheetView(
                         selectedRowIndex = selectedRowIndex,
                         selectedRowIndices = selectedRowIndices,
                         onSelection = onSelection,
+                        units = sheet.chart.units?.take(16),
                         modifier = Modifier.weight(1f).fillMaxWidth(),
                     )
                 }
@@ -679,6 +680,7 @@ private fun ResultTable(
     selectedRowIndex: Int,
     selectedRowIndices: Set<Int>,
     onSelection: (Int, SelectionMode) -> Unit,
+    units: String?,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalCloudyColors.current
@@ -703,7 +705,7 @@ private fun ResultTable(
                         result.rowField != null && index == 0 -> result.rowField.name
                         hasSeriesColumn && index == 1 -> result.seriesField?.name ?: column.name
                         result.measureField != null && index == valueColumn ->
-                            "${aggregationLabel(result.aggregation)} of ${result.measureField.name}"
+                            measureLabelWithUnits(result.aggregation, result.measureField.name, units)
                         else -> column.name
                     },
                     style = MaterialTheme.typography.labelSmall,
@@ -846,7 +848,17 @@ internal fun chartTitle(result: WorksheetResult): String {
     }
 }
 
-private fun aggregationLabel(aggregation: Aggregation): String = when (aggregation) {
+internal fun measureLabelWithUnits(
+    aggregation: Aggregation,
+    fieldName: String,
+    units: String?,
+): String {
+    val base = "${aggregationLabel(aggregation)} of $fieldName"
+    val suffix = units?.trim()?.take(16)?.takeIf { it.isNotEmpty() } ?: return base
+    return if (base.endsWith("($suffix)")) base else "$base ($suffix)"
+}
+
+internal fun aggregationLabel(aggregation: Aggregation): String = when (aggregation) {
     Aggregation.SUM -> "Sum"
     Aggregation.AVG -> "Average"
     Aggregation.MIN -> "Minimum"

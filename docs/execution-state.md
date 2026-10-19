@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `c2e134c`. `main` tracks `origin/main`; the
-subtitle/caption stage is pushed.
+**Source:** commits through `1c8fb4c`; the units/axis-title change is in the
+next local commit. `main` tracks `origin/main` at the pushed subtitle baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,9 +54,9 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **44/44**, including set-selection reducer,
-  Y tick-count, legend-layout, label-position/font-size, line-width and
-title/caption cases. Emulator renderer
+- Lint: 0 errors (5 warnings). JVM: **46/46**, including set-selection reducer,
+  Y tick-count, legend-layout, label-position/font-size, line-width,
+  title/caption and units/anchor cases. Emulator renderer
   probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
@@ -97,6 +97,7 @@ title/caption cases. Emulator renderer
 - `qualification/evidence/2026-10-19-cust08-line-width.md`
 - `qualification/evidence/2026-10-19-cust06-bar-label-position.md`
 - `qualification/evidence/2026-10-19-cust02-subtitle-caption.md`
+- `qualification/evidence/2026-10-19-cust02-units-axis-title.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -132,6 +133,10 @@ title/caption cases. Emulator renderer
   shown in the native chart header/footer, carried through the renderer export
   header, SVG/PNG output and PDF provenance page. JVM bounds pass; export/device
   layout, wrapping and accessibility were not run.
+- **Units and axis-title alignment.** Persisted 16-character units and
+  AUTO/START/END alignment are applied to native chart/table/tooltip and PDF
+  labels, with units appended once to the Y title. JVM propagation passes;
+  instrumentation and device placement/export checks were not run.
 - **Line width.** Persisted 1–8 width is carried through Line/Area specs and
   renderer strokes with 2.0/1.5 defaults. JVM validation passes; instrumentation
   and device thickness/legend/export checks were not run.
@@ -223,22 +228,22 @@ title/caption cases. Emulator renderer
 
 ## Next exact task
 
-**CUST02 persisted axis units and title placement.**
+**CUST14 persisted chart padding.**
 
-- Requirements/stage: CUST02, F16/F38, Q21, S11. Prerequisites: persisted
-  chart/axis/legend titles, subtitle/caption, typed AxisSpec and frozen export
-  provenance.
-- Files: `ChartOptions`, `ChartSpec`/`AxisSpec`, `ChartSpecBuilder`, native
-  table/chart headers, renderer axis lowering, export text, settings UI, tests.
-- Action: add a short plain-text units suffix for the measure and a documented
-  axis-title placement choice; show units in the native value header, Y-axis
-  title and exports without changing exact values or aggregation.
-- Acceptance: blank preserves current output; units are bounded/plain text and
-  applied consistently to chart/table/export; title placement persists and
-  remains accessible. Device visual review is required before verified status.
+- Requirements/stage: CUST14, F38, Q21, S11. Prerequisites: typed ChartSpec
+  layout, fixed renderer padding, persisted presentation options and frozen
+  export path.
+- Files: `ChartOptions`, `ChartSpec`/layout, `ChartSpecBuilder`,
+  `VegaSpecBuilder`, `ChartSettingsDialog`, renderer/export tests and evidence.
+- Action: add a bounded chart padding value (0–32 dp, default 8) applied to the
+  Vega layout and export provenance header without changing data, aggregation or
+  chart dimensions.
+- Acceptance: blank/default preserves current output; padding changes only
+  internal plot space; save/reopen persists; chart, SVG/PNG and PDF remain
+  coherent. Device visual review is required before verified status.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, subtitle/caption and units visuals wait for an authorized
-  device.
+  labels, line width, title/caption, units and padding visuals wait for an
+  authorized device.
 
 ## Protected context
 

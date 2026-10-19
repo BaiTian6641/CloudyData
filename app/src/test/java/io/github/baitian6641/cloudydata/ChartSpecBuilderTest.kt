@@ -7,6 +7,7 @@ import io.github.baitian6641.cloudydata.engine.EngineColumn
 import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
@@ -70,6 +71,30 @@ class ChartSpecBuilderTest {
         assertEquals(7.0, south.points.sumOf { it.y!! }, 0.0)
         assertEquals(67.0, spec.series.flatMap { it.points }.sumOf { it.y!! }, 0.0)
         assertTrue("March must remain absent for South", south.points.none { it.x == "2026-03-01" })
+    }
+
+    @Test
+    fun unitsAndAxisTitleAnchorAreCarried() {
+        val spec = ChartSpecBuilder.build(
+            "units", 0, lineResult(),
+            ChartOptions(
+                units = "USD",
+                axisTitleAnchor = AxisTitleAnchor.END,
+                yAxisTitle = "Sales",
+            ),
+            "derived",
+        )
+        assertEquals("USD", spec.units)
+        assertEquals(AxisTitleAnchor.END, spec.xAxis.titleAnchor)
+        assertEquals(AxisTitleAnchor.END, spec.yAxis.titleAnchor)
+        assertEquals("Sales (USD)", spec.yAxis.title)
+
+        val bounded = ChartSpecBuilder.build(
+            "units", 0, lineResult(),
+            ChartOptions(units = "U".repeat(40)),
+            "derived",
+        )
+        assertEquals(16, bounded.units?.length)
     }
 
     @Test
@@ -463,6 +488,22 @@ class ChartSpecBuilderTest {
         } catch (expected: ChartSpecException) {
             assertTrue(expected.message!!.contains("8 and 16"))
         }
+    }
+
+    @Test
+    fun measureHeaderUnitsAreAppendedOnce() {
+        assertEquals(
+            "Sum of Sales (USD)",
+            io.github.baitian6641.cloudydata.ui.measureLabelWithUnits(Aggregation.SUM, "Sales", "USD"),
+        )
+        assertEquals(
+            "Sum of Revenue (USD)",
+            io.github.baitian6641.cloudydata.ui.measureLabelWithUnits(Aggregation.SUM, "Revenue (USD)", "USD"),
+        )
+        assertEquals(
+            "Sum of Sales",
+            io.github.baitian6641.cloudydata.ui.measureLabelWithUnits(Aggregation.SUM, "Sales", null),
+        )
     }
 
     private fun lineResult(): WorksheetResult = WorksheetResult(

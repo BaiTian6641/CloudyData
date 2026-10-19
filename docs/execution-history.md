@@ -476,3 +476,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 44/44; lint 0 errors/5 warnings; debug/test APKs compile, `node --check`
   passes. Host export rendering, persistence/Vega instrumentation and device
   visual/scaling/accessibility checks were not run.
+
+## 2026-10-19 — CUST02 units and axis-title alignment
+
+- Added optional 16-character plain-text units and persisted AUTO/START/END axis
+  title alignment. Units append once to the Y title, native table/inspector/PDF
+  labels and renderer tooltip; axis title anchors reach Vega for X/Y axes.
+- A shared header-label helper prevents duplicate suffixes when the measure name
+  already contains the units text. Design-contract gap wording was refreshed.
+- JVM 46/46; lint 0 errors/5 warnings; debug/test APKs compile. Instrumentation,
+  export rendering and device placement/clipping checks were not run.

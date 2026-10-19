@@ -90,9 +90,13 @@ object ChartSpecBuilder {
         }
         if (points.none { it.defined }) throw ChartSpecException("The current view has no numeric marks.")
         validateYDomain(options, points.mapNotNull { it.y })
-        val yTitle = options.yAxisTitle
-            ?: result.measureField?.let { "${aggregationLabel(result.aggregation)} of ${it.name}" }
-            ?: "Value"
+        val units = options.units?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
+        val yTitle = titleWithUnits(
+            options.yAxisTitle
+                ?: result.measureField?.let { "${aggregationLabel(result.aggregation)} of ${it.name}" }
+                ?: "Value",
+            units,
+        )
         return ChartSpec(
             chartId = chartId,
             revision = revision,
@@ -103,6 +107,7 @@ object ChartSpecBuilder {
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: result.rowField?.name ?: "View",
                 reverse = false,
+                titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = axisFor(options, yTitle),
             gridlines = GridlineSpec(options.showGridlines),
@@ -119,6 +124,7 @@ object ChartSpecBuilder {
             series = listOf(ChartSeries("Values", points)),
             rowCount = rows.size,
             truncated = result.result.truncated,
+            units = units,
         )
     }
 
@@ -198,7 +204,11 @@ object ChartSpecBuilder {
             throw ChartSpecException("The current view has no numeric $label points.")
         }
         val series = grouped.map { (key, points) -> ChartSeries(key, points.sortedBy { it.xOrder }) }
-        val yTitle = options.yAxisTitle ?: "${aggregationLabel(result.aggregation)} of ${measure.name}"
+        val units = options.units?.trim()?.take(16)?.takeIf { it.isNotEmpty() }
+        val yTitle = titleWithUnits(
+            options.yAxisTitle ?: "${aggregationLabel(result.aggregation)} of ${measure.name}",
+            units,
+        )
         val baseAxis = axisFor(options, yTitle)
         return ChartSpec(
             chartId = chartId,
@@ -210,6 +220,7 @@ object ChartSpecBuilder {
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: rowField.name,
                 reverse = false,
+                titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = if (kind == ChartKind.AREA) {
                 baseAxis.copy(
@@ -239,6 +250,7 @@ object ChartSpecBuilder {
             truncated = result.result.truncated,
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
             lineWidth = options.lineWidth,
+            units = units,
         )
     }
 
@@ -250,7 +262,11 @@ object ChartSpecBuilder {
         log = options.logScale,
         reverse = options.reverseY,
         tickCount = options.yTickCount,
+        titleAnchor = options.axisTitleAnchor,
     )
+
+    private fun titleWithUnits(title: String, units: String?): String =
+        if (units == null || title.endsWith("($units)")) title else "$title ($units)"
 
     private fun validateAxisOptions(options: ChartOptions) {
         val min = options.yMin

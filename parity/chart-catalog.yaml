@@ -111,7 +111,7 @@ customization:
     area: Titles
     controls: [chart_title, subtitle, caption, axis_titles, units, legend_title]
     status: partial
-    note: Persisted chart, X/Y-axis and legend titles exist. Bounded subtitle and caption are rendered natively and carried into SVG/PNG/PDF provenance. Units, subtitle/caption formatting and axis-title placement remain pending; device visual qualification is absent.
+    note: Persisted chart, X/Y-axis and legend titles exist. Bounded subtitle and caption are rendered natively and carried into SVG/PNG/PDF provenance. A short units suffix and persisted X/Y axis-title alignment are applied to chart, table, tooltip and PDF labels. Subtitle/caption formatting and device visual qualification remain pending.
   - id: CUST03
     area: Axes and scales
     controls: [range, zero_baseline, log, reverse, ticks, dual_axis, synchronize]

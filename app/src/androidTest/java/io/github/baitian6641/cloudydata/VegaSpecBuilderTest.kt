@@ -7,6 +7,7 @@ import io.github.baitian6641.cloudydata.engine.EngineColumn
 import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
@@ -69,11 +70,15 @@ class VegaSpecBuilderTest {
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
                 lineWidth = 3.5,
+                units = "USD",
+                axisTitleAnchor = AxisTitleAnchor.END,
             ),
             "derived",
         )
         val json = VegaSpecBuilder.build(spec, dark = false, palette = listOf(0x006A6A, 0x3559C7), widthDp = 600f, heightDp = 300f)
         assertEquals(1, json.getInt("version"))
+        assertEquals("end", json.getJSONArray("axes").getJSONObject(1).getString("titleAnchor"))
+        assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))
         assertEquals(

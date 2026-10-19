@@ -189,7 +189,20 @@ fun VegaChartCard(
             caption = applied.spec.caption,
             sourceNote = applied.sourceNote,
             summary = accessibleSummary(applied.spec),
-            columns = resultNow.result.columns.map { it.name },
+            columns = resultNow.result.columns.mapIndexed { index, column ->
+                when {
+                    resultNow.rowField != null && index == 0 -> resultNow.rowField.name
+                    resultNow.hasSeriesColumn && index == 1 ->
+                        resultNow.seriesField?.name ?: column.name
+                    resultNow.measureField != null && index == resultNow.valueColumnIndex ->
+                        measureLabelWithUnits(
+                            resultNow.aggregation,
+                            resultNow.measureField.name,
+                            applied.spec.units,
+                        )
+                    else -> column.name
+                }
+            },
             rows = resultNow.result.rows.map { row ->
                 row.map { it?.toString() ?: "NULL" }
             },
@@ -657,7 +670,8 @@ private fun accessibleSummary(spec: ChartSpec): String {
         ChartKind.LINE -> "Line"
         ChartKind.AREA -> "Area"
     }
-    return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; " +
+    val units = spec.units?.takeIf { it.isNotBlank() }?.let { " Units: $it." } ?: ""
+    return "$kind summary: $parts$suffix.$units Click a mark or use arrow keys to select a table row; " +
         "Ctrl-click or Ctrl+arrow adds, Shift-click or Shift+arrow selects a range; " +
         "drag a rectangle to select intersecting marks and Ctrl-drag to add; Escape leaves the chart."
 }

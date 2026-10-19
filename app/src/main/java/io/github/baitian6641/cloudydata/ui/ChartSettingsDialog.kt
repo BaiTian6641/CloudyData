@@ -35,6 +35,7 @@ import io.github.baitian6641.cloudydata.design.CloudyPrimaryButton
 import io.github.baitian6641.cloudydata.design.CloudyTextField
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
@@ -53,6 +54,9 @@ fun ChartSettingsDialog(
     var title by remember { mutableStateOf(current.title.orEmpty()) }
     var subtitle by remember { mutableStateOf(current.subtitle.orEmpty()) }
     var caption by remember { mutableStateOf(current.caption.orEmpty()) }
+    var units by remember { mutableStateOf(current.units.orEmpty()) }
+    var axisTitleAnchor by remember { mutableStateOf(current.axisTitleAnchor) }
+    var axisAnchorExpanded by remember { mutableStateOf(false) }
     var xAxisTitle by remember { mutableStateOf(current.xAxisTitle.orEmpty()) }
     var yAxisTitle by remember { mutableStateOf(current.yAxisTitle.orEmpty()) }
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
@@ -137,6 +141,64 @@ fun ChartSettingsDialog(
                     label = "Caption",
                     supportingText = "Optional, up to 240 characters; shown below the chart and in exports.",
                 )
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = units,
+                    onValueChange = { units = it.take(16) },
+                    label = "Units",
+                    supportingText = "Optional short suffix, e.g. USD; up to 16 characters.",
+                )
+                Spacer(Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Axis title alignment", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                        Text(
+                            when (axisTitleAnchor) {
+                                AxisTitleAnchor.AUTO -> "Automatic"
+                                AxisTitleAnchor.START -> "Start of each axis"
+                                AxisTitleAnchor.END -> "End of each axis"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.textSecondary,
+                        )
+                    }
+                    TextButton(onClick = { axisAnchorExpanded = true }) {
+                        Text(
+                            when (axisTitleAnchor) {
+                                AxisTitleAnchor.AUTO -> "Automatic"
+                                AxisTitleAnchor.START -> "Start"
+                                AxisTitleAnchor.END -> "End"
+                            },
+                            color = colors.primary,
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = axisAnchorExpanded,
+                        onDismissRequest = { axisAnchorExpanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Automatic") },
+                            onClick = {
+                                axisTitleAnchor = AxisTitleAnchor.AUTO
+                                axisAnchorExpanded = false
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Start") },
+                            onClick = {
+                                axisTitleAnchor = AxisTitleAnchor.START
+                                axisAnchorExpanded = false
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("End") },
+                            onClick = {
+                                axisTitleAnchor = AxisTitleAnchor.END
+                                axisAnchorExpanded = false
+                            },
+                        )
+                    }
+                }
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
                     value = xAxisTitle,
@@ -400,6 +462,8 @@ fun ChartSettingsDialog(
                             title = clean(title),
                             subtitle = clean(subtitle)?.take(160),
                             caption = clean(caption)?.take(240),
+                            units = clean(units)?.take(16),
+                            axisTitleAnchor = axisTitleAnchor,
                             xAxisTitle = clean(xAxisTitle),
                             yAxisTitle = clean(yAxisTitle),
                             seriesTitle = clean(seriesTitle),

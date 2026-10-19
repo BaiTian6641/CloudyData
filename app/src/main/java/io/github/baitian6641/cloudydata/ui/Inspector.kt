@@ -107,7 +107,11 @@ fun WorkbookInspector(
                     result.rowField != null && index == 0 -> result.rowField.name
                     hasSeriesColumn && index == 1 -> result.seriesField?.name ?: column.name
                     result.measureField != null && index == valueColumn ->
-                        "${aggregationName(result.aggregation)} of ${result.measureField.name}"
+                        measureLabelWithUnits(
+                            result.aggregation,
+                            result.measureField.name,
+                            sheet?.chart?.units,
+                        )
                     else -> column.name
                 }
                 InspectorRow(label, displayValue(row.getOrNull(index)), exact = exactValueText(row.getOrNull(index)))
@@ -456,14 +460,4 @@ private fun FailedBody(state: ImportUiState.Failed) {
             )
         }
     }
-}
-
-private fun aggregationName(aggregation: io.github.baitian6641.cloudydata.model.Aggregation): String = when (aggregation) {
-    io.github.baitian6641.cloudydata.model.Aggregation.SUM -> "Sum"
-    io.github.baitian6641.cloudydata.model.Aggregation.AVG -> "Average"
-    io.github.baitian6641.cloudydata.model.Aggregation.MIN -> "Minimum"
-    io.github.baitian6641.cloudydata.model.Aggregation.MAX -> "Maximum"
-    io.github.baitian6641.cloudydata.model.Aggregation.COUNT -> "Count"
-    io.github.baitian6641.cloudydata.model.Aggregation.COUNT_DISTINCT -> "Distinct count"
-    io.github.baitian6641.cloudydata.model.Aggregation.NONE -> "Value"
 }

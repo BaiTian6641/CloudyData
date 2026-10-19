@@ -4,6 +4,7 @@ import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSpec
 import io.github.baitian6641.cloudydata.chart.LegendLayout
+import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
@@ -84,6 +85,7 @@ object VegaSpecBuilder {
                     gridColor = gridColor,
                     grid = false,
                     labelAngle = if (spec.kind != ChartKind.BAR && xDomain.length() > 8) -35 else 0,
+                    titleAnchor = spec.xAxis.titleAnchor,
                 ),
             )
             .put(
@@ -96,6 +98,7 @@ object VegaSpecBuilder {
                     grid = spec.gridlines.show,
                     labelAngle = 0,
                     tickCount = spec.yAxis.tickCount,
+                    titleAnchor = spec.yAxis.titleAnchor,
                 ),
             )
 
@@ -147,7 +150,12 @@ object VegaSpecBuilder {
                     .put(selectionSignal())
                     .put(hoverSignal()),
             )
-            .put("usermeta", JSONObject().put("tooltip", spec.tooltip.show))
+            .put(
+                "usermeta",
+                JSONObject()
+                    .put("tooltip", spec.tooltip.show)
+                    .put("units", spec.units ?: ""),
+            )
             .put("marks", marks)
         val legend = legendJson(spec, textColor, widthDp)
         if (legend != null) root.put("legends", JSONArray().put(legend))
@@ -171,6 +179,7 @@ object VegaSpecBuilder {
         grid: Boolean,
         labelAngle: Int,
         tickCount: Int? = null,
+        titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
     ): JSONObject {
         val axis = JSONObject()
             .put("orient", orient)
@@ -184,6 +193,9 @@ object VegaSpecBuilder {
             .put("labelAngle", labelAngle)
         if (tickCount != null) {
             axis.put("tickCount", tickCount).put("labelOverlap", "greedy")
+        }
+        if (titleAnchor != AxisTitleAnchor.AUTO) {
+            axis.put("titleAnchor", titleAnchor.name.lowercase())
         }
         if (!title.isNullOrBlank()) {
             axis.put("title", title)
