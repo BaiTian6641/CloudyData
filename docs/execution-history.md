@@ -564,3 +564,18 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   VegaSpecBuilderTest 6/6, ChartSettingsPersistenceTest 7/7 and three focused
   render probes 1/1 on the physical HP Googlebook; lint 0 errors/5 warnings.
   Text measurement, axis-label collision and device visual review remain absent.
+
+## 2026-10-19 — CUST14 transparent export background
+
+- Added persisted transparent-export background. Export scene assembly uses
+  `fill="none"` instead of the opaque surface while header, chart, border and
+  dimensions remain; the native card stays on the app surface. Default exports
+  remain opaque and no SQL/data path changes.
+- Independent review found dark-theme PDF/print lost contrast on white. Fixed by
+  keeping PDF opaque and painting the chart theme background before the
+  transparent PNG; the control is scoped to "Transparent SVG/PNG". Added default
+  opaque SVG/PNG assertions and a dark PDF compositing pixel test.
+- JVM 56/56; VegaSpecBuilderTest 6/6, ChartSettingsPersistenceTest 7/7,
+  transparent SVG/PNG render 1/1, default bundle 1/1 and dark PDF compositing
+  1/1 on the physical HP Googlebook; lint 0 errors/5 warnings. Viewer/light-
+  destination contrast and device visual review remain absent.

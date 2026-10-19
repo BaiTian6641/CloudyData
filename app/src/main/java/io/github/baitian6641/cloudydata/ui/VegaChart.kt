@@ -444,10 +444,19 @@ fun VegaChartCard(
                                                 val applied = appliedExport
                                                 withContext(Dispatchers.IO) {
                                                     runCatching {
-                                                        if (applied != null) {
-                                                            PdfExportWriter.fromPngWithTable(png, pdfTable(applied)).bytes
+                                                        val pdfBackground = if (applied?.spec?.transparentExportBackground == true) {
+                                                            if (dark) Color.rgb(24, 36, 39) else Color.WHITE
                                                         } else {
-                                                            PdfExportWriter.fromPng(png)
+                                                            null
+                                                        }
+                                                        if (applied != null) {
+                                                            PdfExportWriter.fromPngWithTable(
+                                                                png,
+                                                                pdfTable(applied),
+                                                                pdfBackground,
+                                                            ).bytes
+                                                        } else {
+                                                            PdfExportWriter.fromPng(png, pdfBackground)
                                                         }
                                                     }
                                                 }.onSuccess { pdf ->
@@ -491,7 +500,19 @@ fun VegaChartCard(
                                         scope.launch {
                                             exportStatus = "Preparing the frozen export bundle."
                                             withContext(Dispatchers.IO) {
-                                                runCatching { PdfExportWriter.fromPngWithTable(png, table) }
+                                                val pdfBackground =
+                                                    if (applied.spec.transparentExportBackground) {
+                                                        if (dark) Color.rgb(24, 36, 39) else Color.WHITE
+                                                    } else {
+                                                        null
+                                                    }
+                                                runCatching {
+                                                    PdfExportWriter.fromPngWithTable(
+                                                        png,
+                                                        table,
+                                                        pdfBackground,
+                                                    )
+                                                }
                                             }.onSuccess { pdf ->
                                                 exportInFlight = false
                                                 if (currentExportModel.value.bundleAction == BundleAction.PRINT) {

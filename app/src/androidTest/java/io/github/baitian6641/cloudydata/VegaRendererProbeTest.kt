@@ -1,7 +1,9 @@
 package io.github.baitian6641.cloudydata
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.graphics.Rect
@@ -101,6 +103,86 @@ class VegaRendererProbeTest {
                 "a crowded series label was drawn: ${result.svgTexts}",
                 result.svgTexts.none { it == "1,234.57" || it == "1,244.57" },
             )
+        }
+    }
+
+    @Test
+    fun transparentExportOmitsOpaqueBackgroundFromSvgAndPng() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_TRANSPARENT_EXPORT, true)
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            scenario.onActivity { it.exportBundleForTest() }
+            val bundle = RendererProbeState.awaitBundle(30)
+            assertNull("transparent export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertTrue("transparent export did not complete", bundle != null)
+            val svg = bundle!!.svg
+            assertNull("transparent SVG failed validation: ${SvgExportValidator.validate(svg)}", SvgExportValidator.validate(svg))
+            assertTrue(
+                "transparent export still has an opaque background rect",
+                Regex("""<rect x="0" y="0"[^>]*fill="none"""").containsMatchIn(svg),
+            )
+            val bitmap = BitmapFactory.decodeByteArray(bundle.png, 0, bundle.png.size)
+            assertNotNull("transparent PNG did not decode", bitmap)
+            assertEquals("transparent PNG corner alpha", 0, bitmap!!.getPixel(0, 0) ushr 24)
+            var opaque = 0
+            val stepX = (bitmap.width / 40).coerceAtLeast(1)
+            val stepY = (bitmap.height / 40).coerceAtLeast(1)
+            var y = 0
+            while (y < bitmap.height) {
+                var x = 0
+                while (x < bitmap.width) {
+                    if ((bitmap.getPixel(x, y) ushr 24) != 0) opaque++
+                    x += stepX
+                }
+                y += stepY
+            }
+            assertTrue("transparent PNG has no chart content", opaque > 50)
+        }
+    }
+
+    @Test
+    fun transparentDarkPdfUsesThemeBackgroundForContrast() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_TRANSPARENT_EXPORT, true)
+            .putExtra(RendererProbeActivity.EXTRA_DARK, true)
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            scenario.onActivity { it.exportBundleForTest() }
+            val bundle = RendererProbeState.awaitBundle(30)
+            assertNull("dark transparent export failed: ${RendererProbeState.exportError}", RendererProbeState.exportError)
+            assertTrue("dark transparent export did not complete", bundle != null)
+            assertEquals("transparent PNG corner alpha", 0, BitmapFactory.decodeByteArray(
+                bundle!!.png,
+                0,
+                bundle.png.size,
+            ).getPixel(0, 0) ushr 24)
+            val background = Color.rgb(24, 36, 39)
+            val pdf = PdfExportWriter.fromPng(bundle.png, background)
+            val file = File(
+                InstrumentationRegistry.getInstrumentation().targetContext.filesDir,
+                "transparent-dark.pdf",
+            )
+            file.writeBytes(pdf)
+            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { descriptor ->
+                PdfRenderer(descriptor).use { renderer ->
+                    renderer.openPage(0).use { page ->
+                        val rendered = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+                        page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                        val corner = rendered.getPixel(0, 0)
+                        assertTrue("PDF corner red: ${Color.red(corner)}", abs(Color.red(corner) - 24) <= 3)
+                        assertTrue("PDF corner green: ${Color.green(corner)}", abs(Color.green(corner) - 36) <= 3)
+                        assertTrue("PDF corner blue: ${Color.blue(corner)}", abs(Color.blue(corner) - 39) <= 3)
+                        rendered.recycle()
+                    }
+                }
+            }
         }
     }
 
@@ -576,6 +658,10 @@ class VegaRendererProbeTest {
             assertNull("bundle SVG failed validation: ${SvgExportValidator.validate(svg)}", SvgExportValidator.validate(svg))
             assertTrue("bundle title missing", svg.contains(">Regional sales<"))
             assertTrue("bundle source missing", svg.contains(">Source: probe fixture<"))
+            assertTrue(
+                "default export lost its opaque background",
+                Regex("""<rect x="0" y="0"[^>]*fill="#FFFFFF"""").containsMatchIn(svg),
+            )
             val dimensions = SvgExportValidator.dimensions(svg)
             assertNotNull("bundle SVG dimensions missing", dimensions)
             assertTrue(
@@ -585,6 +671,7 @@ class VegaRendererProbeTest {
             )
             val bitmap = BitmapFactory.decodeByteArray(bundle.png, 0, bundle.png.size)
             assertNotNull("bundle PNG did not decode", bitmap)
+            assertEquals("default PNG corner must be opaque", 255, bitmap!!.getPixel(0, 0) ushr 24)
             assertEquals("bundle PNG width", bundle.width, bitmap!!.width)
             assertEquals("bundle PNG height", bundle.height, bitmap.height)
             var opaque = 0

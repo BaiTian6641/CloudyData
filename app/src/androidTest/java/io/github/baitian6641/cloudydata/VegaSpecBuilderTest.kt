@@ -71,6 +71,7 @@ class VegaSpecBuilderTest {
                 gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                 valueDecimals = 2,
                 showChartBorder = true,
+                transparentExportBackground = true,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
                 legendOrientation = LegendOrientation.VERTICAL,
@@ -93,6 +94,10 @@ class VegaSpecBuilderTest {
         )
         assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
         assertEquals(true, json.getJSONObject("usermeta").getBoolean("chartBorder"))
+        assertEquals(
+            true,
+            json.getJSONObject("usermeta").getBoolean("transparentExportBackground"),
+        )
         assertEquals(
             2.5,
             json.getJSONArray("axes").getJSONObject(1).getDouble("gridWidth"),

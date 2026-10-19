@@ -168,7 +168,7 @@ customization:
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]
     status: partial
-    note: Bounded SVG, PNG and frozen multi-format SAF bundle; PDF includes a searchable table and the current worksheet has a native print flow. A persisted 0–32 dp internal chart padding is applied to Vega and exports. An optional token-colored chart border is drawn natively, on the native fallback, and around the exported SVG/PNG/PDF scene. Background/fit/zoom, tagged PDF, multi-page dashboard/story print, remaining provider-failure injection, persisted geometry and pixel comparison are pending.
+    note: Bounded SVG, PNG and frozen multi-format SAF bundle; PDF includes a searchable table and the current worksheet has a native print flow. A persisted 0–32 dp internal chart padding is applied to Vega and exports. An optional token-colored chart border is drawn natively, on the native fallback, and around the exported SVG/PNG/PDF scene. An optional transparent SVG/PNG background is implemented while the on-screen chart keeps its surface and PDF/print retain a theme background for contrast. Background color, fit/zoom, tagged PDF, multi-page dashboard/story print, remaining provider-failure injection, persisted geometry and pixel comparison are pending.
   - id: CUST15
     area: Accessibility
     controls: [native_summary, data_table, keyboard_exploration, focus_exit, screen_reader]

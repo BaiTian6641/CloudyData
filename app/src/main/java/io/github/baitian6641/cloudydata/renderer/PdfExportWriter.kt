@@ -35,9 +35,14 @@ object PdfExportWriter {
     private const val MARGIN = 36f
     private const val ROW_HEIGHT = 14f
 
-    fun fromPng(png: ByteArray): ByteArray = fromPngWithTable(png, null).bytes
+    fun fromPng(png: ByteArray, backgroundColor: Int? = null): ByteArray =
+        fromPngWithTable(png, null, backgroundColor).bytes
 
-    fun fromPngWithTable(png: ByteArray, table: PdfTable?): PdfExport {
+    fun fromPngWithTable(
+        png: ByteArray,
+        table: PdfTable?,
+        backgroundColor: Int? = null,
+    ): PdfExport {
         require(png.size in 1..MAX_PDF_BYTES) { "PNG payload is empty or too large." }
         val bitmap = BitmapFactory.decodeByteArray(png, 0, png.size)
             ?: throw IllegalArgumentException("PNG payload could not be decoded.")
@@ -48,7 +53,7 @@ object PdfExportWriter {
         try {
             val imagePage = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
             val page = document.startPage(imagePage)
-            page.canvas.drawColor(Color.WHITE)
+            page.canvas.drawColor(backgroundColor ?: Color.WHITE)
             page.canvas.drawBitmap(bitmap, 0f, 0f, null)
             document.finishPage(page)
             var pageNumber = 2

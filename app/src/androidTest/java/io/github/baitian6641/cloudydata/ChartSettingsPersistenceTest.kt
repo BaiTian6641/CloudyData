@@ -84,6 +84,7 @@ class ChartSettingsPersistenceTest {
                             gridlineWidth = 2.5,
                             valueDecimals = 2,
                             showChartBorder = true,
+                            transparentExportBackground = true,
                             gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
                         ),
@@ -121,6 +122,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(2.5, reopenedSheet.chart.gridlineWidth!!, 0.0)
         assertEquals(2, reopenedSheet.chart.valueDecimals)
         assertEquals(true, reopenedSheet.chart.showChartBorder)
+        assertEquals(true, reopenedSheet.chart.transparentExportBackground)
         assertEquals(
             io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
             reopenedSheet.chart.gridlineContrast,

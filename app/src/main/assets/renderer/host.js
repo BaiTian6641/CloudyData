@@ -15,6 +15,7 @@
     exportSource: '',
     exportDark: false,
     chartBorder: false,
+    transparentExportBackground: false,
     pointerMode: 'replace',
     lasso: null,
     suppressClickUntil: 0
@@ -538,7 +539,9 @@
     background.setAttribute('y', '0');
     background.setAttribute('width', String(width));
     background.setAttribute('height', String(height + header));
-    background.setAttribute('fill', state.exportDark ? '#182427' : '#FFFFFF');
+    background.setAttribute('fill', state.transparentExportBackground
+      ? 'none'
+      : (state.exportDark ? '#182427' : '#FFFFFF'));
     outer.appendChild(background);
     if (state.chartBorder) {
       var border = document.createElementNS(ns, 'rect');
@@ -759,6 +762,9 @@
         ? message.spec.usermeta.units
         : '';
       state.chartBorder = Boolean(message.spec.usermeta && message.spec.usermeta.chartBorder);
+      state.transparentExportBackground = Boolean(
+        message.spec.usermeta && message.spec.usermeta.transparentExportBackground
+      );
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';

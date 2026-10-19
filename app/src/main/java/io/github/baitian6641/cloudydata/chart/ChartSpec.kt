@@ -92,6 +92,7 @@ data class ChartSpec(
     val units: String? = null,
     val valueDecimals: Int? = null,
     val chartBorder: Boolean = false,
+    val transparentExportBackground: Boolean = false,
     val padding: Int = 8,
     val version: Int = SPEC_VERSION,
 ) {

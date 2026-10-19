@@ -62,6 +62,7 @@ data class ChartOptions(
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
     val chartPadding: Int = DEFAULT_CHART_PADDING,
     val showChartBorder: Boolean = false,
+    val transparentExportBackground: Boolean = false,
     val xLabelCount: Int? = null,
 ) {
     fun toJson(): JSONObject = JSONObject()
@@ -95,6 +96,7 @@ data class ChartOptions(
         .put("axisTitleAnchor", axisTitleAnchor.name)
         .put("chartPadding", chartPadding)
         .put("showChartBorder", showChartBorder)
+        .put("transparentExportBackground", transparentExportBackground)
         .put("xLabelCount", xLabelCount ?: JSONObject.NULL)
 
     companion object {
@@ -189,6 +191,7 @@ data class ChartOptions(
                 .takeIf { it in MIN_CHART_PADDING..MAX_CHART_PADDING }
                 ?: DEFAULT_CHART_PADDING,
             showChartBorder = json.optBoolean("showChartBorder", false),
+            transparentExportBackground = json.optBoolean("transparentExportBackground", false),
             xLabelCount = if (json.isNull("xLabelCount")) {
                 null
             } else {

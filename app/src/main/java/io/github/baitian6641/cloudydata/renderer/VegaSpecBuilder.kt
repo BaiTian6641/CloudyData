@@ -169,6 +169,7 @@ object VegaSpecBuilder {
                 JSONObject()
                     .put("tooltip", spec.tooltip.show)
             .put("chartBorder", spec.chartBorder)
+            .put("transparentExportBackground", spec.transparentExportBackground)
                     .put("units", spec.units ?: ""),
             )
             .put("marks", marks)

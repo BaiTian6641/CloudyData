@@ -171,6 +171,26 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun transparentExportBackgroundIsCarriedAndDefaultsOff() {
+        assertEquals(
+            true,
+            ChartSpecBuilder.build(
+                "transparent", 0, lineResult(),
+                ChartOptions(transparentExportBackground = true),
+                "derived",
+            ).transparentExportBackground,
+        )
+        assertEquals(
+            false,
+            ChartSpecBuilder.build(
+                "transparent", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).transparentExportBackground,
+        )
+    }
+
+    @Test
     fun chartBorderIsCarriedAndDefaultsOff() {
         assertEquals(
             true,

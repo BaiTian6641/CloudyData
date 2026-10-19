@@ -57,6 +57,9 @@ class RendererProbeActivity : Activity() {
     private val requestDark: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_DARK, false)
     }
+    private val requestTransparentExport: Boolean by lazy {
+        intent.getBooleanExtra(EXTRA_TRANSPARENT_EXPORT, false)
+    }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -74,6 +77,7 @@ class RendererProbeActivity : Activity() {
             caption = exportCaption ?: baseSpec.caption,
             sourceNote = exportSource ?: baseSpec.sourceNote,
             chartBorder = requestChartBorder,
+            transparentExportBackground = requestTransparentExport,
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -674,6 +678,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_EXPORT_SOURCE = "export_source"
         const val EXTRA_CHART_BORDER = "chart_border"
         const val EXTRA_DARK = "dark"
+        const val EXTRA_TRANSPARENT_EXPORT = "transparent_export"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

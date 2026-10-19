@@ -133,6 +133,7 @@ object ChartSpecBuilder {
             units = units,
             valueDecimals = options.valueDecimals,
             chartBorder = options.showChartBorder,
+            transparentExportBackground = options.transparentExportBackground,
             padding = options.chartPadding,
         )
     }
@@ -268,6 +269,7 @@ object ChartSpecBuilder {
             units = units,
             valueDecimals = options.valueDecimals,
             chartBorder = options.showChartBorder,
+            transparentExportBackground = options.transparentExportBackground,
             padding = options.chartPadding,
         )
     }

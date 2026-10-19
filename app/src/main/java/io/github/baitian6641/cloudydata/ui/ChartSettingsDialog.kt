@@ -61,6 +61,7 @@ fun ChartSettingsDialog(
     var axisAnchorExpanded by remember { mutableStateOf(false) }
     var chartPadding by remember { mutableStateOf(current.chartPadding.toString()) }
     var showChartBorder by remember { mutableStateOf(current.showChartBorder) }
+    var transparentExportBackground by remember { mutableStateOf(current.transparentExportBackground) }
     var xAxisTitle by remember { mutableStateOf(current.xAxisTitle.orEmpty()) }
     var yAxisTitle by remember { mutableStateOf(current.yAxisTitle.orEmpty()) }
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
@@ -245,6 +246,12 @@ fun ChartSettingsDialog(
                     description = "Draw a subtle outline around the chart and exported scene.",
                     checked = showChartBorder,
                     onCheckedChange = { showChartBorder = it },
+                )
+                ChartToggleRow(
+                    title = "Transparent SVG/PNG",
+                    description = "Omit the SVG/PNG background. PDF and print use the chart theme background.",
+                    checked = transparentExportBackground,
+                    onCheckedChange = { transparentExportBackground = it },
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -567,6 +574,7 @@ fun ChartSettingsDialog(
                             axisTitleAnchor = axisTitleAnchor,
                             chartPadding = parsedChartPadding ?: ChartOptions.DEFAULT_CHART_PADDING,
                             showChartBorder = showChartBorder,
+                            transparentExportBackground = transparentExportBackground,
                             xAxisTitle = clean(xAxisTitle),
                             yAxisTitle = clean(yAxisTitle),
                             seriesTitle = clean(seriesTitle),
