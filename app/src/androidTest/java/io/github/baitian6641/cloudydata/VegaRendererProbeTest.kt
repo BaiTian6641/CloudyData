@@ -11,7 +11,9 @@ import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.test.core.app.ActivityScenario
+import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.debug.RendererProbeActivity
@@ -243,6 +245,78 @@ class VegaRendererProbeTest {
                 "percent axis tick missing from SVG: ${result.svgTexts}",
                 result.svgTexts.any { it.endsWith("%") && it != "12.5%" && it != "25.0%" },
             )
+        }
+    }
+
+    @Test
+    fun legendPointerClickPostsSeriesToggleAndExportStaysClean() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            assertEquals(0, RendererProbeState.selectionCount.get())
+            val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            val found = device.wait(
+                Until.hasObject(By.descStartsWith("Symbol legend")),
+                5000,
+            )
+            assertTrue("legend accessibility node missing", found)
+            val legend = device.findObject(By.descStartsWith("Symbol legend"))
+            val bounds = legend!!.visibleBounds
+            for (fraction in listOf(0.55f, 0.65f, 0.75f, 0.85f, 0.95f)) {
+                device.click(bounds.centerX(), (bounds.top + bounds.height() * fraction).toInt())
+                if (waitFor(750) {
+                        RendererProbeState.legendToggles.toSet().containsAll(setOf("North", "South"))
+                    }
+                ) {
+                    break
+                }
+            }
+            assertEquals(
+                "both legend entries must be clickable exactly once: ${RendererProbeState.legendToggles}",
+                setOf("North", "South"),
+                RendererProbeState.legendToggles.toSet(),
+            )
+            assertEquals(
+                "legend click posted duplicate toggles: ${RendererProbeState.legendToggles}",
+                2,
+                RendererProbeState.legendToggles.size,
+            )
+            assertEquals(
+                "legend toggle must not select a row",
+                0,
+                RendererProbeState.selectionCount.get(),
+            )
+            scenario.onActivity { it.exportForTest() }
+            val svg = RendererProbeState.awaitSvg(15)
+            assertTrue("export did not complete", svg != null)
+            assertFalse("interactive legend hit leaked into export", svg!!.contains("cloudy-legend-hit"))
+            assertFalse(
+                "interactive legend style leaked into export",
+                svg.contains("cursor: pointer") || svg.contains("cursor:pointer"),
+            )
+        }
+    }
+
+    @Test
+    fun hiddenSeriesFiltersMarksButKeepsLegendLabels() {
+        RendererProbeState.reset()
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            RendererProbeActivity::class.java,
+        ).putExtra(RendererProbeActivity.EXTRA_HIDDEN_SERIES, "South")
+            .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("hidden-series renderer did not complete", result != null)
+            assertNull(result!!.error)
+            assertEquals("table rows must remain intact", 6, result.markCount)
+            assertEquals("hidden series line was still drawn", 1, result.sceneMarks["line"])
+            assertTrue("North legend label missing", result.svgTexts.any { it == "North" })
+            assertTrue("South legend label missing", result.svgTexts.any { it == "South" })
         }
     }
 

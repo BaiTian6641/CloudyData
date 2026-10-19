@@ -94,6 +94,7 @@ data class ChartSpec(
     val units: String? = null,
     val valueDecimals: Int? = null,
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
+    val hiddenSeries: Set<String> = emptySet(),
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,
     val padding: Int = 8,

@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `5f77bc0`. `main` tracks `origin/main`; the
-percent-display stage is pushed.
+**Source:** commits through `5099431`; the interactive-legend change is in the
+next local commit. `main` tracks `origin/main` at the pushed percent baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -112,6 +112,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust14-transparent-export.md`
 - `qualification/evidence/2026-10-19-cust04-minor-gridlines.md`
 - `qualification/evidence/2026-10-19-cust06-percent-display.md`
+- `qualification/evidence/2026-10-19-cust05-interactive-legend.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -172,6 +173,13 @@ unless stated otherwise.
   percent for value-axis ticks and labels; exact data/tooltips and scales are
   unchanged. Emulator spec/persistence and a `12.5%`/`25.0%` + axis-tick render
   pass; visual width/collision checks were not run.
+- **Interactive legend.** Pointer taps on individual legend labels post a
+  revision-gated toggle; hidden series are filtered from marks while the full
+  legend/color domain, query, table, exact values and selection identity remain.
+  A native accessible Series menu and show-all reset exist, available even when
+  the legend is hidden. Emulator pointer,
+  hidden/render and export-cleanliness checks pass; state is ephemeral and
+  visual/TalkBack checks were not run.
 - **Fixed-decimal value format.** Optional 0–6 decimals format Y-axis ticks and
   Bar/Line/Area value labels; labels use an explicit guarded `format(datum.y)`
   signal because Vega ignores text field `format`. Exact tooltip/data/export
@@ -283,23 +291,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST05 interactive legend filtering.**
+**CUST05 persist hidden legend series.**
 
-- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: multi-series
-  line legend lowering, persisted legend position/orientation/title, exact
-  source-row selection and the offline renderer.
-- Files: `ChartSpec` legend metadata, `VegaSpecBuilder`, `host.js`,
-  `VegaRendererHost`, renderer probes/tests and evidence.
-- Action: make legend entries toggle the visibility of their series as a
-  presentation-only operation. Hidden series must not alter the query, table,
-  tooltip/exact values or selection identity; the state must be recoverable and
-  accessible without a pointer.
-- Acceptance: legend interaction is real in the emulator renderer, the chart
-  remains operable by keyboard/TalkBack alternatives, and a reset/show-all path
-  exists. Device visual and TalkBack qualification remain unverified.
+- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: presentation-only
+  legend toggles, accessible Series menu, typed chart options and emulator
+  renderer coverage.
+- Files: `ChartOptions`, `ChartSpecBuilder`, `VegaChart`, workbook tests and
+  evidence.
+- Action: persist the hidden-series key set per worksheet, sanitize stale keys
+  against current series on load/build, and keep toggles/reset presentation-only
+  (no SQL rerun). Reopen must restore hidden state.
+- Acceptance: hidden state survives save/reopen, stale keys never hide an
+  unrelated future series, and query/table/selection semantics stay unchanged.
+  Emulator spec/persistence/render checks are required; visual/TalkBack review
+  remains unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding, X-label, border, gridline and
-  percent visuals wait for an authorized visual session.
+  labels, line width, titles, units, padding, X-label, border, gridline, percent
+  and hidden-series visuals wait for an authorized visual session.
 
 ## Protected context
 

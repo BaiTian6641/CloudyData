@@ -91,8 +91,12 @@ fun VegaChartCard(
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
-    val preview = remember(result, options, chartId, title, sourceNote) {
-        runCatching { ChartSpecBuilder.build(chartId, 0, result, options, title, sourceNote) }
+    var hiddenSeries by remember(chartId) { mutableStateOf(emptySet<String>()) }
+    val preview = remember(result, options, chartId, title, sourceNote, hiddenSeries) {
+        runCatching {
+            ChartSpecBuilder.build(chartId, 0, result, options, title, sourceNote)
+                .copy(hiddenSeries = hiddenSeries)
+        }
     }
     val spec = preview.getOrNull()
     val specError = preview.exceptionOrNull()?.message
@@ -106,6 +110,7 @@ fun VegaChartCard(
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var retryToken by remember { mutableIntStateOf(0) }
     var requestRevision by remember { mutableIntStateOf(0) }
+    var showSeriesMenu by remember { mutableStateOf(false) }
     val localDensity = LocalDensity.current
     val focusManager = LocalFocusManager.current
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
@@ -322,6 +327,53 @@ fun VegaChartCard(
                     }
                 }
             }
+            if (spec != null && spec.kind == ChartKind.LINE && spec.series.size > 1 &&
+                (spec.legend.visible || hiddenSeries.isNotEmpty())
+            ) {
+                Spacer(Modifier.width(density.spaceSmall))
+                Box {
+                    CloudyTextButton(
+                        if (hiddenSeries.isEmpty()) {
+                            "Series"
+                        } else {
+                            "Series (${hiddenSeries.size} hidden)"
+                        },
+                        { showSeriesMenu = true },
+                    )
+                    DropdownMenu(
+                        expanded = showSeriesMenu,
+                        onDismissRequest = { showSeriesMenu = false },
+                    ) {
+                        spec.series.forEach { series ->
+                            val hidden = series.key in hiddenSeries
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        if (hidden) "Show ${series.key}" else "Hide ${series.key}",
+                                    )
+                                },
+                                onClick = {
+                                    hiddenSeries = if (hidden) {
+                                        hiddenSeries - series.key
+                                    } else {
+                                        hiddenSeries + series.key
+                                    }
+                                    showSeriesMenu = false
+                                },
+                            )
+                        }
+                        if (hiddenSeries.isNotEmpty()) {
+                            DropdownMenuItem(
+                                text = { Text("Show all series") },
+                                onClick = {
+                                    hiddenSeries = emptySet()
+                                    showSeriesMenu = false
+                                },
+                            )
+                        }
+                    }
+                }
+            }
         }
         if (specError != null) {
             Text(
@@ -385,6 +437,18 @@ fun VegaChartCard(
                                         viewHeight: Int,
                                     ) {
                                         rendered = true
+                                    }
+
+                                    override fun onLegendToggle(
+                                        chartId: String,
+                                        revision: Long,
+                                        series: String,
+                                    ) {
+                                        hiddenSeries = if (series in hiddenSeries) {
+                                            hiddenSeries - series
+                                        } else {
+                                            hiddenSeries + series
+                                        }
                                     }
 
                                     override fun onSelectionIntent(
@@ -636,6 +700,17 @@ fun VegaChartCard(
         )
     }
 
+    LaunchedEffect(spec?.kind, spec?.series?.map { it.key }) {
+        if (spec?.kind != ChartKind.LINE) {
+            hiddenSeries = emptySet()
+            return@LaunchedEffect
+        }
+        val available = spec?.series?.map { it.key }?.toSet().orEmpty()
+        if (available.isNotEmpty() && hiddenSeries.any { it !in available }) {
+            hiddenSeries = hiddenSeries.intersect(available)
+        }
+    }
+
     DisposableEffect(retryToken) {
         onDispose {
             hostRef.getAndSet(null)?.dispose()
@@ -658,6 +733,7 @@ fun VegaChartCard(
         requestRevision++
         val built = runCatching {
             ChartSpecBuilder.build(chartId, requestRevision.toLong(), result, options, title, sourceNote)
+                .copy(hiddenSeries = hiddenSeries)
         }.getOrElse {
             rendererError = "spec_rejected: ${it.message}"
             return@LaunchedEffect

@@ -604,3 +604,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   blank-decimals copy states the 1-decimal percent default. Lint 0 errors/5
   warnings. Googlebook
   untouched; visual width/collision/dark checks absent.
+
+## 2026-10-19 — CUST05 interactive legend
+
+- Added presentation-only hidden-series filtering. A `visible` dataset filters
+  marks/labels/hit targets while the full color/legend domain and all query,
+  table, exact-value and selection semantics remain. `host.js` adds per-label hit
+  targets and posts revision-gated LegendToggle messages; interactive DOM is
+  stripped from exports. Compose provides legend handling plus an accessible
+  Series menu and show-all reset. State is ephemeral.
+- Emulator-only validation: manual emulator-5580 API36 x86_64 instrumentation
+  VegaSpecBuilderTest 10/10, ChartSettingsPersistenceTest 8/8, hidden-series render
+  1/1, and real UIAutomator pointer taps on both legend labels 1/1 with no row
+  selection; export cleanliness asserted. JVM 58/58; lint 0 errors/5 warnings.
+  Googlebook untouched; visual/TalkBack checks absent.

@@ -143,7 +143,7 @@ class VegaSpecBuilderTest {
             0.0,
         )
         val facet = group.getJSONObject("from").getJSONObject("facet")
-        assertEquals("table", facet.getString("data"))
+        assertEquals("visible", facet.getString("data"))
         assertEquals("series", facet.getJSONArray("groupby").getString(0))
         val line = group.getJSONArray("marks").getJSONObject(0)
         assertEquals("line", line.getString("type"))
@@ -172,6 +172,14 @@ class VegaSpecBuilderTest {
         val dataNames = (0 until json.getJSONArray("data").length())
             .map { json.getJSONArray("data").getJSONObject(it).getString("name") }
         assertTrue("selected-row dataset missing: $dataNames", "selected" in dataNames)
+        assertTrue("visible series dataset missing: $dataNames", "visible" in dataNames)
+        val visibleData = (0 until json.getJSONArray("data").length())
+            .map { json.getJSONArray("data").getJSONObject(it) }
+            .first { it.getString("name") == "visible" }
+        assertEquals(
+            "true",
+            visibleData.getJSONArray("transform").getJSONObject(0).getString("expr"),
+        )
         val selectedMarks = (0 until json.getJSONArray("marks").length())
             .map { json.getJSONArray("marks").getJSONObject(it) }
         val selectedOverlay = selectedMarks.first { it.optString("name") == "cloudySelectedPoints" }
@@ -275,6 +283,101 @@ class VegaSpecBuilderTest {
         assertEquals("Sales", major.getString("title"))
         assertEquals(true, major.getBoolean("grid"))
         assertEquals(2, json.getJSONArray("data").getJSONObject(0).getJSONArray("values").length())
+    }
+
+    @Test
+    fun hiddenSeriesFiltersMarksButKeepsFullLegendDomain() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("A", "North", 10L),
+                    listOf<Any?>("A", "South", 20L),
+                    listOf<Any?>("B", "North", 30L),
+                    listOf<Any?>("B", "South", 40L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "hidden", 0, result,
+            ChartOptions(legendVisible = true, legendPosition = LegendPosition.RIGHT),
+            "derived",
+        ).copy(hiddenSeries = setOf("South"))
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A, 0x3559C7), 600f, 300f)
+        val data = (0 until json.getJSONArray("data").length())
+            .map { json.getJSONArray("data").getJSONObject(it) }
+        val visible = data.first { it.getString("name") == "visible" }
+        assertEquals(
+            "datum.series !== 'South'",
+            visible.getJSONArray("transform").getJSONObject(0).getString("expr"),
+        )
+        assertEquals(4, data.first { it.getString("name") == "table" }
+            .getJSONArray("values").length())
+        assertEquals(
+            "South",
+            json.getJSONObject("usermeta").getJSONArray("hiddenSeries").getString(0),
+        )
+        assertEquals(
+            "North",
+            json.getJSONObject("usermeta").getJSONArray("series").getString(0),
+        )
+        val legendDomain = json.getJSONArray("scales").getJSONObject(2)
+            .getJSONArray("domain")
+        assertEquals(2, legendDomain.length())
+        assertEquals("visible", json.getJSONArray("marks").getJSONObject(0)
+            .getJSONObject("from").getJSONObject("facet").getString("data"))
+        val selected = (0 until json.getJSONArray("marks").length())
+            .map { json.getJSONArray("marks").getJSONObject(it) }
+            .first { it.optString("name") == "cloudySelectedPoints" }
+        assertEquals(
+            "datum.series !== 'South' && isValid(datum.y)",
+            selected.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("defined").getString("signal"),
+        )
+    }
+
+    @Test
+    fun hiddenSeriesEscapesControlCharacters() {
+        val spec = ChartSpecBuilder.build(
+            "hidden", 0,
+            WorksheetResult(
+                result = EngineResult(
+                    columns = listOf(
+                        EngineColumn("row", "VARCHAR"),
+                        EngineColumn("value", "BIGINT"),
+                    ),
+                    rows = listOf(listOf<Any?>("A", 1L)),
+                    truncated = false,
+                ),
+                rowField = region,
+                measureField = sales,
+                seriesField = null,
+                aggregation = Aggregation.SUM,
+                markType = MarkType.LINE,
+                sql = "test",
+            ),
+            ChartOptions(),
+            "derived",
+        ).copy(hiddenSeries = setOf("a\nb"))
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
+        val visible = (0 until json.getJSONArray("data").length())
+            .map { json.getJSONArray("data").getJSONObject(it) }
+            .first { it.getString("name") == "visible" }
+        assertEquals(
+            "datum.series !== 'a\\nb'",
+            visible.getJSONArray("transform").getJSONObject(0).getString("expr"),
+        )
     }
 
     @Test

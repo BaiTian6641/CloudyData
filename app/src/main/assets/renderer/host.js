@@ -16,6 +16,8 @@
     exportDark: false,
     chartBorder: false,
     transparentExportBackground: false,
+    hiddenSeries: [],
+    series: [],
     pointerMode: 'replace',
     lasso: null,
     suppressClickUntil: 0
@@ -37,6 +39,47 @@
       message.revision = revision;
     }
     post(message);
+  }
+
+  function setupLegendToggle(chartId, revision) {
+    var labels = document.querySelectorAll('#view svg .role-legend-label');
+    Array.prototype.forEach.call(labels, function (labelNode, index) {
+      var label = String(labelNode.textContent || '').trim();
+      var series = state.series[index] || label;
+      if (!series) return;
+      var hidden = state.hiddenSeries.indexOf(series) >= 0;
+      labelNode.setAttribute('opacity', hidden ? '0.45' : '1');
+      var box;
+      try {
+        box = labelNode.getBBox();
+      } catch (error) {
+        box = null;
+      }
+      if (!box || !isFinite(box.width) || !isFinite(box.height) ||
+          box.width <= 0 || box.height <= 0) {
+        return;
+      }
+      var hit = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      hit.setAttribute('class', 'cloudy-legend-hit');
+      hit.setAttribute('x', String(box.x - 3));
+      hit.setAttribute('y', String(box.y - 1));
+      hit.setAttribute('width', String(box.width + 6));
+      hit.setAttribute('height', String(box.height + 2));
+      hit.setAttribute('fill', 'transparent');
+      hit.style.pointerEvents = 'all';
+      hit.style.cursor = 'pointer';
+      var toggleSeries = function (event) {
+        if (event && event.stopPropagation) event.stopPropagation();
+        post({
+          type: 'LegendToggle',
+          chartId: chartId,
+          revision: revision,
+          series: series
+        });
+      };
+      hit.onclick = toggleSeries;
+      labelNode.parentNode.appendChild(hit);
+    });
   }
 
   function hideTooltip() {
@@ -479,6 +522,13 @@
     return [first, second].filter(function (line) { return line.length > 0; }).slice(0, 2);
   }
 
+  function cleanExportInteractivity(node) {
+    node.querySelectorAll('.cloudy-legend-hit').forEach(function (hit) {
+      hit.parentNode.removeChild(hit);
+    });
+    return node;
+  }
+
   function currentSvgMarkup() {
     if (!state.view) return null;
     var svg = document.querySelector('#view svg');
@@ -498,7 +548,7 @@
     var caption = String(state.exportCaption || '').trim();
     var source = String(state.exportSource || '').trim();
     if (!isFinite(width) || width <= 0 || !isFinite(height) || height <= 0) {
-      var raw = svg.cloneNode(true);
+      var raw = cleanExportInteractivity(svg.cloneNode(true));
       raw.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
       raw.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
       return new XMLSerializer().serializeToString(raw);
@@ -584,7 +634,7 @@
         measureHost.remove();
       }
     }
-    var nested = svg.cloneNode(true);
+    var nested = cleanExportInteractivity(svg.cloneNode(true));
     nested.setAttribute('x', '0');
     nested.setAttribute('y', String(header));
     nested.setAttribute('width', String(width));
@@ -765,6 +815,12 @@
       state.transparentExportBackground = Boolean(
         message.spec.usermeta && message.spec.usermeta.transparentExportBackground
       );
+      state.hiddenSeries = message.spec.usermeta && Array.isArray(message.spec.usermeta.hiddenSeries)
+        ? message.spec.usermeta.hiddenSeries.map(String)
+        : [];
+      state.series = message.spec.usermeta && Array.isArray(message.spec.usermeta.series)
+        ? message.spec.usermeta.series.map(String)
+        : [];
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
       state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
       state.exportCaption = typeof message.caption === 'string' ? message.caption : '';
@@ -806,6 +862,7 @@
         }
       });
       view.runAsync().then(function () {
+        setupLegendToggle(chartId, revision);
         var rows = [];
         try {
           rows = view.data('table') || [];

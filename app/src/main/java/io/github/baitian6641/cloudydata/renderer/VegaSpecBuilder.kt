@@ -32,6 +32,14 @@ object VegaSpecBuilder {
         val gridColor = colorHex(if (dark) CloudyTokens.Dark.divider else CloudyTokens.Light.divider)
         val rows = JSONArray()
         val xOrder = TreeMap<Int, String>()
+        val hiddenSeries = spec.hiddenSeries
+        val visibleExpr = if (hiddenSeries.isEmpty()) {
+            "true"
+        } else {
+            hiddenSeries.joinToString(" && ") {
+                "datum.series !== '${escapeVegaString(it)}'"
+            }
+        }
         val seriesDomain = JSONArray()
         spec.series.forEach { series ->
             seriesDomain.put(series.key)
@@ -155,22 +163,22 @@ object VegaSpecBuilder {
                 marks.put(barSelectionMark(textColor))
             }
             ChartKind.LINE -> {
-                marks.put(lineGroup(spec, textColor))
+                marks.put(lineGroup(spec, textColor, visibleExpr))
                 // Selected points are drawn beneath the transparent hit target so
                 // the hit target keeps receiving clicks.
-                marks.put(selectedPointMark(textColor))
+                marks.put(selectedPointMark(spec, textColor, visibleExpr))
                 // Facet groups do not reliably surface the child point datum on a
                 // click. A top-level, nearly transparent symbol gives every observed
                 // point a stable hit target that carries sourceRowIndex.
-                marks.put(lineHitMark())
+                marks.put(lineHitMark(spec, visibleExpr))
             }
             ChartKind.AREA -> {
                 marks.put(areaMark())
                 marks.put(areaLineMark(spec))
                 if (spec.pointCount <= 200) marks.put(areaSymbolMark())
                 if (spec.labels.show) marks.put(areaLabelMark(spec, textColor))
-                marks.put(selectedPointMark(textColor))
-                marks.put(lineHitMark())
+                marks.put(selectedPointMark(spec, textColor, visibleExpr))
+                marks.put(lineHitMark(spec, visibleExpr))
             }
         }
 
@@ -184,6 +192,15 @@ object VegaSpecBuilder {
                 "data",
                 JSONArray()
                     .put(JSONObject().put("name", "table").put("values", rows))
+                    .put(
+                        JSONObject().put("name", "visible").put("source", "table")
+                            .put(
+                                "transform",
+                                JSONArray().put(
+                                    JSONObject().put("type", "filter").put("expr", visibleExpr),
+                                ),
+                            ),
+                    )
                     .put(JSONObject().put("name", "selected").put("values", JSONArray())),
             )
             .put("scales", JSONArray().put(xScale).put(yScale).put(colorScale))
@@ -201,6 +218,8 @@ object VegaSpecBuilder {
                     .put("tooltip", spec.tooltip.show)
             .put("chartBorder", spec.chartBorder)
             .put("transparentExportBackground", spec.transparentExportBackground)
+            .put("hiddenSeries", JSONArray(spec.hiddenSeries.toList()))
+            .put("series", JSONArray(spec.series.map { it.key }))
                     .put("units", spec.units ?: ""),
             )
             .put("marks", marks)
@@ -216,6 +235,13 @@ object VegaSpecBuilder {
         .put("sourceRowIndex", point.sourceRowIndex)
         .put("exactY", point.exactY ?: JSONObject.NULL)
         .put("defined", point.defined)
+
+    private fun escapeVegaString(value: String): String =
+        value.replace("\\", "\\\\")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t")
+            .replace("'", "\\'")
 
     private fun colorHex(value: Long): String =
         "#%06X".format(value.toInt() and 0xFFFFFF)
@@ -391,7 +417,7 @@ object VegaSpecBuilder {
             )
     }
 
-    private fun lineGroup(spec: ChartSpec, textColor: String): JSONObject {
+    private fun lineGroup(spec: ChartSpec, textColor: String, visibleExpr: String): JSONObject {
         val childMarks = JSONArray()
         childMarks.put(
             JSONObject()
@@ -469,7 +495,7 @@ object VegaSpecBuilder {
                     "facet",
                     JSONObject()
                         .put("name", "series")
-                        .put("data", "table")
+                        .put("data", "visible")
                         .put("groupby", JSONArray().put("series")),
                 ),
             )
@@ -488,7 +514,7 @@ object VegaSpecBuilder {
 
     private fun areaMark(): JSONObject = JSONObject()
         .put("type", "area")
-        .put("from", JSONObject().put("data", "table"))
+        .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
         .put(
             "encode",
@@ -506,7 +532,7 @@ object VegaSpecBuilder {
 
     private fun areaLineMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "line")
-        .put("from", JSONObject().put("data", "table"))
+        .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
         .put(
             "encode",
@@ -523,7 +549,7 @@ object VegaSpecBuilder {
 
     private fun areaSymbolMark(): JSONObject = JSONObject()
         .put("type", "symbol")
-        .put("from", JSONObject().put("data", "table"))
+        .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
         .put(
             "encode",
@@ -541,7 +567,7 @@ object VegaSpecBuilder {
     private fun areaLabelMark(spec: ChartSpec, textColor: String): JSONObject =
         JSONObject()
         .put("type", "text")
-        .put("from", JSONObject().put("data", "table"))
+        .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
         .put("interactive", false)
         .put(
@@ -591,7 +617,7 @@ object VegaSpecBuilder {
             )
     }
 
-    private fun selectedPointMark(textColor: String): JSONObject {
+    private fun selectedPointMark(spec: ChartSpec, textColor: String, visibleExpr: String): JSONObject {
         val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
         return JSONObject()
             .put("name", "cloudySelectedPoints")
@@ -610,15 +636,21 @@ object VegaSpecBuilder {
                         .put("stroke", JSONObject().put("value", contrastingStroke))
                         .put("strokeWidth", JSONObject().put("value", 2))
                         .put("size", JSONObject().put("value", 240))
-                        .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                        .put(
+                            "defined",
+                            JSONObject().put(
+                                "signal",
+                                "$visibleExpr && isValid(datum.y)",
+                            ),
+                        ),
                 ),
             )
     }
 
-    private fun lineHitMark(): JSONObject = JSONObject()
+    private fun lineHitMark(spec: ChartSpec, visibleExpr: String): JSONObject = JSONObject()
         .put("name", "cloudyHit")
         .put("type", "symbol")
-        .put("from", JSONObject().put("data", "table"))
+        .put("from", JSONObject().put("data", "visible"))
         .put("clip", true)
         .put(
             "encode",

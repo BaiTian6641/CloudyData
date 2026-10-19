@@ -56,6 +56,7 @@ class VegaRendererHost(
             x: String,
             mode: SelectionMode,
         )
+        fun onLegendToggle(chartId: String, revision: Long, series: String)
         fun onLassoSelection(
             chartId: String,
             revision: Long,
@@ -405,6 +406,14 @@ class VegaRendererHost(
                     json.optInt("viewWidth", 0),
                     json.optInt("viewHeight", 0),
                 )
+            }
+            "LegendToggle" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val series = json.optString("series").trim()
+                if (series.isEmpty() || series.length > 256) return
+                listener.onLegendToggle(chartId, revision, series)
             }
             "LassoSelectionIntent" -> {
                 val chartId = json.optString("chartId")

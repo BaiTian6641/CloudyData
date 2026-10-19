@@ -25,6 +25,7 @@ import io.github.baitian6641.cloudydata.chart.LegendSpec
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.io.File
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -63,6 +64,9 @@ class RendererProbeActivity : Activity() {
     private val requestMinorGrid: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_MINOR_GRID, false)
     }
+    private val requestedHiddenSeries: String? by lazy {
+        intent.getStringExtra(EXTRA_HIDDEN_SERIES)
+    }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -82,6 +86,7 @@ class RendererProbeActivity : Activity() {
             chartBorder = requestChartBorder,
             transparentExportBackground = requestTransparentExport,
             gridlines = baseSpec.gridlines.copy(minor = requestMinorGrid),
+            hiddenSeries = requestedHiddenSeries?.let(::setOf) ?: emptySet(),
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -184,6 +189,18 @@ class RendererProbeActivity : Activity() {
                                 appliedHeightDp = lastAppliedHeight.coerceAtLeast(0f),
                             ),
                         )
+                    }
+                }
+
+                override fun onLegendToggle(
+                    chartId: String,
+                    revision: Long,
+                    series: String,
+                ) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        RendererProbeState.legendToggles.add(series)
+                        status.text = "Legend toggle: $series · $chartId r$revision"
                     }
                 }
 
@@ -710,6 +727,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_DARK = "dark"
         const val EXTRA_TRANSPARENT_EXPORT = "transparent_export"
         const val EXTRA_MINOR_GRID = "minor_grid"
+        const val EXTRA_HIDDEN_SERIES = "hidden_series"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }
@@ -762,6 +780,7 @@ object RendererProbeState {
     var selectionMode: SelectionMode = SelectionMode.REPLACE
         private set
     val focusExitCount = AtomicInteger(0)
+    val legendToggles = CopyOnWriteArrayList<String>()
 
     @Volatile
     var exportedSvg: String? = null
@@ -812,6 +831,7 @@ object RendererProbeState {
         selectionMode = SelectionMode.REPLACE
         selectionState = RowSelectionState()
         focusExitCount.set(0)
+        legendToggles.clear()
         exportedSvg = null
         exportedPng = null
         pngWidth = 0
