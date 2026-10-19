@@ -75,6 +75,7 @@ object VegaSpecBuilder {
             .put("range", "width")
             .put("paddingInner", if (spec.kind == ChartKind.BAR) 0.2 else 0.05)
 
+        val visibleXLabels = spec.xAxis.labelValues?.size ?: xDomain.length()
         val axes = JSONArray()
             .put(
                 axisJson(
@@ -84,8 +85,9 @@ object VegaSpecBuilder {
                     textColor = textColor,
                     gridColor = gridColor,
                     grid = false,
-                    labelAngle = if (spec.kind != ChartKind.BAR && xDomain.length() > 8) -35 else 0,
+                    labelAngle = if (spec.kind != ChartKind.BAR && visibleXLabels > 8) -35 else 0,
                     titleAnchor = spec.xAxis.titleAnchor,
+                    labelValues = spec.xAxis.labelValues,
                 ),
             )
             .put(
@@ -180,6 +182,7 @@ object VegaSpecBuilder {
         labelAngle: Int,
         tickCount: Int? = null,
         titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
+        labelValues: List<String>? = null,
     ): JSONObject {
         val axis = JSONObject()
             .put("orient", orient)
@@ -196,6 +199,9 @@ object VegaSpecBuilder {
         }
         if (titleAnchor != AxisTitleAnchor.AUTO) {
             axis.put("titleAnchor", titleAnchor.name.lowercase())
+        }
+        if (!labelValues.isNullOrEmpty()) {
+            axis.put("values", JSONArray(labelValues)).put("labelOverlap", "greedy")
         }
         if (!title.isNullOrBlank()) {
             axis.put("title", title)

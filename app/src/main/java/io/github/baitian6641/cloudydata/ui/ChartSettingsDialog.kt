@@ -64,6 +64,7 @@ fun ChartSettingsDialog(
     var yMin by remember { mutableStateOf(current.yMin?.toString().orEmpty()) }
     var yMax by remember { mutableStateOf(current.yMax?.toString().orEmpty()) }
     var yTickCount by remember { mutableStateOf(current.yTickCount?.toString().orEmpty()) }
+    var xLabelCount by remember { mutableStateOf(current.xLabelCount?.toString().orEmpty()) }
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
@@ -83,6 +84,7 @@ fun ChartSettingsDialog(
     val parsedMin = yMin.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedXLabelCount = xLabelCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
@@ -95,6 +97,9 @@ fun ChartSettingsDialog(
         yTickCount.trim().isNotEmpty() && (parsedYTickCount == null ||
             parsedYTickCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
             "Y tick count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
+        xLabelCount.trim().isNotEmpty() && (parsedXLabelCount == null ||
+            parsedXLabelCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
+            "X label count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
         labelFontSize.trim().isNotEmpty() && (parsedLabelFontSize == null ||
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
@@ -256,13 +261,27 @@ fun ChartSettingsDialog(
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-                CloudyTextField(
-                    value = yTickCount,
-                    onValueChange = { yTickCount = it },
-                    label = "Y tick count",
-                    supportingText = "${ChartOptions.MIN_TICK_COUNT}–${ChartOptions.MAX_TICK_COUNT}, blank for automatic.",
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
+                Row(Modifier.fillMaxWidth()) {
+                    Column(Modifier.weight(1f)) {
+                        CloudyTextField(
+                            value = xLabelCount,
+                            onValueChange = { xLabelCount = it },
+                            label = "X label count",
+                            supportingText = "${ChartOptions.MIN_TICK_COUNT}–${ChartOptions.MAX_TICK_COUNT}, blank for all.",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        )
+                    }
+                    Spacer(Modifier.weight(0.05f))
+                    Column(Modifier.weight(1f)) {
+                        CloudyTextField(
+                            value = yTickCount,
+                            onValueChange = { yTickCount = it },
+                            label = "Y tick count",
+                            supportingText = "${ChartOptions.MIN_TICK_COUNT}–${ChartOptions.MAX_TICK_COUNT}, blank for automatic.",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        )
+                    }
+                }
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
                     value = seriesTitle,
@@ -494,6 +513,7 @@ fun ChartSettingsDialog(
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
+                            xLabelCount = parsedXLabelCount,
                             labelFontSize = parsedLabelFontSize,
                             labelPosition = if (sheet.markType == MarkType.BAR) {
                                 labelPosition

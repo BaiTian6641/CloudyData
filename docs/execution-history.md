@@ -494,3 +494,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   the same layout while chart width/height and data semantics remain unchanged.
 - JVM 47/47; lint 0 errors/5 warnings; debug/test APKs compile. Vega/persistence
   instrumentation and device/export clipping/dimension checks were not run.
+
+## 2026-10-19 — CUST03 categorical X-label thinning
+
+- Added optional persisted X label count (2–50). `AxisLabelSelection` emits a
+  nearest-index, evenly spaced band-axis `values` subset that retains first and
+  last labels; data, domain, exact table and selection are unchanged. Vega
+  `axis.values` is used because band `tickCount` is a no-op.
+- JVM 50/50; lint 0 errors/5 warnings; debug/test APKs compile. Vega/persistence
+  instrumentation and device collision/rotation/accessibility checks were not
+  run.

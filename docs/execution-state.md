@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `55b32af`. `main` tracks `origin/main`; the
-chart-padding stage is pushed.
+**Source:** commits through `5006123`; the X-label thinning change is in the
+next local commit. `main` tracks `origin/main` at the pushed padding baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,9 +54,9 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **47/47**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **50/50**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
-  title/caption, units/anchor and padding cases. Emulator renderer
+  title/caption, units/anchor, padding and X-label cases. Emulator renderer
   probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
@@ -99,6 +99,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust02-subtitle-caption.md`
 - `qualification/evidence/2026-10-19-cust02-units-axis-title.md`
 - `qualification/evidence/2026-10-19-cust14-chart-padding.md`
+- `qualification/evidence/2026-10-19-cust03-x-label-thinning.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -142,6 +143,10 @@ unless stated otherwise.
   layout and inherited by export scenes; data and chart dimensions are
   unchanged. JVM validation passes; instrumentation and device/export clipping
   checks were not run.
+- **Categorical X-label thinning.** Persisted 2–50 count emits an evenly spaced
+  axis `values` subset with first/last retained; domain/data/selection are
+  unchanged. JVM selection/validation and focused Vega/persistence
+  instrumentation pass; device collision/accessibility checks were not run.
 - **Line width.** Persisted 1–8 width is carried through Line/Area specs and
   renderer strokes with 2.0/1.5 defaults. JVM validation passes; instrumentation
   and device thickness/legend/export checks were not run.
@@ -233,18 +238,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 categorical X-axis label thinning.**
+**CUST04 persisted major-gridline width.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: persisted Y tick
-  count, typed band X domain, Vega axis lowering and chart settings.
-- Files: `ChartOptions`, `AxisSpec`/`ChartSpecBuilder`, `VegaSpecBuilder`,
-  `ChartSettingsDialog`, tests and evidence.
-- Action: add a bounded X label count (2–50) that emits an explicit evenly spaced
-  `axis.values` subset for band scales, including first/last categories, instead
-  of the no-op Vega `tickCount` on band axes.
-- Acceptance: blank/automatic preserves all labels; the request never invents or
-  drops domain members from data; exact values/selection and accessibility remain
-  coherent. Device visual review is required before verified status.
+- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: persisted
+  gridline visibility, typed axis/grid spec, Vega axis lowering and settings.
+- Files: `ChartOptions`, `ChartSpec`/`GridlineSpec`, `ChartSpecBuilder`,
+  `VegaSpecBuilder`, `ChartSettingsDialog`, tests and evidence.
+- Action: add an optional 0.5–3.0 dp value-axis gridline width, applied only
+  when major gridlines are visible and inherited by export scenes.
+- Acceptance: blank keeps the renderer default; values persist and never alter
+  data, ticks or chart dimensions; invalid bounds are rejected. Device visual
+  review is required before verified status.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding and X-label visuals wait for an
   authorized device.

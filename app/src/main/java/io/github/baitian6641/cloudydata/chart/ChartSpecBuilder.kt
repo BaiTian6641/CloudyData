@@ -107,6 +107,7 @@ object ChartSpecBuilder {
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: result.rowField?.name ?: "View",
                 reverse = false,
+                labelValues = AxisLabelSelection.thin(points.map { it.x }, options.xLabelCount),
                 titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = axisFor(options, yTitle),
@@ -221,6 +222,7 @@ object ChartSpecBuilder {
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: rowField.name,
                 reverse = false,
+                labelValues = AxisLabelSelection.thin(xOrder.keys.toList(), options.xLabelCount),
                 titleAnchor = options.axisTitleAnchor,
             ),
             yAxis = if (kind == ChartKind.AREA) {
@@ -287,6 +289,13 @@ object ChartSpecBuilder {
         ) {
             throw ChartSpecException(
                 "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
+        }
+        if (options.xLabelCount != null &&
+            options.xLabelCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT
+        ) {
+            throw ChartSpecException(
+                "X label count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
             )
         }
         if (options.chartPadding !in ChartOptions.MIN_CHART_PADDING..ChartOptions.MAX_CHART_PADDING) {

@@ -74,6 +74,61 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun categoricalXLabelCountIsThinnedAndValidated() {
+        val spec = ChartSpecBuilder.build(
+            "labels", 0, lineResult(),
+            ChartOptions(xLabelCount = 2),
+            "derived",
+        )
+        assertEquals(listOf("2026-01-01", "2026-04-01"), spec.xAxis.labelValues)
+
+        val barSpec = ChartSpecBuilder.build(
+            "bar-labels", 0, WorksheetResult(
+                result = EngineResult(
+                    columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                    rows = listOf(
+                        listOf<Any?>("A", 1L),
+                        listOf<Any?>("B", 2L),
+                        listOf<Any?>("C", 3L),
+                        listOf<Any?>("D", 4L),
+                    ),
+                    truncated = false,
+                ),
+                rowField = region,
+                measureField = sales,
+                seriesField = null,
+                aggregation = Aggregation.SUM,
+                markType = MarkType.BAR,
+                sql = "test",
+            ),
+            ChartOptions(xLabelCount = 3),
+            "derived",
+        )
+        assertEquals(listOf("A", "C", "D"), barSpec.xAxis.labelValues)
+
+        try {
+            ChartSpecBuilder.build(
+                "labels", 0, lineResult(),
+                ChartOptions(xLabelCount = 1),
+                "derived",
+            )
+            throw AssertionError("expected X-label count rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("2 and 50"))
+        }
+        try {
+            ChartSpecBuilder.build(
+                "labels", 0, lineResult(),
+                ChartOptions(xLabelCount = 51),
+                "derived",
+            )
+            throw AssertionError("expected upper X-label count rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("2 and 50"))
+        }
+    }
+
+    @Test
     fun chartPaddingDefaultsAndIsValidated() {
         val default = ChartSpecBuilder.build("padding", 0, lineResult(), ChartOptions(), "derived")
         assertEquals(8, default.padding)

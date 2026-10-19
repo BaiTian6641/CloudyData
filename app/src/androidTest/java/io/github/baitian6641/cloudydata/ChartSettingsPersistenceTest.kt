@@ -78,6 +78,7 @@ class ChartSettingsPersistenceTest {
                             units = "USD",
                             axisTitleAnchor = AxisTitleAnchor.END,
                             chartPadding = 12,
+                            xLabelCount = 2,
                         ),
                     ),
                 ),
@@ -109,6 +110,7 @@ class ChartSettingsPersistenceTest {
         assertEquals("USD", reopenedSheet.chart.units)
         assertEquals(AxisTitleAnchor.END, reopenedSheet.chart.axisTitleAnchor)
         assertEquals(12, reopenedSheet.chart.chartPadding)
+        assertEquals(2, reopenedSheet.chart.xLabelCount)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

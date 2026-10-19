@@ -53,6 +53,7 @@ data class ChartOptions(
     val units: String? = null,
     val axisTitleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
     val chartPadding: Int = DEFAULT_CHART_PADDING,
+    val xLabelCount: Int? = null,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -80,6 +81,7 @@ data class ChartOptions(
         .put("units", units ?: JSONObject.NULL)
         .put("axisTitleAnchor", axisTitleAnchor.name)
         .put("chartPadding", chartPadding)
+        .put("xLabelCount", xLabelCount ?: JSONObject.NULL)
 
     companion object {
         const val VERSION = 1
@@ -146,6 +148,11 @@ data class ChartOptions(
             chartPadding = json.optInt("chartPadding", DEFAULT_CHART_PADDING)
                 .takeIf { it in MIN_CHART_PADDING..MAX_CHART_PADDING }
                 ?: DEFAULT_CHART_PADDING,
+            xLabelCount = if (json.isNull("xLabelCount")) {
+                null
+            } else {
+                json.optInt("xLabelCount").takeIf { it in MIN_TICK_COUNT..MAX_TICK_COUNT }
+            },
         )
     }
 }

@@ -37,6 +37,7 @@ data class AxisSpec(
     val log: Boolean = false,
     val reverse: Boolean = false,
     val tickCount: Int? = null,
+    val labelValues: List<String>? = null,
     val titleAnchor: AxisTitleAnchor = AxisTitleAnchor.AUTO,
 )
 

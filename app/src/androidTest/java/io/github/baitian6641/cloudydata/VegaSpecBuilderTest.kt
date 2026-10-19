@@ -73,6 +73,7 @@ class VegaSpecBuilderTest {
                 units = "USD",
                 axisTitleAnchor = AxisTitleAnchor.END,
                 chartPadding = 12,
+                xLabelCount = 2,
             ),
             "derived",
         )
@@ -80,6 +81,11 @@ class VegaSpecBuilderTest {
         assertEquals(1, json.getInt("version"))
         assertEquals(12, json.getInt("padding"))
         assertEquals("end", json.getJSONArray("axes").getJSONObject(1).getString("titleAnchor"))
+        assertEquals(
+            listOf("2026-01-01", "2026-04-01"),
+            (0 until json.getJSONArray("axes").getJSONObject(0).getJSONArray("values").length())
+                .map { json.getJSONArray("axes").getJSONObject(0).getJSONArray("values").getString(it) },
+        )
         assertEquals("USD", json.getJSONObject("usermeta").getString("units"))
         val group = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("group", group.getString("type"))
