@@ -19,6 +19,7 @@ import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -452,6 +453,84 @@ class VegaSpecBuilderTest {
             outline.getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("opacity").getDouble("value"),
             0.0,
+        )
+    }
+
+    @Test
+    fun currencyFormattingIsLoweredForAxisAndLabels() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "DOUBLE"),
+                ),
+                rows = listOf(listOf<Any?>("A", -1234.5), listOf<Any?>("B", 2000.0)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        fun json(format: ValueDisplayFormat, code: CurrencyCode): JSONObject =
+            VegaSpecBuilder.build(
+                ChartSpecBuilder.build(
+                    "currency", 0, result,
+                    ChartOptions(
+                        showValueLabels = true,
+                        valueFormat = format,
+                        currencyCode = code,
+                    ),
+                    "derived",
+                ),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+        val usd = json(ValueDisplayFormat.CURRENCY, CurrencyCode.USD)
+        assertEquals("$,.2f", usd.getJSONArray("axes").getJSONObject(1).getString("format"))
+        val usdLabel = usd.getJSONArray("marks").getJSONObject(1)
+            .getJSONObject("encode").getJSONObject("enter")
+            .getJSONObject("text").getString("signal")
+        assertTrue(usdLabel.contains("format(datum.y, '$,.2f')"))
+
+        val eur = json(ValueDisplayFormat.CURRENCY, CurrencyCode.EUR)
+        val eurAxis = eur.getJSONArray("axes").getJSONObject(1)
+        assertEquals(",.2f", eurAxis.getString("format"))
+        val axisSignal = eurAxis.getJSONObject("encode").getJSONObject("labels")
+            .getJSONObject("update").getJSONObject("text").getString("signal")
+        assertTrue(axisSignal.contains("€"))
+        assertTrue(axisSignal.contains("abs(datum.value)"))
+        val eurLabel = eur.getJSONArray("marks").getJSONObject(1)
+            .getJSONObject("encode").getJSONObject("enter")
+            .getJSONObject("text").getString("signal")
+        assertTrue(eurLabel.contains("€"))
+        assertTrue(eurLabel.contains("abs(datum.y)"))
+        assertTrue(eurLabel.contains("\u2212€"))
+        val crowdedCurrency = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "currency-crowded", 0, result,
+                ChartOptions(
+                    showValueLabels = true,
+                    valueFormat = ValueDisplayFormat.CURRENCY,
+                    labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
+                ),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        val crowdedLabel = crowdedCurrency.getJSONArray("marks").getJSONObject(1)
+            .getJSONObject("encode").getJSONObject("enter")
+            .getJSONObject("defined").getString("signal")
+        assertTrue(
+            "currency crowded threshold missing: $crowdedLabel",
+            crowdedLabel.contains("bandwidth('x') >= 83"),
         )
     }
 

@@ -70,6 +70,22 @@ class RendererProbeActivity : Activity() {
     private val requestHideMarkers: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_HIDE_MARKERS, false)
     }
+    private val requestValueFormat by lazy {
+        runCatching {
+            io.github.baitian6641.cloudydata.model.ValueDisplayFormat.valueOf(
+                intent.getStringExtra(EXTRA_VALUE_FORMAT)
+                    ?: io.github.baitian6641.cloudydata.model.ValueDisplayFormat.NUMBER.name,
+            )
+        }.getOrDefault(io.github.baitian6641.cloudydata.model.ValueDisplayFormat.NUMBER)
+    }
+    private val requestCurrencyCode by lazy {
+        runCatching {
+            io.github.baitian6641.cloudydata.model.CurrencyCode.valueOf(
+                intent.getStringExtra(EXTRA_CURRENCY_CODE)
+                    ?: io.github.baitian6641.cloudydata.model.CurrencyCode.USD.name,
+            )
+        }.getOrDefault(io.github.baitian6641.cloudydata.model.CurrencyCode.USD)
+    }
     private val requestLegendSample by lazy {
         runCatching {
             io.github.baitian6641.cloudydata.model.LegendMarkSample.valueOf(
@@ -137,6 +153,8 @@ class RendererProbeActivity : Activity() {
             lineDashStyle = requestLineDash,
             lineOpacity = requestLineOpacity,
             legend = baseSpec.legend.copy(markSample = requestLegendSample),
+            valueFormat = requestValueFormat,
+            currencyCode = requestCurrencyCode,
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -656,6 +674,31 @@ class RendererProbeActivity : Activity() {
             valueDecimals = 1,
             valueFormat = io.github.baitian6641.cloudydata.model.ValueDisplayFormat.PERCENT,
         )
+        "currency" -> ChartSpec(
+            chartId = "probe-currency",
+            revision = 1,
+            kind = ChartKind.BAR,
+            title = "Currency values",
+            xAxis = AxisSpec("Region"),
+            yAxis = AxisSpec("Sales"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(true),
+            sourceNote = "Source: probe fixture",
+            series = listOf(
+                ChartSeries(
+                    "Values",
+                    listOf(
+                        point("A", -1234.5, "Values", 0),
+                        point("B", 2000.0, "Values", 1),
+                    ),
+                ),
+            ),
+            rowCount = 2,
+            truncated = false,
+            valueFormat = io.github.baitian6641.cloudydata.model.ValueDisplayFormat.CURRENCY,
+            currencyCode = io.github.baitian6641.cloudydata.model.CurrencyCode.EUR,
+        )
         "crowdedline" -> ChartSpec(
             chartId = "probe-crowded-line",
             revision = 1,
@@ -744,6 +787,7 @@ class RendererProbeActivity : Activity() {
         "crowdedlabel" -> "Accessible summary: 60 crowded categories."
         "crowdedline" -> "Accessible summary: 40 crowded categories across three series."
         "percent" -> "Accessible summary: A = 0.125, B = 0.25."
+        "currency" -> "Accessible summary: A = -1234.5, B = 2000.0."
         "area" -> "Accessible summary: 2026-01-01 = 10, 2026-02-01 = 20, " +
             "2026-03-01 = 30, 2026-04-01 = 40."
         else -> "Accessible summary: region A = 40, region B = 60."
@@ -785,6 +829,8 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_LINE_DASH = "line_dash"
         const val EXTRA_LINE_OPACITY = "line_opacity"
         const val EXTRA_LEGEND_SAMPLE = "legend_sample"
+        const val EXTRA_VALUE_FORMAT = "value_format"
+        const val EXTRA_CURRENCY_CODE = "currency_code"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

@@ -13,6 +13,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -94,7 +95,8 @@ class ChartSettingsPersistenceTest {
                             gridlineContrast = io.github.baitian6641.cloudydata.model.GridlineContrast.STRONG,
                             minorGridlines = true,
                             labelCollisionPolicy = LabelCollisionPolicy.HIDE_CROWDED,
-                            valueFormat = ValueDisplayFormat.PERCENT,
+                            valueFormat = ValueDisplayFormat.CURRENCY,
+                            currencyCode = CurrencyCode.EUR,
                             hiddenSeries = setOf("North", "South"),
                             showMarkers = true,
                             markerSize = 6.0,
@@ -150,7 +152,8 @@ class ChartSettingsPersistenceTest {
         )
         assertEquals(true, reopenedSheet.chart.minorGridlines)
         assertEquals(LabelCollisionPolicy.HIDE_CROWDED, reopenedSheet.chart.labelCollisionPolicy)
-        assertEquals(ValueDisplayFormat.PERCENT, reopenedSheet.chart.valueFormat)
+        assertEquals(ValueDisplayFormat.CURRENCY, reopenedSheet.chart.valueFormat)
+        assertEquals(CurrencyCode.EUR, reopenedSheet.chart.currencyCode)
         assertEquals(setOf("North", "South"), reopenedSheet.chart.hiddenSeries)
         assertEquals(true, reopenedSheet.chart.showMarkers)
         assertEquals(6.0, reopenedSheet.chart.markerSize!!, 0.0)
@@ -236,6 +239,19 @@ class ChartSettingsPersistenceTest {
     }
 
     @Test
+    fun invalidCurrencyCodeFallsBackToUsd() {
+        assertEquals(CurrencyCode.USD, ChartOptions.fromJson(JSONObject()).currencyCode)
+        assertEquals(
+            CurrencyCode.USD,
+            ChartOptions.fromJson(JSONObject().put("currencyCode", "NOT_A_CODE")).currencyCode,
+        )
+        assertEquals(
+            CurrencyCode.GBP,
+            ChartOptions.fromJson(JSONObject().put("currencyCode", "GBP")).currencyCode,
+        )
+    }
+
+    @Test
     fun invalidMarkerSizeFallsBackToAutomatic() {
         assertEquals(6.0, ChartOptions.fromJson(JSONObject().put("markerSize", 6.0)).markerSize!!, 0.0)
         assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerSize", 1.0)).markerSize)
@@ -303,6 +319,11 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             ValueDisplayFormat.PERCENT,
             ChartOptions.fromJson(JSONObject().put("valueFormat", "PERCENT")).valueFormat,
+        )
+        assertEquals(
+            ValueDisplayFormat.PERCENT,
+            ChartOptions.fromJson(ChartOptions(valueFormat = ValueDisplayFormat.PERCENT).toJson())
+                .valueFormat,
         )
     }
 

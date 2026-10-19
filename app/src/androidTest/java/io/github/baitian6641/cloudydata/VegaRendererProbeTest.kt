@@ -525,6 +525,44 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun currencyFormatRendersSymbolsOnAxisAndLabels() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(code: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "currency")
+                .putExtra(RendererProbeActivity.EXTRA_VALUE_FORMAT, "CURRENCY")
+                .putExtra(RendererProbeActivity.EXTRA_CURRENCY_CODE, code)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("currency render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("currency export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val usd = render("USD")
+        val eur = render("EUR")
+        assertEquals(usd.result.markCount, eur.result.markCount)
+        assertEquals(usd.result.sceneMarks["symbol"], eur.result.sceneMarks["symbol"])
+        assertTrue("USD axis/label missing $", usd.result.svgTexts.any { it.contains("$") })
+        assertTrue("EUR axis/label missing €", eur.result.svgTexts.any { it.contains("€") })
+        assertTrue(
+            "USD negative currency sign missing: ${usd.result.svgTexts}",
+            usd.result.svgTexts.any { it.startsWith("\u2212$") },
+        )
+        assertTrue(
+            "EUR negative currency sign missing: ${eur.result.svgTexts}",
+            eur.result.svgTexts.any { it.startsWith("\u2212€") },
+        )
+        assertFalse("currency symbols did not change export", usd.svg == eur.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

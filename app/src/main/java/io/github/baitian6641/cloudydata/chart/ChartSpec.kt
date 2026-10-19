@@ -3,6 +3,7 @@ package io.github.baitian6641.cloudydata.chart
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
@@ -110,6 +111,7 @@ data class ChartSpec(
     val units: String? = null,
     val valueDecimals: Int? = null,
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
+    val currencyCode: CurrencyCode = CurrencyCode.USD,
     val hiddenSeries: Set<String> = emptySet(),
     val chartBorder: Boolean = false,
     val transparentExportBackground: Boolean = false,

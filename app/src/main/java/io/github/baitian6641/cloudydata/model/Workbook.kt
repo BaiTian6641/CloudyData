@@ -42,7 +42,9 @@ enum class LegendMarkSample { MARKER, LINE }
 
 enum class TableDividerContrast { DEFAULT, STRONG }
 
-enum class ValueDisplayFormat { NUMBER, PERCENT }
+enum class ValueDisplayFormat { NUMBER, PERCENT, CURRENCY }
+
+enum class CurrencyCode { USD, EUR, GBP, JPY }
 
 data class ChartOptions(
     val title: String? = null,
@@ -55,6 +57,7 @@ data class ChartOptions(
     val showValueLabels: Boolean = false,
     val valueDecimals: Int? = null,
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,
+    val currencyCode: CurrencyCode = CurrencyCode.USD,
     val labelCollisionPolicy: LabelCollisionPolicy = LabelCollisionPolicy.SHOW_ALL,
     val xAxisTitle: String? = null,
     val yAxisTitle: String? = null,
@@ -104,6 +107,7 @@ data class ChartOptions(
         .put("showValueLabels", showValueLabels)
         .put("valueDecimals", valueDecimals ?: JSONObject.NULL)
         .put("valueFormat", valueFormat.name)
+        .put("currencyCode", currencyCode.name)
         .put("labelCollisionPolicy", labelCollisionPolicy.name)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
         .put("yAxisTitle", yAxisTitle ?: JSONObject.NULL)
@@ -242,6 +246,9 @@ data class ChartOptions(
                     json.optString("valueFormat", ValueDisplayFormat.NUMBER.name),
                 )
             }.getOrDefault(ValueDisplayFormat.NUMBER),
+            currencyCode = runCatching {
+                CurrencyCode.valueOf(json.optString("currencyCode", CurrencyCode.USD.name))
+            }.getOrDefault(CurrencyCode.USD),
             labelCollisionPolicy = runCatching {
                 LabelCollisionPolicy.valueOf(
                     json.optString("labelCollisionPolicy", LabelCollisionPolicy.SHOW_ALL.name),

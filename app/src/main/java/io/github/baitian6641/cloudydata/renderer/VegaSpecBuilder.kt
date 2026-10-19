@@ -9,6 +9,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LineDashStyle
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -95,6 +96,8 @@ object VegaSpecBuilder {
         val valueFormat = when (spec.valueFormat) {
             ValueDisplayFormat.NUMBER -> spec.valueDecimals?.let { ",.${it}f" }
             ValueDisplayFormat.PERCENT -> ",.${spec.valueDecimals ?: 1}%"
+            ValueDisplayFormat.CURRENCY ->
+                if (spec.currencyCode == CurrencyCode.USD) "$,.2f" else ",.2f"
         }
         val gridlineStroke = when (spec.gridlines.contrast) {
             GridlineContrast.DEFAULT -> gridColor
@@ -155,6 +158,13 @@ object VegaSpecBuilder {
                 labelAngle = 0,
                 tickCount = spec.yAxis.tickCount,
                 format = valueFormat,
+                labelSignal = if (spec.valueFormat == ValueDisplayFormat.CURRENCY &&
+                    spec.currencyCode != CurrencyCode.USD
+                ) {
+                    currencyAxisLabelSignal(spec.currencyCode)
+                } else {
+                    null
+                },
                 titleAnchor = spec.yAxis.titleAnchor,
             ),
         )
@@ -260,6 +270,22 @@ object VegaSpecBuilder {
         }
     }
 
+    private fun currencyValueExpression(code: CurrencyCode, value: String): String {
+        if (code == CurrencyCode.USD) return "format($value, '$,.2f')"
+        val symbol = currencySymbol(code)
+        return "($value < 0 ? '\u2212$symbol' : '$symbol') + format(abs($value), ',.2f')"
+    }
+
+    private fun currencyAxisLabelSignal(code: CurrencyCode): String =
+        currencyValueExpression(code, "datum.value")
+
+    private fun currencySymbol(code: CurrencyCode): String = when (code) {
+        CurrencyCode.USD -> "$"
+        CurrencyCode.EUR -> "€"
+        CurrencyCode.GBP -> "£"
+        CurrencyCode.JPY -> "¥"
+    }
+
     private fun lineDashArray(spec: ChartSpec, defaultWidth: Double): JSONArray? =
         when (spec.lineDashStyle) {
             LineDashStyle.SOLID -> null
@@ -310,6 +336,7 @@ object VegaSpecBuilder {
         labelValues: List<String>? = null,
         valueSignal: String? = null,
         format: String? = null,
+        labelSignal: String? = null,
         domain: Boolean = true,
         ticks: Boolean = true,
         labels: Boolean = true,
@@ -337,6 +364,18 @@ object VegaSpecBuilder {
         }
         if (format != null) {
             axis.put("format", format)
+        }
+        if (labelSignal != null) {
+            axis.put(
+                "encode",
+                JSONObject().put(
+                    "labels",
+                    JSONObject().put(
+                        "update",
+                        JSONObject().put("text", JSONObject().put("signal", labelSignal)),
+                    ),
+                ),
+            )
         }
         if (tickCount != null) {
             axis.put("tickCount", tickCount).put("labelOverlap", "greedy")
@@ -380,17 +419,29 @@ object VegaSpecBuilder {
     private fun labelDefined(spec: ChartSpec, fontSize: Int): String {
         val valid = "isValid(datum.y)"
         if (spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) return valid
+        val spacing = if (spec.valueFormat == ValueDisplayFormat.CURRENCY) {
+            fontSize * 7 + 6
+        } else {
+            fontSize + 36
+        }
         return when (spec.kind) {
-            ChartKind.BAR -> "$valid && bandwidth('x') >= ${fontSize + 36}"
-            ChartKind.LINE, ChartKind.AREA -> "$valid && bandwidth('x') >= ${fontSize + 36}"
+            ChartKind.BAR -> "$valid && bandwidth('x') >= $spacing"
+            ChartKind.LINE, ChartKind.AREA -> "$valid && bandwidth('x') >= $spacing"
         }
     }
 
     private fun valueText(spec: ChartSpec, fontSize: Int): JSONObject {
         val visible = labelDefined(spec, fontSize)
+        if (spec.valueFormat == ValueDisplayFormat.CURRENCY) {
+            return JSONObject().put(
+                "signal",
+                "($visible) ? ${currencyValueExpression(spec.currencyCode, "datum.y")} : ''",
+            )
+        }
         val pattern = when (spec.valueFormat) {
             ValueDisplayFormat.NUMBER -> spec.valueDecimals?.let { ",.${it}f" }
             ValueDisplayFormat.PERCENT -> ",.${spec.valueDecimals ?: 1}%"
+            ValueDisplayFormat.CURRENCY -> null
         }
         if (pattern == null && spec.labels.collisionPolicy == LabelCollisionPolicy.SHOW_ALL) {
             return JSONObject().put("field", "y")

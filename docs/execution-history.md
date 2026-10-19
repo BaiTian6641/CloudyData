@@ -758,3 +758,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 11/11, TableSelectionTest 5/5,
   VegaSpecBuilderTest 17/17; lint 0 errors/5 warnings. Googlebook untouched;
   visual contrast/table checks absent.
+
+## 2026-10-19 — CUST06 currency display
+
+- Added persisted CURRENCY value format with USD/EUR/GBP/JPY codes and fixed
+  two-decimal formatting. USD uses d3 `$,.2f`; other currencies use axis
+  label-encode and value-label signals for symbol/matching U+2212 negative
+  placement. Exact tooltips/data/selection remain unchanged; decimal field is
+  hidden for currency but its stored value is preserved. Crowded-label spacing scales with font size
+  for currency (fontSize×7+6). Negative USD/EUR render coverage added.
+- Emulator-first validation: JVM 65/65; emulator-5580 API36 x86_64
+  VegaSpecBuilderTest 18/18, ChartSettingsPersistenceTest 12/12, USD/EUR render
+  1/1; lint 0 errors/5 warnings. Googlebook untouched; visual/locale/export
+  checks absent.

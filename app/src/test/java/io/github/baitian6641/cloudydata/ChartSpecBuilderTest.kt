@@ -20,6 +20,7 @@ import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -263,6 +264,25 @@ class ChartSpecBuilderTest {
                 ChartOptions(),
                 "derived",
             ).lineDashStyle,
+        )
+    }
+
+    @Test
+    fun currencyFormatIsCarriedAndDefaultsToUsd() {
+        val spec = ChartSpecBuilder.build(
+            "currency", 0, lineResult(),
+            ChartOptions(valueFormat = ValueDisplayFormat.CURRENCY, currencyCode = CurrencyCode.EUR),
+            "derived",
+        )
+        assertEquals(ValueDisplayFormat.CURRENCY, spec.valueFormat)
+        assertEquals(CurrencyCode.EUR, spec.currencyCode)
+        assertEquals(
+            CurrencyCode.USD,
+            ChartSpecBuilder.build(
+                "currency", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).currencyCode,
         )
     }
 

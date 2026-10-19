@@ -40,6 +40,7 @@ import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.TableDividerContrast
+import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
@@ -83,6 +84,9 @@ fun ChartSettingsDialog(
     var labelCollisionPolicy by remember { mutableStateOf(current.labelCollisionPolicy) }
     var valueDecimals by remember { mutableStateOf(current.valueDecimals?.toString().orEmpty()) }
     var valueFormat by remember { mutableStateOf(current.valueFormat) }
+    var valueFormatExpanded by remember { mutableStateOf(false) }
+    var currencyCode by remember { mutableStateOf(current.currencyCode) }
+    var currencyExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -123,7 +127,11 @@ fun ChartSettingsDialog(
     } else {
         null
     }
-    val parsedValueDecimals = valueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    val parsedValueDecimals = if (valueFormat == ValueDisplayFormat.CURRENCY) {
+        null
+    } else {
+        valueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
+    }
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedLineOpacity = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
@@ -164,7 +172,8 @@ fun ChartSettingsDialog(
             parsedGridlineWidth !in ChartOptions.MIN_GRIDLINE_WIDTH..ChartOptions.MAX_GRIDLINE_WIDTH) ->
             "Gridline width must be from ${ChartOptions.MIN_GRIDLINE_WIDTH} to " +
                 "${ChartOptions.MAX_GRIDLINE_WIDTH}."
-        valueDecimals.trim().isNotEmpty() && (parsedValueDecimals == null ||
+        valueFormat != ValueDisplayFormat.CURRENCY && valueDecimals.trim().isNotEmpty() &&
+            (parsedValueDecimals == null ||
             parsedValueDecimals !in ChartOptions.MIN_VALUE_DECIMALS..ChartOptions.MAX_VALUE_DECIMALS) ->
             "Value decimals must be a whole number from ${ChartOptions.MIN_VALUE_DECIMALS} to " +
                 "${ChartOptions.MAX_VALUE_DECIMALS}."
@@ -446,25 +455,83 @@ fun ChartSettingsDialog(
                     }
                 }
                 Spacer(Modifier.height(8.dp))
-                CloudyTextField(
-                    value = valueDecimals,
-                    onValueChange = { valueDecimals = it },
-                    label = "Value decimals",
-                    supportingText = if (valueFormat == ValueDisplayFormat.PERCENT) {
-                        "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank uses 1 decimal for percent."
-                    } else {
-                        "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank keeps automatic axis/label formatting."
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
-                ChartToggleRow(
-                    title = "Percent values",
-                    description = "Show axis values and labels as percentages; tooltips and exact data stay unchanged.",
-                    checked = valueFormat == ValueDisplayFormat.PERCENT,
-                    onCheckedChange = {
-                        valueFormat = if (it) ValueDisplayFormat.PERCENT else ValueDisplayFormat.NUMBER
-                    },
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Value format", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                        Text(
+                            when (valueFormat) {
+                                ValueDisplayFormat.NUMBER -> "Plain numeric axis and labels"
+                                ValueDisplayFormat.PERCENT -> "Percent axis and labels"
+                                ValueDisplayFormat.CURRENCY -> "Currency axis and labels, two decimals"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.textSecondary,
+                        )
+                    }
+                    TextButton(onClick = { valueFormatExpanded = true }) {
+                        Text(
+                            valueFormat.name.lowercase().replaceFirstChar { it.uppercase() },
+                            color = colors.primary,
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = valueFormatExpanded,
+                        onDismissRequest = { valueFormatExpanded = false },
+                    ) {
+                        ValueDisplayFormat.entries.forEach { format ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(format.name.lowercase().replaceFirstChar { it.uppercase() })
+                                },
+                                onClick = {
+                                    valueFormat = format
+                                    valueFormatExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
+                if (valueFormat == ValueDisplayFormat.CURRENCY) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Currency", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                            Text(
+                                currencyCode.name,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { currencyExpanded = true }) {
+                            Text(currencyCode.name, color = colors.primary)
+                        }
+                        DropdownMenu(
+                            expanded = currencyExpanded,
+                            onDismissRequest = { currencyExpanded = false },
+                        ) {
+                            CurrencyCode.entries.forEach { code ->
+                                DropdownMenuItem(
+                                    text = { Text(code.name) },
+                                    onClick = {
+                                        currencyCode = code
+                                        currencyExpanded = false
+                                    },
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    CloudyTextField(
+                        value = valueDecimals,
+                        onValueChange = { valueDecimals = it },
+                        label = "Value decimals",
+                        supportingText = if (valueFormat == ValueDisplayFormat.PERCENT) {
+                            "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank uses 1 decimal for percent."
+                        } else {
+                            "${ChartOptions.MIN_VALUE_DECIMALS}–${ChartOptions.MAX_VALUE_DECIMALS}; blank keeps automatic axis/label formatting."
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    )
+                }
                 ChartToggleRow(
                     title = "Value labels",
                     description = "Show values on bars or line points. Bar labels can sit above or inside; the exact table remains available.",
@@ -898,8 +965,13 @@ fun ChartSettingsDialog(
                             tableDividerContrast = tableDividerContrast,
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
-                            valueDecimals = parsedValueDecimals,
+                            valueDecimals = if (valueFormat == ValueDisplayFormat.CURRENCY) {
+                                current.valueDecimals
+                            } else {
+                                parsedValueDecimals
+                            },
                             valueFormat = valueFormat,
+                            currencyCode = currencyCode,
                             labelCollisionPolicy = labelCollisionPolicy,
                             labelFontSize = parsedLabelFontSize,
                             labelPosition = if (sheet.markType == MarkType.BAR) {

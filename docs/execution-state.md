@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `d614e64`. `main` tracks `origin/main`; the table
-divider-contrast stage is pushed.
+**Source:** commits through `303c352`; the currency-display change is in the
+next local commit. `main` tracks `origin/main` at the pushed divider-contrast
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +55,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **64/64**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **65/65**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -125,6 +126,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust05-legend-swatch-opacity.md`
 - `qualification/evidence/2026-10-19-cust04-table-divider-width.md`
 - `qualification/evidence/2026-10-19-cust04-table-divider-contrast.md`
+- `qualification/evidence/2026-10-19-cust06-currency-display.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -249,6 +251,10 @@ unless stated otherwise.
 - **Table divider width/contrast.** Optional 0.5–3.0 dp thickness and
   divider/outline contrast apply to header/body/column rules; persistence and
   table-selection pass; visual alignment/contrast checks were not run.
+- **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
+  two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
+  labels; exact values/tooltips/data remain. Emulator negative-render,
+  spec/persistence checks pass; visual/locale checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -337,18 +343,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST06 persisted currency display.**
+**CUST08 persisted marker border.**
 
-- Requirements/stage: CUST06, F36/F38, Q21, S11. Prerequisites: NUMBER/PERCENT
-  formatting, decimals, Vega axis/value-label formatting and emulator probes.
-- Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`,
-  `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded currency display option with explicit symbol/code
-  selection and fixed two-decimal formatting on value-axis ticks and labels,
-  leaving exact values/tooltips unchanged.
-- Acceptance: default NUMBER unchanged; currency persists, applies the chosen
-  symbol consistently with grouping/negatives, and does not mutate data or exact
-  exports. Emulator spec/render checks required; visual review unverified.
+- Requirements/stage: CUST08, F36/F38, Q21, S11. Prerequisites: marker
+  visibility/size/shape/opacity, line/area symbols, emulator probes.
+- Files: `ChartOptions`, `ChartSpec`/MarkerSpec, builders,
+  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
+- Action: add an optional persisted border on Line/Area point symbols using the
+  theme text color and a bounded stroke width, defaulting off.
+- Acceptance: default output unchanged; border persists and affects only point
+  symbols, preserving fill/shape/size/opacity/selection; invalid values fall
+  back to off. Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, interpolation, dash, opacity, legend-sample and table visuals wait for
