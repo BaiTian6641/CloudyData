@@ -309,6 +309,38 @@
     return new XMLSerializer().serializeToString(outer);
   }
 
+  function applySelection(message) {
+    if (!state.ready || !state.view) return;
+    if (!message || message.chartId !== state.activeChartId || message.revision !== state.activeRevision) return;
+    var rows = [];
+    if (Array.isArray(message.rows)) {
+      message.rows.forEach(function (row) {
+        if (typeof row === 'number' && row >= 0 && isFinite(row) && rows.indexOf(row) < 0) {
+          rows.push(row);
+        }
+      });
+    }
+    var table = [];
+    try {
+      table = state.view.data('table') || [];
+    } catch (error) {
+      table = [];
+    }
+    var selected = table.filter(function (datum) {
+      return datum && rows.indexOf(datum.sourceRowIndex) >= 0;
+    });
+    try {
+      var changeset = vega.changeset()
+        .remove(function () { return true; })
+        .insert(selected);
+      state.view.change('selected', changeset).runAsync().catch(function (error) {
+        console.log('CloudySelectionError ' + (error && error.message ? error.message : error));
+      });
+    } catch (error) {
+      console.log('CloudySelectionError ' + (error && error.message ? error.message : error));
+    }
+  }
+
   function exportSvg() {
     var text = currentSvgMarkup();
     if (text === null) {
@@ -548,6 +580,9 @@
         break;
       case 'ExportBundle':
         exportBundle();
+        break;
+      case 'ApplySelection':
+        applySelection(message);
         break;
       case 'Dispose':
         disposeView();

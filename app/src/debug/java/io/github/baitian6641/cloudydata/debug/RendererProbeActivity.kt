@@ -177,6 +177,7 @@ class RendererProbeActivity : Activity() {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
                         RendererProbeState.applySelection(sourceRowIndex, mode)
+                        host?.applySelection(chartId, revision, RendererProbeState.selectionRows)
                         status.text = "Selected row=$sourceRowIndex · mode=$mode · " +
                             "rows=${RendererProbeState.selectionRows.size} · series=$series · x=$x · " +
                             "$chartId r$revision"

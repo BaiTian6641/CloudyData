@@ -597,6 +597,16 @@ fun VegaChartCard(
             rendererError = "spec_rejected: ${error.message}"
         }
     }
+
+    LaunchedEffect(rendered, appliedExport, selectedRowIndices) {
+        if (!rendered) return@LaunchedEffect
+        val applied = appliedExport ?: return@LaunchedEffect
+        hostRef.get()?.applySelection(
+            chartId = applied.spec.chartId,
+            revision = applied.spec.revision,
+            rows = selectedRowIndices,
+        )
+    }
 }
 
 private fun accessibleSummary(spec: ChartSpec): String {

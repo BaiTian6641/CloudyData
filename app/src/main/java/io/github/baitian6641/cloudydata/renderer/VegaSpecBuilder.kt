@@ -101,9 +101,13 @@ object VegaSpecBuilder {
             ChartKind.BAR -> {
                 marks.put(barMark())
                 if (spec.labels.show) marks.put(barLabelMark(textColor))
+                marks.put(barSelectionMark(textColor))
             }
             ChartKind.LINE -> {
                 marks.put(lineGroup(spec, textColor))
+                // Selected points are drawn beneath the transparent hit target so
+                // the hit target keeps receiving clicks.
+                marks.put(selectedPointMark(textColor))
                 // Facet groups do not reliably surface the child point datum on a
                 // click. A top-level, nearly transparent symbol gives every observed
                 // point a stable hit target that carries sourceRowIndex.
@@ -114,6 +118,7 @@ object VegaSpecBuilder {
                 marks.put(areaLineMark())
                 if (spec.pointCount <= 200) marks.put(areaSymbolMark())
                 if (spec.labels.show) marks.put(areaLabelMark(textColor))
+                marks.put(selectedPointMark(textColor))
                 marks.put(lineHitMark())
             }
         }
@@ -124,10 +129,20 @@ object VegaSpecBuilder {
             .put("width", widthDp)
             .put("height", heightDp)
             .put("padding", 8)
-            .put("data", JSONArray().put(JSONObject().put("name", "table").put("values", rows)))
+            .put(
+                "data",
+                JSONArray()
+                    .put(JSONObject().put("name", "table").put("values", rows))
+                    .put(JSONObject().put("name", "selected").put("values", JSONArray())),
+            )
             .put("scales", JSONArray().put(xScale).put(yScale).put(colorScale))
             .put("axes", axes)
-            .put("signals", JSONArray().put(selectionSignal()).put(hoverSignal()))
+            .put(
+                "signals",
+                JSONArray()
+                    .put(selectionSignal())
+                    .put(hoverSignal()),
+            )
             .put("usermeta", JSONObject().put("tooltip", spec.tooltip.show))
             .put("marks", marks)
         val legend = legendJson(spec, textColor)
@@ -195,17 +210,18 @@ object VegaSpecBuilder {
         .put("clip", true)
         .put(
             "encode",
-            JSONObject().put(
-                "enter",
-                JSONObject()
-                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
-                    .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -6))
-                    .put("text", JSONObject().put("field", "y"))
-                    .put("align", JSONObject().put("value", "center"))
-                    .put("baseline", JSONObject().put("value", "bottom"))
-                    .put("fill", JSONObject().put("value", textColor))
-                    .put("fontSize", JSONObject().put("value", 11)),
-            ),
+            JSONObject()
+                .put(
+                    "enter",
+                    JSONObject()
+                        .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                        .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -6))
+                        .put("text", JSONObject().put("field", "y"))
+                        .put("align", JSONObject().put("value", "center"))
+                        .put("baseline", JSONObject().put("value", "bottom"))
+                        .put("fill", JSONObject().put("value", textColor))
+                        .put("fontSize", JSONObject().put("value", 11)),
+                ),
         )
 
     private fun lineGroup(spec: ChartSpec, textColor: String): JSONObject {
@@ -367,6 +383,53 @@ object VegaSpecBuilder {
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )
+
+    private fun barSelectionMark(textColor: String): JSONObject {
+        val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
+        return JSONObject()
+            .put("name", "cloudySelectedBar")
+            .put("type", "rect")
+            .put("from", JSONObject().put("data", "selected"))
+            .put("clip", true)
+            .put(
+                "encode",
+                JSONObject().put(
+                    "enter",
+                    JSONObject()
+                        .put("x", JSONObject().put("scale", "x").put("field", "x"))
+                        .put("width", JSONObject().put("scale", "x").put("band", 1))
+                        .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                        .put("y2", JSONObject().put("scale", "y").put("value", 0))
+                        .put("fill", JSONObject().put("value", textColor))
+                        .put("fillOpacity", JSONObject().put("value", 0.22))
+                        .put("stroke", JSONObject().put("value", contrastingStroke))
+                        .put("strokeWidth", JSONObject().put("value", 3)),
+                ),
+            )
+    }
+
+    private fun selectedPointMark(textColor: String): JSONObject {
+        val contrastingStroke = if (textColor == "#E1EBED") "#182427" else "#FFFFFF"
+        return JSONObject()
+            .put("name", "cloudySelectedPoints")
+            .put("type", "symbol")
+            .put("from", JSONObject().put("data", "selected"))
+            .put("clip", true)
+            .put(
+                "encode",
+                JSONObject().put(
+                    "enter",
+                    JSONObject()
+                        .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                        .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                        .put("fill", JSONObject().put("value", textColor))
+                        .put("stroke", JSONObject().put("value", contrastingStroke))
+                        .put("strokeWidth", JSONObject().put("value", 2))
+                        .put("size", JSONObject().put("value", 240))
+                        .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+                ),
+            )
+    }
 
     private fun lineHitMark(): JSONObject = JSONObject()
         .put("name", "cloudyHit")

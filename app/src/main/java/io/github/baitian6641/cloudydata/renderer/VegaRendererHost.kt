@@ -228,6 +228,26 @@ class VegaRendererHost(
 
     fun requestPdfExport() = requestRasterExport("pdf")
 
+    fun applySelection(chartId: String, revision: Long, rows: Set<Int>) {
+        if (!revisionGate.isCurrent(chartId, revision)) return
+        if (rows.size > MAX_CHART_POINTS || rows.any { it < 0 || it > MAX_SOURCE_ROW_INDEX }) return
+        val view = webView ?: return
+        if (!ready || disposed) return
+        val message = JSONObject()
+            .put("type", "ApplySelection")
+            .put("chartId", chartId)
+            .put("revision", revision)
+            .put("rows", JSONArray(rows.sorted()))
+        mainHandler.post {
+            if (!disposed && webView === view) {
+                view.evaluateJavascript(
+                    "window.cloudyReceive(${JSONObject.quote(message.toString())})",
+                    null,
+                )
+            }
+        }
+    }
+
     fun requestExportBundle() {
         val view = webView
         if (view == null || !ready || disposed) {

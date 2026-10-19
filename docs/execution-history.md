@@ -296,3 +296,20 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   28/28; lint 0/5.
 - Lasso, keep/exclude, drill, persisted selection and visual mark highlight
   remain pending.
+
+## 2026-10-19 — visual chart mark highlight for row selection
+
+- Added a chart/revision-gated `ApplySelection` renderer message bounded by the
+  renderer point limit and source-row index. The worksheet sends the current row
+  set after each successful render and whenever selection changes.
+- `VegaSpecBuilder` now adds an empty `selected` dataset and uses it for overlay
+  marks: Bar gets a contrasting 3 px ring with a translucent foreground tint;
+  Line/Area get contrasting selected-point symbols. Query meaning and the native
+  table/inspector remain unchanged.
+- Emulator product evidence: three additive/range Area rows show three ringed
+  markers; a selected North bar is ringed while South stays plain.
+- Emulator `VegaRendererProbeTest` 17/17 and `VegaSpecBuilderTest` 4/4. A
+  three-device connected run still hits an unrelated physical-device PNG
+  assertion (`expected 803`, actual `804`) and device timeouts.
+- Persisted selection, lasso, keep/exclude/drill, pointer hover and TalkBack
+  multi-selection remain pending. Next: keep/exclude/drill semantics.

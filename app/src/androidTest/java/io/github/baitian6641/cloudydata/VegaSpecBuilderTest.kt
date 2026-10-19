@@ -88,6 +88,13 @@ class VegaSpecBuilderTest {
         assertEquals("2026-01-01", xDomain.getString(0))
         assertEquals("2026-04-01", xDomain.getString(3))
         assertTrue("tooltip visibility missing from the renderer spec", json.getJSONObject("usermeta").getBoolean("tooltip"))
+        val dataNames = (0 until json.getJSONArray("data").length())
+            .map { json.getJSONArray("data").getJSONObject(it).getString("name") }
+        assertTrue("selected-row dataset missing: $dataNames", "selected" in dataNames)
+        val selectedMarks = (0 until json.getJSONArray("marks").length())
+            .map { json.getJSONArray("marks").getJSONObject(it) }
+        val selectedOverlay = selectedMarks.first { it.optString("name") == "cloudySelectedPoints" }
+        assertEquals("selected", selectedOverlay.getJSONObject("from").getString("data"))
         assertFalse("renderer must not receive analytical aggregation transforms", json.toString().contains("\"aggregate\""))
         val values = json.getJSONArray("data").getJSONObject(0).getJSONArray("values")
         assertEquals(6, values.length())
@@ -187,7 +194,14 @@ class VegaSpecBuilderTest {
         val spec = ChartSpecBuilder.build("bar", 0, result, ChartOptions(legendVisible = true), "derived")
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 400f, 300f)
         assertFalse(json.has("legends"))
-        assertEquals("rect", json.getJSONArray("marks").getJSONObject(0).getString("type"))
-        assertTrue(json.getJSONArray("marks").getJSONObject(0).has("clip"))
+        val bar = json.getJSONArray("marks").getJSONObject(0)
+        assertEquals("rect", bar.getString("type"))
+        assertTrue(bar.has("clip"))
+        assertTrue(
+            "selected bar overlay missing",
+            (0 until json.getJSONArray("marks").length()).any {
+                json.getJSONArray("marks").getJSONObject(it).optString("name") == "cloudySelectedBar"
+            },
+        )
     }
 }

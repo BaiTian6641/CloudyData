@@ -1,9 +1,9 @@
 # Execution state
 
-**Updated:** 2026-10-18
+**Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `02b98dd`; remote push not performed/authorized in
-this session.
+**Source:** commits through `35e8600`; the visual-selection change is in the
+next local commit. Remote push not performed/authorized in this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -53,9 +53,11 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 28/28. Emulator instrumentation:
-  47/47, 0 failures. The physical Googlebook was removed by the owner; new
-  lifecycle/line evidence is emulator-only.
+- Lint: 0 errors (warnings documented). Prior JVM result: 28/28. Emulator
+  renderer probe: 17/17; Vega spec builder: 4/4 (2026-10-19). A three-device
+  connected run still hits a physical-Googlebook PNG export assertion
+  (`expected 803`, actual `804`) and device timeouts; the emulator suites are
+  clean.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -78,6 +80,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s16-frozen-bundle.md`
 - `qualification/evidence/2026-10-18-s16-print-accessible.md`
 - `qualification/evidence/2026-10-18-cust13-additive-range.md`
+- `qualification/evidence/2026-10-19-cust13-mark-highlight.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -103,10 +106,14 @@ unless stated otherwise.
   rows; hardware arrows move in table order; Ctrl/Cmd click/arrow toggles and
   Shift click/arrow selects an inclusive range; the table highlights all exact
   rows while the endpoint drives the inspector; Escape/Tab release keyboard
-  routing and stale chart/revision intents are gated. Lasso/rectangle,
-  keep/exclude, drill, persisted selection, visual mark highlight, product
-  auto-recovery, focus/TalkBack traversal, live OS-window resize and memory limits
-  remain unverified. The native summary/table is the current accessible
+  routing and stale chart/revision intents are gated. The selected set is sent
+  through a chart/revision-gated `ApplySelection` message and drawn as a
+  dedicated `selected` Vega dataset: Bar marks get a contrasting ring and tint,
+  Line/Area marks get contrasting selected-point symbols. Area and Bar are
+  verified visually on the emulator; the Line overlay is spec-tested. Lasso/
+  rectangle, keep/exclude, drill, persisted selection, pointer hover, product
+  auto-recovery, focus/TalkBack traversal, live OS-window resize and memory
+  limits remain unverified. The native summary/table is the accessible
   equivalent.
 - Product visual export is verified for a live worksheet: individual and frozen
   multi-format actions use real DocumentsUI/SAF destinations and provider-owned
@@ -117,10 +124,11 @@ unless stated otherwise.
   returns an explicit provider failure. PDF is still raster-only, and storage-full/
   mid-write failure injection, accessible PDF and print remain partial.
 - **Current emulator state:** the rootable API 37 userdebug emulator returned as
-  `emulator-5582` (2880×1800, 240 dpi) and carries the preserved Area workbook;
-  product-export evidence uses it. `emulator-5580` remains an API 36 non-root
-  fallback with the 2880×1800/240 dpi override. Earlier API 37 root evidence
-  remains valid for `emulator-5582`/its predecessor profile.
+  `emulator-5582` (2880×1800, 240 dpi) and carries the reimported
+  `chart_line_series.csv` workbook used for the mark-selection evidence.
+  `emulator-5580` remains an API 36 non-root fallback with the 2880×1800/240 dpi
+  override. The physical Googlebook is connected again; its PNG export path has
+  an unrelated one-pixel height mismatch in the connected suite.
 
 ## Not implemented / blocked
 
@@ -140,7 +148,7 @@ unless stated otherwise.
   The bundle PDF now includes a searchable A4 table and the product exposes a
   native Print worksheet flow; a real Save-as-PDF print produced a two-page,
   text-extractable PDF. PDF tagging, print-spooler completion, pointer hover,
-  remaining Q18 failures, additive/range selection, TalkBack and live-window
+  remaining Q18 failures, persisted selection, TalkBack and live-window
   qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
@@ -153,18 +161,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST13 visual mark highlight for the selected row set.**
+**CUST14 keep/exclude and drill semantics from the selected mark set.**
 
-- Files: `VegaSpecBuilder.kt`, `host.js`, `VegaRendererHost.kt`, `VegaChart.kt`,
-  tests.
-- Action: apply the native row-selection set to chart marks (opacity/stroke)
-  through a revision-scoped `ApplySelection` message without changing query
-  semantics; keep table/inspector exact and support clear/replace.
-- Acceptance: additive/range sets visibly highlight exactly those marks on the
-  emulator, stale selection updates are rejected, and table/mark identities
-  agree.
-- Then: keep/exclude/drill semantics, pointer-hover qualification, tagged PDF
-  and remaining Q18 injections.
+- Files: chart selection state and worksheet query specification, native
+  summary/table, renderer message contract, tests.
+- Action: derive filter actions from the exact selected `sourceRowIndex` rows
+  without mutating the source snapshot; make keep/exclude/drill explicit,
+  reversible worksheet state with clear labels and a reset path.
+- Acceptance: keep and exclude visibly change only the chart's query meaning,
+  drill keeps the selected category context, the source data is untouched, and
+  stale selection/query intents are rejected.
+- Then: persisted selection and a Line mark-highlight screenshot, pointer-hover
+  qualification, tagged PDF and remaining Q18 injections.
 
 ## Protected context
 
