@@ -333,3 +333,24 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 32/32, lint 0 errors/5 warnings, emulator filter suite plus engine/line
   regressions 9/9. Drill remains blocked by the absent dimension hierarchy;
   compound/cross-sheet filters and persisted selection remain pending.
+
+## 2026-10-19 — native table additive and range selection
+
+- Result-table rows now capture Shift/Ctrl/Meta from the initial Compose pointer
+  press and route the existing selection reducer: Shift extends from the anchor,
+  Ctrl/Meta toggles, plain click replaces. A Final-pass release observer clears
+  canceled gestures, and Shift/Ctrl/Meta+Enter/Space plus TalkBack custom
+  actions expose the same modes. Modified key chords ignore auto-repeat, and
+  the TalkBack Add action no-ops on an already-selected row. Chart and table
+  share one selected set, inspector endpoint and mark overlay.
+- Added `TableSelectionTest`, which imports the real fixture, opens the product
+  worksheet, injects `MotionEvent` meta state, and verifies 1 → 3 (Shift range) →
+  4 (Ctrl add) → 3 (Ctrl toggle) → 1 (plain replace); it also exercises TalkBack
+  add/range custom actions and a canceled Ctrl-drag followed by an accessibility
+  replace and range, proving the anchor moved and no stale mode leaked. Keyboard
+  Enter/Space mapping compiles and ignores repeats but its row-focus path was
+  not separately exercised.
+- Emulator table-selection/keep-exclude/renderer/spec suite 27/27; JVM 32/32;
+  lint 0 errors/5 warnings. Corrected the keep/exclude evidence label from
+  CUST14 to CUST13 and refreshed the capability catalog. View Data is the next
+  ready CUST13 slice; drill still waits on an explicit hierarchy.

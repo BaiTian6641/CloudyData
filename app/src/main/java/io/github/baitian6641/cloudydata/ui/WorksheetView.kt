@@ -44,7 +44,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.changedToDown
+import androidx.compose.ui.input.pointer.isCtrlPressed
+import androidx.compose.ui.input.pointer.isMetaPressed
+import androidx.compose.ui.input.pointer.isShiftPressed
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed as keyIsCtrlPressed
+import androidx.compose.ui.input.key.isMetaPressed as keyIsMetaPressed
+import androidx.compose.ui.input.key.isShiftPressed as keyIsShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -321,7 +338,7 @@ fun WorksheetView(
                         result = current,
                         selectedRowIndex = selectedRowIndex,
                         selectedRowIndices = selectedRowIndices,
-                        onSelectRow = onSelectRow,
+                        onSelection = onSelection,
                         modifier = Modifier.weight(1f).fillMaxWidth(),
                     )
                 }
@@ -655,7 +672,7 @@ private fun ResultTable(
     result: WorksheetResult,
     selectedRowIndex: Int,
     selectedRowIndices: Set<Int>,
-    onSelectRow: (Int) -> Unit,
+    onSelection: (Int, SelectionMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalCloudyColors.current
@@ -701,13 +718,79 @@ private fun ResultTable(
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(engineResult.rows) { index, row ->
                 val isSelected = index in selectedRowIndices
+                var pendingMode by remember(index) { mutableStateOf(SelectionMode.REPLACE) }
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .heightIn(min = 32.dp)
                         .background(if (isSelected) colors.primaryContainer else Color.Transparent)
-                        .clickable { onSelectRow(index) }
-                        .semantics { selected = isSelected }
+                        .pointerInput(index) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    val event = awaitPointerEvent(PointerEventPass.Initial)
+                                    if (event.type == PointerEventType.Press &&
+                                        event.changes.any { it.changedToDown() }
+                                    ) {
+                                        pendingMode = when {
+                                            event.keyboardModifiers.isShiftPressed -> SelectionMode.RANGE
+                                            event.keyboardModifiers.isCtrlPressed ||
+                                                event.keyboardModifiers.isMetaPressed -> SelectionMode.TOGGLE
+                                            else -> SelectionMode.REPLACE
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .pointerInput(index) {
+                            // Final pass runs after clickable consumes the release. A
+                            // canceled drag, right-click or aborted press therefore
+                            // cannot leave a modifier mode for the next accessibility
+                            // or keyboard activation.
+                            awaitPointerEventScope {
+                                while (true) {
+                                    val event = awaitPointerEvent(PointerEventPass.Final)
+                                    if (event.type == PointerEventType.Release) {
+                                        pendingMode = SelectionMode.REPLACE
+                                    }
+                                }
+                            }
+                        }
+                        .onPreviewKeyEvent { event ->
+                            if (event.key != Key.Enter && event.key != Key.Spacebar) {
+                                return@onPreviewKeyEvent false
+                            }
+                            val mode = when {
+                                event.keyIsShiftPressed -> SelectionMode.RANGE
+                                event.keyIsCtrlPressed || event.keyIsMetaPressed -> SelectionMode.TOGGLE
+                                else -> return@onPreviewKeyEvent false
+                            }
+                            if (event.type == KeyEventType.KeyDown) {
+                                if (event.nativeKeyEvent.repeatCount == 0) {
+                                    onSelection(index, mode)
+                                    pendingMode = SelectionMode.REPLACE
+                                }
+                            }
+                            true
+                        }
+                        .clickable {
+                            onSelection(index, pendingMode)
+                            pendingMode = SelectionMode.REPLACE
+                        }
+                        .semantics {
+                            selected = isSelected
+                            customActions = listOf(
+                                CustomAccessibilityAction("Add row to selection") {
+                                    if (index !in selectedRowIndices) {
+                                        onSelection(index, SelectionMode.TOGGLE)
+                                    }
+                                    true
+                                },
+                                CustomAccessibilityAction("Select range to this row") {
+                                    onSelection(index, SelectionMode.RANGE)
+                                    true
+                                },
+                            )
+                        }
                         .horizontalScroll(horizontal)
                         .padding(horizontal = density.spaceSmall, vertical = 2.dp),
                     verticalAlignment = Alignment.CenterVertically,

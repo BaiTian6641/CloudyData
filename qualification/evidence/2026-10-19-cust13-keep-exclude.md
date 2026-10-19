@@ -1,7 +1,7 @@
-# CUST14 keep/exclude mark filter evidence
+# CUST13 keep/exclude mark filter evidence
 
 **Date:** 2026-10-19
-**Requirements:** CUST13/CUST14, F39, Q21
+**Requirements:** CUST13, F39, Q21
 **Platform:** API 37 userdebug `emulator-5582`, 2880×1800, 240 dpi.
 **Fixture:** `chart_line_series.csv`, 6 source rows, snapshot preserved.
 
@@ -49,8 +49,8 @@
 
 ## Evidence files
 
-- `artifacts/2026-10-19-cust14-keep-filter.png`
-- `artifacts/2026-10-19-cust14-exclude-filter.png`
-- `artifacts/2026-10-19-cust14-keep-filter-ui.xml`
-- `artifacts/2026-10-19-cust14-filter-reopen-ui.xml`
+- `artifacts/2026-10-19-cust13-keep-filter.png`
+- `artifacts/2026-10-19-cust13-exclude-filter.png`
+- `artifacts/2026-10-19-cust13-keep-filter-ui.xml`
+- `artifacts/2026-10-19-cust13-filter-reopen-ui.xml`
 - `android-test-results/2026-10-19/emulator-5582-keep-exclude-query-suite.txt`

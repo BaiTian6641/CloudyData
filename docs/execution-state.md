@@ -55,9 +55,10 @@ unless stated otherwise.
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (5 warnings). JVM: 32/32. Emulator renderer probe: 17/17;
   Vega spec builder: 4/4; keep/exclude query suite plus engine and line
-  regressions: 9/9. A three-device connected run still hits a
-  physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
-  device timeouts; the emulator suites are clean.
+  regressions: 9/9; table-selection plus keep/exclude/renderer/spec: 27/27. A
+  three-device connected run still hits a physical-Googlebook PNG export
+  assertion (`expected 803`, actual `804`) and device timeouts; the emulator
+  suites are clean.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
 - Physical 1M×12 import/query probe: 44.7 MB CSV, 9.3 MB Parquet, inspect 4.7 s,
@@ -81,7 +82,8 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s16-print-accessible.md`
 - `qualification/evidence/2026-10-18-cust13-additive-range.md`
 - `qualification/evidence/2026-10-19-cust13-mark-highlight.md`
-- `qualification/evidence/2026-10-19-cust14-keep-exclude.md`
+- `qualification/evidence/2026-10-19-cust13-keep-exclude.md`
+- `qualification/evidence/2026-10-19-cust13-table-selection.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -115,10 +117,16 @@ unless stated otherwise.
   verified visually on the emulator; the Line overlay is spec-tested. Keep and
   exclude operate on exact row/series identities through a persisted worksheet
   filter applied before aggregation; the source snapshot remains unchanged and
-  Clear restores the accepted result. Lasso/rectangle, drill, compound/global
-  filters, persisted selection, pointer hover, product auto-recovery,
-  focus/TalkBack traversal, live OS-window resize and memory limits remain
-  unverified. The native summary/table is the accessible equivalent.
+  Clear restores the accepted result. Native result-table modifier clicks now
+  use the same reducer and state as the chart: Shift ranges from the anchor,
+  Ctrl/Cmd toggles, plain activation replaces, and TalkBack custom actions add or
+  extend. A Final-pass release observer prevents canceled gestures from leaking
+  a mode into later activation; modified Enter/Space mapping is implemented but
+  its row-focus path is not separately exercised. Lasso/rectangle, drill,
+  View Data, compound/global filters, persisted selection, pointer hover,
+  product auto-recovery, focus/TalkBack traversal, live OS-window resize and
+  memory limits remain unverified. The native summary/table is the accessible
+  equivalent.
 - Product visual export is verified for a live worksheet: individual and frozen
   multi-format actions use real DocumentsUI/SAF destinations and provider-owned
   bytes. The frozen bundle produces basename/timestamp-matched SVG/PNG/PDF from
@@ -153,8 +161,8 @@ unless stated otherwise.
   The bundle PDF now includes a searchable A4 table and the product exposes a
   native Print worksheet flow; a real Save-as-PDF print produced a two-page,
   text-extractable PDF. PDF tagging, print-spooler completion, pointer hover,
-  remaining Q18 failures, drill/hierarchy, compound or cross-sheet filters,
-  persisted selection, TalkBack and live-window qualification remain.
+  remaining Q18 failures, drill/hierarchy, View Data, compound or cross-sheet
+  filters, persisted selection, TalkBack and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -166,19 +174,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST14 dimension hierarchy and drill, plus persisted mark selection.**
+**CUST13 View Data for selected marks.**
 
-- Files: `Workbook.kt`/format migration, field metadata, worksheet query grain,
-  `WorkbookViewModel`, selection state and tests.
-- Action: declare a minimal date/dimension hierarchy independent of the source
-  snapshot, persist the selected mark identities with the worksheet, and drill
-  from a selected mark to the next level while retaining parent context and the
-  existing filter.
-- Acceptance: reopen restores the exact selection and filter; drill changes the
-  row grain predictably without mutating data; stale selection or drill intents
-  are rejected; Clear resets the derived view.
-- Then: pointer hover, lasso, compound/cross-sheet filters, tagged PDF and
-  remaining Q18 injections.
+- Files: engine row-provenance query, `WorkbookViewModel`, worksheet/inspector
+  dialog, tests and evidence.
+- Action: from the exact selected mark identities, query the underlying source
+  rows without mutating the snapshot or treating the filtered aggregate result
+  as raw data; bound rows, expose typed exact values and clear selection/filter
+  context.
+- Acceptance: a selected aggregate mark opens the real source rows that compose
+  it; active keep/exclude context is honored; truncation and cancellation are
+  explicit; stale selection intents are rejected; keyboard and TalkBack can open
+  and close the result.
+- Then: drill once an explicit dimension hierarchy exists, lasso/rectangle, and
+  compound/cross-sheet filters. Persisted selection remains an explicit action,
+  not automatic, per the architecture boundary.
 
 ## Protected context
 
