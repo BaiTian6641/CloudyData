@@ -2,8 +2,7 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `1169778`; the lasso implementation is in the next
-local commit. Remote push not performed/authorized.
+**Source:** commits through `159c4b2`. Remote push not performed/authorized.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
