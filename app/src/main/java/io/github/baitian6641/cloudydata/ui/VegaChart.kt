@@ -55,10 +55,10 @@ import io.github.baitian6641.cloudydata.chart.ChartSpecBuilder
 import io.github.baitian6641.cloudydata.design.CloudyBadge
 import io.github.baitian6641.cloudydata.design.CloudyBadgeTone
 import io.github.baitian6641.cloudydata.design.CloudyTextButton
-import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
+import io.github.baitian6641.cloudydata.chart.categoryPaletteColors
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.SelectionMode
@@ -99,7 +99,7 @@ fun VegaChartCard(
     val hiddenSeries = spec?.hiddenSeries ?: options.hiddenSeries
     val specError = preview.exceptionOrNull()?.message
     val dark = colors.canvas.luminance() < 0.5f
-    val palette = if (dark) CloudyTokens.Chart.categoricalDark else CloudyTokens.Chart.categoricalLight
+    val palette = categoryPaletteColors(options.categoryPalette, dark)
     val hostRef = remember { AtomicReference<VegaRendererHost?>(null) }
     var hostSerial by remember { mutableIntStateOf(0) }
     var rendererReady by remember { mutableStateOf(false) }
@@ -403,6 +403,7 @@ fun VegaChartCard(
                         onSelectRow,
                         Modifier.fillMaxSize(),
                         title,
+                        palette,
                     )
                 }
             }

@@ -594,6 +594,45 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun colorblindPaletteEmitsAllEightExpectedColorsInBothThemes() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(palette: String, dark: Boolean): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "palette")
+                .putExtra(RendererProbeActivity.EXTRA_CATEGORY_PALETTE, palette)
+                .putExtra(RendererProbeActivity.EXTRA_DARK, dark)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("palette render did not complete", result != null)
+                assertNull(result!!.error)
+                assertTrue("expected eight line series", result.sceneMarks["line"] == 8)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("palette export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        fun assertColors(svg: String, colors: LongArray) {
+            colors.forEach { color ->
+                val hex = "#%06X".format(color and 0xFFFFFF)
+                assertTrue("export missing palette color $hex", svg.contains(hex))
+            }
+        }
+        val cloudy = render("CLOUDY", dark = false)
+        val colorblindLight = render("COLORBLIND", dark = false)
+        val colorblindDark = render("COLORBLIND", dark = true)
+        assertEquals(cloudy.result.markCount, colorblindLight.result.markCount)
+        assertEquals(cloudy.result.sceneMarks["symbol"], colorblindLight.result.sceneMarks["symbol"])
+        assertEquals(cloudy.result.sceneMarks["symbol"], colorblindDark.result.sceneMarks["symbol"])
+        assertFalse("palette change did not affect export", cloudy.svg == colorblindLight.svg)
+        assertColors(colorblindLight.svg, io.github.baitian6641.cloudydata.design.CloudyTokens.Chart.categoricalColorblindLight)
+        assertColors(colorblindDark.svg, io.github.baitian6641.cloudydata.design.CloudyTokens.Chart.categoricalColorblindDark)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

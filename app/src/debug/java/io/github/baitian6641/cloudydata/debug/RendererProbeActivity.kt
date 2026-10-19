@@ -86,6 +86,14 @@ class RendererProbeActivity : Activity() {
             )
         }.getOrDefault(io.github.baitian6641.cloudydata.model.CurrencyCode.USD)
     }
+    private val requestCategoryPalette by lazy {
+        runCatching {
+            io.github.baitian6641.cloudydata.model.CategoryPalette.valueOf(
+                intent.getStringExtra(EXTRA_CATEGORY_PALETTE)
+                    ?: io.github.baitian6641.cloudydata.model.CategoryPalette.CLOUDY.name,
+            )
+        }.getOrDefault(io.github.baitian6641.cloudydata.model.CategoryPalette.CLOUDY)
+    }
     private val requestLegendSample by lazy {
         runCatching {
             io.github.baitian6641.cloudydata.model.LegendMarkSample.valueOf(
@@ -473,7 +481,10 @@ class RendererProbeActivity : Activity() {
             host?.applyChartSpec(
                 spec = spec,
                 dark = requestDark,
-                palette = listOf(0x006A6A, 0x3559C7),
+                palette = io.github.baitian6641.cloudydata.chart.categoryPaletteColors(
+                    requestCategoryPalette,
+                    requestDark,
+                ).map { it.toInt() },
                 widthDp = widthDp,
                 heightDp = heightDp,
             )
@@ -602,6 +613,34 @@ class RendererProbeActivity : Activity() {
                 ),
             ),
             rowCount = 6,
+            truncated = false,
+        )
+        "palette" -> ChartSpec(
+            chartId = "probe-palette",
+            revision = 1,
+            kind = ChartKind.LINE,
+            title = "Eight category palette",
+            xAxis = AxisSpec("Month"),
+            yAxis = AxisSpec("Sales"),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(true, LegendPosition.RIGHT, "Series"),
+            labels = LabelSpec(false),
+            sourceNote = "Source: probe fixture",
+            series = (0 until 8).map { seriesIndex ->
+                ChartSeries(
+                    "Series ${seriesIndex + 1}",
+                    listOf(0, 1, 2).map { pointIndex ->
+                        point(
+                            "M${pointIndex + 1}",
+                            10.0 + pointIndex * 5.0 + seriesIndex,
+                            "Series ${seriesIndex + 1}",
+                            pointIndex,
+                            seriesIndex * 3 + pointIndex,
+                        )
+                    },
+                )
+            },
+            rowCount = 24,
             truncated = false,
         )
         "format" -> ChartSpec(
@@ -789,6 +828,7 @@ class RendererProbeActivity : Activity() {
     }
 
     private fun accessibleSummary(): String = when (probeKind) {
+        "palette" -> "Accessible summary: eight series across three months."
         "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."
         "format" -> "Accessible summary: A = 1234.567, B = 2000.0."
@@ -841,6 +881,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_LEGEND_SAMPLE = "legend_sample"
         const val EXTRA_VALUE_FORMAT = "value_format"
         const val EXTRA_CURRENCY_CODE = "currency_code"
+        const val EXTRA_CATEGORY_PALETTE = "category_palette"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

@@ -96,6 +96,9 @@ def render(data: dict) -> str:
         palette = ", ".join(hex(color_long(v)) for v in chart["categorical"][theme])
         add(f"        val categorical{theme.capitalize()} = longArrayOf({palette})")
     for theme in ("light", "dark"):
+        palette = ", ".join(hex(color_long(v)) for v in chart["categoricalColorblind"][theme])
+        add(f"        val categoricalColorblind{theme.capitalize()} = longArrayOf({palette})")
+    for theme in ("light", "dark"):
         palette = ", ".join(hex(color_long(v)) for v in chart["sequential"][theme])
         add(f"        val sequential{theme.capitalize()} = longArrayOf({palette})")
     for theme in ("light", "dark"):

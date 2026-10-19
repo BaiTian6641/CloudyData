@@ -791,3 +791,19 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 12/12, TableSelectionTest 5/5,
   VegaSpecBuilderTest 18/18; lint 0 errors/5 warnings. Googlebook untouched;
   no Compose/table visual check.
+
+## 2026-10-19 — CUST07 categorical palette
+
+- Added computed color-blind-tested categorical palettes (light/dark) to the
+  provisional token source and generator. CategoryPalette CLOUDY/COLORBLIND is
+  persisted, selects the Vega/native palette, and falls back to CLOUDY on invalid
+  data. Review-driven rework replaced colliding hand-picked hues with candidates
+  checked pairwise under Machado protan/deutan/tritan simulation, removed the
+  native label-hash mapping in favor of first-appearance cycling, and made the
+  render probe assert all eight light/dark hexes.
+- Emulator-first validation: JVM 67/67 (mapping, contrast and simulated CVD
+  distance), token generator --check current, declared contrast 40/40;
+  emulator-5580 API36 x86_64 VegaSpecBuilderTest 18/18,
+  ChartSettingsPersistenceTest 12/12, eight-series palette render 1/1 in both
+  themes; lint 0 errors/5 warnings. Googlebook untouched; visual/user CVD/export
+  checks absent.

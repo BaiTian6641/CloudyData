@@ -40,6 +40,7 @@ import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.TableDividerContrast
+import io.github.baitian6641.cloudydata.model.CategoryPalette
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
@@ -87,6 +88,8 @@ fun ChartSettingsDialog(
     var valueFormatExpanded by remember { mutableStateOf(false) }
     var currencyCode by remember { mutableStateOf(current.currencyCode) }
     var currencyExpanded by remember { mutableStateOf(false) }
+    var categoryPalette by remember { mutableStateOf(current.categoryPalette) }
+    var categoryPaletteExpanded by remember { mutableStateOf(false) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -955,6 +958,45 @@ fun ChartSettingsDialog(
                         }
                     }
                 }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Categorical palette", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                        Text(
+                            if (categoryPalette == CategoryPalette.COLORBLIND) {
+                                "Colors checked for common color-vision deficiencies"
+                            } else {
+                                "Cloudy categorical colors"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.textSecondary,
+                        )
+                    }
+                    TextButton(onClick = { categoryPaletteExpanded = true }) {
+                        Text(
+                            categoryPalette.name.lowercase().replaceFirstChar { it.uppercase() },
+                            color = colors.primary,
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = categoryPaletteExpanded,
+                        onDismissRequest = { categoryPaletteExpanded = false },
+                    ) {
+                        CategoryPalette.entries.forEach { palette ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        palette.name.lowercase()
+                                            .replaceFirstChar { it.uppercase() },
+                                    )
+                                },
+                                onClick = {
+                                    categoryPalette = palette
+                                    categoryPaletteExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
@@ -991,6 +1033,7 @@ fun ChartSettingsDialog(
                             } else {
                                 LegendMarkSample.MARKER
                             },
+                            categoryPalette = categoryPalette,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

@@ -296,7 +296,7 @@ features:
     status: partial
     tests: []
     evidence: []
-    note: "Table and provisional bar marks consume a typed result; color is automatic and stable only by label hash. Color/size/shape/label/tooltip/detail/path channels and layers are absent."
+    note: "Table and provisional bar marks consume a typed result; color follows first-appearance order and offers Cloudy/color-blind-tested categorical palettes. Color/size/shape/label/tooltip/detail/path channels and layers are absent."
   - id: F33
     family: "Facets and drilling"
     outcome: "Multiple row/column dimensions, panes, nested headers, hierarchy expand/collapse and small multiples preserve context."

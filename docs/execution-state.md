@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `54c2308`. `main` tracks `origin/main`; the table
-header-divider stage is pushed.
+**Source:** commits through `8eec9d2`; the categorical-palette change is in the
+next local commit. `main` tracks `origin/main` at the pushed header-divider
+baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +55,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **65/65**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **67/67**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -128,6 +129,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust06-currency-display.md`
 - `qualification/evidence/2026-10-19-cust08-marker-border.md`
 - `qualification/evidence/2026-10-19-cust04-table-header-divider.md`
+- `qualification/evidence/2026-10-19-cust07-categorical-palette.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -254,6 +256,10 @@ unless stated otherwise.
   table-selection pass; visual alignment/contrast checks were not run.
 - **Table header divider.** Persisted header-rule toggle defaults on and shares
   width/contrast; persistence/table-selection pass; visual checks were not run.
+- **Categorical palette.** Generated Cloudy/color-blind-tested palettes with a
+  shared resolver, first-appearance cycle mapping, persisted selection, token
+  generator/contrast checks, simulated CVD distance tests and a two-theme
+  eight-series emulator render; visual/user CVD checks were not run.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -271,7 +277,7 @@ unless stated otherwise.
   only the native interrupt and query-generation invalidation code exist.
 - Save mutex prevents an older save from replacing newer state in the same
   process; cross-window/conflict behavior is not implemented or tested.
-- The chart's label-hash category colors are stable only for unchanged labels;
+- The chart's first-appearance category colors can change when result order or filters change;
   no persisted palette map exists.
 - Renderer death/recreation/replay, generation retirement, recovery exhaustion,
   stale completion/failure rejection and two exact renderer surface sizes are
@@ -350,19 +356,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST07 persisted categorical palette.**
+**CUST08 color-series bars with stacked mode.**
 
-- Requirements/stage: CUST07, F36/F38, Q21, S11. Prerequisites: generated token
-  palette, series/category color lowering, legend and emulator renderer probes.
-- Files: `design-system/tokens.json`, generated `CloudyTokens`, `ChartOptions`,
-  `ChartSpec`, builders, `VegaChart`, `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded CLOUDY/COLORBLIND categorical palette choice using
-  generated tokens, defaulting to the current Cloudy palette and keeping the
-  existing stable label-to-color mapping within a palette.
-- Acceptance: default output unchanged; palette persists and affects only mark/
-  legend colors, not data/selection; invalid values fall back to Cloudy; token
-  generation and contrast checks pass. Emulator spec/render checks required;
-  visual review remains unverified.
+- Requirements/stage: CUST08, S02/S03, F36/F38, Q21. Prerequisites: bar/line
+  color-series query semantics, stable palette, legend, exact source-row
+  selection and typed chart specs.
+- Files: semantic query result/grouping, `WorksheetDef` series validation,
+  `ChartSpecBuilder`, Vega bar lowering, legend, selection/hit targets, tests.
+- Action: allow the Color field on Bar marks and add a persisted NONE/STACKED
+  mode. NONE preserves current single-series bars; STACKED groups by X plus
+  color series and lowers stacked rect segments with a color legend.
+- Acceptance: default bar output unchanged; stacked sums remain exact,
+  category/series order and source-row selection stay coherent; invalid/missing
+  modes fall back to NONE; no implicit filters or SQL-runner logic in renderer.
+  Emulator query/spec/render/selection checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, palette, interpolation, dash, opacity, legend-sample and table visuals

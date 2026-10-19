@@ -136,7 +136,7 @@ customization:
     area: Color and palette
     controls: [categorical, sequential, diverging, custom, opacity, stable_category_key, missing_pattern]
     status: partial
-    note: Auto categorical hash mapping; no custom/sequential/diverging controls or persisted mapping.
+    note: Cloudy and generated color-blind-tested categorical palettes with first-appearance cycle mapping shared by preview and fallback; no custom/single-color, sequential/diverging controls or persisted per-category mapping.
   - id: CUST08
     area: Marks and lines
     controls: [size, shape, line_width, line_style, interpolation, markers, opacity, border, stacking]

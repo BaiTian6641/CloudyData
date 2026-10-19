@@ -21,6 +21,9 @@ and the x86_64 API 37 emulator, the debug app can:
 - add an optional Color series to a line, with persisted chart/axis/legend
   titles, Y range, zero/log/reverse, gridlines, value labels and a right/bottom
   legend;
+- switch categorical colors between the Cloudy palette and a palette checked for
+  common color-vision deficiencies, with deterministic category mapping and a
+  persisted per-worksheet choice;
 - inspect exact values, formatted values and the generated SQL;
 - save workbook metadata atomically and reopen the workbook;
 - use a native command palette (Ctrl+Shift+P), Ctrl+S, and bounded undo/redo;

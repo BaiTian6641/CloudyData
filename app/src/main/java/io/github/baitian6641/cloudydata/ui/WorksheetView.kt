@@ -43,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.changedToDown
@@ -572,6 +571,7 @@ internal fun NativeBarChartCard(
     onSelectRow: (Int) -> Unit,
     modifier: Modifier = Modifier,
     title: String = chartTitle(result),
+    palette: LongArray,
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
@@ -581,8 +581,6 @@ internal fun NativeBarChartCard(
     val labelColumn = if (result.rowField != null) 0 else null
     val numeric = rows.mapNotNull { row -> valueAsDouble(row.getOrNull(valueColumn)) }
     val hasNegative = numeric.any { it < 0.0 }
-    val dark = colors.canvas.luminance() < 0.5f
-    val palette = if (dark) CloudyTokens.Chart.categoricalDark else CloudyTokens.Chart.categoricalLight
     val visible = rows.take(MAX_CHART_BARS)
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
@@ -645,17 +643,19 @@ internal fun NativeBarChartCard(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.widthIn(max = 140.dp).weight(0.35f),
                     )
+                    // Plot track uses canvas: it is the actual backdrop for the
+                    // chart marks, whose palette is checked for 3:1 against it.
                     Box(
                         Modifier
                             .weight(0.5f)
                             .height(14.dp)
-                            .background(colors.surfaceMuted),
+                            .background(colors.canvas),
                     ) {
                         Box(
                             Modifier
                                 .fillMaxHeight()
                                 .fillMaxWidth(fraction)
-                                .background(Color(palette[stableColorIndex(label, palette.size)])),
+                                .background(Color(palette[index % palette.size])),
                         )
                     }
                     Spacer(Modifier.width(density.spaceSmall))
@@ -843,12 +843,6 @@ private fun ResultTable(
             }
         }
     }
-}
-
-/** Stable by category label rather than sort position; the workbook does not yet persist a palette-version map. */
-private fun stableColorIndex(label: String, paletteSize: Int): Int {
-    val hash = label.hashCode()
-    return ((hash % paletteSize) + paletteSize) % paletteSize
 }
 
 private fun tableColumnWidth(index: Int, count: Int) = if (count <= 2) {

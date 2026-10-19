@@ -13,6 +13,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
+import io.github.baitian6641.cloudydata.model.CategoryPalette
 import io.github.baitian6641.cloudydata.model.CurrencyCode
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
@@ -105,6 +106,7 @@ class ChartSettingsPersistenceTest {
                             lineDashStyle = LineDashStyle.DASHED,
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
+                            categoryPalette = CategoryPalette.COLORBLIND,
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -165,6 +167,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(LineDashStyle.DASHED, reopenedSheet.chart.lineDashStyle)
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
+        assertEquals(CategoryPalette.COLORBLIND, reopenedSheet.chart.categoryPalette)
         assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(true, reopenedSheet.chart.markerBorder)
         assertEquals(2.0, reopenedSheet.chart.markerBorderWidth!!, 0.0)
@@ -306,6 +309,16 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             LegendMarkSample.LINE,
             ChartOptions.fromJson(JSONObject().put("legendMarkSample", "LINE")).legendMarkSample,
+        )
+        assertEquals(
+            CategoryPalette.CLOUDY,
+            ChartOptions.fromJson(JSONObject().put("categoryPalette", "NOT_A_PALETTE"))
+                .categoryPalette,
+        )
+        assertEquals(
+            CategoryPalette.COLORBLIND,
+            ChartOptions.fromJson(JSONObject().put("categoryPalette", "COLORBLIND"))
+                .categoryPalette,
         )
         assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerOpacity", 0.0)).markerOpacity)
         assertEquals(false, ChartOptions.fromJson(JSONObject()).markerBorder)
