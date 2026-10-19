@@ -69,11 +69,12 @@ fun VegaChartCard(
     modifier: Modifier = Modifier,
     chartId: String = "worksheet-chart",
     title: String = chartTitle(result),
+    sourceNote: String? = null,
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
-    val preview = remember(result, options, chartId, title) {
-        runCatching { ChartSpecBuilder.build(chartId, 0, result, options, title) }
+    val preview = remember(result, options, chartId, title, sourceNote) {
+        runCatching { ChartSpecBuilder.build(chartId, 0, result, options, title, sourceNote) }
     }
     val spec = preview.getOrNull()
     val specError = preview.exceptionOrNull()?.message
@@ -345,14 +346,16 @@ fun VegaChartCard(
             color = colors.textSecondary,
             maxLines = 2,
         )
-        exportStatus?.let { status ->
-            Text(
-                status,
-                style = MaterialTheme.typography.labelSmall,
-                color = if (status.startsWith("Export failed")) colors.warning else colors.textSecondary,
-                maxLines = 2,
-            )
-        }
+        // Reserve one line so showing export feedback never resizes the chart
+        // between SVG/PNG/PDF exports.
+        Text(
+            exportStatus ?: " ",
+            style = MaterialTheme.typography.labelSmall,
+            color = if (exportStatus?.startsWith("Export failed") == true) colors.warning else colors.textSecondary,
+            minLines = 1,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 
     DisposableEffect(retryToken) {
@@ -368,6 +371,7 @@ fun VegaChartCard(
         viewSize,
         spec,
         options,
+        sourceNote,
     ) {
         if (!rendererReady || spec == null || viewSize.width < 32 || viewSize.height < 32) return@LaunchedEffect
         rendered = false
@@ -375,7 +379,7 @@ fun VegaChartCard(
         val heightDp = with(localDensity) { viewSize.height.toDp().value }
         requestRevision++
         val built = runCatching {
-            ChartSpecBuilder.build(chartId, requestRevision.toLong(), result, options, title)
+            ChartSpecBuilder.build(chartId, requestRevision.toLong(), result, options, title, sourceNote)
         }.getOrElse {
             rendererError = "spec_rejected: ${it.message}"
             return@LaunchedEffect

@@ -249,3 +249,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Confirmed UI success statuses and no script/remote references. Q18/Q24 remain
   partial: failure injection, one frozen multi-format output, embedded
   title/provenance and print are outstanding.
+
+## 2026-10-18 — titled/provenance visual export
+
+- Added bounded source notes to `ChartSpec`, sent title/source/theme to the
+  renderer, and wrapped SVG exports with a 56 px title/provenance header that
+  PNG/PDF inherit.
+- Real product SVG/PNG/PDF exports matched at 1705×318 (SVG intrinsic
+  1704.67×318.33) and visibly included `Observed sales` and
+  `Source: chart_line_series.csv · 6 rows · snapshot 5fbbe640`.
+- PDF remains raster-only; separate export actions and Q18 failure injection
+  remain. API37 suite 39/39; JVM 24/24; lint 0/5.

@@ -142,7 +142,16 @@ save/open, print and pixel comparison remain pending; CUST14 is partial.
 The worksheet's SVG/PNG/PDF actions were exercised through the real
 DocumentsUI CreateDocument picker on the API 37 device profile. Provider files
 were pulled and independently parsed; the second save was auto-renamed by the
-provider. This verifies the product completion path, not Q24's single frozen
-multi-format operation: title/provenance are not yet embedded, and layout can
-shift between separate exports. Evidence:
+provider. This verifies the product SaveDocument write path. A subsequent titled-export
+increment embeds the chart title and source/snapshot note in a standalone header
+and derives PNG/PDF from that scene; a real product run produced matching
+1705×318 PNG/PDF outputs. It is still not Q24's single frozen multi-format
+transaction, and the PDF remains a raster image without a text layer. Evidence:
 `qualification/evidence/2026-10-18-s16-product-export.md`.
+
+### Titled export addendum
+
+`ChartSpec.sourceNote` carries the snapshot display name, row count and truncated
+snapshot ID. The renderer wraps exports in a background/header/nested-chart SVG;
+PNG and native PDF inherit it. Evidence:
+`qualification/evidence/2026-10-18-s16-titled-export.md`.

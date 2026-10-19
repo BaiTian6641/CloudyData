@@ -7,7 +7,10 @@
     activeChartId: null,
     activeRevision: null,
     selectedRow: -1,
-    tooltipEnabled: true
+    tooltipEnabled: true,
+    exportTitle: '',
+    exportSource: '',
+    exportDark: false
   };
 
   function post(message) {
@@ -182,14 +185,111 @@
     });
   }
 
+  function fitExportText(node, text, maxWidth, fallbackCharWidth) {
+    node.textContent = text;
+    var measured = typeof node.getComputedTextLength === 'function'
+      ? node.getComputedTextLength()
+      : 0;
+    if (measured > 0 && measured <= maxWidth) return;
+    if (measured > 0) {
+      var low = 0;
+      var high = text.length;
+      while (low < high) {
+        var mid = Math.ceil((low + high) / 2);
+        node.textContent = text.slice(0, mid) + '\u2026';
+        if (node.getComputedTextLength() <= maxWidth) low = mid;
+        else high = mid - 1;
+      }
+      node.textContent = text.slice(0, low) + '\u2026';
+      return;
+    }
+    var chars = Math.max(1, Math.floor(maxWidth / fallbackCharWidth));
+    node.textContent = text.length > chars ? text.slice(0, chars - 1) + '\u2026' : text;
+  }
+
   function currentSvgMarkup() {
     if (!state.view) return null;
     var svg = document.querySelector('#view svg');
     if (!svg) return null;
-    var clone = svg.cloneNode(true);
-    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    return new XMLSerializer().serializeToString(clone);
+    var width = Number(svg.getAttribute('width'));
+    var height = Number(svg.getAttribute('height'));
+    var viewBox = svg.getAttribute('viewBox');
+    if ((!isFinite(width) || width <= 0 || !isFinite(height) || height <= 0) && viewBox) {
+      var parts = viewBox.trim().split(/\s+/).map(Number);
+      if (parts.length === 4) {
+        width = parts[2];
+        height = parts[3];
+      }
+    }
+    var title = String(state.exportTitle || '').trim();
+    var source = String(state.exportSource || '').trim();
+    if (!isFinite(width) || width <= 0 || !isFinite(height) || height <= 0) {
+      var raw = svg.cloneNode(true);
+      raw.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      raw.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+      return new XMLSerializer().serializeToString(raw);
+    }
+    var header = (title || source) ? 56 : 0;
+    var ns = 'http://www.w3.org/2000/svg';
+    var outer = document.createElementNS(ns, 'svg');
+    outer.setAttribute('xmlns', ns);
+    outer.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    outer.setAttribute('width', String(width));
+    outer.setAttribute('height', String(height + header));
+    outer.setAttribute('viewBox', '0 0 ' + width + ' ' + (height + header));
+    var titleNode = null;
+    var sourceNode = null;
+    var background = document.createElementNS(ns, 'rect');
+    background.setAttribute('x', '0');
+    background.setAttribute('y', '0');
+    background.setAttribute('width', String(width));
+    background.setAttribute('height', String(height + header));
+    background.setAttribute('fill', state.exportDark ? '#182427' : '#FFFFFF');
+    outer.appendChild(background);
+    if (title) {
+      titleNode = document.createElementNS(ns, 'text');
+      titleNode.setAttribute('x', '16');
+      titleNode.setAttribute('y', '28');
+      titleNode.setAttribute('font-family', 'system-ui, sans-serif');
+      titleNode.setAttribute('font-size', '16');
+      titleNode.setAttribute('font-weight', '600');
+      titleNode.setAttribute('fill', state.exportDark ? '#E1EBED' : '#182427');
+      outer.appendChild(titleNode);
+    }
+    if (source) {
+      sourceNode = document.createElementNS(ns, 'text');
+      sourceNode.setAttribute('x', '16');
+      sourceNode.setAttribute('y', '46');
+      sourceNode.setAttribute('font-family', 'system-ui, sans-serif');
+      sourceNode.setAttribute('font-size', '11');
+      sourceNode.setAttribute('fill', state.exportDark ? '#A9BDC2' : '#4C6066');
+      outer.appendChild(sourceNode);
+    }
+    if (titleNode || sourceNode) {
+      var measureHost = document.createElement('div');
+      measureHost.style.position = 'fixed';
+      measureHost.style.left = '-100000px';
+      measureHost.style.top = '0';
+      measureHost.style.visibility = 'hidden';
+      measureHost.style.pointerEvents = 'none';
+      measureHost.appendChild(outer);
+      document.body.appendChild(measureHost);
+      try {
+        if (titleNode) fitExportText(titleNode, title, Math.max(1, width - 32), 9);
+        if (sourceNode) fitExportText(sourceNode, source, Math.max(1, width - 32), 6);
+      } finally {
+        measureHost.removeChild(outer);
+        measureHost.remove();
+      }
+    }
+    var nested = svg.cloneNode(true);
+    nested.setAttribute('x', '0');
+    nested.setAttribute('y', String(header));
+    nested.setAttribute('width', String(width));
+    nested.setAttribute('height', String(height));
+    if (!nested.getAttribute('viewBox')) nested.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+    outer.appendChild(nested);
+    return new XMLSerializer().serializeToString(outer);
   }
 
   function exportSvg() {
@@ -295,6 +395,9 @@
       state.activeRevision = revision;
       state.selectedRow = -1;
       state.tooltipEnabled = !(message.spec.usermeta && message.spec.usermeta.tooltip === false);
+      state.exportTitle = typeof message.title === 'string' ? message.title : '';
+      state.exportSource = typeof message.sourceNote === 'string' ? message.sourceNote : '';
+      state.exportDark = message.dark === true;
       hideTooltip();
       var runtime = vega.parse(message.spec, null, { ast: true });
       var view = new vega.View(runtime, {

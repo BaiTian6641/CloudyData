@@ -113,10 +113,12 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
   exhaustion, stale completion/failure rejection and exact surface/view sizes
   are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths
   a bounded exact-value tooltip plus bounded SVG, PNG and one-page PDF export are
-  implemented and the real product SaveDocument save/write path is verified; product reopening remains unverified;
-  frozen multi-format output with embedded title/provenance, pointer-hover
-  qualification, print, additive/range selection, product auto-recovery, live
-  OS-window resize, TalkBack and the full chart catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
+  implemented and the real product SaveDocument save/write path is verified;
+  exported scenes now carry title/source provenance and matching dimensions.
+  Product reopening, one frozen multi-format transaction, accessible/rasterized
+  PDF labeling, pointer-hover qualification, print, additive/range selection,
+  product auto-recovery, live OS-window resize, TalkBack and the full chart
+  catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
   million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.

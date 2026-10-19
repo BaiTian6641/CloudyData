@@ -62,6 +62,7 @@ data class ChartSpec(
     val gridlines: GridlineSpec,
     val legend: LegendSpec,
     val labels: LabelSpec,
+    val sourceNote: String? = null,
     val tooltip: TooltipSpec = TooltipSpec(true),
     val series: List<ChartSeries>,
     val rowCount: Int,

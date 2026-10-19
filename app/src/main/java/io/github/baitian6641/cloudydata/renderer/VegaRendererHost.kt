@@ -234,6 +234,9 @@ class VegaRendererHost(
             .put("type", "ApplyChartSpec")
             .put("chartId", request.spec.chartId)
             .put("revision", request.spec.revision)
+            .put("title", capText(request.spec.title, 160))
+            .put("sourceNote", capText(request.spec.sourceNote ?: "", 240))
+            .put("dark", request.dark)
             .put("specVersion", request.spec.version)
             .put("spec", specJson)
         if (message.toString().length > MAX_SPEC_CHARS) {
@@ -420,6 +423,9 @@ class VegaRendererHost(
             else -> listener.onRendererError("unsupported_message", "Unsupported renderer message type.")
         }
     }
+
+    private fun capText(value: String, max: Int): String =
+        if (value.length <= max) value else value.take(max - 1) + "…"
 
     private fun pngDimension(bytes: ByteArray, offset: Int): Int =
         ((bytes[offset].toInt() and 0xFF) shl 24) or

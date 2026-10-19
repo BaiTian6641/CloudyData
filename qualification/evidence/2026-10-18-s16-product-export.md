@@ -31,7 +31,7 @@ worksheet.
 | Save status | Product UI showed `Exported SVG (8972 bytes).`, `Exported PNG (23637 bytes).`, `Exported PDF (16479 bytes).` |
 | Second save | Provider auto-renamed to `cloudy-chart (1).svg`; app status `Exported SVG (8990 bytes).` |
 | Offline boundary | Export used the packaged renderer and local provider flow; no network dependency observed. |
-| Regression suite | Full instrumentation on API 37 after the exports: **38/38**, 0 failures (`emulator-5582-api37-full-suite.txt`). |
+| Regression suite | Full instrumentation on API 37 at that check: **38/38**, 0 failures (`emulator-5582-api37-full-suite.txt`). |
 
 The product files are copied under `qualification/evidence/artifacts/` as
 `2026-10-18-product-export.*`. The screen/picker/UI evidence is bound in

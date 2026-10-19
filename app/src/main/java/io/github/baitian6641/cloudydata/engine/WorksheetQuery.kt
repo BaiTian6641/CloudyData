@@ -14,6 +14,7 @@ data class WorksheetResult(
     val aggregation: Aggregation,
     val markType: MarkType,
     val sql: String,
+    val sourceNote: String? = null,
 ) {
     /** A series column exists only in the multi-series line query shape. */
     val hasSeriesColumn: Boolean
@@ -77,6 +78,8 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
             aggregation = sheet.aggregation,
             markType = sheet.markType,
             sql = sql,
+            sourceNote = "Source: ${snapshot.displayName} · ${snapshot.rowCount} rows · " +
+                "snapshot ${snapshot.id.take(8)}",
         )
     }
 

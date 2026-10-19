@@ -23,6 +23,7 @@ object ChartSpecBuilder {
         result: WorksheetResult,
         options: ChartOptions,
         derivedTitle: String,
+        sourceNote: String? = null,
     ): ChartSpec {
         require(chartId.length in 1..128) { "invalid chart id" }
         require(revision >= 0) { "invalid revision" }
@@ -37,13 +38,15 @@ object ChartSpecBuilder {
                 chartId, revision, result, options, derivedTitle,
                 kind = ChartKind.LINE,
                 allowSeries = true,
+                sourceNote = sourceNote,
             )
             MarkType.AREA -> buildTimeSeries(
                 chartId, revision, result, options, derivedTitle,
                 kind = ChartKind.AREA,
                 allowSeries = false,
+                sourceNote = sourceNote,
             )
-            else -> buildBar(chartId, revision, result, options, derivedTitle)
+            else -> buildBar(chartId, revision, result, options, derivedTitle, sourceNote)
         }
     }
 
@@ -53,6 +56,7 @@ object ChartSpecBuilder {
         result: WorksheetResult,
         options: ChartOptions,
         derivedTitle: String,
+        sourceNote: String? = null,
     ): ChartSpec {
         if (result.seriesField != null) {
             throw ChartSpecException("Color series is only available for Line marks in this build.")
@@ -103,6 +107,7 @@ object ChartSpecBuilder {
             // bar semantics exist; the legend control applies to line series.
             legend = LegendSpec(false, options.legendPosition, null),
             labels = LabelSpec(options.showValueLabels),
+            sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = listOf(ChartSeries("Values", points)),
             rowCount = rows.size,
@@ -118,6 +123,7 @@ object ChartSpecBuilder {
         derivedTitle: String,
         kind: ChartKind,
         allowSeries: Boolean,
+        sourceNote: String?,
     ): ChartSpec {
         val label = if (kind == ChartKind.AREA) "Area" else "Line"
         if (kind == ChartKind.AREA && options.logScale) {
@@ -205,6 +211,7 @@ object ChartSpecBuilder {
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
             ),
             labels = LabelSpec(options.showValueLabels),
+            sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
             rowCount = result.result.rows.size,

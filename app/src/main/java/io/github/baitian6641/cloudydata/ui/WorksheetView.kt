@@ -229,6 +229,7 @@ fun WorksheetView(
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
                         chartId = "sheet-${sheet.id}",
                         title = sheet.chart.title?.takeIf { it.isNotBlank() } ?: chartTitle(current),
+                        sourceNote = current.sourceNote,
                     )
                     CloudyDivider()
                 }

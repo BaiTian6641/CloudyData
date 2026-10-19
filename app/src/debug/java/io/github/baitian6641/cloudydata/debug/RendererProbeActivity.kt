@@ -44,6 +44,8 @@ class RendererProbeActivity : Activity() {
     private var lastAppliedWidth = -1f
     private var lastAppliedHeight = -1f
     private val probeKind: String by lazy { intent.getStringExtra(EXTRA_PROBE_KIND) ?: "bar" }
+    private val exportTitle: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_TITLE) }
+    private val exportSource: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_SOURCE) }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
     }
@@ -54,7 +56,11 @@ class RendererProbeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         RendererProbeState.reset()
-        currentSpec = buildSpec()
+        val baseSpec = buildSpec()
+        currentSpec = baseSpec.copy(
+            title = exportTitle ?: baseSpec.title,
+            sourceNote = exportSource ?: baseSpec.sourceNote,
+        )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.rgb(244, 247, 247))
@@ -402,6 +408,7 @@ class RendererProbeActivity : Activity() {
             gridlines = GridlineSpec(true),
             legend = LegendSpec(true, LegendPosition.RIGHT, "Region"),
             labels = LabelSpec(true),
+            sourceNote = "Source: probe fixture",
             series = listOf(
                 ChartSeries(
                     "North",
@@ -433,6 +440,7 @@ class RendererProbeActivity : Activity() {
             gridlines = GridlineSpec(true),
             legend = LegendSpec(false, LegendPosition.RIGHT, null),
             labels = LabelSpec(true),
+            sourceNote = "Source: probe fixture",
             series = listOf(
                 ChartSeries(
                     "Values",
@@ -457,6 +465,7 @@ class RendererProbeActivity : Activity() {
             gridlines = GridlineSpec(true),
             legend = LegendSpec(true, LegendPosition.BOTTOM, "Region"),
             labels = LabelSpec(false),
+            sourceNote = "Source: probe fixture",
             series = listOf(
                 ChartSeries(
                     "Values",
@@ -499,6 +508,8 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_PROBE_KIND = "probe_kind"
         const val EXTRA_VIEW_WIDTH_DP = "view_width_dp"
         const val EXTRA_VIEW_HEIGHT_DP = "view_height_dp"
+        const val EXTRA_EXPORT_TITLE = "export_title"
+        const val EXTRA_EXPORT_SOURCE = "export_source"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

@@ -1,0 +1,22 @@
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 22:47 /sdcard/Download/cloudy-chart (6).pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 22:47 /sdcard/Download/cloudy-chart (6).png
+-rw-rw---- 1 u0_a211 media_rw  9512 2026-10-18 22:47 /sdcard/Download/cloudy-chart (7).svg
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 22:37 /sdcard/Download/cloudy-chart (5).pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 22:37 /sdcard/Download/cloudy-chart (5).png
+-rw-rw---- 1 u0_a211 media_rw  9512 2026-10-18 22:37 /sdcard/Download/cloudy-chart (6).svg
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 22:35 /sdcard/Download/cloudy-chart (4).pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 22:35 /sdcard/Download/cloudy-chart (4).png
+-rw-rw---- 1 u0_a211 media_rw  9512 2026-10-18 22:35 /sdcard/Download/cloudy-chart (5).svg
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 22:24 /sdcard/Download/cloudy-chart (3).pdf
+-rw-rw---- 1 u0_a211 media_rw 34810 2026-10-18 22:24 /sdcard/Download/cloudy-chart (3).png
+-rw-rw---- 1 u0_a211 media_rw  9512 2026-10-18 22:23 /sdcard/Download/cloudy-chart (4).svg
+-rw-rw---- 1 u0_a211 media_rw 16119 2026-10-18 22:23 /sdcard/Download/cloudy-chart (2).pdf
+-rw-rw---- 1 u0_a211 media_rw 34658 2026-10-18 22:22 /sdcard/Download/cloudy-chart (2).png
+-rw-rw---- 1 u0_a211 media_rw  9494 2026-10-18 22:21 /sdcard/Download/cloudy-chart (3).svg
+-rw-rw---- 1 u0_a211 media_rw 16536 2026-10-18 22:13 /sdcard/Download/cloudy-chart (1).pdf
+-rw-rw---- 1 u0_a211 media_rw 34658 2026-10-18 22:13 /sdcard/Download/cloudy-chart (1).png
+-rw-rw---- 1 u0_a211 media_rw  9502 2026-10-18 22:12 /sdcard/Download/cloudy-chart (2).svg
+-rw-rw---- 1 u0_a211 media_rw  8990 2026-10-18 22:02 /sdcard/Download/cloudy-chart (1).svg
+-rw-rw---- 1 u0_a211 media_rw 16479 2026-10-18 22:01 /sdcard/Download/cloudy-chart.pdf
+-rw-rw---- 1 u0_a211 media_rw 23637 2026-10-18 22:01 /sdcard/Download/cloudy-chart.png
+-rw-rw---- 1 u0_a211 media_rw  8972 2026-10-18 22:00 /sdcard/Download/cloudy-chart.svg

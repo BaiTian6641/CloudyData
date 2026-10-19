@@ -1,5 +1,5 @@
-8eee1a4505aa8acc9280727bb7ef93d10d427a9b814d01fe6bfa9daf17b1e79b  app/build/outputs/apk/debug/app-debug.apk
-f49ce5acffd76a3dacb5373b8d5f47b166f90ae5ec0011a277a5068b9efe6e20  app/src/main/assets/renderer/host.js
+4ef39050eb6bec59752b63ca96cbcf0fb1fe81da06d1f6236c15de0dfc671cd2  app/build/outputs/apk/debug/app-debug.apk
+f3bd1c8805c6f940d55bb23f187a1a0de964875347d60a3c75c10c020deb69b0  app/src/main/assets/renderer/host.js
 560957620bf931d20649b3afd22e1934f2a9cd31cbd85b316c2bffecafedae0b  app/src/main/assets/renderer/index.html
 e9b1f19c647fd8de6af562050b27ab945c3a4f542b949edd45f57eb6fc2d3bf8  app/src/main/assets/renderer/renderer.css
 ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
@@ -61,6 +61,16 @@ a380cc4cd036874125a3ae257251d6abc9c33c2f835e6a9957f5b0a4e18aeefb  qualification/
 325203fa4e25f6a04f50d9f9590634932f0310d068c9781b8e9f72b9642407f9  qualification/evidence/artifacts/2026-10-18-settings-light.png
 0074a2f897c79b0ec29d73bb81316bf6eb6c47685621f3b8d3753df98ff91d51  qualification/evidence/artifacts/2026-10-18-settings-persisted-ui.xml
 01d4f48e1064ccf1e7f137c0ef373c531b45ee2ef4facc70203b125e4b6d9d94  qualification/evidence/artifacts/2026-10-18-settings-persisted.png
+2d0d9c2232f9e95ea69ad3cb4980bf30c2a61eaff7a722286fe7b076aad8531f  qualification/evidence/artifacts/2026-10-18-titled-export-downloads.txt
+a381299926cebb0dc4d8400414f89a10ea7b0b0d0a3cdd5ffc37d07662e3425b  qualification/evidence/artifacts/2026-10-18-titled-export-pdf-raster.png
+180aa2b637942aaf9b1e485bb561bda320cc370d91edb5315dd218457fd44d5a  qualification/evidence/artifacts/2026-10-18-titled-export-pdf-status.xml
+a7b3c9683e5df3c2a00f89eb308eac0b1295e9b4037c65ae48598f7f90bb1b6f  qualification/evidence/artifacts/2026-10-18-titled-export-png-status.xml
+180aa2b637942aaf9b1e485bb561bda320cc370d91edb5315dd218457fd44d5a  qualification/evidence/artifacts/2026-10-18-titled-export-success-ui.xml
+51356eec6d04cb2b2c5c904568524d98c1b3f6cd892e16a046f9aa85dba6c986  qualification/evidence/artifacts/2026-10-18-titled-export-success.png
+b5f4d83c26e1d4e1cd1497801749424d1191ec170ef2fc66f5e09f15e3bc994f  qualification/evidence/artifacts/2026-10-18-titled-export-svg-status.xml
+8bbef20ec7ef20b56326ac1500be381422be58d158f941fc7293df212bccc8f1  qualification/evidence/artifacts/2026-10-18-titled-export.pdf
+8b7fd84b34fa9be9a19cee3e756e655b77c75ca44422cbdb1fbb74a8a6911ec3  qualification/evidence/artifacts/2026-10-18-titled-export.png
+4bc275b937248a539ac30684216d148431f66633e1b9eb2cb8ca8f89a1c7ba63  qualification/evidence/artifacts/2026-10-18-titled-export.svg
 138ef100467f77737fd493d1b24b02d8edffb6c6f375c4a4452bc0a54e3825d5  qualification/evidence/artifacts/2026-10-18-vega-probe-ui.xml
 5f3a7fc720099c94d950ac878be214ce7251ce5640e2459aee5ee28f39ee589e  qualification/evidence/artifacts/2026-10-18-vega-probe.png
 2df4a75e2524a029796dfcbad9252591fd4adae1acc24cae9b1a7dda9e5488e2  qualification/evidence/artifacts/2026-10-18-worksheet-current.png

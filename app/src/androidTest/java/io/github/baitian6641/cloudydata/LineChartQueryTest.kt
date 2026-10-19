@@ -87,6 +87,9 @@ class LineChartQueryTest {
             val result = WorksheetQuery(engine).query(reopened.snapshot!!, reopenedSheet, path)
             assertEquals(sheet.seriesFieldId, result.seriesField?.id)
             assertEquals(MarkType.LINE, result.markType)
+            assertTrue("source provenance missing", result.sourceNote!!.startsWith("Source: "))
+            assertTrue("row provenance missing", result.sourceNote!!.contains("rows"))
+            assertTrue("snapshot provenance missing", result.sourceNote!!.contains(snapshot.id.take(8)))
             assertEquals(listOf("row", "series", "value"), result.result.columns.map { it.name })
             assertEquals(
                 listOf(
