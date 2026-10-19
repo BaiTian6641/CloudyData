@@ -93,6 +93,7 @@ fun ChartSettingsDialog(
     var lineDashStyleExpanded by remember { mutableStateOf(false) }
     var showMarkers by remember { mutableStateOf(current.showMarkers) }
     var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
+    var markerOpacity by remember { mutableStateOf(current.markerOpacity?.toString().orEmpty()) }
     var markerShape by remember { mutableStateOf(current.markerShape) }
     var markerShapeExpanded by remember { mutableStateOf(false) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
@@ -129,6 +130,11 @@ fun ChartSettingsDialog(
     } else {
         null
     }
+    val parsedMarkerOpacity = if (showMarkers) {
+        markerOpacity.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    } else {
+        null
+    }
     val parsedChartPadding = chartPadding.trim().toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
@@ -155,6 +161,10 @@ fun ChartSettingsDialog(
             parsedLabelFontSize !in ChartOptions.MIN_LABEL_FONT_SIZE..ChartOptions.MAX_LABEL_FONT_SIZE) ->
             "Label font size must be a whole number from ${ChartOptions.MIN_LABEL_FONT_SIZE} to " +
                 "${ChartOptions.MAX_LABEL_FONT_SIZE}."
+        showMarkers && markerOpacity.trim().isNotEmpty() && (parsedMarkerOpacity == null ||
+            !parsedMarkerOpacity.isFinite() ||
+            parsedMarkerOpacity !in ChartOptions.MIN_MARKER_OPACITY..ChartOptions.MAX_MARKER_OPACITY) ->
+            "Marker opacity must be from ${ChartOptions.MIN_MARKER_OPACITY} to ${ChartOptions.MAX_MARKER_OPACITY}."
         showMarkers && markerSize.trim().isNotEmpty() && (parsedMarkerSize == null || !parsedMarkerSize.isFinite() ||
             parsedMarkerSize !in ChartOptions.MIN_MARKER_SIZE..ChartOptions.MAX_MARKER_SIZE) ->
             "Marker size must be from ${ChartOptions.MIN_MARKER_SIZE} to ${ChartOptions.MAX_MARKER_SIZE}."
@@ -590,6 +600,13 @@ fun ChartSettingsDialog(
                             supportingText = "${ChartOptions.MIN_MARKER_SIZE}–${ChartOptions.MAX_MARKER_SIZE} px diameter, blank for mark default.",
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         )
+                        CloudyTextField(
+                            value = markerOpacity,
+                            onValueChange = { markerOpacity = it },
+                            label = "Marker opacity",
+                            supportingText = "${ChartOptions.MIN_MARKER_OPACITY}–${ChartOptions.MAX_MARKER_OPACITY}, blank for opaque.",
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text(
@@ -873,6 +890,7 @@ fun ChartSettingsDialog(
                             showMarkers = showMarkers,
                             markerSize = if (showMarkers) parsedMarkerSize else null,
                             markerShape = markerShape,
+                            markerOpacity = if (showMarkers) parsedMarkerOpacity else null,
                         ),
                     )
                 },

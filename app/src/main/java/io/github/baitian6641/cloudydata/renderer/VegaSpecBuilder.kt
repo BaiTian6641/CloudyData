@@ -493,6 +493,9 @@ object VegaSpecBuilder {
                 .put("fill", JSONObject().put("scale", "color").put("field", "series"))
                 .put("size", JSONObject().put("value", markerArea(spec, 30.0)))
                 .put("defined", JSONObject().put("signal", "isValid(datum.y)"))
+            spec.markers.opacity?.let {
+                markerEnter.put("opacity", JSONObject().put("value", it))
+            }
             if (spec.markers.shape != MarkerShape.CIRCLE) {
                 markerEnter.put("shape", JSONObject().put("value", markerShapeName(spec.markers.shape)))
             }
@@ -621,6 +624,9 @@ object VegaSpecBuilder {
                     .put("size", JSONObject().put("value", markerArea(spec, 24.0)))
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)"))
                     .apply {
+                        spec.markers.opacity?.let {
+                            put("opacity", JSONObject().put("value", it))
+                        }
                         if (spec.markers.shape != MarkerShape.CIRCLE) {
                             put(
                                 "shape",

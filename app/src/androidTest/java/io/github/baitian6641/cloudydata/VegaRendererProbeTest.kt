@@ -495,6 +495,36 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun markerOpacityRendersWithoutChangingMarkCounts() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(opacity: String?): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+            if (opacity != null) {
+                intent.putExtra(RendererProbeActivity.EXTRA_MARKER_OPACITY, opacity)
+            }
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("marker-opacity render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("marker-opacity export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val opaque = render(null)
+        val translucent = render("0.5")
+        assertEquals(opaque.result.markCount, translucent.result.markCount)
+        assertEquals(opaque.result.sceneMarks["line"], translucent.result.sceneMarks["line"])
+        assertEquals(opaque.result.sceneMarks["symbol"], translucent.result.sceneMarks["symbol"])
+        assertFalse("marker opacity did not affect export", opaque.svg == translucent.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

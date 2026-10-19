@@ -97,6 +97,9 @@ class RendererProbeActivity : Activity() {
             )
         }.getOrDefault(io.github.baitian6641.cloudydata.model.LineInterpolation.LINEAR)
     }
+    private val requestMarkerOpacity by lazy {
+        intent.getStringExtra(EXTRA_MARKER_OPACITY)?.toDoubleOrNull()
+    }
     private val requestMarkerShape by lazy {
         runCatching {
             io.github.baitian6641.cloudydata.model.MarkerShape.valueOf(
@@ -128,6 +131,7 @@ class RendererProbeActivity : Activity() {
             markers = baseSpec.markers.copy(
                 show = baseSpec.markers.show && !requestHideMarkers,
                 shape = requestMarkerShape,
+                opacity = requestMarkerOpacity,
             ),
             lineInterpolation = requestLineInterpolation,
             lineDashStyle = requestLineDash,
@@ -776,6 +780,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_HIDDEN_SERIES = "hidden_series"
         const val EXTRA_HIDE_MARKERS = "hide_markers"
         const val EXTRA_MARKER_SHAPE = "marker_shape"
+        const val EXTRA_MARKER_OPACITY = "marker_opacity"
         const val EXTRA_LINE_INTERPOLATION = "line_interpolation"
         const val EXTRA_LINE_DASH = "line_dash"
         const val EXTRA_LINE_OPACITY = "line_opacity"

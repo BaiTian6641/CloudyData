@@ -102,6 +102,7 @@ class ChartSettingsPersistenceTest {
                             lineDashStyle = LineDashStyle.DASHED,
                             lineOpacity = 0.5,
                             legendMarkSample = LegendMarkSample.LINE,
+                            markerOpacity = 0.5,
                         ),
                     ),
                 ),
@@ -153,6 +154,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(LineDashStyle.DASHED, reopenedSheet.chart.lineDashStyle)
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
+        assertEquals(0.5, reopenedSheet.chart.markerOpacity!!, 0.0)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -224,6 +226,13 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             LegendMarkSample.LINE,
             ChartOptions.fromJson(JSONObject().put("legendMarkSample", "LINE")).legendMarkSample,
+        )
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerOpacity", 0.0)).markerOpacity)
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("markerOpacity", 1.1)).markerOpacity)
+        assertEquals(
+            0.5,
+            ChartOptions.fromJson(JSONObject().put("markerOpacity", 0.5)).markerOpacity!!,
+            0.0,
         )
     }
 

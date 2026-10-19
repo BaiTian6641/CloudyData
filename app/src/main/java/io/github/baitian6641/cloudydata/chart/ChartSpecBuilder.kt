@@ -273,7 +273,12 @@ object ChartSpecBuilder {
                 position = LabelPosition.TOP,
                 collisionPolicy = options.labelCollisionPolicy,
             ),
-            markers = MarkerSpec(options.showMarkers, options.markerSize, options.markerShape),
+            markers = MarkerSpec(
+                options.showMarkers,
+                options.markerSize,
+                options.markerShape,
+                options.markerOpacity,
+            ),
             sourceNote = sourceNote,
             tooltip = TooltipSpec(options.showTooltip),
             series = series,
@@ -337,6 +342,15 @@ object ChartSpecBuilder {
             throw ChartSpecException(
                 "Value decimals must be between ${ChartOptions.MIN_VALUE_DECIMALS} and " +
                     "${ChartOptions.MAX_VALUE_DECIMALS}.",
+            )
+        }
+        if (options.markerOpacity != null &&
+            (!options.markerOpacity.isFinite() ||
+                options.markerOpacity !in ChartOptions.MIN_MARKER_OPACITY..ChartOptions.MAX_MARKER_OPACITY)
+        ) {
+            throw ChartSpecException(
+                "Marker opacity must be between ${ChartOptions.MIN_MARKER_OPACITY} and " +
+                    "${ChartOptions.MAX_MARKER_OPACITY}.",
             )
         }
         if (options.markerSize != null &&

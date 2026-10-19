@@ -599,6 +599,14 @@ class VegaSpecBuilderTest {
                 .getJSONObject("size").getDouble("value"),
             0.0,
         )
+        val translucent = childMarks(ChartOptions(markerOpacity = 0.5))
+            .first { it.getString("type") == "symbol" }
+        assertEquals(
+            0.5,
+            translucent.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("opacity").getDouble("value"),
+            0.0,
+        )
         val defaultSymbol = childMarks(ChartOptions()).first { it.getString("type") == "symbol" }
         assertFalse(
             "default circle must not emit a shape override",
@@ -706,7 +714,7 @@ class VegaSpecBuilderTest {
         val json = VegaSpecBuilder.build(
             ChartSpecBuilder.build(
                 "area-shape", 0, result,
-                ChartOptions(markerShape = MarkerShape.CROSS),
+                ChartOptions(markerShape = MarkerShape.CROSS, markerOpacity = 0.5),
                 "derived",
             ),
             false,
@@ -722,6 +730,12 @@ class VegaSpecBuilderTest {
             "cross",
             areaSymbol.getJSONObject("encode").getJSONObject("enter")
                 .getJSONObject("shape").getString("value"),
+        )
+        assertEquals(
+            0.5,
+            areaSymbol.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("opacity").getDouble("value"),
+            0.0,
         )
     }
 

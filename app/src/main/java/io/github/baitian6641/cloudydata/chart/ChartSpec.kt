@@ -67,6 +67,7 @@ data class MarkerSpec(
     val show: Boolean = true,
     val size: Double? = null,
     val shape: MarkerShape = MarkerShape.CIRCLE,
+    val opacity: Double? = null,
 )
 
 data class LabelSpec(

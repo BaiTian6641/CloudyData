@@ -703,3 +703,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   instrumentation VegaSpecBuilderTest 17/17, ChartSettingsPersistenceTest 10/10,
   legend-sample render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
   visual swatch/hit-target/export checks absent.
+
+## 2026-10-19 — CUST03 marker opacity
+
+- Added optional persisted 0.1–1.0 opacity for Line/Area point symbols,
+  independent of line/area paint opacity. Default markers remain opaque; lines,
+  labels, hit targets, selected overlays, data and selection are unchanged.
+  Invalid/missing values fall back to opaque; hiding markers clears the value.
+- Emulator-first validation: JVM 64/64; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 17/17 (line + area markers),
+  ChartSettingsPersistenceTest 10/10, marker-opacity render 1/1; lint 0 errors/5
+  warnings. Googlebook untouched; visual contrast/export checks absent.

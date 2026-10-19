@@ -290,12 +290,13 @@ class ChartSpecBuilderTest {
     fun markerOptionsAreCarriedAndBounded() {
         val spec = ChartSpecBuilder.build(
             "markers", 0, lineResult(),
-            ChartOptions(showMarkers = false, markerSize = 6.0),
+            ChartOptions(showMarkers = false, markerSize = 6.0, markerOpacity = 0.5),
             "derived",
         )
         assertEquals(false, spec.markers.show)
         assertEquals(6.0, spec.markers.size!!, 0.0)
         assertEquals(MarkerShape.CIRCLE, spec.markers.shape)
+        assertEquals(0.5, spec.markers.opacity!!, 0.0)
         assertEquals(
             true,
             ChartSpecBuilder.build(
@@ -312,6 +313,27 @@ class ChartSpecBuilderTest {
                 "derived",
             ).markers.shape,
         )
+        assertEquals(
+            0.5,
+            ChartSpecBuilder.build(
+                "markers", 0, lineResult(),
+                ChartOptions(markerOpacity = 0.5),
+                "derived",
+            ).markers.opacity!!,
+            0.0,
+        )
+        for (invalid in listOf(0.0, 1.1, Double.NaN)) {
+            try {
+                ChartSpecBuilder.build(
+                    "markers", 0, lineResult(),
+                    ChartOptions(markerOpacity = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected marker opacity rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Marker opacity"))
+            }
+        }
         for (invalid in listOf(1.0, 13.0, Double.NaN)) {
             try {
                 ChartSpecBuilder.build(

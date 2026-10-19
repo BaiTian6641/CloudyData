@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `51cf6ce`. `main` tracks `origin/main`; the legend
-sample stage is pushed.
+**Source:** commits through `673684f`; the marker-opacity change is in the next
+local commit. `main` tracks `origin/main` at the pushed legend-sample baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -120,6 +120,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-line-dash.md`
 - `qualification/evidence/2026-10-19-cust03-line-opacity.md`
 - `qualification/evidence/2026-10-19-cust05-legend-sample.md`
+- `qualification/evidence/2026-10-19-cust03-marker-opacity.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -229,6 +230,10 @@ unless stated otherwise.
   mirror width/dash (not dotted round caps) and leave plot marks, data and
   selection unchanged. Emulator spec/persistence/render checks pass; visual
   spacing/hit-target checks were not run.
+- **Marker opacity.** Optional 0.1–1.0 opacity applies to Line/Area point symbols
+  independently of line/area paint; selected overlays/hit targets stay opaque.
+  Emulator spec/persistence/render checks pass; visual contrast checks were not
+  run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -317,21 +322,22 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted marker opacity.**
+**CUST04 persisted crosstab row/column dividers.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: marker
-  visibility/size/shape, line opacity, typed options and emulator probes.
-- Files: `ChartOptions`, `ChartSpec`/MarkerSpec, builders,
-  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
-- Action: add optional 0.1–1.0 marker opacity for Line/Area point symbols,
-  independent of line/area paint opacity, preserving default output.
-- Acceptance: default markers unchanged; opacity persists and affects only
-  point symbols, not lines/selection/data; invalid values fall back to opaque.
-  Emulator spec/render checks required; visual review unverified.
+- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: native table
+  rendering, worksheet persistence, chart-options settings pattern and tests.
+- Files: `WorksheetDef`/workbook JSON, `WorksheetView`, settings/dialog wiring,
+  persistence and selection tests, evidence.
+- Action: add persisted table row- and column-divider toggles, defaulting to the
+  current table appearance (row dividers on, column dividers off).
+- Acceptance: defaults preserve current output; toggles persist across reopen
+  and affect only table borders, never query/data/selection; invalid/missing
+  values fall back to defaults. Emulator persistence/render checks required;
+  visual review remains unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, interpolation, dash, opacity and legend-sample visuals wait for an
-  authorized visual session.
+  marker, interpolation, dash, opacity, legend-sample and table-divider visuals
+  wait for an authorized visual session.
 
 ## Protected context
 
