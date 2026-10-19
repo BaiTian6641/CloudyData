@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-18
 **Branch:** `main`
-**Source:** commits through `1c2f297`; remote push not performed/authorized in
+**Source:** commits through `ff3528f`; remote push not performed/authorized in
 this session.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
