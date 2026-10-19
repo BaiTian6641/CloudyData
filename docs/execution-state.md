@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `4362f6c`; `main` tracks `origin/main`. The next
+**Source:** commits through `6494746`; `main` tracks `origin/main`. The next
 task is local-only until it passes its gates.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
