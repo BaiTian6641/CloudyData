@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `a7b67f6`; the legend-sample change is in the next
-local commit. `main` tracks `origin/main` at the pushed opacity baseline.
+**Source:** commits through `51cf6ce`. `main` tracks `origin/main`; the legend
+sample stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -58,7 +58,7 @@ unless stated otherwise.
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
-  probe: 17/17 (pre-lasso); Vega spec builder: 16/16;
+  probe: 17/17 (pre-lasso); Vega spec builder: 17/17;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
   suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
