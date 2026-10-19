@@ -73,6 +73,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s11-area-chart.md`
 - `qualification/evidence/2026-10-18-s11-tooltip.md`
 - `qualification/evidence/2026-10-18-s11-svg-export.md`
+- `qualification/evidence/2026-10-18-s16-product-export.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -97,15 +98,22 @@ unless stated otherwise.
 - Renderer selection is verified: actual emulator taps select exact source table
   rows, hardware arrows move in table order, Escape/Tab move keyboard routing
   out of the WebView (extra arrows no longer select), and stale chart/revision
-  intents are gated. Additive/range/lasso
-  selection, visual mark highlight, tooltip, product auto-recovery, export,
-  focus/TalkBack traversal, live OS-window resize and memory limits remain
-  unverified. The native summary/table is the current accessible equivalent.
-
-- **Current emulator caveat:** the rootable API 37 emulator disappeared during
-  the session. Newer reruns ran on an API 36 x86_64 AVD with a 2880×1800/240 dpi
-  display override; prior API 37/root evidence remains as recorded for those
-  runs, while new evidence is API 36 and non-root.
+  intents are gated. Additive/range/lasso selection, visual mark highlight,
+  product auto-recovery, focus/TalkBack traversal, live OS-window resize and
+  memory limits remain unverified. The native summary/table is the current
+  accessible equivalent.
+- Product visual export is verified for a live worksheet: SVG, PNG and PDF
+  actions opened the real DocumentsUI CreateDocument picker, wrote
+  provider-owned bytes, and the files were accepted by independent readers
+  (`2026-10-18-product-export.*`). This is not yet one frozen multi-format
+  operation: chart title/provenance are absent from the visual artifact, layout
+  shifted between separate exports, and failure injection/Q18 and full Q24 remain
+  partial.
+- **Current emulator state:** the rootable API 37 userdebug emulator returned as
+  `emulator-5582` (2880×1800, 240 dpi) and carries the preserved Area workbook;
+  product-export evidence uses it. `emulator-5580` remains an API 36 non-root
+  fallback with the 2880×1800/240 dpi override. Earlier API 37 root evidence
+  remains valid for `emulator-5582`/its predecessor profile.
 
 ## Not implemented / blocked
 
@@ -118,8 +126,10 @@ unless stated otherwise.
   verified; single-series Area is implemented and persists across reopen; a
   bounded exact-value tooltip works on selection/focus with persisted show/hide;
   bounded SVG, PNG and one-page PDF export are implemented; all decode/parse and
-  match their probe evidence files. Pointer hover, product end-to-end save/open,
-  print, additive/range selection, TalkBack and live-window qualification remain.
+  match their probe evidence files; a real product SaveDocument save/write path is
+  verified for all three; reopening them in the product remains unverified. Pointer hover, a single frozen multi-format export,
+  embedded title/provenance, failure injection, print, additive/range selection,
+  TalkBack and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -131,16 +141,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST14 product export end-to-end + print.**
+**S16/F59 one frozen, titled visual-export operation (worksheet scope).**
 
-- Files: `VegaChart.kt`, export store/UI, `VegaRendererHost.kt`, probe/tests.
-- Action: exercise the SaveDocument callback through an actual product
-  worksheet and reopen the saved SVG/PNG/PDF; then add a bounded print path with
-  the same stale-revision and size limits.
-- Acceptance: a real product export writes a file the app can reopen; stale
-  renders cannot be exported; no network/script reference; bounded payload.
-- Then: pointer-hover qualification, additive/range selection and the next chart
-  family.
+- Files: `VegaSpecBuilder.kt`, `VegaRendererHost.kt`, `host.js`/`index.html`,
+  `VegaChart.kt`, export orchestration/tests.
+- Action: freeze one chart revision and output dimensions, embed the chart
+  title/source/snapshot provenance in the exported SVG/PNG/PDF, and derive all
+  formats from that one scene. Then add failure injection for Q18.
+- Acceptance: one user export operation produces matching frozen SVG/PNG/PDF
+  artifacts with title/provenance and consistent dimensions; stale revisions and
+  provider failures are rejected; independent readers accept every artifact.
+- Then: print/multi-page delivery and pointer-hover qualification.
 
 ## Protected context
 

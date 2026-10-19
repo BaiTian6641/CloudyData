@@ -136,3 +136,13 @@ Export errors are non-fatal, saves run on Dispatchers.IO, and the pending payloa
 is retained in a ViewModel. Debug export evidence:
 `qualification/evidence/2026-10-18-s11-svg-export.md`. Product end-to-end
 save/open, print and pixel comparison remain pending; CUST14 is partial.
+
+## Amendment — 2026-10-18 product SaveDocument write path
+
+The worksheet's SVG/PNG/PDF actions were exercised through the real
+DocumentsUI CreateDocument picker on the API 37 device profile. Provider files
+were pulled and independently parsed; the second save was auto-renamed by the
+provider. This verifies the product completion path, not Q24's single frozen
+multi-format operation: title/provenance are not yet embedded, and layout can
+shift between separate exports. Evidence:
+`qualification/evidence/2026-10-18-s16-product-export.md`.

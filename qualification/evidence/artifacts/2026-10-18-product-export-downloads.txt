@@ -1,0 +1,4 @@
+-rw-rw---- 1 u0_a211 media_rw  8990 2026-10-18 22:02 /sdcard/Download/cloudy-chart (1).svg
+-rw-rw---- 1 u0_a211 media_rw 16479 2026-10-18 22:01 /sdcard/Download/cloudy-chart.pdf
+-rw-rw---- 1 u0_a211 media_rw 23637 2026-10-18 22:01 /sdcard/Download/cloudy-chart.png
+-rw-rw---- 1 u0_a211 media_rw  8972 2026-10-18 22:00 /sdcard/Download/cloudy-chart.svg

@@ -239,3 +239,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Added a stale-revision check and 2 MiB limit; product save/open was not
   exercised end-to-end after the AVD data reset.
 - JVM 24/24; emulator 37/37; lint 0 errors. CUST14 remains partial.
+
+## 2026-10-18 — product visual-export write path
+
+- On the restored API 37 userdebug emulator, exported the live Area worksheet
+  through the real SVG/PNG/PDF product actions and DocumentsUI CreateDocument
+  picker; provider files parsed as SVG, 1705×278 PNG and one-page PDF.
+- A second SVG save was provider-renamed to `cloudy-chart (1).svg`.
+- Confirmed UI success statuses and no script/remote references. Q18/Q24 remain
+  partial: failure injection, one frozen multi-format output, embedded
+  title/provenance and print are outstanding.
