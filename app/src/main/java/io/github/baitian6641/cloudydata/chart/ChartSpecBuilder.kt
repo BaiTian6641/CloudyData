@@ -209,6 +209,7 @@ object ChartSpecBuilder {
                 visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,
                 position = options.legendPosition,
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
+                orientation = options.legendOrientation,
             ),
             labels = LabelSpec(options.showValueLabels),
             sourceNote = sourceNote,

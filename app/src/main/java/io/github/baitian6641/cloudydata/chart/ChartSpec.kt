@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata.chart
 
+import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
 enum class ChartKind { BAR, LINE, AREA }
@@ -42,6 +43,7 @@ data class LegendSpec(
     val visible: Boolean,
     val position: LegendPosition,
     val title: String?,
+    val orientation: LegendOrientation? = null,
 )
 
 data class LabelSpec(val show: Boolean)

@@ -36,6 +36,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTextField
 import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorksheetDef
@@ -63,7 +64,9 @@ fun ChartSettingsDialog(
     var showTooltip by remember { mutableStateOf(current.showTooltip) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
     var legendPosition by remember { mutableStateOf(current.legendPosition) }
+    var legendOrientation by remember { mutableStateOf(current.legendOrientation) }
     var legendExpanded by remember { mutableStateOf(false) }
+    var legendOrientationExpanded by remember { mutableStateOf(false) }
 
     val parsedMin = yMin.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
@@ -247,6 +250,56 @@ fun ChartSettingsDialog(
                             }
                         }
                     }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Legend orientation", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                            Text(
+                                when (legendOrientation) {
+                                    LegendOrientation.VERTICAL -> "Entries stacked vertically"
+                                    LegendOrientation.HORIZONTAL -> "Entries laid out horizontally"
+                                    null -> "Automatic from position"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { legendOrientationExpanded = true }) {
+                            Text(
+                                when (legendOrientation) {
+                                    LegendOrientation.VERTICAL -> "Vertical"
+                                    LegendOrientation.HORIZONTAL -> "Horizontal"
+                                    null -> "Automatic"
+                                },
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = legendOrientationExpanded,
+                            onDismissRequest = { legendOrientationExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Automatic from position") },
+                                onClick = {
+                                    legendOrientation = null
+                                    legendOrientationExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Vertical") },
+                                onClick = {
+                                    legendOrientation = LegendOrientation.VERTICAL
+                                    legendOrientationExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Horizontal") },
+                                onClick = {
+                                    legendOrientation = LegendOrientation.HORIZONTAL
+                                    legendOrientationExpanded = false
+                                },
+                            )
+                        }
+                    }
                 }
             }
         },
@@ -270,6 +323,7 @@ fun ChartSettingsDialog(
                             reverseY = reverseY,
                             legendVisible = legendVisible && sheet.markType == MarkType.LINE,
                             legendPosition = legendPosition,
+                            legendOrientation = legendOrientation,
                             showTooltip = showTooltip,
                             yTickCount = parsedYTickCount,
                         ),

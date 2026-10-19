@@ -411,3 +411,19 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - JVM 36/36; lint 0 errors/5 warnings; debug/test APKs compile. Persistence and
   Vega-output instrumentation compiled but were not run; no device visual
   evidence exists.
+
+## 2026-10-19 — CUST05 persisted legend orientation
+
+- Added optional `LegendOrientation` (vertical/horizontal/automatic) to
+  `ChartOptions`/`LegendSpec`, a chart-settings dropdown, persistence with
+  defensive old-document loading, and Vega `direction` output. Automatic now
+  means bottom→horizontal and right→vertical; explicit values override it.
+- Horizontal legends use a width-derived `columns` cap so long series lists wrap
+  instead of generating an unbounded single-row legend. Bottom legends change
+  from Vega's vertical default to horizontal, matching the visible label.
+- A width/label-aware `LegendLayout` bounds horizontal columns and legend
+  `labelLimit`, preventing an unbounded single-row width and capping individual
+  label width. Right-position legends still use outside-plot width like the
+  vertical form.
+- JVM 40/40; lint 0 errors/5 warnings; debug/test APKs compile. Persistence and
+  Vega JSON instrumentation compile but were not run; no device visual evidence.

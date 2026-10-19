@@ -10,6 +10,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -41,6 +42,7 @@ class ChartSpecBuilderTest {
                 showValueLabels = true,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
+                legendOrientation = LegendOrientation.VERTICAL,
             ),
             derivedTitle = "derived",
         )
@@ -53,6 +55,7 @@ class ChartSpecBuilderTest {
         assertEquals(false, spec.gridlines.show)
         assertEquals(true, spec.labels.show)
         assertEquals(LegendPosition.RIGHT, spec.legend.position)
+        assertEquals(LegendOrientation.VERTICAL, spec.legend.orientation)
         assertEquals(2, spec.series.size)
         val north = spec.series.first { it.key == "North" }
         val south = spec.series.first { it.key == "South" }

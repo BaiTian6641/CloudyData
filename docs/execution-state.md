@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `72e9f31`. `main` tracks `origin/main`; the
-Y tick-count commit is pushed to the intended GitHub remote.
+**Source:** commits through `0f22984`; the legend-orientation change is in the
+next local commit. `main` tracks `origin/main` at the pushed tick baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,8 +54,8 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **36/36**, including set-selection reducer
-  and Y tick-count cases. Emulator renderer probe: 17/17 (pre-lasso);
+- Lint: 0 errors (5 warnings). JVM: **40/40**, including set-selection reducer,
+  Y tick-count and legend-layout cases. Emulator renderer probe: 17/17 (pre-lasso);
   Vega spec builder: 4/4;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
@@ -91,6 +91,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust13-view-data.md`
 - `qualification/evidence/2026-10-19-cust13-lasso.md`
 - `qualification/evidence/2026-10-19-cust03-y-ticks.md`
+- `qualification/evidence/2026-10-19-cust05-legend-orientation.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -112,6 +113,10 @@ unless stated otherwise.
   instrumentation assertions compile but were not executed. No device visual or
   export evidence exists. The X control was removed because current X scales are
   band scales where `tickCount` has no effect.
+- **Legend orientation.** Persisted Automatic/Vertical/Horizontal orientation,
+  settings control, position-derived automatic direction and width/label-aware
+  horizontal wrapping/label limits are implemented. JVM layout/propagation tests
+  pass; persistence/Vega instrumentation and device visual checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -200,25 +205,27 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST13 final lasso/product qualification — blocked on an available device.**
+**CUST06 value-label position and density.**
 
-- Files: none planned; fix `renderer/host.js`, `VegaChart.kt`,
-  `WorkbookScreen.kt`, tests/evidence only if qualification finds a defect.
-- Action: with an explicitly available device, run the rectangle/Ctrl-drag probe
-  (including slow drag and empty rectangle), run the full selection suite, then
-  perform a product worksheet rectangle/Ctrl-drag and open View Data on the same
-  selected set.
-- Acceptance: exact intersecting marks appear in the table, inspector, overlay
-  and View Data; empty replace clears; Ctrl-drag adds; keyboard/table remain the
-  accessible alternative; stale chart/revision intents are rejected.
-- Then: drill once an explicit dimension hierarchy exists; persisted selection
-  remains an explicit action, not automatic.
+- Requirements/stage: CUST06, F32/F38, Q21, S11; verified prerequisites are
+  persisted chart options, Bar/Line/Area typed specs, value-label marks, settings
+  persistence and host-level label tests.
+- Files: `Workbook.kt`/`ChartOptions`, `ChartSpec.kt`, `ChartSpecBuilder.kt`,
+  `VegaSpecBuilder.kt`, `ChartSettingsDialog.kt`, tests and evidence.
+- Action: persist a bounded label position (top/inside-end) and label font size,
+  validate and carry them on the typed label spec, and lower them to the Bar/Line/
+  Area label marks. Exact values and aggregation remain unchanged.
+- Acceptance: old documents default to today's top labels; invalid sizes are
+  rejected; no SQL rerun; generated specs/label geometry and persistence stay
+  coherent. Device visual review remains required before claiming verified.
+- Device-bound qualification remains blocked: lasso/product, Y tick count and
+  legend orientation visual runs wait for an authorized device.
 
 ## Protected context
 
-- Do not push, publish, sign a release, change branch protections or send external
-  messages without explicit authorization. Only local commits are permitted by
-  this session.
+- Normal push of staged local commits to `origin/main` is authorized by the
+  current owner instruction; force-push, tags/releases, branch-protection
+  changes and external messages remain unauthorized.
 - Preserve the planning documents' scope; do not import Cloudy Console terminal,
   RDP/X11/USB, host-vault or remote-session behavior.
 - Do not add a Linux/JDBC DuckDB binary to the APK. Native artifacts must be built

@@ -22,6 +22,8 @@ enum class MarkType { TABLE, BAR, LINE, AREA }
 
 enum class LegendPosition { BOTTOM, RIGHT }
 
+enum class LegendOrientation { VERTICAL, HORIZONTAL }
+
 data class ChartOptions(
     val title: String? = null,
     val showGridlines: Boolean = true,
@@ -36,6 +38,7 @@ data class ChartOptions(
     val reverseY: Boolean = false,
     val legendVisible: Boolean = true,
     val legendPosition: LegendPosition = LegendPosition.BOTTOM,
+    val legendOrientation: LegendOrientation? = null,
     val showTooltip: Boolean = true,
     val yTickCount: Int? = null,
 ) {
@@ -54,6 +57,7 @@ data class ChartOptions(
         .put("reverseY", reverseY)
         .put("legendVisible", legendVisible)
         .put("legendPosition", legendPosition.name)
+        .put("legendOrientation", legendOrientation?.name ?: JSONObject.NULL)
         .put("showTooltip", showTooltip)
         .put("yTickCount", yTickCount ?: JSONObject.NULL)
 
@@ -78,6 +82,11 @@ data class ChartOptions(
             legendPosition = runCatching {
                 LegendPosition.valueOf(json.optString("legendPosition", LegendPosition.BOTTOM.name))
             }.getOrDefault(LegendPosition.BOTTOM),
+            legendOrientation = if (json.isNull("legendOrientation")) {
+                null
+            } else {
+                runCatching { LegendOrientation.valueOf(json.optString("legendOrientation")) }.getOrNull()
+            },
             showTooltip = json.optBoolean("showTooltip", true),
             yTickCount = if (json.isNull("yTickCount")) {
                 null

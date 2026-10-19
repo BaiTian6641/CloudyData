@@ -3,6 +3,7 @@ package io.github.baitian6641.cloudydata.renderer
 import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSpec
+import io.github.baitian6641.cloudydata.chart.LegendLayout
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import org.json.JSONArray
 import org.json.JSONObject
@@ -146,7 +147,7 @@ object VegaSpecBuilder {
             )
             .put("usermeta", JSONObject().put("tooltip", spec.tooltip.show))
             .put("marks", marks)
-        val legend = legendJson(spec, textColor)
+        val legend = legendJson(spec, textColor, widthDp)
         if (legend != null) root.put("legends", JSONArray().put(legend))
         return root
     }
@@ -499,13 +500,17 @@ object VegaSpecBuilder {
         .put("events", selector)
         .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]")
 
-    private fun legendJson(spec: ChartSpec, textColor: String): JSONObject? {
+    private fun legendJson(spec: ChartSpec, textColor: String, widthDp: Float): JSONObject? {
         if (!spec.legend.visible || spec.kind != ChartKind.LINE) return null
         val orient = when (spec.legend.position) {
             LegendPosition.BOTTOM -> "bottom"
             LegendPosition.RIGHT -> "right"
         }
-        return JSONObject()
+        val direction = spec.legend.orientation?.name?.lowercase() ?: when (spec.legend.position) {
+            LegendPosition.BOTTOM -> "horizontal"
+            LegendPosition.RIGHT -> "vertical"
+        }
+        val legend = JSONObject()
             .put("stroke", "color")
             .put("title", spec.legend.title ?: "")
             .put("orient", orient)
@@ -513,5 +518,19 @@ object VegaSpecBuilder {
             .put("titleColor", textColor)
             .put("labelFontSize", 11)
             .put("titleFontSize", 11)
+        legend.put("direction", direction)
+        legend.put("labelLimit", LegendLayout.labelLimitDp(widthDp))
+        if (direction == "horizontal") {
+            legend.put(
+                "columns",
+                LegendLayout.columns(
+                    widthDp = widthDp,
+                    position = spec.legend.position,
+                    labels = spec.series.map { it.key },
+                    seriesCount = spec.series.size,
+                ),
+            )
+        }
+        return legend
     }
 }

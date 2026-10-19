@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import io.github.baitian6641.cloudydata.data.WorkbookStore
 import io.github.baitian6641.cloudydata.model.ChartOptions
+import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
 import org.json.JSONObject
@@ -64,6 +65,7 @@ class ChartSettingsPersistenceTest {
                             reverseY = true,
                             legendVisible = true,
                             legendPosition = LegendPosition.RIGHT,
+                            legendOrientation = LegendOrientation.VERTICAL,
                             showTooltip = false,
                             yTickCount = 6,
                         ),
@@ -86,6 +88,7 @@ class ChartSettingsPersistenceTest {
         assertTrue(reopenedSheet.chart.logScale)
         assertTrue(reopenedSheet.chart.reverseY)
         assertEquals(LegendPosition.RIGHT, reopenedSheet.chart.legendPosition)
+        assertEquals(LegendOrientation.VERTICAL, reopenedSheet.chart.legendOrientation)
         assertFalse(reopenedSheet.chart.showTooltip)
         assertEquals(6, reopenedSheet.chart.yTickCount)
         assertEquals(2, reopened.formatVersion)

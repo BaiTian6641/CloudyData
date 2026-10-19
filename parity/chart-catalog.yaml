@@ -126,7 +126,7 @@ customization:
     area: Legend
     controls: [show_hide, position, orientation, title, mark_sample, interactive]
     status: partial
-    note: Multi-series line legend with show/hide, bottom/right position and title exists. Interactive filtering and custom mark samples are pending.
+    note: Multi-series line legend with show/hide, bottom/right position, title, and persisted vertical/horizontal/automatic orientation exists. Interactive filtering and custom mark samples are pending.
   - id: CUST06
     area: Labels
     controls: [show_hide, field, position, font, format, collision_policy]

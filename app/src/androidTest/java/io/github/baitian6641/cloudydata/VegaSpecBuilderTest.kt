@@ -10,6 +10,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -65,6 +66,7 @@ class VegaSpecBuilderTest {
                 showValueLabels = true,
                 legendVisible = true,
                 legendPosition = LegendPosition.RIGHT,
+                legendOrientation = LegendOrientation.VERTICAL,
             ),
             "derived",
         )
@@ -92,6 +94,8 @@ class VegaSpecBuilderTest {
         )
         assertTrue("legend missing for multi-series line", json.has("legends"))
         assertEquals("right", json.getJSONArray("legends").getJSONObject(0).getString("orient"))
+        assertEquals("vertical", json.getJSONArray("legends").getJSONObject(0).getString("direction"))
+        assertFalse(json.getJSONArray("legends").getJSONObject(0).has("columns"))
         val xDomain = json.getJSONArray("scales").getJSONObject(0).getJSONArray("domain")
         assertEquals(4, xDomain.length())
         assertEquals("2026-01-01", xDomain.getString(0))
@@ -118,6 +122,56 @@ class VegaSpecBuilderTest {
             listOf(0, 2, 4, 1, 3, 5),
             (0 until values.length()).map { values.getJSONObject(it).getInt("sourceRowIndex") },
         )
+    }
+
+    @Test
+    fun bottomLegendAutomaticIsHorizontalAndBoundedByChartWidth() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("2026-01-01", "North", 10L),
+                    listOf<Any?>("2026-01-01", "South", 1L),
+                    listOf<Any?>("2026-02-01", "North", 20L),
+                    listOf<Any?>("2026-02-01", "South", 2L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "line", 0, result,
+            ChartOptions(legendVisible = true, legendPosition = LegendPosition.BOTTOM),
+            "derived",
+        )
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 600f, 300f)
+        val legend = json.getJSONArray("legends").getJSONObject(0)
+        assertEquals("horizontal", legend.getString("direction"))
+        assertEquals(2, legend.getInt("columns"))
+        assertEquals(180, legend.getInt("labelLimit"))
+
+        val explicitRight = ChartSpecBuilder.build(
+            "line-right", 0, result,
+            ChartOptions(
+                legendVisible = true,
+                legendPosition = LegendPosition.RIGHT,
+                legendOrientation = LegendOrientation.HORIZONTAL,
+            ),
+            "derived",
+        )
+        val rightJson = VegaSpecBuilder.build(explicitRight, false, listOf(0x006A6A), 600f, 300f)
+        val rightLegend = rightJson.getJSONArray("legends").getJSONObject(0)
+        assertEquals("horizontal", rightLegend.getString("direction"))
+        assertEquals(1, rightLegend.getInt("columns"))
     }
 
     @Test
