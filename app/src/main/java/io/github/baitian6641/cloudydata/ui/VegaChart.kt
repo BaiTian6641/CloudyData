@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata.ui
 
 import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.print.PrintAttributes
 import android.print.PrintManager
@@ -58,6 +59,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.renderer.ExportBundleWriter
 import io.github.baitian6641.cloudydata.renderer.ExportWriteResult
 import io.github.baitian6641.cloudydata.renderer.FrozenExport
@@ -70,12 +72,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@SuppressLint("ClickableViewAccessibility") // performClick is called on UP; the listener never consumes the event.
 @Composable
 fun VegaChartCard(
     result: WorksheetResult,
     options: ChartOptions,
     selectedRowIndex: Int,
+    selectedRowIndices: Set<Int>,
     onSelectRow: (Int) -> Unit,
+    onSelection: (Int, SelectionMode) -> Unit,
     modifier: Modifier = Modifier,
     chartId: String = "worksheet-chart",
     title: String = chartTitle(result),
@@ -101,7 +106,7 @@ fun VegaChartCard(
     val localDensity = LocalDensity.current
     val focusManager = LocalFocusManager.current
     val currentRowCount = rememberUpdatedState(result.result.rows.size)
-    val currentSelectRow = rememberUpdatedState(onSelectRow)
+    val currentSelection = rememberUpdatedState(onSelection)
     var appliedExport by remember { mutableStateOf<AppliedExport?>(null) }
     val context = LocalContext.current
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
@@ -303,7 +308,14 @@ fun VegaChartCard(
             )
             if (result.markType == MarkType.BAR) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
-                    NativeBarChartCard(result, selectedRowIndex, onSelectRow, Modifier.fillMaxSize(), title)
+                    NativeBarChartCard(
+                        result,
+                        selectedRowIndex,
+                        selectedRowIndices,
+                        onSelectRow,
+                        Modifier.fillMaxSize(),
+                        title,
+                    )
                 }
             }
         } else {
@@ -346,10 +358,11 @@ fun VegaChartCard(
                                         sourceRowIndex: Int,
                                         series: String,
                                         x: String,
+                                        mode: SelectionMode,
                                     ) {
                                         if (sourceRowIndex in 0 until currentRowCount.value) {
                                             hostRef.get()?.webView?.requestFocus()
-                                            currentSelectRow.value(sourceRowIndex)
+                                            currentSelection.value(sourceRowIndex, mode)
                                         }
                                     }
 
@@ -499,6 +512,15 @@ fun VegaChartCard(
                                 web.setBackgroundColor(Color.TRANSPARENT)
                                 web.isFocusable = true
                                 web.isFocusableInTouchMode = true
+                                web.setOnTouchListener { view, event ->
+                                    if (event.actionMasked == android.view.MotionEvent.ACTION_DOWN) {
+                                        host.notePointerMetaState(event.metaState)
+                                    }
+                                    if (event.actionMasked == android.view.MotionEvent.ACTION_UP) {
+                                        view.performClick()
+                                    }
+                                    false
+                                }
                                 container.addView(
                                     web,
                                     FrameLayout.LayoutParams(
@@ -588,7 +610,8 @@ private fun accessibleSummary(spec: ChartSpec): String {
         ChartKind.LINE -> "Line"
         ChartKind.AREA -> "Area"
     }
-    return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; Escape leaves the chart."
+    return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; " +
+        "Ctrl-click or Ctrl+arrow adds, Shift-click or Shift+arrow selects a range; Escape leaves the chart."
 }
 
 internal data class PendingExport(

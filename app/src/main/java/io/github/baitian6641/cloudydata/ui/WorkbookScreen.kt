@@ -87,6 +87,9 @@ import io.github.baitian6641.cloudydata.engine.EngineResult
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
+import io.github.baitian6641.cloudydata.model.RowSelectionReducer
+import io.github.baitian6641.cloudydata.model.RowSelectionState
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 
 @Composable
@@ -107,7 +110,7 @@ fun WorkbookScreen(
 
     var selectedTab by rememberSaveable(workbookId) { mutableStateOf<String?>(null) }
     var selectedFieldId by rememberSaveable(workbookId) { mutableStateOf<String?>(null) }
-    var selectedRowIndex by rememberSaveable(workbookId) { mutableIntStateOf(-1) }
+    var rowSelection by remember(workbookId) { mutableStateOf(RowSelectionState()) }
     var showInspector by rememberSaveable(workbookId) { mutableStateOf(false) }
     var showFieldsDialog by rememberSaveable(workbookId) { mutableStateOf(false) }
     var showRenameDialog by rememberSaveable(workbookId) { mutableStateOf(false) }
@@ -125,6 +128,9 @@ fun WorkbookScreen(
         tab == DATA_TAB || document?.worksheets?.any { it.id == tab } == true
     } ?: if (snapshot != null) document?.activeWorksheetId ?: DATA_TAB else DATA_TAB
 
+    LaunchedEffect(resolvedTab) {
+        rowSelection = RowSelectionState()
+    }
     LaunchedEffect(snapshot?.id) {
         if (snapshot != null && selectedTab == null) {
             selectedTab = document?.activeWorksheetId
@@ -253,7 +259,7 @@ fun WorkbookScreen(
                     DataPane(
                         document = document,
                         selectedFieldId = selectedFieldId,
-                        onFieldSelected = { selectedFieldId = it.id; selectedRowIndex = -1 },
+                        onFieldSelected = { selectedFieldId = it.id; rowSelection = RowSelectionState() },
                         onAddField = { field ->
                             selectedFieldId = field.id
                             if (field.role == io.github.baitian6641.cloudydata.model.FieldRole.MEASURE) {
@@ -285,8 +291,19 @@ fun WorkbookScreen(
                                 document = document,
                                 sheet = sheet,
                                 queryState = state.query,
-                                selectedRowIndex = selectedRowIndex,
-                                onSelectRow = { index -> selectedRowIndex = index; selectedFieldId = null },
+                                selectedRowIndex = rowSelection.primary,
+                                selectedRowIndices = rowSelection.rows,
+                                onSelectRow = { index ->
+                                    rowSelection = RowSelectionReducer.select(rowSelection, index, SelectionMode.REPLACE)
+                                    selectedFieldId = null
+                                },
+                                onSelection = { index, mode ->
+                                    rowSelection = RowSelectionReducer.select(rowSelection, index, mode)
+                                    selectedFieldId = null
+                                },
+                                onClampSelection = { rowCount ->
+                                    rowSelection = RowSelectionReducer.clamp(rowSelection, rowCount)
+                                },
                                 onSetRowField = viewModel::setRowField,
                                 onSetMeasureField = viewModel::setMeasureField,
                                 onSetSeriesField = viewModel::setSeriesField,
@@ -314,7 +331,7 @@ fun WorkbookScreen(
                         document = document,
                         sheet = document.worksheets.firstOrNull { it.id == resolvedTab },
                         selectedField = document.snapshot?.columns?.firstOrNull { it.id == selectedFieldId },
-                        selectedRowIndex = selectedRowIndex,
+                        selectedRowIndex = rowSelection.primary,
                         queryState = state.query,
                         engineVersion = state.engineVersion,
                         modifier = Modifier.width(288.dp).fillMaxHeight(),
@@ -357,7 +374,7 @@ fun WorkbookScreen(
                             selectedFieldId = selectedFieldId,
                             onFieldSelected = { field ->
                                 selectedFieldId = field.id
-                                selectedRowIndex = -1
+                                rowSelection = RowSelectionState()
                                 if (field.role == io.github.baitian6641.cloudydata.model.FieldRole.MEASURE) {
                                     viewModel.setMeasureField(field)
                                 } else {
@@ -380,7 +397,7 @@ fun WorkbookScreen(
                             document = document,
                             sheet = document.worksheets.firstOrNull { it.id == resolvedTab },
                             selectedField = document.snapshot?.columns?.firstOrNull { it.id == selectedFieldId },
-                            selectedRowIndex = selectedRowIndex,
+                            selectedRowIndex = rowSelection.primary,
                             queryState = state.query,
                             engineVersion = state.engineVersion,
                             modifier = Modifier.fillMaxWidth(),

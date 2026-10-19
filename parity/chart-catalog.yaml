@@ -163,7 +163,7 @@ customization:
     area: Selection and inspect
     controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
     status: partial
-    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range selection is the next increment; lasso/keep-exclude/drill and visual mark highlight remain absent; CUST12 covers the tooltip.
+    note: Click/arrow plus Ctrl/Cmd additive and Shift range selection map to exact source rows; multi-row table highlight and endpoint inspector are implemented, and Escape releases WebView focus. Lasso/rectangle, keep/exclude, drill, additive table clicks, persisted selection and visual mark highlight remain absent; CUST12 covers the tooltip.
   - id: CUST14
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]

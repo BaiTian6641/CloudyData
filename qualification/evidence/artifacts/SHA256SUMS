@@ -1,5 +1,5 @@
-658ac7ee7dfc7f2a36905ebab263998b08dd6a075a9d00f2a30e4604e80c62a4  app/build/outputs/apk/debug/app-debug.apk
-56a6b4b2d704e14d7763cd57138eb827f361808610674ae1a3c061b31b2397f9  app/src/main/assets/renderer/host.js
+49e9e5779d47560f90e9a96a029bd62fe429b809c35e75410387c48d69722a79  app/build/outputs/apk/debug/app-debug.apk
+5c00fc7e6a3b2223b9824aff4693e78e7aeee1c0b2956fe21c15cb60ec9f04e7  app/src/main/assets/renderer/host.js
 560957620bf931d20649b3afd22e1934f2a9cd31cbd85b316c2bffecafedae0b  app/src/main/assets/renderer/index.html
 e9b1f19c647fd8de6af562050b27ab945c3a4f542b949edd45f57eb6fc2d3bf8  app/src/main/assets/renderer/renderer.css
 ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
@@ -18,6 +18,8 @@ de8fe5e1f3147ba5072064d35a4ca80ce04f7a3e9d1d09ca6d0f4598f5a4016c  qualification/
 ff1383674a69c6cf8fbb0112e2e3204e418f8a102584f0bbade9b403eefde9ba  qualification/evidence/artifacts/2026-10-18-accessible-long-row-test.txt
 7627131b4b4449f9981dbe8128c97f4d7bec3e38a2b2158d5bc8af14ee7c43e8  qualification/evidence/artifacts/2026-10-18-accessible-pdf-test.pdf
 a90a06c2c84747c599fcbc6733482c9ecb3a0ff214053cf9378a83eaf0cac1a4  qualification/evidence/artifacts/2026-10-18-accessible-pdf-test.txt
+84660f97f6f81e95e73ef861fea5ae2f6ead9c942b0a8375cd41202683a2880c  qualification/evidence/artifacts/2026-10-18-additive-range-selection-ui.xml
+6a92e60ff30ef952ea1d636cd5e17e5eee4454aeb79465a607fa969647983966  qualification/evidence/artifacts/2026-10-18-additive-range-selection.png
 35118ca1302f0785fde0a9961fd98c2b7cf8f8aa4e495d6ce8f6bf5ab6e25ccb  qualification/evidence/artifacts/2026-10-18-area-chart-ui.xml
 8f667a1183adc718569d2998858bc8477ca5565a3b236edc91193c6bcef25682  qualification/evidence/artifacts/2026-10-18-area-chart.png
 34c04c68392165064eb0e223961296b7fb8254662b33ed271af4187fe7bda148  qualification/evidence/artifacts/2026-10-18-chart-customized-ui.xml

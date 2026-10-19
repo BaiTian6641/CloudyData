@@ -228,6 +228,175 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun ctrlClickAddsABarToTheCurrentSelection() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var bounds: Rect? = null
+            scenario.onActivity { bounds = it.rendererBoundsForTest() }
+            val chart = bounds!!
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            val device = UiDevice.getInstance(instrumentation)
+            device.click(
+                (chart.left + chart.width() * 0.28f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+            )
+            assertTrue("plain click did not select row 0", waitFor(5000) {
+                RendererProbeState.selectionRow.get() == 0
+            })
+            val x = (chart.left + chart.width() * 0.72f).toInt()
+            val y = (chart.top + chart.height() * 0.78f).toInt()
+            clickWithMeta(instrumentation, x, y, KeyEvent.META_CTRL_ON)
+            assertTrue("Ctrl-click did not add the second row", waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1) &&
+                    RendererProbeState.selectionMode == io.github.baitian6641.cloudydata.model.SelectionMode.TOGGLE
+            })
+        }
+    }
+
+    @Test
+    fun keyboardReplaceIsNotHijackedByAPendingPointerModifier() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var bounds: Rect? = null
+            scenario.onActivity { bounds = it.rendererBoundsForTest() }
+            val chart = bounds!!
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            var focused = false
+            scenario.onActivity { focused = it.focusRendererForTest() }
+            assertTrue("WebView did not accept focus", focused)
+            instrumentation.waitForIdleSync()
+            clickWithMeta(
+                instrumentation,
+                chart.left + 8,
+                chart.top + 8,
+                KeyEvent.META_SHIFT_ON or KeyEvent.META_SHIFT_LEFT_ON,
+            )
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, 0)
+            assertTrue("keyboard replace was hijacked by the pointer hint", waitFor(5000) {
+                RendererProbeState.selectionMode == io.github.baitian6641.cloudydata.model.SelectionMode.REPLACE &&
+                    RendererProbeState.selectionRows == setOf(0)
+            })
+        }
+    }
+
+    @Test
+    fun shiftClickSelectsAPointerRangeFromTheAnchor() {
+        RendererProbeState.reset()
+        ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var bounds: Rect? = null
+            scenario.onActivity { bounds = it.rendererBoundsForTest() }
+            val chart = bounds!!
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            UiDevice.getInstance(instrumentation).click(
+                (chart.left + chart.width() * 0.28f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+            )
+            assertTrue("plain click did not select row 0", waitFor(5000) {
+                RendererProbeState.selectionRow.get() == 0
+            })
+            val now = SystemClock.uptimeMillis()
+            instrumentation.sendKeySync(
+                KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT, 0, KeyEvent.META_SHIFT_LEFT_ON),
+            )
+            clickWithMeta(
+                instrumentation,
+                (chart.left + chart.width() * 0.72f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+                KeyEvent.META_SHIFT_ON or KeyEvent.META_SHIFT_LEFT_ON,
+            )
+            instrumentation.sendKeySync(
+                KeyEvent(now, now + 30, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0),
+            )
+            val rangeObserved = waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1) &&
+                    RendererProbeState.selectionMode == io.github.baitian6641.cloudydata.model.SelectionMode.RANGE
+            }
+            assertTrue(
+                "Shift-click did not select the range: row=${RendererProbeState.selectionRow.get()} " +
+                    "rows=${RendererProbeState.selectionRows} mode=${RendererProbeState.selectionMode}",
+                rangeObserved,
+            )
+        }
+    }
+
+    private fun clickWithMeta(
+        instrumentation: android.app.Instrumentation,
+        x: Int,
+        y: Int,
+        metaState: Int,
+    ) {
+        val now = SystemClock.uptimeMillis()
+        instrumentation.sendPointerSync(
+            android.view.MotionEvent.obtain(
+                now, now, android.view.MotionEvent.ACTION_DOWN, x.toFloat(), y.toFloat(), metaState,
+            ),
+        )
+        instrumentation.sendPointerSync(
+            android.view.MotionEvent.obtain(
+                now, now + 20, android.view.MotionEvent.ACTION_UP, x.toFloat(), y.toFloat(), metaState,
+            ),
+        )
+    }
+
+    @Test
+    fun keyboardModifiersExtendRangeAndToggleRows() {
+        RendererProbeState.reset()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, RendererProbeActivity::class.java)
+            .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var focused = false
+            scenario.onActivity { focused = it.focusRendererForTest() }
+            assertTrue("WebView did not accept focus", focused)
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            instrumentation.waitForIdleSync()
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, 0)
+            assertTrue("plain arrow did not select row 0", waitFor(5000) {
+                RendererProbeState.selectionRow.get() == 0
+            })
+            assertEquals(setOf(0), RendererProbeState.selectionRows)
+
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.META_SHIFT_ON)
+            assertTrue("Shift+Right did not extend a range", waitFor(5000) {
+                RendererProbeState.selectionMode == io.github.baitian6641.cloudydata.model.SelectionMode.RANGE &&
+                    RendererProbeState.selectionRows == setOf(0, 1)
+            })
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.META_SHIFT_ON)
+            assertTrue("second Shift+Right did not extend the same range", waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1, 2)
+            })
+
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.META_CTRL_ON)
+            assertTrue("Ctrl+Right did not add the next row", waitFor(5000) {
+                RendererProbeState.selectionMode == io.github.baitian6641.cloudydata.model.SelectionMode.TOGGLE &&
+                    RendererProbeState.selectionRows == setOf(0, 1, 2, 3)
+            })
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.META_CTRL_ON)
+            assertTrue("second Ctrl+Right did not add the next row", waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1, 2, 3, 4)
+            })
+            sendModifiedKey(instrumentation, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.META_CTRL_ON)
+            assertTrue("Ctrl+Left did not toggle the current row off", waitFor(5000) {
+                RendererProbeState.selectionRows == setOf(0, 1, 2, 4)
+            })
+        }
+    }
+
+    private fun sendModifiedKey(
+        instrumentation: android.app.Instrumentation,
+        keyCode: Int,
+        metaState: Int,
+    ) {
+        val now = SystemClock.uptimeMillis()
+        instrumentation.sendKeySync(KeyEvent(now, now, KeyEvent.ACTION_DOWN, keyCode, 0, metaState))
+        instrumentation.sendKeySync(KeyEvent(now, now + 20, KeyEvent.ACTION_UP, keyCode, 0, metaState))
+    }
+
+    @Test
     fun frozenBundleHasMatchingSvgPngPdfAndEvidenceFiles() {
         RendererProbeState.reset()
         ActivityScenario.launch(RendererProbeActivity::class.java).use { scenario ->

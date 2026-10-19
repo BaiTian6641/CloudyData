@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +66,7 @@ import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import io.github.baitian6641.cloudydata.model.valueAsDouble
@@ -75,7 +77,10 @@ fun WorksheetView(
     sheet: WorksheetDef,
     queryState: WorksheetQueryState,
     selectedRowIndex: Int,
+    selectedRowIndices: Set<Int>,
     onSelectRow: (Int) -> Unit,
+    onSelection: (Int, SelectionMode) -> Unit,
+    onClampSelection: (Int) -> Unit,
     onSetRowField: (FieldDef) -> Unit,
     onSetMeasureField: (FieldDef) -> Unit,
     onSetSeriesField: (FieldDef) -> Unit,
@@ -109,6 +114,10 @@ fun WorksheetView(
     }
     val current = ready ?: previous
     val stale = ready == null && previous != null
+
+    LaunchedEffect(current?.result?.rows?.size, current?.sql) {
+        current?.let { onClampSelection(it.result.rows.size) }
+    }
 
     Column(Modifier.fillMaxSize().background(colors.canvas)) {
         if (snapshot == null) {
@@ -225,7 +234,9 @@ fun WorksheetView(
                         result = current,
                         options = sheet.chart,
                         selectedRowIndex = selectedRowIndex,
+                        selectedRowIndices = selectedRowIndices,
                         onSelectRow = onSelectRow,
+                        onSelection = onSelection,
                         modifier = Modifier.fillMaxWidth().height(chartHeight),
                         chartId = "sheet-${sheet.id}",
                         title = sheet.chart.title?.takeIf { it.isNotBlank() } ?: chartTitle(current),
@@ -255,6 +266,7 @@ fun WorksheetView(
                     ResultTable(
                         result = current,
                         selectedRowIndex = selectedRowIndex,
+                        selectedRowIndices = selectedRowIndices,
                         onSelectRow = onSelectRow,
                         modifier = Modifier.weight(1f).fillMaxWidth(),
                     )
@@ -473,6 +485,7 @@ private fun QueryNotice(
 internal fun NativeBarChartCard(
     result: WorksheetResult,
     selectedRowIndex: Int,
+    selectedRowIndices: Set<Int>,
     onSelectRow: (Int) -> Unit,
     modifier: Modifier = Modifier,
     title: String = chartTitle(result),
@@ -527,7 +540,7 @@ internal fun NativeBarChartCard(
                 val value = valueAsDouble(row.getOrNull(valueColumn))
                 val label = labelColumn?.let { displayValue(row.getOrNull(it)) } ?: "Total"
                 val fraction = ((value ?: 0.0) / maxValue).coerceIn(0.0, 1.0).toFloat()
-                val isSelected = index == selectedRowIndex
+                val isSelected = index in selectedRowIndices
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -587,6 +600,7 @@ internal fun NativeBarChartCard(
 private fun ResultTable(
     result: WorksheetResult,
     selectedRowIndex: Int,
+    selectedRowIndices: Set<Int>,
     onSelectRow: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -632,7 +646,7 @@ private fun ResultTable(
         }
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(engineResult.rows) { index, row ->
-                val isSelected = index == selectedRowIndex
+                val isSelected = index in selectedRowIndices
                 Row(
                     Modifier
                         .fillMaxWidth()

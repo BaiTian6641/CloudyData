@@ -285,3 +285,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - PDF remains untagged; worksheet-only print and spooler completion remain
   partial. The MediaStore qualification helper now removes all prior
   `cloudy_ui_q06*` copies to prevent unique-name exhaustion on repeated runs.
+
+## 2026-10-18 — additive/range chart selection
+
+- Added a pure row-selection reducer (replace/toggle/range + anchor), renderer
+  mode transport, native pointer-modifier hint, multi-row table highlight and
+  endpoint inspector.
+- Actual emulator pointer Ctrl/Shift and hardware Shift/Ctrl keyboard tests pass;
+  product table highlights rows 0–2 after replace/range/add. API37 47/47; JVM
+  28/28; lint 0/5.
+- Lasso, keep/exclude, drill, persisted selection and visual mark highlight
+  remain pending.

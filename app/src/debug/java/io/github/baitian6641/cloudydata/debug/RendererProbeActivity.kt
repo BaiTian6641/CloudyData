@@ -13,6 +13,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import io.github.baitian6641.cloudydata.chart.AxisSpec
 import io.github.baitian6641.cloudydata.chart.ChartKind
+import io.github.baitian6641.cloudydata.model.RowSelectionReducer
+import io.github.baitian6641.cloudydata.model.RowSelectionState
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.chart.ChartPoint
 import io.github.baitian6641.cloudydata.chart.ChartSeries
 import io.github.baitian6641.cloudydata.chart.ChartSpec
@@ -30,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Debug-only qualification surface for the bounded renderer. It is not part of
  * the shipped application's navigation and does not own workbook state.
  */
-@SuppressLint("SetTextI18n")
+@SuppressLint("SetTextI18n", "ClickableViewAccessibility")
 class RendererProbeActivity : Activity() {
     private lateinit var container: FrameLayout
     private lateinit var status: TextView
@@ -169,12 +172,14 @@ class RendererProbeActivity : Activity() {
                     sourceRowIndex: Int,
                     series: String,
                     x: String,
+                    mode: SelectionMode,
                 ) {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
-                        RendererProbeState.selectionRow.set(sourceRowIndex)
-                        RendererProbeState.selectionCount.incrementAndGet()
-                        status.text = "Selected row=$sourceRowIndex · series=$series · x=$x · $chartId r$revision"
+                        RendererProbeState.applySelection(sourceRowIndex, mode)
+                        status.text = "Selected row=$sourceRowIndex · mode=$mode · " +
+                            "rows=${RendererProbeState.selectionRows.size} · series=$series · x=$x · " +
+                            "$chartId r$revision"
                     }
                 }
 
@@ -284,6 +289,15 @@ class RendererProbeActivity : Activity() {
             web.setBackgroundColor(Color.TRANSPARENT)
             web.isFocusable = true
             web.isFocusableInTouchMode = true
+            web.setOnTouchListener { view, event ->
+                if (event.actionMasked == android.view.MotionEvent.ACTION_DOWN) {
+                    newHost.notePointerMetaState(event.metaState)
+                }
+                if (event.actionMasked == android.view.MotionEvent.ACTION_UP) {
+                    view.performClick()
+                }
+                false
+            }
             val params = if (requestedWidthDp > 0f && requestedHeightDp > 0f) {
                 val density = resources.displayMetrics.density
                 FrameLayout.LayoutParams(
@@ -582,6 +596,14 @@ object RendererProbeState {
     val blockedRequests = AtomicInteger(0)
     val selectionRow = AtomicInteger(-1)
     val selectionCount = AtomicInteger(0)
+
+    @Volatile
+    var selectionRows: Set<Int> = emptySet()
+        private set
+
+    @Volatile
+    var selectionMode: SelectionMode = SelectionMode.REPLACE
+        private set
     val focusExitCount = AtomicInteger(0)
 
     @Volatile
@@ -629,6 +651,9 @@ object RendererProbeState {
         blockedRequests.set(0)
         selectionRow.set(-1)
         selectionCount.set(0)
+        selectionRows = emptySet()
+        selectionMode = SelectionMode.REPLACE
+        selectionState = RowSelectionState()
         focusExitCount.set(0)
         exportedSvg = null
         exportedPng = null
@@ -683,6 +708,16 @@ object RendererProbeState {
     fun awaitSvg(timeoutSeconds: Long): String? {
         svgLatch.await(timeoutSeconds, TimeUnit.SECONDS)
         return exportedSvg
+    }
+
+    private var selectionState = RowSelectionState()
+
+    fun applySelection(row: Int, mode: SelectionMode) {
+        selectionState = RowSelectionReducer.select(selectionState, row, mode)
+        selectionRow.set(row)
+        selectionRows = selectionState.rows
+        selectionMode = mode
+        selectionCount.incrementAndGet()
     }
 
     fun noteRendererDeath() {

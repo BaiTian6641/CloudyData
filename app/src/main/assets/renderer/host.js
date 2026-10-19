@@ -10,7 +10,8 @@
     tooltipEnabled: true,
     exportTitle: '',
     exportSource: '',
-    exportDark: false
+    exportDark: false,
+    pointerMode: 'replace'
   };
 
   function post(message) {
@@ -86,7 +87,13 @@
     });
   }
 
-  function postSelection(chartId, revision, datum) {
+  function selectionMode(event) {
+    if (event && event.shiftKey) return 'range';
+    if (event && (event.ctrlKey || event.metaKey)) return 'toggle';
+    return 'replace';
+  }
+
+  function postSelection(chartId, revision, datum, mode, pointer) {
     if (!datum || typeof datum.sourceRowIndex !== 'number') return;
     state.selectedRow = datum.sourceRowIndex;
     showTooltip(datum);
@@ -97,7 +104,9 @@
       sourceRowIndex: datum.sourceRowIndex,
       series: String(datum.series || ''),
       x: String(datum.x || ''),
-      y: typeof datum.y === 'number' && isFinite(datum.y) ? datum.y : null
+      y: typeof datum.y === 'number' && isFinite(datum.y) ? datum.y : null,
+      mode: mode === 'toggle' || mode === 'range' ? mode : 'replace',
+      pointer: pointer === true
     });
   }
 
@@ -110,7 +119,7 @@
     post(message);
   }
 
-  function moveSelection(delta) {
+  function moveSelection(delta, mode) {
     if (!state.view) return false;
     var rows = [];
     try {
@@ -132,8 +141,15 @@
     var next = current < 0
       ? (delta > 0 ? 0 : rows.length - 1)
       : Math.max(0, Math.min(rows.length - 1, current + delta));
-    postSelection(state.activeChartId, state.activeRevision, rows[next]);
+    postSelection(state.activeChartId, state.activeRevision, rows[next], mode, false);
     return true;
+  }
+
+  var viewElement = document.getElementById('view');
+  if (viewElement) {
+    viewElement.addEventListener('click', function (event) {
+      state.pointerMode = selectionMode(event);
+    }, true);
   }
 
   window.addEventListener('keydown', function (event) {
@@ -142,12 +158,13 @@
       postFocusExit();
       return;
     }
+    var keyMode = event.shiftKey ? 'range' : ((event.ctrlKey || event.metaKey) ? 'toggle' : 'replace');
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      if (moveSelection(1)) event.preventDefault();
+      if (moveSelection(1, keyMode)) event.preventDefault();
       return;
     }
     if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      if (moveSelection(-1)) event.preventDefault();
+      if (moveSelection(-1, keyMode)) event.preventDefault();
     }
   }, true);
 
@@ -436,13 +453,15 @@
       state.view = view;
       view.addSignalListener('cloudySelection', function (name, value) {
         if (Array.isArray(value) && typeof value[0] === 'number' && value[0] >= 0) {
+          var mode = state.pointerMode;
+          state.pointerMode = 'replace';
           postSelection(chartId, revision, {
             sourceRowIndex: value[0],
             series: value[1],
             x: value[2],
             exactY: value[3],
             y: value[4]
-          });
+          }, mode, true);
         }
       });
       view.addSignalListener('cloudyHover', function (name, value) {

@@ -173,3 +173,12 @@ PDF to Android's print spooler and the product exposes **Print worksheet…**. A
 real `Save as PDF` print produced a two-page, text-extractable A4 PDF. The PDF is
 not tagged and print-spooler completion is not observed. Evidence:
 `qualification/evidence/2026-10-18-s16-print-accessible.md`.
+
+### Additive/range selection addendum
+
+Selection now carries `replace`/`toggle`/`range` modes with a source-row anchor,
+and the workbook keeps a multi-row set plus endpoint. Renderer JS reads pointer
+modifiers; a short-lived native MotionEvent hint covers WebView Shift-pointer
+gaps. Stale IDs remain rejected by the revision gate. Evidence:
+`qualification/evidence/2026-10-18-cust13-additive-range.md`. Lasso,
+keep/exclude, drill, persistence and visual mark highlight remain pending.

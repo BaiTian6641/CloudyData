@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Base64
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -16,6 +17,7 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import io.github.baitian6641.cloudydata.BuildConfig
 import io.github.baitian6641.cloudydata.chart.ChartSpec
+import io.github.baitian6641.cloudydata.model.SelectionMode
 import java.io.ByteArrayInputStream
 import kotlin.math.abs
 import org.json.JSONArray
@@ -52,6 +54,7 @@ class VegaRendererHost(
             sourceRowIndex: Int,
             series: String,
             x: String,
+            mode: SelectionMode,
         )
         fun onFocusExit()
         fun onSvgExport(chartId: String, revision: Long, svg: String)
@@ -90,6 +93,8 @@ class VegaRendererHost(
     private var ready = false
     private var pendingSpec: PendingSpec? = null
     private val revisionGate = RendererRevisionGate()
+    private var pointerMode: SelectionMode? = null
+    private var pointerModeAt = 0L
 
     private data class PendingSpec(
         val spec: ChartSpec,
@@ -183,6 +188,23 @@ class VegaRendererHost(
             return
         }
         dispatch(request)
+    }
+
+    /** Captures Android pointer modifiers that WebView does not expose reliably as DOM keys. */
+    fun notePointerMetaState(metaState: Int) {
+        pointerMode = when {
+            metaState and android.view.KeyEvent.META_SHIFT_ON != 0 -> SelectionMode.RANGE
+            metaState and android.view.KeyEvent.META_CTRL_ON != 0 -> SelectionMode.TOGGLE
+            metaState and android.view.KeyEvent.META_META_ON != 0 -> SelectionMode.TOGGLE
+            else -> SelectionMode.REPLACE
+        }
+        pointerModeAt = SystemClock.uptimeMillis()
+    }
+
+    private fun consumePointerMode(): SelectionMode? {
+        val mode = pointerMode
+        pointerMode = null
+        return if (mode != null && SystemClock.uptimeMillis() - pointerModeAt <= 500L) mode else null
     }
 
     fun requestSvgExport() {
@@ -361,12 +383,25 @@ class VegaRendererHost(
                 if (!revisionGate.isCurrent(chartId, revision)) return
                 val row = json.optInt("sourceRowIndex", -1)
                 if (row < 0 || row > MAX_SOURCE_ROW_INDEX) return
+                val reportedMode = when (json.optString("mode")) {
+                    "toggle" -> SelectionMode.TOGGLE
+                    "range" -> SelectionMode.RANGE
+                    else -> SelectionMode.REPLACE
+                }
+                val isPointer = json.optBoolean("pointer", false)
+                val hint = if (isPointer) consumePointerMode() else null
+                val mode = if (isPointer && reportedMode == SelectionMode.REPLACE) {
+                    hint ?: reportedMode
+                } else {
+                    reportedMode
+                }
                 listener.onSelectionIntent(
                     chartId,
                     revision,
                     row,
                     json.optString("series").take(MAX_SELECTION_LABEL),
                     json.optString("x").take(MAX_SELECTION_LABEL),
+                    mode,
                 )
             }
             "FocusExitIntent" -> {

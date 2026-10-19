@@ -53,8 +53,8 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 24/24. Emulator instrumentation:
-  43/43, 0 failures. The physical Googlebook was removed by the owner; new
+- Lint: 0 errors (warnings documented). JVM tests: 28/28. Emulator instrumentation:
+  47/47, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -77,6 +77,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s16-titled-export.md`
 - `qualification/evidence/2026-10-18-s16-frozen-bundle.md`
 - `qualification/evidence/2026-10-18-s16-print-accessible.md`
+- `qualification/evidence/2026-10-18-cust13-additive-range.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -99,12 +100,14 @@ unless stated otherwise.
   verified on the rootable emulator. The real kill run reports
   `surface=640x400 · view=640x400 · host=3 · recovered after 1 death(s)`.
 - Renderer selection is verified: actual emulator taps select exact source table
-  rows, hardware arrows move in table order, Escape/Tab move keyboard routing
-  out of the WebView (extra arrows no longer select), and stale chart/revision
-  intents are gated. Additive/range/lasso selection, visual mark highlight,
-  product auto-recovery, focus/TalkBack traversal, live OS-window resize and
-  memory limits remain unverified. The native summary/table is the current
-  accessible equivalent.
+  rows; hardware arrows move in table order; Ctrl/Cmd click/arrow toggles and
+  Shift click/arrow selects an inclusive range; the table highlights all exact
+  rows while the endpoint drives the inspector; Escape/Tab release keyboard
+  routing and stale chart/revision intents are gated. Lasso/rectangle,
+  keep/exclude, drill, persisted selection, visual mark highlight, product
+  auto-recovery, focus/TalkBack traversal, live OS-window resize and memory limits
+  remain unverified. The native summary/table is the current accessible
+  equivalent.
 - Product visual export is verified for a live worksheet: individual and frozen
   multi-format actions use real DocumentsUI/SAF destinations and provider-owned
   bytes. The frozen bundle produces basename/timestamp-matched SVG/PNG/PDF from
@@ -150,17 +153,18 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST13 additive/range chart selection.**
+**CUST13 visual mark highlight for the selected row set.**
 
-- Files: `host.js`/renderer signals, `VegaRendererHost.kt`, `VegaChart.kt`,
-  renderer/selection state, tests.
-- Action: extend the existing exact-row selection to additive and range
-  selection (click modifier and keyboard range), preserve source-row mapping and
-  stale-revision rejection, and keep the native table/inspector authoritative.
-- Acceptance: real emulator additive/range gestures select the intended exact
-  rows; stale sets are rejected; accessible table remains exact.
-- Then: pointer-hover qualification, remaining Q18 injections, tagged PDF and
-  dashboard/story print.
+- Files: `VegaSpecBuilder.kt`, `host.js`, `VegaRendererHost.kt`, `VegaChart.kt`,
+  tests.
+- Action: apply the native row-selection set to chart marks (opacity/stroke)
+  through a revision-scoped `ApplySelection` message without changing query
+  semantics; keep table/inspector exact and support clear/replace.
+- Acceptance: additive/range sets visibly highlight exactly those marks on the
+  emulator, stale selection updates are rejected, and table/mark identities
+  agree.
+- Then: keep/exclude/drill semantics, pointer-hover qualification, tagged PDF
+  and remaining Q18 injections.
 
 ## Protected context
 
