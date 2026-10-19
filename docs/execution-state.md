@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `79d259a`; the gridline-contrast change is in the
-next local commit. `main` tracks `origin/main` at the pushed border baseline.
+**Source:** commits through `9a54816`. `main` tracks `origin/main`; the
+gridline-contrast stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -255,20 +255,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 persisted major-gridline width.**
+**CUST06 bounded crowded-value-label policy.**
 
-- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: persisted
-  gridline visibility, typed axis/grid spec, Vega axis lowering and settings.
-- Files: `ChartOptions`, `ChartSpec`/`GridlineSpec`, `ChartSpecBuilder`,
+- Requirements/stage: CUST06, F36/F38, Q21, S11. Prerequisites: visible value
+  labels, persisted label font/decimals, typed Bar/Line/Area specs and Vega text
+  marks.
+- Files: `ChartOptions`, `ChartSpec`/`LabelSpec`, `ChartSpecBuilder`,
   `VegaSpecBuilder`, `ChartSettingsDialog`, tests and evidence.
-- Action: add an optional 0.5–3.0 dp value-axis gridline width, applied only
-  when major gridlines are visible and inherited by export scenes.
-- Acceptance: blank keeps the renderer default; values persist and never alter
-  data, ticks or chart dimensions; invalid bounds are rejected. Device visual
-  review is required before verified status.
+- Action: add an optional "hide crowded labels" policy. Default shows all valid
+  labels; automatic hides bar labels when band width is below a bounded threshold
+  and Line/Area labels when average horizontal spacing is too small. The policy
+  affects text marks only.
+- Acceptance: default output is unchanged; automatic never changes data, values,
+  selection or accessible summaries; toggling persists and does not rerun SQL.
+  Device visual review is required before verified status.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
-  labels, line width, titles, units, padding and X-label visuals wait for an
-  authorized device.
+  labels, line width, titles, units, padding, X-label and border visuals wait for
+  an authorized device.
 
 ## Protected context
 
