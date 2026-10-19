@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `56477e1`. `main` tracks `origin/main`; the marker
-visibility/size stage is pushed.
+**Source:** commits through `0f3df1b`. `main` tracks `origin/main`; the marker
+shape stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
