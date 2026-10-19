@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `41e849a`. `main` tracks `origin/main`; the
-pushed baseline through `598f1f9` is on the intended GitHub remote and the Y
-tick-count commit is pushed next.
+**Source:** commits through `72e9f31`. `main` tracks `origin/main`; the
+Y tick-count commit is pushed to the intended GitHub remote.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
