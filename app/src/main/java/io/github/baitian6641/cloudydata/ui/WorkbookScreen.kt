@@ -321,6 +321,7 @@ fun WorkbookScreen(
                                 onSetMeasureField = viewModel::setMeasureField,
                                 onSetSeriesField = viewModel::setSeriesField,
                                 onSetSecondaryMeasureField = viewModel::setSecondaryMeasureField,
+                                onSetSecondaryAggregation = viewModel::setSecondaryAggregation,
                                 onClearRowField = viewModel::clearRowField,
                                 onClearMeasureField = viewModel::clearMeasureField,
                                 onClearSeriesField = viewModel::clearSeriesField,

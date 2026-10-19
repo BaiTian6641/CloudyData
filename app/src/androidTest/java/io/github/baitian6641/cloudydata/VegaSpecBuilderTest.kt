@@ -1473,7 +1473,7 @@ class VegaSpecBuilderTest {
         )
         val spec = ChartSpecBuilder.build(
             "dual", 0, result,
-            ChartOptions(secondaryAxisTitle = "Cost"),
+            ChartOptions(secondaryAxisTitle = "Cost", secondaryShowLabels = true),
             "derived",
         )
         val json = VegaSpecBuilder.build(
@@ -1481,7 +1481,7 @@ class VegaSpecBuilderTest {
         )
         assertNotNull(json.getJSONArray("data").optJSONObject(3))
         assertEquals("table2", json.getJSONArray("data").getJSONObject(3).getString("name"))
-        assertEquals(4, json.getJSONArray("scales").length())
+        assertEquals(5, json.getJSONArray("scales").length())
         assertEquals("y2", json.getJSONArray("scales").getJSONObject(3).getString("name"))
         val rightAxis = json.getJSONArray("axes").getJSONObject(json.getJSONArray("axes").length() - 1)
         assertEquals("right", rightAxis.getString("orient"))
@@ -1490,6 +1490,23 @@ class VegaSpecBuilderTest {
             .map { json.getJSONArray("marks").getJSONObject(it).optString("name") }
         assertTrue(markNames.contains("cloudySecondaryLine"))
         assertTrue(markNames.contains("cloudySecondaryHit"))
+        assertTrue(markNames.contains("cloudySecondaryMarker"))
+        assertTrue(markNames.contains("cloudySecondaryLabel"))
+        val secondaryMarker = json.getJSONArray("marks")
+            .getJSONObject(markNames.indexOf("cloudySecondaryMarker"))
+            .getJSONObject("encode").getJSONObject("enter")
+        assertEquals("y2", secondaryMarker.getJSONObject("y").getString("scale"))
+        val secondaryLabel = json.getJSONArray("marks")
+            .getJSONObject(markNames.indexOf("cloudySecondaryLabel"))
+            .getJSONObject("encode").getJSONObject("enter")
+        assertTrue(secondaryLabel.getJSONObject("y").getString("signal").contains("scale('y2'"))
+        assertTrue(secondaryLabel.getJSONObject("text").getString("signal").contains("datum.exactY"))
+        assertTrue(
+            (0 until json.getJSONArray("scales").length()).any {
+                json.getJSONArray("scales").getJSONObject(it).optString("name") == "secondaryLegend"
+            },
+        )
+        assertEquals("secondaryLegend", json.getJSONArray("legends").getJSONObject(0).getString("stroke"))
         val secondaryLine = json.getJSONArray("marks")
             .getJSONObject(markNames.indexOf("cloudySecondaryLine"))
             .getJSONObject("encode").getJSONObject("enter")
@@ -1528,6 +1545,27 @@ class VegaSpecBuilderTest {
             synchronized.getJSONArray("scales").getJSONObject(3)
                 .getJSONObject("domain").getString("data"),
         )
+        val legendOff = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "dual-no-legend", 0, result,
+                ChartOptions(legendVisible = false),
+                "derived",
+            ),
+            false, listOf(0x006A6A), 600f, 320f,
+        )
+        assertFalse(legendOff.has("legends"))
+        val noMarks = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "dual-no-marks", 0, result,
+                ChartOptions(secondaryShowMarkers = false, secondaryShowLabels = false),
+                "derived",
+            ),
+            false, listOf(0x006A6A), 600f, 320f,
+        )
+        val noMarkNames = (0 until noMarks.getJSONArray("marks").length())
+            .map { noMarks.getJSONArray("marks").getJSONObject(it).optString("name") }
+        assertFalse(noMarkNames.contains("cloudySecondaryMarker"))
+        assertFalse(noMarkNames.contains("cloudySecondaryLabel"))
     }
 
 

@@ -133,6 +133,9 @@ object ChartSpecBuilder {
                     titleAnchor = options.axisTitleAnchor,
                 ),
                 synchronizedAxis = options.secondaryAxisSynchronized,
+                showMarkers = options.secondaryShowMarkers,
+                showLabels = options.secondaryShowLabels,
+                showLegend = options.legendVisible,
             )
         }
         val barHasSeries = hasSeries && series.any { it.points.isNotEmpty() }

@@ -260,6 +260,15 @@ object VegaSpecBuilder {
                     .put("domain", JSONObject().put("data", "table2").put("field", "y"))
             }
         }
+        val secondaryLegendScale = secondaryLayer?.let { layer ->
+            JSONObject()
+                .put("name", "secondaryLegend")
+                .put("type", "ordinal")
+                .put("domain", JSONArray().put(layer.series.firstOrNull()?.key ?: "Secondary"))
+                .put("range", JSONArray().put(colorHex(
+                    if (dark) CloudyTokens.Dark.accent else CloudyTokens.Light.accent,
+                )))
+        }
         if (secondaryLayer != null) {
             axes.put(
                 axisJson(
@@ -288,6 +297,8 @@ object VegaSpecBuilder {
                 marks.put(barSelectionMark(spec, textColor))
                 if (secondaryLayer != null) {
                     marks.put(secondaryLineMark(spec, secondaryColor))
+                    if (secondaryLayer.showMarkers) marks.put(secondaryMarkerMark(spec, secondaryColor))
+                    if (secondaryLayer.showLabels) marks.put(secondaryLabelMark(spec, textColor))
                     marks.put(secondaryHitMark(spec))
                 }
             }
@@ -342,7 +353,10 @@ object VegaSpecBuilder {
             .put(
                 "scales",
                 JSONArray().put(xScale).put(yScale).put(colorScale)
-                    .also { scales -> secondaryScale?.let { scales.put(it) } },
+                    .also { scales ->
+                        secondaryScale?.let { scales.put(it) }
+                        secondaryLegendScale?.let { scales.put(it) }
+                    },
             )
             .put("axes", axes)
             .put(
@@ -368,8 +382,12 @@ object VegaSpecBuilder {
                     .put("units", spec.units ?: ""),
             )
             .put("marks", marks)
-        val legend = legendJson(spec, textColor, widthDp)
-        if (legend != null) root.put("legends", JSONArray().put(legend))
+        val legends = JSONArray()
+        legendJson(spec, textColor, widthDp)?.let { legends.put(it) }
+        if (secondaryLayer != null && secondaryLayer.showLegend) {
+            legends.put(secondaryLegendJson(spec, textColor, widthDp))
+        }
+        if (legends.length() > 0) root.put("legends", legends)
         return root
     }
 
@@ -1222,6 +1240,94 @@ object VegaSpecBuilder {
             .put("from", JSONObject().put("data", "selected"))
             .put("clip", true)
             .put("encode", JSONObject().put("enter", enter))
+    }
+
+    private fun secondaryLegendJson(
+        spec: ChartSpec,
+        textColor: String,
+        widthDp: Float,
+    ): JSONObject {
+        val orient = when (spec.legend.position) {
+            LegendPosition.BOTTOM -> "bottom"
+            LegendPosition.RIGHT -> "right"
+        }
+        val direction = spec.legend.orientation?.name?.lowercase() ?: when (spec.legend.position) {
+            LegendPosition.BOTTOM -> "horizontal"
+            LegendPosition.RIGHT -> "vertical"
+        }
+        return JSONObject()
+            .put("stroke", "secondaryLegend")
+            .put("title", "Secondary")
+            .put("orient", orient)
+            .put("direction", direction)
+            .put("labelColor", textColor)
+            .put("titleColor", textColor)
+            .put("labelFontSize", 11)
+            .put("titleFontSize", 11)
+            .put("labelLimit", LegendLayout.labelLimitDp(widthDp))
+            .put("symbolType", "stroke")
+            .put("symbolSize", 200)
+            .put("symbolStrokeWidth", spec.lineWidth ?: 2.0)
+            .also { legend ->
+                spec.lineOpacity?.let { legend.put("symbolOpacity", it) }
+                lineDashArray(spec, 2.0)?.let { legend.put("symbolDash", it) }
+            }
+    }
+
+    private fun secondaryMarkerMark(spec: ChartSpec, color: String): JSONObject = JSONObject()
+        .put("name", "cloudySecondaryMarker")
+        .put("type", "symbol")
+        .put("interactive", false)
+        .put("from", JSONObject().put("data", "table2"))
+        .put("clip", false)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y2").put("field", "y"))
+                    .put("fill", JSONObject().put("value", color))
+                    .put("size", JSONObject().put("value", 30))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
+    private fun secondaryLabelMark(spec: ChartSpec, textColor: String): JSONObject {
+        val fontSize = spec.labels.fontSize ?: 10
+        val endpoint = "scale('y2', datum.y)"
+        val minY = fontSize + 2
+        val maxY = "cloudyPlotHeight - ${fontSize + 2}"
+        val clamped = "(($endpoint - 8 < $minY) ? ($minY - $endpoint) : " +
+            "(($endpoint - 8 > $maxY) ? ($maxY - $endpoint) : -8))"
+        return JSONObject()
+        .put("name", "cloudySecondaryLabel")
+        .put("type", "text")
+        .put("interactive", false)
+        .put("from", JSONObject().put("data", "table2"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("signal", "($endpoint) + ($clamped)"))
+                    .put(
+                        "text",
+                        JSONObject().put(
+                            "signal",
+                            "isValid(datum.y) ? " +
+                                "(datum.exactY === null ? format(datum.y, ',.2f') : datum.exactY) : ''",
+                        ),
+                    )
+                    .put("align", JSONObject().put("value", "center"))
+                    .put("baseline", JSONObject().put("value", "bottom"))
+                    .put("fill", JSONObject().put("value", textColor))
+                    .put("fontSize", JSONObject().put("value", fontSize))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
     }
 
     private fun secondaryLineMark(spec: ChartSpec, color: String): JSONObject {

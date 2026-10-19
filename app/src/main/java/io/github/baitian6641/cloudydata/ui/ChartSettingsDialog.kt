@@ -101,6 +101,8 @@ fun ChartSettingsDialog(
     var areaStackExpanded by remember { mutableStateOf(false) }
     var secondaryAxisTitle by remember { mutableStateOf(current.secondaryAxisTitle.orEmpty()) }
     var secondaryAxisSynchronized by remember { mutableStateOf(current.secondaryAxisSynchronized) }
+    var secondaryShowMarkers by remember { mutableStateOf(current.secondaryShowMarkers) }
+    var secondaryShowLabels by remember { mutableStateOf(current.secondaryShowLabels) }
     var labelFontSize by remember { mutableStateOf(current.labelFontSize?.toString().orEmpty()) }
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
@@ -1065,6 +1067,18 @@ fun ChartSettingsDialog(
                         checked = secondaryAxisSynchronized,
                         onCheckedChange = { secondaryAxisSynchronized = it },
                     )
+                    ChartToggleRow(
+                        title = "Secondary markers",
+                        description = "Show point symbols on the secondary line.",
+                        checked = secondaryShowMarkers,
+                        onCheckedChange = { secondaryShowMarkers = it },
+                    )
+                    ChartToggleRow(
+                        title = "Secondary labels",
+                        description = "Show secondary values above each observed point.",
+                        checked = secondaryShowLabels,
+                        onCheckedChange = { secondaryShowLabels = it },
+                    )
                 }
                 if (sheet.markType == MarkType.BAR) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1265,6 +1279,8 @@ fun ChartSettingsDialog(
                             areaStackMode = areaStackMode,
                             secondaryAxisTitle = clean(secondaryAxisTitle),
                             secondaryAxisSynchronized = secondaryAxisSynchronized,
+                            secondaryShowMarkers = secondaryShowMarkers,
+                            secondaryShowLabels = secondaryShowLabels,
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

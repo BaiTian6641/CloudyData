@@ -898,3 +898,19 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   BarChartQueryTest 1/1; lint 0 errors/5 warnings. Googlebook untouched;
   arbitrary layers, secondary legend/aggregation UI, labels and visual checks
   remain open.
+
+## 2026-10-19 — CUST09.2 secondary aggregation/legend/labels
+
+- Secondary Values now has its own aggregation control and no longer follows
+  primary aggregation changes. A stroke legend, persisted marker/label toggles
+  and exact secondary point labels were added; the secondary legend uses the
+  existing position/orientation settings while bar legends stay non-interactive.
+- Review-driven fixes: secondary labels clamp inside the plot, markers are not
+  clipped at the domain edge, the legend mirrors line dash/opacity, and tests
+  assert the right-axis title, legend title, secondary label/marker presence,
+  `y2` bindings and legend/marker/label toggle-off behavior.
+- Validation: JVM 74/74; DualAxisQueryTest 1/1 (SUM primary vs AVG secondary on
+  non-monotonic values); VegaSpecBuilderTest 21/21; VegaRendererProbeTest
+  43/43; ChartSettingsPersistenceTest 12/12; lint 0 errors/5 warnings.
+  Googlebook untouched; secondary formatting/units, interactive legend and
+  visual checks remain open.

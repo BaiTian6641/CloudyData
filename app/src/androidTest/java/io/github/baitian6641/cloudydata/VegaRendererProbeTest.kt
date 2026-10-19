@@ -613,7 +613,7 @@ class VegaRendererProbeTest {
             assertTrue("secondary line missing", (result.sceneMarks["line"] ?: 0) > 0)
             assertTrue(
                 "secondary axis title missing: ${result.svgTexts}",
-                result.svgTexts.any { it == "Cost" },
+                result.svgTexts.any { it == "Cost axis" },
             )
             scenario.onActivity { it.exportForTest() }
             val svg = RendererProbeState.awaitSvg(15)

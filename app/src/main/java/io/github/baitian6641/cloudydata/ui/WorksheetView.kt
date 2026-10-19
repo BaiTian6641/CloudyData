@@ -105,6 +105,7 @@ fun WorksheetView(
     onSetMeasureField: (FieldDef) -> Unit,
     onSetSeriesField: (FieldDef) -> Unit,
     onSetSecondaryMeasureField: (FieldDef) -> Unit,
+    onSetSecondaryAggregation: (Aggregation) -> Unit,
     onClearRowField: () -> Unit,
     onClearMeasureField: () -> Unit,
     onClearSeriesField: () -> Unit,
@@ -224,6 +225,8 @@ fun WorksheetView(
                     fields = columns.filter { it.role == FieldRole.MEASURE },
                     onSelect = onSetSecondaryMeasureField,
                     onClear = onClearSecondaryMeasureField,
+                    aggregation = sheet.secondaryAggregation,
+                    onAggregation = onSetSecondaryAggregation,
                 )
             }
             Row(

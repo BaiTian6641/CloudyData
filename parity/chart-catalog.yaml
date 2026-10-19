@@ -34,7 +34,7 @@ families:
     family: Combo / dual axis
     variants: [bar_line, dual_measure, synchronized]
     status: partial
-    note: Vertical primary bars can carry one persisted secondary measure as a right-axis line with an independent or synchronized domain. Secondary legend, independent aggregation UI, secondary labels/markers, color-series combination, horizontal dual axes and visual export are pending.
+    note: Vertical primary bars can carry one persisted secondary measure as a right-axis line with an independent or synchronized domain, independent aggregation, secondary legend, markers/labels and shared row identity. Secondary number/currency formatting, interactive legend toggling, color-series combination, horizontal dual axes and visual export are pending.
   - id: CH05
     family: Scatter
     variants: [single, multi_series, sized]
@@ -147,7 +147,7 @@ customization:
     area: Layers and dual axis
     controls: [add_layer, reorder_layer, per_layer_mark, per_layer_axis, remove_layer]
     status: partial
-    note: One typed secondary LINE layer with a persisted second measure, right axis, independent/synchronized domain, shared source-row identity, table/PDF column and settings exists for vertical bars. Arbitrary ordered layers, reorder/remove, secondary legend/aggregation UI, labels/markers and horizontal dual axes remain pending.
+    note: One typed secondary LINE layer with a persisted second measure, right axis, independent/synchronized domain, independent aggregation editing, secondary legend/markers/labels, shared source-row identity, table/PDF column and settings exists for vertical bars. Arbitrary ordered layers, reorder/remove, secondary number/currency formatting, interactive legend toggling and horizontal dual axes remain pending.
   - id: CUST10
     area: Reference and statistics
     controls: [reference_line, reference_band, distribution, trend, forecast, cluster, confidence]

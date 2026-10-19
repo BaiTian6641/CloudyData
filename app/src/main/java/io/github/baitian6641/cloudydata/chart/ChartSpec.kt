@@ -50,6 +50,9 @@ data class ChartLayer(
     val series: List<ChartSeries>,
     val axis: AxisSpec,
     val synchronizedAxis: Boolean = false,
+    val showMarkers: Boolean = true,
+    val showLabels: Boolean = false,
+    val showLegend: Boolean = true,
 )
 
 data class AxisSpec(

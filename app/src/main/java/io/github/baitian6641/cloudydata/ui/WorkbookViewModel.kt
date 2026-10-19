@@ -253,6 +253,10 @@ class WorkbookViewModel(
         }
     }
 
+    fun setSecondaryAggregation(aggregation: Aggregation) {
+        updateActiveSheet { it.copy(secondaryAggregation = aggregation) }
+    }
+
     fun clearSecondaryMeasureField() {
         updateActiveSheet { it.copy(secondaryMeasureFieldId = null, filter = null) }
     }
@@ -265,7 +269,6 @@ class WorkbookViewModel(
         updateActiveSheet { sheet ->
             sheet.copy(
                 aggregation = aggregation,
-                secondaryAggregation = aggregation,
                 chart = if (aggregation == Aggregation.SUM || aggregation == Aggregation.COUNT) {
                     sheet.chart
                 } else {

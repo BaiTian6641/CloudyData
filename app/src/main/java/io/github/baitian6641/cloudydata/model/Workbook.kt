@@ -83,6 +83,8 @@ data class ChartOptions(
     val areaStackMode: StackMode = StackMode.NONE,
     val secondaryAxisTitle: String? = null,
     val secondaryAxisSynchronized: Boolean = false,
+    val secondaryShowMarkers: Boolean = true,
+    val secondaryShowLabels: Boolean = false,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -142,6 +144,8 @@ data class ChartOptions(
         .put("areaStackMode", areaStackMode.name)
         .put("secondaryAxisTitle", secondaryAxisTitle ?: JSONObject.NULL)
         .put("secondaryAxisSynchronized", secondaryAxisSynchronized)
+        .put("secondaryShowMarkers", secondaryShowMarkers)
+        .put("secondaryShowLabels", secondaryShowLabels)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -278,6 +282,8 @@ data class ChartOptions(
                 json.optString("secondaryAxisTitle").takeIf { it.isNotEmpty() }
             },
             secondaryAxisSynchronized = json.optBoolean("secondaryAxisSynchronized", false),
+            secondaryShowMarkers = json.optBoolean("secondaryShowMarkers", true),
+            secondaryShowLabels = json.optBoolean("secondaryShowLabels", false),
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {

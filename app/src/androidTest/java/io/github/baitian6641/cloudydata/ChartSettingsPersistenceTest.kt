@@ -115,6 +115,8 @@ class ChartSettingsPersistenceTest {
                             barOrientation = BarOrientation.HORIZONTAL,
                             secondaryAxisTitle = "Cost",
                             secondaryAxisSynchronized = true,
+                            secondaryShowMarkers = false,
+                            secondaryShowLabels = true,
                             markerOpacity = 0.5,
                             markerBorder = true,
                             markerBorderWidth = 2.0,
@@ -138,6 +140,8 @@ class ChartSettingsPersistenceTest {
         )
         assertEquals("Cost", reopenedSheet.chart.secondaryAxisTitle)
         assertTrue(reopenedSheet.chart.secondaryAxisSynchronized)
+        assertFalse(reopenedSheet.chart.secondaryShowMarkers)
+        assertTrue(reopenedSheet.chart.secondaryShowLabels)
         assertEquals("Regional sales", reopenedSheet.chart.title)
         assertEquals("Quarter to date", reopenedSheet.chart.subtitle)
         assertEquals("Source rows are preserved in the workbook snapshot.", reopenedSheet.chart.caption)
