@@ -244,6 +244,7 @@ object VegaSpecBuilder {
 
     private fun applyLineStroke(spec: ChartSpec, mark: JSONObject, defaultWidth: Double) {
         val enter = mark.getJSONObject("encode").getJSONObject("enter")
+        spec.lineOpacity?.let { enter.put("opacity", JSONObject().put("value", it)) }
         if (spec.lineInterpolation != LineInterpolation.LINEAR) {
             enter.put(
                 "interpolate",
@@ -570,7 +571,10 @@ object VegaSpecBuilder {
                     .put("y", JSONObject().put("scale", "y").put("field", "y"))
                     .put("y2", JSONObject().put("scale", "y").put("value", 0))
                     .put("fill", JSONObject().put("scale", "color").put("field", "series"))
-                    .put("opacity", JSONObject().put("value", 0.32))
+                    .put(
+                        "opacity",
+                        JSONObject().put("value", 0.32 * (spec.lineOpacity ?: 1.0)),
+                    )
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )

@@ -297,6 +297,91 @@ class VegaSpecBuilderTest {
     }
 
     @Test
+    fun lineOpacityIsLoweredOnLineAndAreaPaint() {
+        val lineResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        fun lineEnter(options: ChartOptions): JSONObject {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build("opacity", 0, lineResult, options, "derived"),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            return json.getJSONArray("marks").getJSONObject(0)
+                .getJSONArray("marks").getJSONObject(0)
+                .getJSONObject("encode").getJSONObject("enter")
+        }
+        assertFalse("default line must omit opacity", lineEnter(ChartOptions()).has("opacity"))
+        assertEquals(
+            0.5,
+            lineEnter(ChartOptions(lineOpacity = 0.5)).getJSONObject("opacity").getDouble("value"),
+            0.0,
+        )
+        fun areaFillOpacity(options: ChartOptions): Double {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build(
+                    "area-opacity", 0, lineResult.copy(markType = MarkType.AREA),
+                    options,
+                    "derived",
+                ),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            val fill = (0 until json.getJSONArray("marks").length())
+                .map { json.getJSONArray("marks").getJSONObject(it) }
+                .first { it.getString("type") == "area" }
+            return fill.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("opacity").getDouble("value")
+        }
+        assertEquals(0.32, areaFillOpacity(ChartOptions()), 0.0001)
+        assertEquals(0.16, areaFillOpacity(ChartOptions(lineOpacity = 0.5)), 0.0001)
+        val areaJson = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "area-opacity", 0, lineResult.copy(markType = MarkType.AREA),
+                ChartOptions(lineOpacity = 0.5),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        val areaMarks = (0 until areaJson.getJSONArray("marks").length())
+            .map { areaJson.getJSONArray("marks").getJSONObject(it) }
+        val fill = areaMarks.first { it.getString("type") == "area" }
+        assertEquals(
+            0.16,
+            fill.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("opacity").getDouble("value"),
+            0.0001,
+        )
+        val outline = areaMarks.first { it.getString("type") == "line" }
+        assertEquals(
+            0.5,
+            outline.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("opacity").getDouble("value"),
+            0.0,
+        )
+    }
+
+    @Test
     fun lineDashStyleIsLoweredOnLineAndAreaOutlines() {
         val lineResult = WorksheetResult(
             result = EngineResult(

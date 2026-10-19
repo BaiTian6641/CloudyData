@@ -99,6 +99,7 @@ class ChartSettingsPersistenceTest {
                             markerShape = MarkerShape.DIAMOND,
                             lineInterpolation = LineInterpolation.STEP,
                             lineDashStyle = LineDashStyle.DASHED,
+                            lineOpacity = 0.5,
                         ),
                     ),
                 ),
@@ -148,6 +149,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(MarkerShape.DIAMOND, reopenedSheet.chart.markerShape)
         assertEquals(LineInterpolation.STEP, reopenedSheet.chart.lineInterpolation)
         assertEquals(LineDashStyle.DASHED, reopenedSheet.chart.lineDashStyle)
+        assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -204,6 +206,13 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             LineDashStyle.DOTTED,
             ChartOptions.fromJson(JSONObject().put("lineDashStyle", "DOTTED")).lineDashStyle,
+        )
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("lineOpacity", 0.0)).lineOpacity)
+        assertEquals(null, ChartOptions.fromJson(JSONObject().put("lineOpacity", 1.1)).lineOpacity)
+        assertEquals(
+            0.5,
+            ChartOptions.fromJson(JSONObject().put("lineOpacity", 0.5)).lineOpacity!!,
+            0.0,
         )
     }
 

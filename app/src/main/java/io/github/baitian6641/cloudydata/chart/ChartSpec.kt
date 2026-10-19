@@ -103,6 +103,7 @@ data class ChartSpec(
     val lineWidth: Double? = null,
     val lineInterpolation: LineInterpolation = LineInterpolation.LINEAR,
     val lineDashStyle: LineDashStyle = LineDashStyle.SOLID,
+    val lineOpacity: Double? = null,
     val units: String? = null,
     val valueDecimals: Int? = null,
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,

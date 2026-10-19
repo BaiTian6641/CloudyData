@@ -193,6 +193,39 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun lineOpacityIsCarriedAndBounded() {
+        assertEquals(
+            0.5,
+            ChartSpecBuilder.build(
+                "opacity", 0, lineResult(),
+                ChartOptions(lineOpacity = 0.5),
+                "derived",
+            ).lineOpacity!!,
+            0.0,
+        )
+        assertEquals(
+            null,
+            ChartSpecBuilder.build(
+                "opacity", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).lineOpacity,
+        )
+        for (invalid in listOf(0.0, 1.1, Double.NaN)) {
+            try {
+                ChartSpecBuilder.build(
+                    "opacity", 0, lineResult(),
+                    ChartOptions(lineOpacity = invalid),
+                    "derived",
+                )
+                throw AssertionError("expected line opacity rejection: $invalid")
+            } catch (expected: ChartSpecException) {
+                assertTrue(expected.message!!.contains("Line opacity"))
+            }
+        }
+    }
+
+    @Test
     fun lineDashStyleIsCarriedAndDefaultsToSolid() {
         assertEquals(
             LineDashStyle.DOTTED,

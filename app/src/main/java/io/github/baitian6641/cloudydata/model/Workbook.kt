@@ -70,6 +70,7 @@ data class ChartOptions(
     val lineWidth: Double? = null,
     val lineInterpolation: LineInterpolation = LineInterpolation.LINEAR,
     val lineDashStyle: LineDashStyle = LineDashStyle.SOLID,
+    val lineOpacity: Double? = null,
     val showMarkers: Boolean = true,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
@@ -120,6 +121,7 @@ data class ChartOptions(
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
         .put("lineInterpolation", lineInterpolation.name)
         .put("lineDashStyle", lineDashStyle.name)
+        .put("lineOpacity", lineOpacity ?: JSONObject.NULL)
         .put("showMarkers", showMarkers)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
@@ -144,6 +146,8 @@ data class ChartOptions(
         const val MAX_VALUE_DECIMALS = 6
         const val MIN_LINE_WIDTH = 1.0
         const val MAX_LINE_WIDTH = 8.0
+        const val MIN_LINE_OPACITY = 0.1
+        const val MAX_LINE_OPACITY = 1.0
         const val MIN_MARKER_SIZE = 2.0
         const val MAX_MARKER_SIZE = 12.0
         const val MIN_GRIDLINE_WIDTH = 0.5
@@ -236,6 +240,13 @@ data class ChartOptions(
             lineDashStyle = runCatching {
                 LineDashStyle.valueOf(json.optString("lineDashStyle", LineDashStyle.SOLID.name))
             }.getOrDefault(LineDashStyle.SOLID),
+            lineOpacity = if (json.isNull("lineOpacity")) {
+                null
+            } else {
+                json.optDouble("lineOpacity").takeIf {
+                    it.isFinite() && it in MIN_LINE_OPACITY..MAX_LINE_OPACITY
+                }
+            },
             showMarkers = json.optBoolean("showMarkers", true),
             markerSize = if (json.isNull("markerSize")) {
                 null

@@ -85,6 +85,7 @@ fun ChartSettingsDialog(
     var labelPosition by remember { mutableStateOf(current.labelPosition) }
     var labelPositionExpanded by remember { mutableStateOf(false) }
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
+    var lineOpacity by remember { mutableStateOf(current.lineOpacity?.toString().orEmpty()) }
     var lineInterpolation by remember { mutableStateOf(current.lineInterpolation) }
     var lineInterpolationExpanded by remember { mutableStateOf(false) }
     var lineDashStyle by remember { mutableStateOf(current.lineDashStyle) }
@@ -115,6 +116,11 @@ fun ChartSettingsDialog(
     val parsedValueDecimals = valueDecimals.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLabelFontSize = labelFontSize.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val parsedLineWidth = lineWidth.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    val parsedLineOpacity = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+        lineOpacity.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    } else {
+        null
+    }
     val parsedMarkerSize = if (showMarkers) {
         markerSize.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     } else {
@@ -149,6 +155,11 @@ fun ChartSettingsDialog(
         showMarkers && markerSize.trim().isNotEmpty() && (parsedMarkerSize == null || !parsedMarkerSize.isFinite() ||
             parsedMarkerSize !in ChartOptions.MIN_MARKER_SIZE..ChartOptions.MAX_MARKER_SIZE) ->
             "Marker size must be from ${ChartOptions.MIN_MARKER_SIZE} to ${ChartOptions.MAX_MARKER_SIZE}."
+        (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) &&
+            lineOpacity.trim().isNotEmpty() && (parsedLineOpacity == null ||
+                !parsedLineOpacity.isFinite() ||
+                parsedLineOpacity !in ChartOptions.MIN_LINE_OPACITY..ChartOptions.MAX_LINE_OPACITY) ->
+            "Line opacity must be from ${ChartOptions.MIN_LINE_OPACITY} to ${ChartOptions.MAX_LINE_OPACITY}."
         lineWidth.trim().isNotEmpty() && (parsedLineWidth == null || !parsedLineWidth.isFinite() ||
             parsedLineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH) ->
             "Line width must be from ${ChartOptions.MIN_LINE_WIDTH} to ${ChartOptions.MAX_LINE_WIDTH}."
@@ -475,6 +486,13 @@ fun ChartSettingsDialog(
                         supportingText = "${ChartOptions.MIN_LINE_WIDTH}–${ChartOptions.MAX_LINE_WIDTH}, blank for mark default.",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     )
+                    CloudyTextField(
+                        value = lineOpacity,
+                        onValueChange = { lineOpacity = it },
+                        label = "Line opacity",
+                        supportingText = "${ChartOptions.MIN_LINE_OPACITY}–${ChartOptions.MAX_LINE_OPACITY}, blank for opaque.",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(
@@ -797,6 +815,13 @@ fun ChartSettingsDialog(
                                 lineDashStyle
                             } else {
                                 LineDashStyle.SOLID
+                            },
+                            lineOpacity = if (sheet.markType == MarkType.LINE ||
+                                sheet.markType == MarkType.AREA
+                            ) {
+                                parsedLineOpacity
+                            } else {
+                                null
                             },
                             showMarkers = showMarkers,
                             markerSize = if (showMarkers) parsedMarkerSize else null,

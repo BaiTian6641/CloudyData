@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **62/62**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **63/63**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -118,6 +118,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-marker-shape.md`
 - `qualification/evidence/2026-10-19-cust03-line-interpolation.md`
 - `qualification/evidence/2026-10-19-cust03-line-dash.md`
+- `qualification/evidence/2026-10-19-cust03-line-opacity.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -220,6 +221,9 @@ unless stated otherwise.
   and Area outlines; width/interpolation/markers/selection remain. Emulator
   line/area spec, persistence and solid/dashed/dotted render checks pass; visual
   dash/cap checks were not run.
+- **Line opacity.** Optional 0.1–1.0 paint opacity applies to Line marks and
+  Area fill/outline; markers/selection remain opaque. Emulator line/area spec,
+  persistence and render checks pass; visual contrast checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -308,21 +312,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted line opacity.**
+**CUST05 persisted legend mark sample.**
 
-- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line/Area
-  width/interpolation/dash/markers, typed options and emulator probes.
-- Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`,
+- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: multi-series
+  legend, marker shape, typed options and emulator probes.
+- Files: `ChartOptions`, `ChartSpec`/LegendSpec, builders, `VegaSpecBuilder`,
   `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded persisted opacity (0.1–1.0, default 1.0) for Line marks
-  and Area fill/outline, preserving default output and selection contrast.
-- Acceptance: default opaque unchanged; opacity persists and affects only mark
-  paint, not data/markers/selection identity; invalid values fall back to 1.0.
-  Emulator spec/render checks required; visual review unverified.
+- Action: add a persisted legend sample choice (marker/default vs line swatch)
+  for Line marks, preserving current default output and marker-shape behavior.
+- Acceptance: default marker swatch unchanged; line swatch persists and affects
+  only the legend, not plot marks/data/selection; invalid values fall back to
+  marker. Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, interpolation, dash and opacity visuals wait for an authorized visual
-  session.
+  marker, interpolation, dash, opacity and legend-sample visuals wait for an
+  authorized visual session.
 
 ## Protected context
 

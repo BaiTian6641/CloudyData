@@ -681,3 +681,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   instrumentation VegaSpecBuilderTest 15/15, ChartSettingsPersistenceTest 10/10,
   solid/dashed/dotted render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
   visual dash/cap/export checks absent.
+
+## 2026-10-19 — CUST03 line opacity
+
+- Added optional persisted 0.1–1.0 paint opacity for Line marks and Area
+  fill/outline. Default output remains opaque; Area fill multiplies its fixed
+  0.32 alpha. Markers, labels, hit targets, selected overlays and data remain
+  unchanged. Invalid/missing values fall back to opaque; Bar settings reset it.
+- Emulator-first validation: JVM 63/63; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 16/16, ChartSettingsPersistenceTest 10/10,
+  opacity render 1/1; lint 0 errors/5 warnings. Googlebook untouched; visual
+  contrast/export checks absent.

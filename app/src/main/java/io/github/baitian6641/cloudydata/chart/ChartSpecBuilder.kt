@@ -152,6 +152,15 @@ object ChartSpecBuilder {
         sourceNote: String?,
     ): ChartSpec {
         val label = if (kind == ChartKind.AREA) "Area" else "Line"
+        if (options.lineOpacity != null &&
+            (!options.lineOpacity.isFinite() ||
+                options.lineOpacity !in ChartOptions.MIN_LINE_OPACITY..ChartOptions.MAX_LINE_OPACITY)
+        ) {
+            throw ChartSpecException(
+                "Line opacity must be between ${ChartOptions.MIN_LINE_OPACITY} and " +
+                    "${ChartOptions.MAX_LINE_OPACITY}.",
+            )
+        }
         if (options.lineWidth != null &&
             (!options.lineWidth.isFinite() || options.lineWidth !in ChartOptions.MIN_LINE_WIDTH..ChartOptions.MAX_LINE_WIDTH)
         ) {
@@ -278,6 +287,7 @@ object ChartSpecBuilder {
             lineWidth = options.lineWidth,
             lineInterpolation = options.lineInterpolation,
             lineDashStyle = options.lineDashStyle,
+            lineOpacity = options.lineOpacity,
             units = units,
             valueDecimals = options.valueDecimals,
             valueFormat = options.valueFormat,
