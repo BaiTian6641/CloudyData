@@ -40,6 +40,8 @@ enum class LineDashStyle { SOLID, DASHED, DOTTED }
 
 enum class LegendMarkSample { MARKER, LINE }
 
+enum class TableDividerContrast { DEFAULT, STRONG }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT }
 
 data class ChartOptions(
@@ -78,6 +80,7 @@ data class ChartOptions(
     val showTableRowDividers: Boolean = true,
     val showTableColumnDividers: Boolean = false,
     val tableDividerWidth: Double? = null,
+    val tableDividerContrast: TableDividerContrast = TableDividerContrast.DEFAULT,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
     val markerOpacity: Double? = null,
@@ -134,6 +137,7 @@ data class ChartOptions(
         .put("tableRowDividers", showTableRowDividers)
         .put("tableColumnDividers", showTableColumnDividers)
         .put("tableDividerWidth", tableDividerWidth ?: JSONObject.NULL)
+        .put("tableDividerContrast", tableDividerContrast.name)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
         .put("markerOpacity", markerOpacity ?: JSONObject.NULL)
@@ -278,6 +282,14 @@ data class ChartOptions(
                     it.isFinite() && it in MIN_TABLE_DIVIDER_WIDTH..MAX_TABLE_DIVIDER_WIDTH
                 }
             },
+            tableDividerContrast = runCatching {
+                TableDividerContrast.valueOf(
+                    json.optString(
+                        "tableDividerContrast",
+                        TableDividerContrast.DEFAULT.name,
+                    ),
+                )
+            }.getOrDefault(TableDividerContrast.DEFAULT),
             markerSize = if (json.isNull("markerSize")) {
                 null
             } else {

@@ -747,3 +747,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 11/11, TableSelectionTest 5/5,
   VegaSpecBuilderTest 17/17; lint 0 errors/5 warnings. Googlebook untouched;
   no Compose/table visual check.
+
+## 2026-10-19 — CUST04 table divider contrast
+
+- Added persisted DEFAULT/STRONG table-rule contrast using divider/outline
+  tokens. All header/body/column rule sites use the resolved color; toggles,
+  thickness, query/data/selection are unchanged. Invalid/missing values fall
+  back to DEFAULT.
+- Emulator-first validation: JVM 64/64; emulator-5580 API36 x86_64
+  ChartSettingsPersistenceTest 11/11, TableSelectionTest 5/5,
+  VegaSpecBuilderTest 17/17; lint 0 errors/5 warnings. Googlebook untouched;
+  visual contrast/table checks absent.

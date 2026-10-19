@@ -16,6 +16,7 @@ import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
+import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import org.json.JSONObject
 import java.io.File
@@ -106,6 +107,7 @@ class ChartSettingsPersistenceTest {
                             showTableRowDividers = false,
                             showTableColumnDividers = true,
                             tableDividerWidth = 2.0,
+                            tableDividerContrast = TableDividerContrast.STRONG,
                         ),
                     ),
                 ),
@@ -161,6 +163,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(false, reopenedSheet.chart.showTableRowDividers)
         assertEquals(true, reopenedSheet.chart.showTableColumnDividers)
         assertEquals(2.0, reopenedSheet.chart.tableDividerWidth!!, 0.0)
+        assertEquals(TableDividerContrast.STRONG, reopenedSheet.chart.tableDividerContrast)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -211,6 +214,20 @@ class ChartSettingsPersistenceTest {
             ChartOptions.fromJson(JSONObject().put("tableDividerWidth", 3.0))
                 .tableDividerWidth!!,
             0.0,
+        )
+        assertEquals(
+            TableDividerContrast.DEFAULT,
+            ChartOptions.fromJson(JSONObject()).tableDividerContrast,
+        )
+        assertEquals(
+            TableDividerContrast.DEFAULT,
+            ChartOptions.fromJson(JSONObject().put("tableDividerContrast", "NOT_A_CONTRAST"))
+                .tableDividerContrast,
+        )
+        assertEquals(
+            TableDividerContrast.STRONG,
+            ChartOptions.fromJson(JSONObject().put("tableDividerContrast", "STRONG"))
+                .tableDividerContrast,
         )
         assertEquals(
             null,

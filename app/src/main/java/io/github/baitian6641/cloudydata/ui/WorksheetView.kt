@@ -86,6 +86,7 @@ import io.github.baitian6641.cloudydata.model.FieldRole
 import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.SelectionMode
+import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import io.github.baitian6641.cloudydata.model.valueAsDouble
@@ -696,6 +697,11 @@ private fun ResultTable(
     val valueColumn = result.valueColumnIndex
     val horizontal = rememberScrollState()
     val dividerThickness = (options.tableDividerWidth ?: 1.0).toFloat().dp
+    val dividerColor = if (options.tableDividerContrast == TableDividerContrast.STRONG) {
+        colors.outline
+    } else {
+        colors.divider
+    }
     Column(modifier.background(colors.surface)) {
         Row(
             Modifier
@@ -721,11 +727,11 @@ private fun ResultTable(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (options.showTableColumnDividers && index < columns.lastIndex) {
-                    Box(Modifier.width(dividerThickness).height(24.dp).background(colors.divider))
+                    Box(Modifier.width(dividerThickness).height(24.dp).background(dividerColor))
                 }
             }
         }
-        Box(Modifier.fillMaxWidth().height(dividerThickness).background(colors.divider))
+        Box(Modifier.fillMaxWidth().height(dividerThickness).background(dividerColor))
         if (engineResult.rows.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("The current view returned no rows.", color = colors.textSecondary)
@@ -825,12 +831,12 @@ private fun ResultTable(
                             modifier = Modifier.width(tableColumnWidth(columnIndex, row.size)).padding(horizontal = 4.dp),
                         )
                         if (options.showTableColumnDividers && columnIndex < row.lastIndex) {
-                            Box(Modifier.width(dividerThickness).height(24.dp).background(colors.divider))
+                            Box(Modifier.width(dividerThickness).height(24.dp).background(dividerColor))
                         }
                     }
                 }
                 if (options.showTableRowDividers) {
-                    Box(Modifier.fillMaxWidth().height(dividerThickness).background(colors.divider))
+                    Box(Modifier.fillMaxWidth().height(dividerThickness).background(dividerColor))
                 }
             }
         }

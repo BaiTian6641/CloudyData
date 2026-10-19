@@ -124,6 +124,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-table-dividers.md`
 - `qualification/evidence/2026-10-19-cust05-legend-swatch-opacity.md`
 - `qualification/evidence/2026-10-19-cust04-table-divider-width.md`
+- `qualification/evidence/2026-10-19-cust04-table-divider-contrast.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -245,9 +246,9 @@ unless stated otherwise.
 - **Legend swatch opacity.** Legend marker/line samples mirror their respective
   marker/line opacity without changing defaults or plot/data. Emulator spec/
   persistence/render checks pass; visual contrast checks were not run.
-- **Table divider width.** Optional 0.5–3.0 dp thickness applies to header/body/
-  column rules with 1 dp default; persistence/table-selection pass; visual
-  alignment checks were not run.
+- **Table divider width/contrast.** Optional 0.5–3.0 dp thickness and
+  divider/outline contrast apply to header/body/column rules; persistence and
+  table-selection pass; visual alignment/contrast checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -336,21 +337,22 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 persisted table divider contrast.**
+**CUST06 persisted currency display.**
 
-- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: table divider
-  toggles/width, token palette and persistence/selection tests.
-- Files: `ChartOptions`, settings dialog, `ResultTable`, tests/evidence.
-- Action: add a bounded DEFAULT/STRONG choice using provisional divider/outline
-  tokens for table rules, preserving the current divider default and applying
-  consistently to row/column/header rules.
-- Acceptance: default unchanged; contrast persists and affects only rule color;
-  invalid values fall back to DEFAULT; selection/data unchanged. Emulator
-  persistence/table-selection checks required; visual review unverified.
+- Requirements/stage: CUST06, F36/F38, Q21, S11. Prerequisites: NUMBER/PERCENT
+  formatting, decimals, Vega axis/value-label formatting and emulator probes.
+- Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`,
+  `ChartSettingsDialog`, tests/evidence.
+- Action: add a bounded currency display option with explicit symbol/code
+  selection and fixed two-decimal formatting on value-axis ticks and labels,
+  leaving exact values/tooltips unchanged.
+- Acceptance: default NUMBER unchanged; currency persists, applies the chosen
+  symbol consistently with grouping/negatives, and does not mutate data or exact
+  exports. Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, interpolation, dash, opacity, legend-sample and table-divider visuals
-  wait for an authorized visual session.
+  marker, interpolation, dash, opacity, legend-sample and table visuals wait for
+  an authorized visual session.
 
 ## Protected context
 

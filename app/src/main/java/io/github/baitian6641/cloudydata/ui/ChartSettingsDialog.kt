@@ -39,6 +39,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.TableDividerContrast
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendMarkSample
@@ -103,6 +104,7 @@ fun ChartSettingsDialog(
     var showTableRowDividers by remember { mutableStateOf(current.showTableRowDividers) }
     var showTableColumnDividers by remember { mutableStateOf(current.showTableColumnDividers) }
     var tableDividerWidth by remember { mutableStateOf(current.tableDividerWidth?.toString().orEmpty()) }
+    var tableDividerContrast by remember { mutableStateOf(current.tableDividerContrast) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
     var legendMarkSample by remember { mutableStateOf(current.legendMarkSample) }
     var legendMarkSampleExpanded by remember { mutableStateOf(false) }
@@ -326,6 +328,18 @@ fun ChartSettingsDialog(
                     label = "Table divider width",
                     supportingText = "${ChartOptions.MIN_TABLE_DIVIDER_WIDTH}–${ChartOptions.MAX_TABLE_DIVIDER_WIDTH} dp, blank for 1 dp.",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                )
+                ChartToggleRow(
+                    title = "Strong table dividers",
+                    description = "Use the theme outline color instead of the default divider.",
+                    checked = tableDividerContrast == TableDividerContrast.STRONG,
+                    onCheckedChange = {
+                        tableDividerContrast = if (it) {
+                            TableDividerContrast.STRONG
+                        } else {
+                            TableDividerContrast.DEFAULT
+                        }
+                    },
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -881,6 +895,7 @@ fun ChartSettingsDialog(
                             showTableRowDividers = showTableRowDividers,
                             showTableColumnDividers = showTableColumnDividers,
                             tableDividerWidth = parsedTableDividerWidth,
+                            tableDividerContrast = tableDividerContrast,
                             yTickCount = parsedYTickCount,
                             xLabelCount = parsedXLabelCount,
                             valueDecimals = parsedValueDecimals,
