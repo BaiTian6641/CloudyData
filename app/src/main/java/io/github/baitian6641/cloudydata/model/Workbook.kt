@@ -28,6 +28,8 @@ enum class LabelPosition { TOP, INSIDE_END }
 
 data class ChartOptions(
     val title: String? = null,
+    val subtitle: String? = null,
+    val caption: String? = null,
     val showGridlines: Boolean = true,
     val showValueLabels: Boolean = false,
     val xAxisTitle: String? = null,
@@ -50,6 +52,8 @@ data class ChartOptions(
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
         .put("title", title ?: JSONObject.NULL)
+        .put("subtitle", subtitle ?: JSONObject.NULL)
+        .put("caption", caption ?: JSONObject.NULL)
         .put("showGridlines", showGridlines)
         .put("showValueLabels", showValueLabels)
         .put("xAxisTitle", xAxisTitle ?: JSONObject.NULL)
@@ -80,6 +84,8 @@ data class ChartOptions(
 
         fun fromJson(json: JSONObject): ChartOptions = ChartOptions(
             title = if (json.isNull("title")) null else json.optString("title").takeIf { it.isNotEmpty() },
+            subtitle = if (json.isNull("subtitle")) null else json.optString("subtitle").takeIf { it.isNotEmpty() },
+            caption = if (json.isNull("caption")) null else json.optString("caption").takeIf { it.isNotEmpty() },
             showGridlines = json.optBoolean("showGridlines", true),
             showValueLabels = json.optBoolean("showValueLabels", false),
             xAxisTitle = if (json.isNull("xAxisTitle")) null else json.optString("xAxisTitle").takeIf { it.isNotEmpty() },

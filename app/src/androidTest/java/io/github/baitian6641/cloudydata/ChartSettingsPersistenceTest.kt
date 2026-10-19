@@ -54,6 +54,8 @@ class ChartSettingsPersistenceTest {
                         seriesFieldId = "region-field",
                         chart = ChartOptions(
                             title = "Regional sales",
+                            subtitle = "Quarter to date",
+                            caption = "Source rows are preserved in the workbook snapshot.",
                             showGridlines = false,
                             showValueLabels = true,
                             xAxisTitle = "Month",
@@ -81,6 +83,8 @@ class ChartSettingsPersistenceTest {
         val reopenedSheet = reopened.worksheets.single()
         assertEquals("region-field", reopenedSheet.seriesFieldId)
         assertEquals("Regional sales", reopenedSheet.chart.title)
+        assertEquals("Quarter to date", reopenedSheet.chart.subtitle)
+        assertEquals("Source rows are preserved in the workbook snapshot.", reopenedSheet.chart.caption)
         assertFalse(reopenedSheet.chart.showGridlines)
         assertTrue(reopenedSheet.chart.showValueLabels)
         assertEquals("Month", reopenedSheet.chart.xAxisTitle)

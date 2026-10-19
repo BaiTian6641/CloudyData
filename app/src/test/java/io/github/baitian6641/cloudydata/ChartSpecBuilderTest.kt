@@ -73,6 +73,40 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun subtitleAndCaptionAreBoundedAndCarried() {
+        val subtitle = "S".repeat(200)
+        val caption = "C".repeat(300)
+        val spec = ChartSpecBuilder.build(
+            "titles", 0, lineResult(),
+            ChartOptions(subtitle = subtitle, caption = caption),
+            "derived",
+        )
+        assertEquals("S".repeat(160), spec.subtitle)
+        assertEquals("C".repeat(240), spec.caption)
+
+        val barResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(listOf<Any?>("A", 10L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.BAR,
+            sql = "test",
+        )
+        val barSpec = ChartSpecBuilder.build(
+            "bar", 0, barResult,
+            ChartOptions(subtitle = "Bar subtitle", caption = "Bar caption"),
+            "derived",
+        )
+        assertEquals("Bar subtitle", barSpec.subtitle)
+        assertEquals("Bar caption", barSpec.caption)
+    }
+
+    @Test
     fun tooltipVisibilityIsCarriedOnTheSpec() {
         val enabled = ChartSpecBuilder.build("line", 0, lineResult(), ChartOptions(), "derived")
         assertTrue(enabled.tooltip.show)

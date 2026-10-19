@@ -98,6 +98,8 @@ object ChartSpecBuilder {
             revision = revision,
             kind = ChartKind.BAR,
             title = options.title ?: derivedTitle,
+            subtitle = options.subtitle?.take(160),
+            caption = options.caption?.take(240),
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: result.rowField?.name ?: "View",
                 reverse = false,
@@ -203,6 +205,8 @@ object ChartSpecBuilder {
             revision = revision,
             kind = kind,
             title = options.title ?: derivedTitle,
+            subtitle = options.subtitle?.take(160),
+            caption = options.caption?.take(240),
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: rowField.name,
                 reverse = false,

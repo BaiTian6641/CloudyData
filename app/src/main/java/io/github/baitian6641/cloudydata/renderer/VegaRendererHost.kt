@@ -306,6 +306,8 @@ class VegaRendererHost(
             .put("chartId", request.spec.chartId)
             .put("revision", request.spec.revision)
             .put("title", capText(request.spec.title, 160))
+            .put("subtitle", capText(request.spec.subtitle ?: "", 160))
+            .put("caption", capText(request.spec.caption ?: "", 240))
             .put("sourceNote", capText(request.spec.sourceNote ?: "", 240))
             .put("dark", request.dark)
             .put("specVersion", request.spec.version)

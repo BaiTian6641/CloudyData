@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream
 
 data class PdfTable(
     val title: String,
+    val subtitle: String? = null,
+    val caption: String? = null,
     val sourceNote: String?,
     val summary: String,
     val columns: List<String>,
@@ -95,6 +97,14 @@ object PdfExportWriter {
         var y = MARGIN + 18f
         canvas.drawText(ellipsize(table.title, titlePaint, contentWidth), MARGIN, y, titlePaint)
         y += 16f
+        table.subtitle?.takeIf { it.isNotBlank() }?.let {
+            canvas.drawText(ellipsize(it, muted, contentWidth), MARGIN, y, muted)
+            y += 13f
+        }
+        table.caption?.takeIf { it.isNotBlank() }?.let {
+            y = drawWrapped(canvas, it, muted, contentWidth, MARGIN, y, 11f, maxLines = 2)
+            y += 2f
+        }
         table.sourceNote?.takeIf { it.isNotBlank() }?.let {
             canvas.drawText(ellipsize(it, muted, contentWidth), MARGIN, y, muted)
             y += 14f

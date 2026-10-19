@@ -463,3 +463,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   tall bars.
 - JVM 43/43; lint 0 errors/5 warnings; debug/test APKs compile. Instrumentation
   and device contrast/clipping/export visuals were not run.
+
+## 2026-10-19 — CUST02 subtitle and caption
+
+- Added optional bounded subtitle (160) and caption (240) plain text through
+  chart options, typed spec, native chart header/footer, renderer export header,
+  SVG/PNG provenance and PDF text companion. Presentation changes do not rerun
+  SQL.
+- Export captions wrap to up to two width-derived lines. The renderer probe now
+  carries subtitle/caption extras and the narrow-export test asserts subtitle
+  presence plus two caption nodes.
+- JVM 44/44; lint 0 errors/5 warnings; debug/test APKs compile, `node --check`
+  passes. Host export rendering, persistence/Vega instrumentation and device
+  visual/scaling/accessibility checks were not run.

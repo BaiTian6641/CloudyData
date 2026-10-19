@@ -48,6 +48,8 @@ class RendererProbeActivity : Activity() {
     private var lastAppliedHeight = -1f
     private val probeKind: String by lazy { intent.getStringExtra(EXTRA_PROBE_KIND) ?: "bar" }
     private val exportTitle: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_TITLE) }
+    private val exportSubtitle: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_SUBTITLE) }
+    private val exportCaption: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_CAPTION) }
     private val exportSource: String? by lazy { intent.getStringExtra(EXTRA_EXPORT_SOURCE) }
     private val requestedWidthDp: Float by lazy {
         intent.getStringExtra(EXTRA_VIEW_WIDTH_DP)?.toFloatOrNull() ?: 0f
@@ -62,6 +64,8 @@ class RendererProbeActivity : Activity() {
         val baseSpec = buildSpec()
         currentSpec = baseSpec.copy(
             title = exportTitle ?: baseSpec.title,
+            subtitle = exportSubtitle ?: baseSpec.subtitle,
+            caption = exportCaption ?: baseSpec.caption,
             sourceNote = exportSource ?: baseSpec.sourceNote,
         )
         val root = LinearLayout(this).apply {
@@ -569,6 +573,8 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_VIEW_WIDTH_DP = "view_width_dp"
         const val EXTRA_VIEW_HEIGHT_DP = "view_height_dp"
         const val EXTRA_EXPORT_TITLE = "export_title"
+        const val EXTRA_EXPORT_SUBTITLE = "export_subtitle"
+        const val EXTRA_EXPORT_CAPTION = "export_caption"
         const val EXTRA_EXPORT_SOURCE = "export_source"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L

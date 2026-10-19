@@ -51,6 +51,8 @@ fun ChartSettingsDialog(
     val colors = LocalCloudyColors.current
     val current = sheet.chart
     var title by remember { mutableStateOf(current.title.orEmpty()) }
+    var subtitle by remember { mutableStateOf(current.subtitle.orEmpty()) }
+    var caption by remember { mutableStateOf(current.caption.orEmpty()) }
     var xAxisTitle by remember { mutableStateOf(current.xAxisTitle.orEmpty()) }
     var yAxisTitle by remember { mutableStateOf(current.yAxisTitle.orEmpty()) }
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
@@ -120,6 +122,20 @@ fun ChartSettingsDialog(
                     onValueChange = { title = it },
                     label = "Chart title",
                     supportingText = "Leave blank to derive the title from the fields.",
+                )
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = subtitle,
+                    onValueChange = { subtitle = it.take(160) },
+                    label = "Subtitle",
+                    supportingText = "Optional, up to 160 characters.",
+                )
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = caption,
+                    onValueChange = { caption = it.take(240) },
+                    label = "Caption",
+                    supportingText = "Optional, up to 240 characters; shown below the chart and in exports.",
                 )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
@@ -382,6 +398,8 @@ fun ChartSettingsDialog(
                     onApply(
                         current.copy(
                             title = clean(title),
+                            subtitle = clean(subtitle)?.take(160),
+                            caption = clean(caption)?.take(240),
                             xAxisTitle = clean(xAxisTitle),
                             yAxisTitle = clean(yAxisTitle),
                             seriesTitle = clean(seriesTitle),

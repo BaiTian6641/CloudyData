@@ -9,6 +9,8 @@
     selectedRow: -1,
     tooltipEnabled: true,
     exportTitle: '',
+    exportSubtitle: '',
+    exportCaption: '',
     exportSource: '',
     exportDark: false,
     pointerMode: 'replace',
@@ -455,6 +457,24 @@
     node.textContent = text.length > chars ? text.slice(0, chars - 1) + '\u2026' : text;
   }
 
+  function wrapExportCaption(text, maxChars) {
+    var remaining = String(text || '').trim();
+    if (!remaining) return [];
+    if (remaining.length <= maxChars) return [remaining];
+    var cut = remaining.lastIndexOf(' ', maxChars);
+    if (cut < Math.floor(maxChars * 0.4)) cut = maxChars;
+    var first = remaining.slice(0, cut).trim();
+    var second = remaining.slice(cut).trim();
+    if (remaining.length > maxChars * 2) {
+      var mid = remaining.lastIndexOf(' ', Math.floor(remaining.length / 2));
+      if (mid > 0) {
+        first = remaining.slice(0, mid).trim();
+        second = remaining.slice(mid).trim();
+      }
+    }
+    return [first, second].filter(function (line) { return line.length > 0; }).slice(0, 2);
+  }
+
   function currentSvgMarkup() {
     if (!state.view) return null;
     var svg = document.querySelector('#view svg');
@@ -470,6 +490,8 @@
       }
     }
     var title = String(state.exportTitle || '').trim();
+    var subtitle = String(state.exportSubtitle || '').trim();
+    var caption = String(state.exportCaption || '').trim();
     var source = String(state.exportSource || '').trim();
     if (!isFinite(width) || width <= 0 || !isFinite(height) || height <= 0) {
       var raw = svg.cloneNode(true);
@@ -477,7 +499,30 @@
       raw.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
       return new XMLSerializer().serializeToString(raw);
     }
-    var header = (title || source) ? 56 : 0;
+    var hasHeader = title || subtitle || caption || source;
+    var header = hasHeader ? 8 : 0;
+    var cursor = header;
+    var nodes = [];
+    if (title) {
+      nodes.push({ key: 'title', y: cursor + 18, size: 16, weight: '600', color: state.exportDark ? '#E1EBED' : '#182427', text: title, min: 9 });
+      cursor += 24;
+    }
+    if (subtitle) {
+      nodes.push({ key: 'subtitle', y: cursor + 12, size: 11, weight: '400', color: state.exportDark ? '#A9BDC2' : '#4C6066', text: subtitle, min: 6 });
+      cursor += 16;
+    }
+    if (caption) {
+      var captionChars = Math.max(20, Math.floor((width - 32) / 6.2));
+      wrapExportCaption(caption, captionChars).forEach(function (line) {
+        nodes.push({ key: 'caption', y: cursor + 12, size: 10, weight: '400', color: state.exportDark ? '#A9BDC2' : '#4C6066', text: line, min: 6 });
+        cursor += 16;
+      });
+    }
+    if (source) {
+      nodes.push({ key: 'source', y: cursor + 12, size: 11, weight: '400', color: state.exportDark ? '#A9BDC2' : '#4C6066', text: source, min: 6 });
+      cursor += 16;
+    }
+    if (hasHeader) header = cursor + 8;
     var ns = 'http://www.w3.org/2000/svg';
     var outer = document.createElementNS(ns, 'svg');
     outer.setAttribute('xmlns', ns);
@@ -485,8 +530,6 @@
     outer.setAttribute('width', String(width));
     outer.setAttribute('height', String(height + header));
     outer.setAttribute('viewBox', '0 0 ' + width + ' ' + (height + header));
-    var titleNode = null;
-    var sourceNode = null;
     var background = document.createElementNS(ns, 'rect');
     background.setAttribute('x', '0');
     background.setAttribute('y', '0');
@@ -494,26 +537,19 @@
     background.setAttribute('height', String(height + header));
     background.setAttribute('fill', state.exportDark ? '#182427' : '#FFFFFF');
     outer.appendChild(background);
-    if (title) {
-      titleNode = document.createElementNS(ns, 'text');
-      titleNode.setAttribute('x', '16');
-      titleNode.setAttribute('y', '28');
-      titleNode.setAttribute('font-family', 'system-ui, sans-serif');
-      titleNode.setAttribute('font-size', '16');
-      titleNode.setAttribute('font-weight', '600');
-      titleNode.setAttribute('fill', state.exportDark ? '#E1EBED' : '#182427');
-      outer.appendChild(titleNode);
-    }
-    if (source) {
-      sourceNode = document.createElementNS(ns, 'text');
-      sourceNode.setAttribute('x', '16');
-      sourceNode.setAttribute('y', '46');
-      sourceNode.setAttribute('font-family', 'system-ui, sans-serif');
-      sourceNode.setAttribute('font-size', '11');
-      sourceNode.setAttribute('fill', state.exportDark ? '#A9BDC2' : '#4C6066');
-      outer.appendChild(sourceNode);
-    }
-    if (titleNode || sourceNode) {
+    var textNodes = [];
+    nodes.forEach(function (item) {
+      var node = document.createElementNS(ns, 'text');
+      node.setAttribute('x', '16');
+      node.setAttribute('y', String(item.y));
+      node.setAttribute('font-family', 'system-ui, sans-serif');
+      node.setAttribute('font-size', String(item.size));
+      node.setAttribute('font-weight', item.weight);
+      node.setAttribute('fill', item.color);
+      outer.appendChild(node);
+      textNodes.push({ node: node, item: item });
+    });
+    if (textNodes.length) {
       var measureHost = document.createElement('div');
       measureHost.style.position = 'fixed';
       measureHost.style.left = '-100000px';
@@ -523,8 +559,9 @@
       measureHost.appendChild(outer);
       document.body.appendChild(measureHost);
       try {
-        if (titleNode) fitExportText(titleNode, title, Math.max(1, width - 32), 9);
-        if (sourceNode) fitExportText(sourceNode, source, Math.max(1, width - 32), 6);
+        textNodes.forEach(function (entry) {
+          fitExportText(entry.node, entry.item.text, Math.max(1, width - 32), entry.item.min);
+        });
       } finally {
         measureHost.removeChild(outer);
         measureHost.remove();
@@ -705,6 +742,8 @@
       state.selectedRow = -1;
       state.tooltipEnabled = !(message.spec.usermeta && message.spec.usermeta.tooltip === false);
       state.exportTitle = typeof message.title === 'string' ? message.title : '';
+      state.exportSubtitle = typeof message.subtitle === 'string' ? message.subtitle : '';
+      state.exportCaption = typeof message.caption === 'string' ? message.caption : '';
       state.exportSource = typeof message.sourceNote === 'string' ? message.sourceNote : '';
       state.exportDark = message.dark === true;
       hideTooltip();

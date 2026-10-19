@@ -65,6 +65,8 @@ data class ChartSpec(
     val revision: Long,
     val kind: ChartKind,
     val title: String,
+    val subtitle: String? = null,
+    val caption: String? = null,
     val xAxis: AxisSpec,
     val yAxis: AxisSpec,
     val gridlines: GridlineSpec,

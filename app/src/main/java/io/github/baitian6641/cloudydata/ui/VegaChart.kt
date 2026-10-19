@@ -185,6 +185,8 @@ fun VegaChartCard(
         val resultNow = applied.result
         return PdfTable(
             title = applied.title,
+            subtitle = applied.spec.subtitle,
+            caption = applied.spec.caption,
             sourceNote = applied.sourceNote,
             summary = accessibleSummary(applied.spec),
             columns = resultNow.result.columns.map { it.name },
@@ -203,14 +205,24 @@ fun VegaChartCard(
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                title,
-                style = MaterialTheme.typography.labelLarge,
-                color = colors.textPrimary,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Column(Modifier.weight(1f)) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                options.subtitle?.take(160)?.takeIf { it.isNotBlank() }?.let { subtitle ->
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
             when {
                 specError != null -> CloudyBadge("Chart unavailable", tone = CloudyBadgeTone.Warning)
                 rendererError != null -> {
@@ -552,6 +564,16 @@ fun VegaChartCard(
                     )
                 }
             }
+        }
+        options.caption?.take(240)?.takeIf { it.isNotBlank() }?.let { caption ->
+            Text(
+                caption,
+                style = MaterialTheme.typography.labelSmall,
+                color = colors.textSecondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 2.dp),
+            )
         }
         Spacer(Modifier.height(2.dp))
         Text(

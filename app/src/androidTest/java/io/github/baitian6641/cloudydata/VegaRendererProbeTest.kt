@@ -569,11 +569,15 @@ class VegaRendererProbeTest {
         val longTitle = "A very long chart title ".repeat(12).trim()
         val longSource = "Source: a-very-long-source-name-with-many-characters.csv · 123 rows · snapshot abcdef12 " +
             "additional provenance text ".repeat(4)
+        val subtitle = "A bounded subtitle for export provenance"
+        val caption = "A long caption that should wrap into two bounded export lines without displacing the chart ".repeat(2)
         val intent = Intent(context, RendererProbeActivity::class.java)
             .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
             .putExtra(RendererProbeActivity.EXTRA_VIEW_WIDTH_DP, "360")
             .putExtra(RendererProbeActivity.EXTRA_VIEW_HEIGHT_DP, "240")
             .putExtra(RendererProbeActivity.EXTRA_EXPORT_TITLE, longTitle)
+            .putExtra(RendererProbeActivity.EXTRA_EXPORT_SUBTITLE, subtitle)
+            .putExtra(RendererProbeActivity.EXTRA_EXPORT_CAPTION, caption)
             .putExtra(RendererProbeActivity.EXTRA_EXPORT_SOURCE, longSource)
         ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
             assertNull(RendererProbeState.await(30)!!.error)
@@ -584,8 +588,12 @@ class VegaRendererProbeTest {
             val texts = Regex("<text[^>]*>([^<]+)</text>").findAll(svg!!).map { it.groupValues[1] }.toList()
             val title = texts.firstOrNull { it.startsWith("A very long chart title") }
             val source = texts.firstOrNull { it.contains("a-very-long-source-name") }
+            val subtitleNode = texts.firstOrNull { it.startsWith("A bounded subtitle") }
+            val captionLines = texts.filter { it.contains("A long caption") }
             assertTrue("title was not truncated: $title", title != null && title.endsWith("\u2026") && title.length < longTitle.length)
             assertTrue("source was not truncated: $source", source != null && source.endsWith("\u2026") && source.length < longSource.length)
+            assertTrue("subtitle missing from export header", subtitleNode != null)
+            assertTrue("caption did not occupy two bounded export lines: $captionLines", captionLines.size == 2)
         }
     }
 
