@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through the chart-padding commit. `main` tracks
-`origin/main`; this state update is pushed with that stage.
+**Source:** commits through `55b32af`. `main` tracks `origin/main`; the
+chart-padding stage is pushed.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
