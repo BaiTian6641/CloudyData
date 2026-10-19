@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `51f21b5`; `main` tracks `origin/main`. The CUST09
-secondary-axis change is in the next local commit.
+**Source:** commits through `2d2aade`; `main` tracks `origin/main`. The next
+task is local-only until it passes its gates.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
