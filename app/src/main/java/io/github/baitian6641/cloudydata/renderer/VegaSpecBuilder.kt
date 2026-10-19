@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.design.CloudyTokens
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
@@ -241,6 +242,32 @@ object VegaSpecBuilder {
     private fun markerArea(spec: ChartSpec, default: Double): Double =
         spec.markers.size?.let { it * it } ?: default
 
+    private fun applyLineStroke(spec: ChartSpec, mark: JSONObject, defaultWidth: Double) {
+        val enter = mark.getJSONObject("encode").getJSONObject("enter")
+        if (spec.lineInterpolation != LineInterpolation.LINEAR) {
+            enter.put(
+                "interpolate",
+                JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
+            )
+        }
+        when (spec.lineDashStyle) {
+            LineDashStyle.SOLID -> Unit
+            LineDashStyle.DASHED -> enter.put(
+                "strokeDash",
+                JSONObject().put("value", JSONArray().put(6).put(4)),
+            )
+            LineDashStyle.DOTTED -> {
+                val width = spec.lineWidth ?: defaultWidth
+                enter
+                    .put(
+                        "strokeDash",
+                        JSONObject().put("value", JSONArray().put(1).put(width + 3.0)),
+                    )
+                    .put("strokeCap", JSONObject().put("value", "round"))
+            }
+        }
+    }
+
     private fun lineInterpolationName(interpolation: LineInterpolation): String =
         when (interpolation) {
             LineInterpolation.LINEAR -> "linear"
@@ -455,14 +482,7 @@ object VegaSpecBuilder {
                             .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
                     ),
                 )
-                .also { mark ->
-                    if (spec.lineInterpolation != LineInterpolation.LINEAR) {
-                        mark.getJSONObject("encode").getJSONObject("enter").put(
-                            "interpolate",
-                            JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
-                        )
-                    }
-                },
+                .also { applyLineStroke(spec, it, 2.0) },
         )
         if (spec.pointCount <= 200 && spec.markers.show) {
             val markerEnter = JSONObject()
@@ -579,14 +599,7 @@ object VegaSpecBuilder {
                     .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
             ),
         )
-        .also { mark ->
-            if (spec.lineInterpolation != LineInterpolation.LINEAR) {
-                mark.getJSONObject("encode").getJSONObject("enter").put(
-                    "interpolate",
-                    JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
-                )
-            }
-        }
+        .also { applyLineStroke(spec, it, 1.5) }
 
     private fun areaSymbolMark(spec: ChartSpec): JSONObject = JSONObject()
         .put("type", "symbol")

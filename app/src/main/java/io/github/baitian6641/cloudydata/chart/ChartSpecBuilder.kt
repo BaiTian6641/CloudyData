@@ -277,6 +277,7 @@ object ChartSpecBuilder {
             missingPolicy = MissingPolicy.CONNECT_OBSERVED,
             lineWidth = options.lineWidth,
             lineInterpolation = options.lineInterpolation,
+            lineDashStyle = options.lineDashStyle,
             units = units,
             valueDecimals = options.valueDecimals,
             valueFormat = options.valueFormat,

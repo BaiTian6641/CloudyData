@@ -18,6 +18,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.renderer.VegaSpecBuilder
@@ -293,6 +294,71 @@ class VegaSpecBuilderTest {
         assertEquals("Sales", major.getString("title"))
         assertEquals(true, major.getBoolean("grid"))
         assertEquals(2, json.getJSONArray("data").getJSONObject(0).getJSONArray("values").length())
+    }
+
+    @Test
+    fun lineDashStyleIsLoweredOnLineAndAreaOutlines() {
+        val lineResult = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(listOf<Any?>("A", 1L), listOf<Any?>("B", 2L)),
+                truncated = false,
+            ),
+            rowField = region,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        fun lineEnter(options: ChartOptions): JSONObject {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build("dash", 0, lineResult, options, "derived"),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            return json.getJSONArray("marks").getJSONObject(0)
+                .getJSONArray("marks").getJSONObject(0)
+                .getJSONObject("encode").getJSONObject("enter")
+        }
+        assertFalse("default solid must not emit strokeDash", lineEnter(ChartOptions()).has("strokeDash"))
+        val dashed = lineEnter(ChartOptions(lineDashStyle = LineDashStyle.DASHED))
+            .getJSONObject("strokeDash").getJSONArray("value")
+        assertEquals(6.0, dashed.getDouble(0), 0.0)
+        assertEquals(4.0, dashed.getDouble(1), 0.0)
+        val dotted = lineEnter(
+            ChartOptions(lineDashStyle = LineDashStyle.DOTTED, lineWidth = 8.0),
+        )
+        val dottedValues = dotted.getJSONObject("strokeDash").getJSONArray("value")
+        assertEquals(1.0, dottedValues.getDouble(0), 0.0)
+        assertEquals(11.0, dottedValues.getDouble(1), 0.0)
+        assertEquals("round", dotted.getJSONObject("strokeCap").getString("value"))
+
+        val areaJson = VegaSpecBuilder.build(
+            ChartSpecBuilder.build(
+                "area-dash", 0, lineResult.copy(markType = MarkType.AREA),
+                ChartOptions(lineDashStyle = LineDashStyle.DASHED),
+                "derived",
+            ),
+            false,
+            listOf(0x006A6A),
+            600f,
+            300f,
+        )
+        val outline = (0 until areaJson.getJSONArray("marks").length())
+            .map { areaJson.getJSONArray("marks").getJSONObject(it) }
+            .first { it.getString("type") == "line" }
+        assertEquals(
+            6.0,
+            outline.getJSONObject("encode").getJSONObject("enter")
+                .getJSONObject("strokeDash").getJSONArray("value").getDouble(0),
+            0.0,
+        )
     }
 
     @Test

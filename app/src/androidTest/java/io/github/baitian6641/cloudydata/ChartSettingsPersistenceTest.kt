@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
@@ -97,6 +98,7 @@ class ChartSettingsPersistenceTest {
                             markerSize = 6.0,
                             markerShape = MarkerShape.DIAMOND,
                             lineInterpolation = LineInterpolation.STEP,
+                            lineDashStyle = LineDashStyle.DASHED,
                         ),
                     ),
                 ),
@@ -145,6 +147,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(6.0, reopenedSheet.chart.markerSize!!, 0.0)
         assertEquals(MarkerShape.DIAMOND, reopenedSheet.chart.markerShape)
         assertEquals(LineInterpolation.STEP, reopenedSheet.chart.lineInterpolation)
+        assertEquals(LineDashStyle.DASHED, reopenedSheet.chart.lineDashStyle)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -193,6 +196,14 @@ class ChartSettingsPersistenceTest {
         assertEquals(
             LineInterpolation.MONOTONE,
             ChartOptions.fromJson(JSONObject().put("lineInterpolation", "MONOTONE")).lineInterpolation,
+        )
+        assertEquals(
+            LineDashStyle.SOLID,
+            ChartOptions.fromJson(JSONObject().put("lineDashStyle", "NOT_A_DASH")).lineDashStyle,
+        )
+        assertEquals(
+            LineDashStyle.DOTTED,
+            ChartOptions.fromJson(JSONObject().put("lineDashStyle", "DOTTED")).lineDashStyle,
         )
     }
 

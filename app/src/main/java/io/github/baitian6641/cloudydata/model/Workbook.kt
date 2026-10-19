@@ -36,6 +36,8 @@ enum class MarkerShape { CIRCLE, SQUARE, DIAMOND, CROSS }
 
 enum class LineInterpolation { LINEAR, STEP, MONOTONE }
 
+enum class LineDashStyle { SOLID, DASHED, DOTTED }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT }
 
 data class ChartOptions(
@@ -67,6 +69,7 @@ data class ChartOptions(
     val labelFontSize: Int? = null,
     val lineWidth: Double? = null,
     val lineInterpolation: LineInterpolation = LineInterpolation.LINEAR,
+    val lineDashStyle: LineDashStyle = LineDashStyle.SOLID,
     val showMarkers: Boolean = true,
     val markerSize: Double? = null,
     val markerShape: MarkerShape = MarkerShape.CIRCLE,
@@ -116,6 +119,7 @@ data class ChartOptions(
         .put("labelFontSize", labelFontSize ?: JSONObject.NULL)
         .put("lineWidth", lineWidth ?: JSONObject.NULL)
         .put("lineInterpolation", lineInterpolation.name)
+        .put("lineDashStyle", lineDashStyle.name)
         .put("showMarkers", showMarkers)
         .put("markerSize", markerSize ?: JSONObject.NULL)
         .put("markerShape", markerShape.name)
@@ -229,6 +233,9 @@ data class ChartOptions(
                     json.optString("lineInterpolation", LineInterpolation.LINEAR.name),
                 )
             }.getOrDefault(LineInterpolation.LINEAR),
+            lineDashStyle = runCatching {
+                LineDashStyle.valueOf(json.optString("lineDashStyle", LineDashStyle.SOLID.name))
+            }.getOrDefault(LineDashStyle.SOLID),
             showMarkers = json.optBoolean("showMarkers", true),
             markerSize = if (json.isNull("markerSize")) {
                 null

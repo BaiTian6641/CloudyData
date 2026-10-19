@@ -70,6 +70,14 @@ class RendererProbeActivity : Activity() {
     private val requestHideMarkers: Boolean by lazy {
         intent.getBooleanExtra(EXTRA_HIDE_MARKERS, false)
     }
+    private val requestLineDash by lazy {
+        runCatching {
+            io.github.baitian6641.cloudydata.model.LineDashStyle.valueOf(
+                intent.getStringExtra(EXTRA_LINE_DASH)
+                    ?: io.github.baitian6641.cloudydata.model.LineDashStyle.SOLID.name,
+            )
+        }.getOrDefault(io.github.baitian6641.cloudydata.model.LineDashStyle.SOLID)
+    }
     private val requestLineInterpolation by lazy {
         runCatching {
             io.github.baitian6641.cloudydata.model.LineInterpolation.valueOf(
@@ -111,6 +119,7 @@ class RendererProbeActivity : Activity() {
                 shape = requestMarkerShape,
             ),
             lineInterpolation = requestLineInterpolation,
+            lineDashStyle = requestLineDash,
         )
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -755,6 +764,7 @@ class RendererProbeActivity : Activity() {
         const val EXTRA_HIDE_MARKERS = "hide_markers"
         const val EXTRA_MARKER_SHAPE = "marker_shape"
         const val EXTRA_LINE_INTERPOLATION = "line_interpolation"
+        const val EXTRA_LINE_DASH = "line_dash"
         private const val MAX_RECOVERY_ATTEMPTS = 2
         private const val RECOVERY_DELAY_MS = 250L
     }

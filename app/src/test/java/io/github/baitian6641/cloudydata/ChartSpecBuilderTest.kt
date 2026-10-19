@@ -19,6 +19,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import org.junit.Assert.assertEquals
@@ -188,6 +189,26 @@ class ChartSpecBuilderTest {
                 ChartOptions(hiddenSeries = setOf("sales")),
                 "derived",
             ).hiddenSeries,
+        )
+    }
+
+    @Test
+    fun lineDashStyleIsCarriedAndDefaultsToSolid() {
+        assertEquals(
+            LineDashStyle.DOTTED,
+            ChartSpecBuilder.build(
+                "dash", 0, lineResult(),
+                ChartOptions(lineDashStyle = LineDashStyle.DOTTED),
+                "derived",
+            ).lineDashStyle,
+        )
+        assertEquals(
+            LineDashStyle.SOLID,
+            ChartSpecBuilder.build(
+                "dash", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).lineDashStyle,
         )
     }
 

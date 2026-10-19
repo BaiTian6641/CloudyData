@@ -43,6 +43,7 @@ import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.MarkType
@@ -86,6 +87,8 @@ fun ChartSettingsDialog(
     var lineWidth by remember { mutableStateOf(current.lineWidth?.toString().orEmpty()) }
     var lineInterpolation by remember { mutableStateOf(current.lineInterpolation) }
     var lineInterpolationExpanded by remember { mutableStateOf(false) }
+    var lineDashStyle by remember { mutableStateOf(current.lineDashStyle) }
+    var lineDashStyleExpanded by remember { mutableStateOf(false) }
     var showMarkers by remember { mutableStateOf(current.showMarkers) }
     var markerSize by remember { mutableStateOf(current.markerSize?.toString().orEmpty()) }
     var markerShape by remember { mutableStateOf(current.markerShape) }
@@ -512,6 +515,46 @@ fun ChartSettingsDialog(
                             }
                         }
                     }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "Line style",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                "Solid, dashed or dotted stroke.",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { lineDashStyleExpanded = true }) {
+                            Text(
+                                lineDashStyle.name.lowercase()
+                                    .replaceFirstChar { it.uppercase() },
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = lineDashStyleExpanded,
+                            onDismissRequest = { lineDashStyleExpanded = false },
+                        ) {
+                            LineDashStyle.entries.forEach { style ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            style.name.lowercase()
+                                                .replaceFirstChar { it.uppercase() },
+                                        )
+                                    },
+                                    onClick = {
+                                        lineDashStyle = style
+                                        lineDashStyleExpanded = false
+                                    },
+                                )
+                            }
+                        }
+                    }
                     ChartToggleRow(
                         title = "Markers",
                         description = "Show observed-point markers up to the 200-point cap.",
@@ -747,6 +790,13 @@ fun ChartSettingsDialog(
                                 lineInterpolation
                             } else {
                                 LineInterpolation.LINEAR
+                            },
+                            lineDashStyle = if (sheet.markType == MarkType.LINE ||
+                                sheet.markType == MarkType.AREA
+                            ) {
+                                lineDashStyle
+                            } else {
+                                LineDashStyle.SOLID
                             },
                             showMarkers = showMarkers,
                             markerSize = if (showMarkers) parsedMarkerSize else null,

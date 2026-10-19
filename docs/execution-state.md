@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `8d02062`. `main` tracks `origin/main`; the line
-interpolation stage is pushed.
+**Source:** commits through `fdc7bfe`; the line-dash change is in the next local
+commit. `main` tracks `origin/main` at the pushed interpolation baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **61/61**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **62/62**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -117,6 +117,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-marker-options.md`
 - `qualification/evidence/2026-10-19-cust03-marker-shape.md`
 - `qualification/evidence/2026-10-19-cust03-line-interpolation.md`
+- `qualification/evidence/2026-10-19-cust03-line-dash.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -215,6 +216,10 @@ unless stated otherwise.
   Area fill/outline via `encode.enter.interpolate`; gaps/markers/selection/data
   remain. Emulator line spec/persistence/render and area spec checks pass;
   visual shape/gap checks were not run.
+- **Line dash style.** Persisted solid/dashed/dotted strokes apply to Line marks
+  and Area outlines; width/interpolation/markers/selection remain. Emulator
+  line/area spec, persistence and solid/dashed/dotted render checks pass; visual
+  dash/cap checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -303,20 +308,21 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST03 persisted line dash style.**
+**CUST03 persisted line opacity.**
 
 - Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: Line/Area
-  lowering, width/interpolation/markers, typed options and emulator probes.
+  width/interpolation/dash/markers, typed options and emulator probes.
 - Files: `ChartOptions`, `ChartSpec`, builders, `VegaSpecBuilder`,
   `ChartSettingsDialog`, tests/evidence.
-- Action: add a bounded persisted stroke style (solid default, dashed, dotted)
-  for Line marks and Area outlines, preserving default output and interpolation.
-- Acceptance: default solid unchanged; style persists and affects only strokes,
-  not data/markers/selection; invalid values fall back to solid. Emulator
-  spec/render checks required; visual review unverified.
+- Action: add a bounded persisted opacity (0.1–1.0, default 1.0) for Line marks
+  and Area fill/outline, preserving default output and selection contrast.
+- Acceptance: default opaque unchanged; opacity persists and affects only mark
+  paint, not data/markers/selection identity; invalid values fall back to 1.0.
+  Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, interpolation and dash visuals wait for an authorized visual session.
+  marker, interpolation, dash and opacity visuals wait for an authorized visual
+  session.
 
 ## Protected context
 

@@ -4,6 +4,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
+import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
@@ -101,6 +102,7 @@ data class ChartSpec(
     val missingPolicy: MissingPolicy = MissingPolicy.CONNECT_OBSERVED,
     val lineWidth: Double? = null,
     val lineInterpolation: LineInterpolation = LineInterpolation.LINEAR,
+    val lineDashStyle: LineDashStyle = LineDashStyle.SOLID,
     val units: String? = null,
     val valueDecimals: Int? = null,
     val valueFormat: ValueDisplayFormat = ValueDisplayFormat.NUMBER,

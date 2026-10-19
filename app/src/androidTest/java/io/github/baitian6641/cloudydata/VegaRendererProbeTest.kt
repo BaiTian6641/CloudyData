@@ -404,6 +404,38 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun dashedStyleRendersWithoutChangingMarkCounts() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(dash: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_LINE_DASH, dash)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("dash render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("dash export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val solid = render("SOLID")
+        val dashed = render("DASHED")
+        val dotted = render("DOTTED")
+        for (variant in listOf(dashed, dotted)) {
+            assertEquals(solid.result.markCount, variant.result.markCount)
+            assertEquals(solid.result.sceneMarks["line"], variant.result.sceneMarks["line"])
+            assertEquals(solid.result.sceneMarks["symbol"], variant.result.sceneMarks["symbol"])
+            assertFalse("solid and dashed/dotted exported identical SVG", solid.svg == variant.svg)
+        }
+        assertFalse("dashed and dotted exported identical SVG", dashed.svg == dotted.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

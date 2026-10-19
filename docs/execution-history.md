@@ -668,3 +668,16 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   emulator-5580 API36 x86_64 VegaSpecBuilderTest 14/14 (line + area/outline),
   ChartSettingsPersistenceTest 10/10, linear/step render 1/1; lint 0 errors/5
   warnings. Googlebook untouched; visual checks absent.
+
+## 2026-10-19 — CUST03 line dash style
+
+- Added persisted solid/dashed/dotted strokes for Line marks and Area outlines.
+  Vega receives `strokeDash` value refs in `encode.enter`; dotted adds a round
+  cap. A first raw-array encoding was rejected by Vega as an unrecognized signal,
+  caught by the render probe and fixed by wrapping values. Dotted gaps are
+  width-aware so they remain separated at the 8 px maximum. Default solid emits
+  no override. Area fill, markers, interpolation, selection and data remain.
+- Emulator-first validation: JVM 62/62; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 15/15, ChartSettingsPersistenceTest 10/10,
+  solid/dashed/dotted render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
+  visual dash/cap/export checks absent.
