@@ -32,10 +32,18 @@ object ChartSpecBuilder {
             )
         }
         validateAxisOptions(options)
-        return if (result.markType == MarkType.LINE) {
-            buildLine(chartId, revision, result, options, derivedTitle)
-        } else {
-            buildBar(chartId, revision, result, options, derivedTitle)
+        return when (result.markType) {
+            MarkType.LINE -> buildTimeSeries(
+                chartId, revision, result, options, derivedTitle,
+                kind = ChartKind.LINE,
+                allowSeries = true,
+            )
+            MarkType.AREA -> buildTimeSeries(
+                chartId, revision, result, options, derivedTitle,
+                kind = ChartKind.AREA,
+                allowSeries = false,
+            )
+            else -> buildBar(chartId, revision, result, options, derivedTitle)
         }
     }
 
@@ -101,24 +109,33 @@ object ChartSpecBuilder {
         )
     }
 
-    private fun buildLine(
+    private fun buildTimeSeries(
         chartId: String,
         revision: Long,
         result: WorksheetResult,
         options: ChartOptions,
         derivedTitle: String,
+        kind: ChartKind,
+        allowSeries: Boolean,
     ): ChartSpec {
+        val label = if (kind == ChartKind.AREA) "Area" else "Line"
+        if (kind == ChartKind.AREA && options.logScale) {
+            throw ChartSpecException("A logarithmic value axis is not available for Area marks in this build.")
+        }
         val rowField = result.rowField
-            ?: throw ChartSpecException("Line marks require a dimension on Rows.")
+            ?: throw ChartSpecException("$label marks require a dimension on Rows.")
         val measure = result.measureField
-            ?: throw ChartSpecException("Line marks require a measure on Values.")
+            ?: throw ChartSpecException("$label marks require a measure on Values.")
         if (result.aggregation == Aggregation.NONE) {
-            throw ChartSpecException("Line marks require an aggregate; raw-value lines are not implemented.")
+            throw ChartSpecException("$label marks require an aggregate; raw-value lines are not implemented.")
         }
         if (result.result.rows.size > MAX_LINE_POINTS) {
             throw ChartSpecException(
-                "Line chart supports at most $MAX_LINE_POINTS observed points; narrow the view or aggregate further.",
+                "$label chart supports at most $MAX_LINE_POINTS observed points; narrow the view or aggregate further.",
             )
+        }
+        if (result.seriesField != null && !allowSeries) {
+            throw ChartSpecException("Area charts do not support a color series in this build.")
         }
         val hasSeries = result.seriesField != null
         if (result.seriesField != null) {
@@ -140,8 +157,8 @@ object ChartSpecBuilder {
             val series = seriesColumn?.let { display(row.getOrNull(it)) } ?: measure.name
             val raw = row.getOrNull(valueColumn)
             val y = raw?.let { valueAsDouble(it) }
-            if (raw != null && y == null) throw ChartSpecException("Line value for $x is not numeric.")
-            if (y != null && !y.isFinite()) throw ChartSpecException("Line value for $x is not finite.")
+            if (raw != null && y == null) throw ChartSpecException("$label value for $x is not numeric.")
+            if (y != null && !y.isFinite()) throw ChartSpecException("$label value for $x is not finite.")
             grouped.getOrPut(series) { mutableListOf() }.add(
                 ChartPoint(
                     x = x,
@@ -154,26 +171,35 @@ object ChartSpecBuilder {
                 ),
             )
         }
-        if (grouped.isEmpty()) throw ChartSpecException("The current view has no line points.")
+        if (grouped.isEmpty()) throw ChartSpecException("The current view has no $label points.")
         validateYDomain(options, grouped.values.flatten().mapNotNull { it.y })
         if (grouped.values.flatten().none { it.defined }) {
-            throw ChartSpecException("The current view has no numeric line points.")
+            throw ChartSpecException("The current view has no numeric $label points.")
         }
         val series = grouped.map { (key, points) -> ChartSeries(key, points.sortedBy { it.xOrder }) }
         val yTitle = options.yAxisTitle ?: "${aggregationLabel(result.aggregation)} of ${measure.name}"
+        val baseAxis = axisFor(options, yTitle)
         return ChartSpec(
             chartId = chartId,
             revision = revision,
-            kind = ChartKind.LINE,
+            kind = kind,
             title = options.title ?: derivedTitle,
             xAxis = AxisSpec(
                 title = options.xAxisTitle ?: rowField.name,
                 reverse = false,
             ),
-            yAxis = axisFor(options, yTitle),
+            yAxis = if (kind == ChartKind.AREA) {
+                baseAxis.copy(
+                    min = baseAxis.min?.coerceAtMost(0.0),
+                    max = baseAxis.max?.coerceAtLeast(0.0),
+                    zero = true,
+                )
+            } else {
+                baseAxis
+            },
             gridlines = GridlineSpec(options.showGridlines),
             legend = LegendSpec(
-                visible = options.legendVisible && series.size > 1,
+                visible = kind == ChartKind.LINE && options.legendVisible && series.size > 1,
                 position = options.legendPosition,
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
             ),

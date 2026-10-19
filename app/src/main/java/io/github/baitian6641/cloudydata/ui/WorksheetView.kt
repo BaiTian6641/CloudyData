@@ -187,9 +187,10 @@ fun WorksheetView(
                 MarkChoice("Table", sheet.markType == MarkType.TABLE) { onMarkType(MarkType.TABLE) }
                 MarkChoice("Bar", sheet.markType == MarkType.BAR) { onMarkType(MarkType.BAR) }
                 MarkChoice("Line", sheet.markType == MarkType.LINE) { onMarkType(MarkType.LINE) }
+                MarkChoice("Area", sheet.markType == MarkType.AREA) { onMarkType(MarkType.AREA) }
                 Spacer(Modifier.weight(1f))
                 CloudyTextButton("Chart settings", onChartSettings)
-                if (sheet.markType != MarkType.LINE) {
+                if (sheet.markType != MarkType.LINE && sheet.markType != MarkType.AREA) {
                     CloudyTextButton(
                         text = if (sheet.sortDescending) "Sort descending" else "Sort ascending",
                         onClick = { onSortDescending(!sheet.sortDescending) },
@@ -217,7 +218,8 @@ fun WorksheetView(
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
             val chartHeight = if (maxHeight < 420.dp) 0.dp else minOf(300.dp, maxHeight * 0.48f)
             Column(Modifier.fillMaxSize()) {
-                if ((sheet.markType == MarkType.BAR || sheet.markType == MarkType.LINE) &&
+                if ((sheet.markType == MarkType.BAR || sheet.markType == MarkType.LINE ||
+                        sheet.markType == MarkType.AREA) &&
                     current != null && chartHeight > 0.dp) {
                     VegaChartCard(
                         result = current,

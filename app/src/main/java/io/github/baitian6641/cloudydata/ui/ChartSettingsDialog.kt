@@ -160,12 +160,14 @@ fun ChartSettingsDialog(
                     checked = showValueLabels,
                     onCheckedChange = { showValueLabels = it },
                 )
-                ChartToggleRow(
-                    title = "Zero baseline",
-                    description = "Include zero in the value-axis domain when no explicit range is set.",
-                    checked = zeroBaseline,
-                    onCheckedChange = { zeroBaseline = it },
-                )
+                if (sheet.markType != MarkType.AREA) {
+                    ChartToggleRow(
+                        title = "Zero baseline",
+                        description = "Include zero in the value-axis domain when no explicit range is set.",
+                        checked = zeroBaseline,
+                        onCheckedChange = { zeroBaseline = it },
+                    )
+                }
                 if (sheet.markType == MarkType.LINE) {
                     ChartToggleRow(
                         title = "Logarithmic Y axis",
@@ -243,7 +245,7 @@ fun ChartSettingsDialog(
                             yMax = parsedMax,
                             showGridlines = showGridlines,
                             showValueLabels = showValueLabels,
-                            zeroBaseline = zeroBaseline,
+                            zeroBaseline = zeroBaseline || sheet.markType == MarkType.AREA,
                             logScale = logScale && sheet.markType == MarkType.LINE,
                             reverseY = reverseY,
                             legendVisible = legendVisible && sheet.markType == MarkType.LINE,

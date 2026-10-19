@@ -233,6 +233,23 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun packagedVegaRendersSingleSeriesAreaOffline() {
+        RendererProbeState.reset()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, RendererProbeActivity::class.java)
+            .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "area")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use {
+            val result = RendererProbeState.await(30)
+            assertTrue("area renderer did not complete", result != null)
+            assertNull("area renderer returned an error", result!!.error)
+            assertEquals("area lost observed points", 4, result.markCount)
+            assertEquals("Vega did not draw an area", 1, result.sceneMarks["area"])
+            assertEquals("Vega did not draw the area outline", 1, result.sceneMarks["line"])
+            assertEquals("renderer made an external request", 0, result.blockedRequests)
+        }
+    }
+
+    @Test
     fun packagedVegaRendersTrustedBarSpecOffline() {
         RendererProbeState.reset()
         ActivityScenario.launch(RendererProbeActivity::class.java).use {

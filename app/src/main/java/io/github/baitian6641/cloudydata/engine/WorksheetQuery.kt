@@ -35,9 +35,9 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
         val measureField = sheet.measureFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
         val seriesField = sheet.seriesFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
         val source = "read_parquet(${Sql.string(snapshotPath)})"
-        val line = sheet.markType == MarkType.LINE
+        val timeSeries = sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA
         val sql = when {
-            line && rowField != null && measureField != null -> {
+            timeSeries && rowField != null && measureField != null -> {
                 val x = Sql.identifier(rowField.name)
                 val y = Sql.identifier(measureField.name)
                 val series = seriesField?.let { Sql.identifier(it.name) }
@@ -68,7 +68,7 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
             }
             else -> "SELECT * FROM $source LIMIT 100"
         }
-        val result = engine.execute(sql, maxRows = if (line) 2001 else 1000)
+        val result = engine.execute(sql, maxRows = if (timeSeries) 2001 else 1000)
         return WorksheetResult(
             result = result,
             rowField = rowField,

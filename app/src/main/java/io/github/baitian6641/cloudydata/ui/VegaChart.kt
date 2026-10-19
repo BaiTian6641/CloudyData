@@ -266,6 +266,10 @@ private fun accessibleSummary(spec: ChartSpec): String {
         "${series.key}: $points"
     }
     val suffix = if (spec.series.size > 4) " plus ${spec.series.size - 4} more series" else ""
-    val kind = if (spec.kind == ChartKind.LINE) "Line" else "Bar"
+    val kind = when (spec.kind) {
+        ChartKind.BAR -> "Bar"
+        ChartKind.LINE -> "Line"
+        ChartKind.AREA -> "Area"
+    }
     return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; Escape leaves the chart."
 }

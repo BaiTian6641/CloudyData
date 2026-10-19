@@ -335,8 +335,8 @@ class RendererProbeActivity : Activity() {
         super.onDestroy()
     }
 
-    private fun buildSpec(): ChartSpec = if (probeKind == "line") {
-        ChartSpec(
+    private fun buildSpec(): ChartSpec = when (probeKind) {
+        "line" -> ChartSpec(
             chartId = "probe-line",
             revision = 1,
             kind = ChartKind.LINE,
@@ -367,8 +367,31 @@ class RendererProbeActivity : Activity() {
             rowCount = 6,
             truncated = false,
         )
-    } else {
-        ChartSpec(
+        "area" -> ChartSpec(
+            chartId = "probe-area",
+            revision = 1,
+            kind = ChartKind.AREA,
+            title = "Observed sales",
+            xAxis = AxisSpec("Month"),
+            yAxis = AxisSpec("Sales", min = 0.0, max = 40.0),
+            gridlines = GridlineSpec(true),
+            legend = LegendSpec(false, LegendPosition.RIGHT, null),
+            labels = LabelSpec(true),
+            series = listOf(
+                ChartSeries(
+                    "Values",
+                    listOf(
+                        point("2026-01-01", 10.0, "Values", 0),
+                        point("2026-02-01", 20.0, "Values", 1),
+                        point("2026-03-01", 30.0, "Values", 2),
+                        point("2026-04-01", 40.0, "Values", 3),
+                    ),
+                ),
+            ),
+            rowCount = 4,
+            truncated = false,
+        )
+        else -> ChartSpec(
             chartId = "probe-chart",
             revision = 1,
             kind = ChartKind.BAR,
@@ -392,11 +415,12 @@ class RendererProbeActivity : Activity() {
         )
     }
 
-    private fun accessibleSummary(): String = if (probeKind == "line") {
-        "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
+    private fun accessibleSummary(): String = when (probeKind) {
+        "line" -> "Accessible summary: North 2026-01-01 = 10, 2026-02-01 = 20, 2026-03-01 = 30; " +
             "South 2026-01-01 = 1, 2026-02-01 = 2, 2026-04-01 = 4."
-    } else {
-        "Accessible summary: region A = 40, region B = 60."
+        "area" -> "Accessible summary: 2026-01-01 = 10, 2026-02-01 = 20, " +
+            "2026-03-01 = 30, 2026-04-01 = 40."
+        else -> "Accessible summary: region A = 40, region B = 60."
     }
 
     private fun point(

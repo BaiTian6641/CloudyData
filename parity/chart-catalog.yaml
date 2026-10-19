@@ -6,8 +6,8 @@ reference_profile: pending_no_licensed_tableau
 design_contract: docs/design/chart-grammar-and-customization.md
 inventory_complete: false
 status_counts:
-  partial: 3
-  not_started: 21
+  partial: 4
+  not_started: 20
 families:
   - id: CH01
     family: Bar
@@ -28,7 +28,8 @@ families:
   - id: CH03
     family: Area
     variants: [single, stacked, 100_percent]
-    status: not_started
+    status: partial
+    note: Single series with zero-baseline area, outline, point symbols, value labels, exact table selection and persisted mark choice. Stacked/100%/multi-series area, color series and visual export are pending.
   - id: CH04
     family: Combo / dual axis
     variants: [bar_line, dual_measure, synchronized]

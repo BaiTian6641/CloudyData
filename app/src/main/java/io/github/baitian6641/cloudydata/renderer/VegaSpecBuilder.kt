@@ -34,8 +34,10 @@ object VegaSpecBuilder {
             }
         }
         val xDomain = JSONArray(xOrder.values)
-        val colorDomain = if (spec.kind == ChartKind.LINE) seriesDomain else xDomain
-        val colorField = if (spec.kind == ChartKind.LINE) "series" else "x"
+        val colorDomain = when (spec.kind) {
+            ChartKind.LINE, ChartKind.AREA -> seriesDomain
+            ChartKind.BAR -> xDomain
+        }
         val colorScale = JSONObject()
             .put("name", "color")
             .put("type", "ordinal")
@@ -68,7 +70,7 @@ object VegaSpecBuilder {
             .put("type", "band")
             .put("domain", xDomain)
             .put("range", "width")
-            .put("paddingInner", if (spec.kind == ChartKind.LINE) 0.05 else 0.2)
+            .put("paddingInner", if (spec.kind == ChartKind.BAR) 0.2 else 0.05)
 
         val axes = JSONArray()
             .put(
@@ -79,7 +81,7 @@ object VegaSpecBuilder {
                     textColor = textColor,
                     gridColor = gridColor,
                     grid = false,
-                    labelAngle = if (spec.kind == ChartKind.LINE && xDomain.length() > 8) -35 else 0,
+                    labelAngle = if (spec.kind != ChartKind.BAR && xDomain.length() > 8) -35 else 0,
                 ),
             )
             .put(
@@ -95,15 +97,25 @@ object VegaSpecBuilder {
             )
 
         val marks = JSONArray()
-        if (spec.kind == ChartKind.BAR) {
-            marks.put(barMark())
-            if (spec.labels.show) marks.put(barLabelMark(textColor))
-        } else {
-            marks.put(lineGroup(spec, textColor))
-            // Facet groups do not reliably surface the child point datum on a
-            // click. A top-level, nearly transparent symbol gives every observed
-            // point a stable hit target that carries sourceRowIndex.
-            marks.put(lineHitMark())
+        when (spec.kind) {
+            ChartKind.BAR -> {
+                marks.put(barMark())
+                if (spec.labels.show) marks.put(barLabelMark(textColor))
+            }
+            ChartKind.LINE -> {
+                marks.put(lineGroup(spec, textColor))
+                // Facet groups do not reliably surface the child point datum on a
+                // click. A top-level, nearly transparent symbol gives every observed
+                // point a stable hit target that carries sourceRowIndex.
+                marks.put(lineHitMark())
+            }
+            ChartKind.AREA -> {
+                marks.put(areaMark())
+                marks.put(areaLineMark())
+                if (spec.pointCount <= 200) marks.put(areaSymbolMark())
+                if (spec.labels.show) marks.put(areaLabelMark(textColor))
+                marks.put(lineHitMark())
+            }
         }
 
         val root = JSONObject()
@@ -281,6 +293,78 @@ object VegaSpecBuilder {
             )
             .put("marks", childMarks)
     }
+
+    private fun areaMark(): JSONObject = JSONObject()
+        .put("type", "area")
+        .put("from", JSONObject().put("data", "table"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("y2", JSONObject().put("scale", "y").put("value", 0))
+                    .put("fill", JSONObject().put("scale", "color").put("field", "series"))
+                    .put("opacity", JSONObject().put("value", 0.32))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
+    private fun areaLineMark(): JSONObject = JSONObject()
+        .put("type", "line")
+        .put("from", JSONObject().put("data", "table"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("stroke", JSONObject().put("scale", "color").put("field", "series"))
+                    .put("strokeWidth", JSONObject().put("value", 1.5))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
+    private fun areaSymbolMark(): JSONObject = JSONObject()
+        .put("type", "symbol")
+        .put("from", JSONObject().put("data", "table"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("fill", JSONObject().put("scale", "color").put("field", "series"))
+                    .put("size", JSONObject().put("value", 24))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
+    private fun areaLabelMark(textColor: String): JSONObject = JSONObject()
+        .put("type", "text")
+        .put("from", JSONObject().put("data", "table"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y").put("field", "y").put("offset", -8))
+                    .put("text", JSONObject().put("field", "y"))
+                    .put("align", JSONObject().put("value", "center"))
+                    .put("baseline", JSONObject().put("value", "bottom"))
+                    .put("fill", JSONObject().put("value", textColor))
+                    .put("fontSize", JSONObject().put("value", 10))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
 
     private fun lineHitMark(): JSONObject = JSONObject()
         .put("name", "cloudyHit")

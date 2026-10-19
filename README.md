@@ -108,7 +108,7 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - No canonical upstream `shared/design-system/tokens.json`, generator history,
   preview images or `platform-rule-zero.md` were present. Tokens are explicitly
   provisional; see `docs/decisions/0002-provisional-design-tokens.md`.
-- The Vega renderer covers bar and line marks; emulator renderer death,
+- The Vega renderer covers bar, line and single-series area marks; emulator renderer death,
   generation retirement, automatic probe recreation/replay, recovery
   exhaustion, stale completion/failure rejection and exact surface/view sizes
   are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths

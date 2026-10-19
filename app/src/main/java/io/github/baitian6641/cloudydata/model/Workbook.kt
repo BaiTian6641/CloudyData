@@ -18,7 +18,7 @@ enum class FieldRole { DIMENSION, MEASURE }
 
 enum class Aggregation { SUM, AVG, MIN, MAX, COUNT, COUNT_DISTINCT, NONE }
 
-enum class MarkType { TABLE, BAR, LINE }
+enum class MarkType { TABLE, BAR, LINE, AREA }
 
 enum class LegendPosition { BOTTOM, RIGHT }
 

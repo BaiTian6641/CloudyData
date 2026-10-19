@@ -66,6 +66,93 @@ class ChartSpecBuilderTest {
         assertTrue("March must remain absent for South", south.points.none { it.x == "2026-03-01" })
     }
 
+    @Test
+    fun areaSpecIsSingleSeriesAndForcesZeroBaselineWithoutLegend() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(
+                    listOf<Any?>("2026-01-01", 10L),
+                    listOf<Any?>("2026-02-01", 20L),
+                    listOf<Any?>("2026-03-01", 30L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "area-sheet", 7, result,
+            ChartOptions(
+                zeroBaseline = false,
+                showValueLabels = true,
+                legendVisible = true,
+                legendPosition = LegendPosition.RIGHT,
+            ),
+            "derived",
+        )
+        assertEquals(ChartKind.AREA, spec.kind)
+        assertEquals(1, spec.series.size)
+        assertEquals(listOf(10.0, 20.0, 30.0), spec.series[0].points.map { it.y })
+        assertEquals(listOf(0, 1, 2), spec.series[0].points.map { it.sourceRowIndex })
+        assertTrue("area must use a zero baseline", spec.yAxis.zero)
+        assertEquals(false, spec.legend.visible)
+        assertEquals(3, spec.rowCount)
+    }
+
+    @Test
+    fun areaExplicitRangeIncludesZeroForTheAreaBaseline() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(listOf<Any?>("A", 10L), listOf<Any?>("B", 20L)),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build(
+            "area", 0, result, ChartOptions(yMin = 10.0, yMax = 20.0, zeroBaseline = false), "derived",
+        )
+        assertEquals(0.0, spec.yAxis.min!!, 0.0)
+        assertEquals(20.0, spec.yAxis.max!!, 0.0)
+        assertTrue(spec.yAxis.zero)
+    }
+
+    @Test(expected = ChartSpecException::class)
+    fun areaColorSeriesIsRejected() {
+        ChartSpecBuilder.build(
+            "area", 0, lineResult().copy(markType = MarkType.AREA),
+            ChartOptions(), "derived",
+        )
+    }
+
+    @Test(expected = ChartSpecException::class)
+    fun areaLogScaleIsRejected() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(listOf<Any?>("A", 10L), listOf<Any?>("B", 20L)),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        ChartSpecBuilder.build("area", 0, result, ChartOptions(logScale = true), "derived")
+    }
+
     @Test(expected = ChartSpecException::class)
     fun invalidYRangeIsRejected() {
         ChartSpecBuilder.build(

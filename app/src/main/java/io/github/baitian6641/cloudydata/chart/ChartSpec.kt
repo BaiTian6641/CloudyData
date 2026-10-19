@@ -2,7 +2,7 @@ package io.github.baitian6641.cloudydata.chart
 
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
-enum class ChartKind { BAR, LINE }
+enum class ChartKind { BAR, LINE, AREA }
 
 enum class MissingPolicy { CONNECT_OBSERVED }
 

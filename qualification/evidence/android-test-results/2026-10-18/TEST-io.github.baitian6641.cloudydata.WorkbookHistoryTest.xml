@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.baitian6641.cloudydata.WorkbookHistoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-19T01:20:27.731Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.006">
+<testsuite name="io.github.baitian6641.cloudydata.WorkbookHistoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-19T01:42:24.325Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.007">
   <properties/>
-  <testcase name="resetDropsHistoryAndSourceEffectsAreNotReplayed" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.002"/>
+  <testcase name="resetDropsHistoryAndSourceEffectsAreNotReplayed" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.003"/>
   <testcase name="undoRedoRestoresDocumentStateAndClearsRedoOnNewEdit" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.0"/>
-  <testcase name="chartOptionsParticipateInUndoRedoWithoutRequery" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.0"/>
+  <testcase name="chartOptionsParticipateInUndoRedoWithoutRequery" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.001"/>
   <testcase name="historyIsBounded" classname="io.github.baitian6641.cloudydata.WorkbookHistoryTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

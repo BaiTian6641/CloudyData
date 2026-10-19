@@ -1,6 +1,7 @@
 package io.github.baitian6641.cloudydata
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.github.baitian6641.cloudydata.chart.ChartKind
 import io.github.baitian6641.cloudydata.chart.ChartSpecBuilder
 import io.github.baitian6641.cloudydata.engine.EngineColumn
 import io.github.baitian6641.cloudydata.engine.EngineResult
@@ -98,6 +99,37 @@ class VegaSpecBuilderTest {
             listOf(0, 2, 4, 1, 3, 5),
             (0 until values.length()).map { values.getJSONObject(it).getInt("sourceRowIndex") },
         )
+    }
+
+    @Test
+    fun areaSpecEmitsAreaLineAndSelectionHitWithoutLegend() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(EngineColumn("row", "VARCHAR"), EngineColumn("value", "BIGINT")),
+                rows = listOf(
+                    listOf<Any?>("2026-01-01", 10L),
+                    listOf<Any?>("2026-02-01", 20L),
+                    listOf<Any?>("2026-03-01", 30L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            sql = "test",
+        )
+        val spec = ChartSpecBuilder.build("area", 2, result, ChartOptions(legendVisible = true), "derived")
+        val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 640f, 400f)
+        assertEquals(ChartKind.AREA, spec.kind)
+        assertFalse("area has no color-series legend", json.has("legends"))
+        val marks = json.getJSONArray("marks")
+        assertEquals("area", marks.getJSONObject(0).getString("type"))
+        assertEquals("line", marks.getJSONObject(1).getString("type"))
+        assertEquals("cloudyHit", marks.getJSONObject(marks.length() - 1).getString("name"))
+        val yScale = json.getJSONArray("scales").getJSONObject(1)
+        assertEquals(true, yScale.getBoolean("zero"))
     }
 
     @Test

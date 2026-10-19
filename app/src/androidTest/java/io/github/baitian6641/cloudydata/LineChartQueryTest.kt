@@ -122,6 +122,62 @@ class LineChartQueryTest {
         }
     }
 
+    @Test
+    fun singleSeriesAreaAggregatesAndPersistsWithoutColorSeries() {
+        val workbook = store.create("Area chart")
+        val pending = runBlocking { importer.stageAndInspect(workbook, fixtureUri("csv/chart_line_series.csv")) }
+        val applied = runBlocking { importer.apply(workbook, pending) }
+        val snapshot = applied.snapshot!!
+        val eventDate = snapshot.columns.first { it.name == "event_date" }
+        val value = snapshot.columns.first { it.name == "value" }
+        val sheet = applied.worksheets.single().copy(
+            rowFieldId = eventDate.id,
+            measureFieldId = value.id,
+            seriesFieldId = null,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.AREA,
+            chart = ChartOptions(
+                title = "Observed sales",
+                xAxisTitle = "Event date",
+                yAxisTitle = "Sales",
+                yMin = 0.0,
+                yMax = 40.0,
+                showGridlines = true,
+                showValueLabels = true,
+            ),
+        )
+        val saved = store.save(applied.copy(worksheets = listOf(sheet)))
+        val reopened = store.load(saved.id)
+        val reopenedSheet = reopened.worksheets.single()
+        assertEquals(MarkType.AREA, reopenedSheet.markType)
+        assertEquals(null, reopenedSheet.seriesFieldId)
+        assertEquals("Event date", reopenedSheet.chart.xAxisTitle)
+
+        val path = store.resolveInsideWorkbook(reopened.id, snapshot.snapshotFile).absolutePath
+        DuckDbEngine.open(":memory:", memoryLimitMb = 256, threads = 2).use { engine ->
+            val result = WorksheetQuery(engine).query(reopened.snapshot!!, reopenedSheet, path)
+            assertEquals(MarkType.AREA, result.markType)
+            assertEquals(listOf("row", "value"), result.result.columns.map { it.name })
+            assertEquals(
+                listOf(
+                    listOf("2026-01-01", "11"),
+                    listOf("2026-02-01", "22"),
+                    listOf("2026-03-01", "30"),
+                    listOf("2026-04-01", "4"),
+                ),
+                result.result.rows.map { row -> row.map { it?.toString() } },
+            )
+            val spec = ChartSpecBuilder.build(
+                "area-${reopened.id}", 1, result, reopenedSheet.chart, "derived",
+            )
+            assertEquals(ChartKind.AREA, spec.kind)
+            assertEquals(1, spec.series.size)
+            assertEquals(listOf(11.0, 22.0, 30.0, 4.0), spec.series[0].points.map { it.y })
+            assertEquals(true, spec.yAxis.zero)
+            assertEquals(false, spec.legend.visible)
+        }
+    }
+
     private fun fixtureUri(assetPath: String): Uri {
         val target = File(context.cacheDir, "line-fixture-${UUID.randomUUID()}.csv")
         InstrumentationRegistry.getInstrumentation().context.assets.open(assetPath).use { input ->

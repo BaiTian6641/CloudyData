@@ -211,3 +211,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   and the product worksheet. Full suite: 32/32; JVM 19/19; lint 0 errors.
 - CUST13 remains partial: additive/range/lasso selection, visual mark highlight,
   tooltip, context menu and export are still absent.
+
+## 2026-10-18 — single-series Area chart
+
+- Added persisted `MarkType.AREA`/`ChartKind.AREA`, line-shaped aggregate query,
+  zero-baseline area/outline/symbols/labels and the shared selection hit target.
+- Product worksheet exposes Mark → Area; switching clears color-series/log
+  options; chart/table survive app restart.
+- Verified 11/22/30/4 aggregate values, area scene mark and offline rendering.
+  JVM 23/23; emulator 35/35; lint 0 errors.
+- CH03 is partial; stacked/100%/multi-series area and tooltip/export remain.

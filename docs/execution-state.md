@@ -53,8 +53,8 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 19/19. Emulator instrumentation:
-  32/32, 0 failures. The physical Googlebook was removed by the owner; new
+- Lint: 0 errors (warnings documented). JVM tests: 23/23. Emulator instrumentation:
+  35/35, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -70,6 +70,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s11-line-chart.md`
 - `qualification/evidence/2026-10-18-s01-renderer-lifecycle.md`
 - `qualification/evidence/2026-10-18-s11-renderer-selection.md`
+- `qualification/evidence/2026-10-18-s11-area-chart.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -107,8 +108,9 @@ unless stated otherwise.
   not real process kills; S01.7 now verifies emulator renderer death/recovery,
   generation retirement, recovery exhaustion, stale completion/failure
   rejection and exact surface/view sizes. Selection and Escape focus-exit are
-  now verified, but additive/range selection, tooltip, export, TalkBack and
-  live-window qualification remain.
+  verified; single-series Area is implemented and persists across reopen.
+  Additive/range selection, tooltip, export, TalkBack and live-window
+  qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau

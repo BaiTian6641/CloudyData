@@ -104,3 +104,12 @@ claim). Evidence:
 Still absent: additive/range/lasso/keep-exclude/drill selection, visual mark
 highlighting, tooltip, context menu, export/print, TalkBack traversal, physical
 WebView-provider qualification. CUST13 remains partial.
+
+## Amendment — 2026-10-18 single-series area
+
+Added a single-series Area mark family (CH03 partial). Area reuses the Line
+query shape, forces a zero baseline, rejects a color series/log axis and emits
+area + outline + symbols + labels + the existing selection hit target. The
+workbook persists `MarkType.AREA` and reopens it. Evidence:
+`qualification/evidence/2026-10-18-s11-area-chart.md`. Stacked/100%/multi-series
+area, tooltip and export remain pending.

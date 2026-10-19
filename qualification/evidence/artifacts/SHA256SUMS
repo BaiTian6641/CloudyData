@@ -1,4 +1,4 @@
-3899ff36b54ab8a0da5d60bc230fc8fef03f93b04bebafd9a16bfba505cef699  app/build/outputs/apk/debug/app-debug.apk
+39685e2c61f1552a729c90e339e26a81773258213e48f0d9eee6a5a3d7a4d8e1  app/build/outputs/apk/debug/app-debug.apk
 f76f58a308f941894f9a324826aa5c352c35a564b1e09013accf2bcecfd07c3f  app/src/main/assets/renderer/host.js
 6d64d34b0c990f66a54ac197318001247fe3266834e4713ef810fabfbee4490f  app/src/main/assets/renderer/index.html
 e56200ab496a55553d2800ec4e24e6022b51089596314433f640101cc96fdb2b  app/src/main/assets/renderer/renderer.css
@@ -8,6 +8,8 @@ ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/a
 63f7f0c60f42b8438288150b5e199484d77e048c4dca9951c2c696860134b0fe  app/src/main/jniLibs/x86_64/libduckdb.so
 444353014313edf0653d7d20b6225efc88f599afe8da1379089df32c07fa4646  fixtures/csv/chart_line_series.csv
 e50ff4abdf7c0381b19f8772766fc68f911f9ed73e192f06687f428b1586249a  fixtures/expected/chart_line_series.md
+35118ca1302f0785fde0a9961fd98c2b7cf8f8aa4e495d6ce8f6bf5ab6e25ccb  qualification/evidence/artifacts/2026-10-18-area-chart-ui.xml
+8f667a1183adc718569d2998858bc8477ca5565a3b236edc91193c6bcef25682  qualification/evidence/artifacts/2026-10-18-area-chart.png
 34c04c68392165064eb0e223961296b7fb8254662b33ed271af4187fe7bda148  qualification/evidence/artifacts/2026-10-18-chart-customized-ui.xml
 97eafd5c5aa512ea91503683350dc5c09edc2c2feb99e531bf944accaa88818f  qualification/evidence/artifacts/2026-10-18-chart-customized.png
 aeeac6cf1698ca784949adfba2c20f93743e65dba4a3d0c4f454211b3358b4eb  qualification/evidence/artifacts/2026-10-18-chart-reopened-ui.xml
@@ -21,6 +23,8 @@ ec7adeb6df09e23701cb043048437941d1dca781ba9b7a841a87a09bca81863d  qualification/
 f559630b9c059bee7257d2fdc9924db49d2b74a4a4ac2dc10a7787428b418b3a  qualification/evidence/artifacts/2026-10-18-inspector.png
 ccc58e4767d5a2bacab5b1cb968729ba1ada13ab7d956bbc913dbed081a5c5e6  qualification/evidence/artifacts/2026-10-18-line-chart-emulator-ui.xml
 7f0de807464d1dd6cd13f9316f45cbebe412e18a05421d7ed671b25902ea2aa6  qualification/evidence/artifacts/2026-10-18-line-chart-emulator.png
+4a7a0d1d2e6acc1b1b0850a5e62f028b641112092b4f45a7122bb8f10f22708c  qualification/evidence/artifacts/2026-10-18-product-area-chart-ui.xml
+c50fec8c0f4a0796e059aafd6e847d04a74f4cc0ad1a9f2d52dd9555b0ad4a81  qualification/evidence/artifacts/2026-10-18-product-area-chart.png
 8a8f225c6c7de66e64dd9640724fbfb2ad1a95ec51143827948257224ade04d3  qualification/evidence/artifacts/2026-10-18-product-focus-exit-ui.xml
 caacbcf4a34071bf20d4dd6d53cccd3249c1ef3de73229c0904f6f1330314db5  qualification/evidence/artifacts/2026-10-18-product-focus-exit.png
 28d520fd5eba876dc8881e055ffbeabf73836d9d18110e1c49ec588562bf7a1e  qualification/evidence/artifacts/2026-10-18-product-selection-click-ui.xml
