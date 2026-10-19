@@ -313,6 +313,18 @@ fun WorkbookScreen(
                                 onAggregation = viewModel::setAggregation,
                                 onMarkType = viewModel::setMarkType,
                                 onSortDescending = viewModel::setSortDescending,
+                                onKeepSelection = { rows ->
+                                    viewModel.keepSelection(rows)
+                                    rowSelection = RowSelectionState()
+                                },
+                                onExcludeSelection = { rows ->
+                                    viewModel.excludeSelection(rows)
+                                    rowSelection = RowSelectionState()
+                                },
+                                onClearFilter = {
+                                    viewModel.clearFilter()
+                                    rowSelection = RowSelectionState()
+                                },
                                 onChartSettings = { showChartSettings = true },
                                 onRetry = viewModel::retryQuery,
                                 onCancelQuery = viewModel::cancelQuery,
@@ -409,6 +421,11 @@ fun WorkbookScreen(
     }
 
     if (showPalette) {
+        val paletteSheet = document?.worksheets?.firstOrNull { it.id == resolvedTab }
+        val selectionFilterReady = paletteSheet?.filter == null &&
+            paletteSheet?.rowFieldId != null &&
+            rowSelection.rows.isNotEmpty() &&
+            state.query is WorksheetQueryState.Ready
         val commands = buildList {
             add(PaletteCommand("Save workbook", "Ctrl+S", viewModel::saveNow))
             if (state.canUndo) add(PaletteCommand("Undo", "Ctrl+Z", viewModel::undo))
@@ -418,6 +435,28 @@ fun WorkbookScreen(
             add(PaletteCommand("Rename workbook") { showRenameDialog = true })
             add(PaletteCommand("Chart settings") { showChartSettings = true })
             add(PaletteCommand("Toggle inspector") { showInspector = !showInspector })
+            if (selectionFilterReady) {
+                add(
+                    PaletteCommand("Keep selected marks") {
+                        viewModel.keepSelection(rowSelection.rows)
+                        rowSelection = RowSelectionState()
+                    },
+                )
+                add(
+                    PaletteCommand("Exclude selected marks") {
+                        viewModel.excludeSelection(rowSelection.rows)
+                        rowSelection = RowSelectionState()
+                    },
+                )
+            }
+            if (paletteSheet?.filter != null) {
+                add(
+                    PaletteCommand("Clear worksheet filter") {
+                        viewModel.clearFilter()
+                        rowSelection = RowSelectionState()
+                    },
+                )
+            }
             if (state.query is WorksheetQueryState.Failed) {
                 add(PaletteCommand("Retry query") { viewModel.retryQuery() })
             }

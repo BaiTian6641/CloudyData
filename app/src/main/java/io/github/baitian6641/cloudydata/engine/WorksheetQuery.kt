@@ -37,6 +37,18 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
         val seriesField = sheet.seriesFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
         val source = "read_parquet(${Sql.string(snapshotPath)})"
         val timeSeries = sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA
+        val usedSeriesFieldId = if (timeSeries) seriesField?.id else null
+        val activeFilter = sheet.filter?.takeIf { filter ->
+            filter.marks.isNotEmpty() &&
+                filter.rowFieldId == rowField?.id &&
+                filter.seriesFieldId == usedSeriesFieldId
+        }
+        val filterWhere = if (activeFilter != null && rowField != null) {
+            val seriesName = if (usedSeriesFieldId != null) seriesField?.name else null
+            " WHERE " + MarkFilterSql.predicate(activeFilter, rowField.name, seriesName)
+        } else {
+            ""
+        }
         val sql = when {
             timeSeries && rowField != null && measureField != null -> {
                 val x = Sql.identifier(rowField.name)
@@ -49,19 +61,19 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
                 }
                 val group = if (series != null) "GROUP BY $x, $series" else "GROUP BY $x"
                 val order = if (series != null) "ORDER BY $x ASC NULLS LAST, $series ASC NULLS LAST" else "ORDER BY $x ASC NULLS LAST"
-                "SELECT $select FROM $source $group $order LIMIT 2001"
+                "SELECT $select FROM $source$filterWhere $group $order LIMIT 2001"
             }
             rowField != null && measureField != null -> {
                 val dimension = Sql.identifier(rowField.name)
                 val measure = Sql.identifier(measureField.name)
                 val aggregate = aggregateSql(sheet.aggregation, measure)
                 "SELECT CAST($dimension AS VARCHAR) AS \"row\", $aggregate AS \"value\" " +
-                    "FROM $source GROUP BY 1 ORDER BY 2 ${if (sheet.sortDescending) "DESC" else "ASC"} NULLS LAST LIMIT 1000"
+                    "FROM $source$filterWhere GROUP BY 1 ORDER BY 2 ${if (sheet.sortDescending) "DESC" else "ASC"} NULLS LAST LIMIT 1000"
             }
             rowField != null -> {
                 val dimension = Sql.identifier(rowField.name)
                 "SELECT CAST($dimension AS VARCHAR) AS \"row\", COUNT(*) AS \"value\" " +
-                    "FROM $source GROUP BY 1 ORDER BY 2 ${if (sheet.sortDescending) "DESC" else "ASC"} LIMIT 1000"
+                    "FROM $source$filterWhere GROUP BY 1 ORDER BY 2 ${if (sheet.sortDescending) "DESC" else "ASC"} LIMIT 1000"
             }
             measureField != null -> {
                 val measure = Sql.identifier(measureField.name)

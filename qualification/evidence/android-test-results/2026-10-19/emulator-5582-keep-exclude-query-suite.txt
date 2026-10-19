@@ -1,0 +1,7 @@
+io.github.baitian6641.cloudydata.MarkFilterQueryTest:...
+io.github.baitian6641.cloudydata.EngineSmokeTest:....
+io.github.baitian6641.cloudydata.LineChartQueryTest:..
+
+Time: 0.568
+
+OK (9 tests)

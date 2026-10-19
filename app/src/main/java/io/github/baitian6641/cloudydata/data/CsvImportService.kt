@@ -228,7 +228,14 @@ class CsvImportService(
                     rowCount = rowCount,
                     columns = finalColumns,
                 )
-                val saved = store.save(workbook.copy(snapshot = snapshot))
+                // A replacement source has a new identity even when column names
+                // survive; selected-mark filters no longer describe this snapshot.
+                val saved = store.save(
+                    workbook.copy(
+                        snapshot = snapshot,
+                        worksheets = workbook.worksheets.map { it.copy(filter = null) },
+                    ),
+                )
                 receipt = receipt.copy(
                     phase = ImportPhase.MetadataPublished,
                     updatedAtEpochMs = System.currentTimeMillis(),

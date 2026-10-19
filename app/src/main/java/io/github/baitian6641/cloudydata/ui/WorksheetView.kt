@@ -65,6 +65,7 @@ import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FieldRole
+import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.SelectionMode
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
@@ -90,6 +91,9 @@ fun WorksheetView(
     onAggregation: (Aggregation) -> Unit,
     onMarkType: (MarkType) -> Unit,
     onSortDescending: (Boolean) -> Unit,
+    onKeepSelection: (Set<Int>) -> Unit,
+    onExcludeSelection: (Set<Int>) -> Unit,
+    onClearFilter: () -> Unit,
     onChartSettings: () -> Unit,
     onRetry: () -> Unit,
     onCancelQuery: () -> Unit,
@@ -204,6 +208,56 @@ fun WorksheetView(
                         text = if (sheet.sortDescending) "Sort descending" else "Sort ascending",
                         onClick = { onSortDescending(!sheet.sortDescending) },
                     )
+                }
+            }
+            if (ready != null && sheet.filter == null && sheet.rowFieldId != null &&
+                selectedRowIndices.isNotEmpty()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 2.dp)
+                        .background(colors.surfaceMuted)
+                        .padding(horizontal = density.spaceSmall, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(density.spaceSmall),
+                ) {
+                    Text(
+                        "${selectedRowIndices.size} selected ${if (selectedRowIndices.size == 1) "mark" else "marks"}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colors.textSecondary,
+                    )
+                    CloudyTextButton("Keep only", { onKeepSelection(selectedRowIndices) })
+                    CloudyTextButton("Exclude", { onExcludeSelection(selectedRowIndices) })
+                }
+            }
+            sheet.filter?.let { filter ->
+                val kept = filter.mode == FilterMode.KEEP
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 2.dp)
+                        .background(
+                            if (kept) colors.primaryContainer else colors.warningContainer,
+                        )
+                        .padding(horizontal = density.spaceSmall, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(density.spaceSmall),
+                ) {
+                    CloudyBadge(
+                        "${if (kept) "Kept" else "Excluded"} ${filter.marks.size} " +
+                            if (filter.marks.size == 1) "mark" else "marks",
+                        tone = if (kept) CloudyBadgeTone.Primary else CloudyBadgeTone.Warning,
+                    )
+                    Text(
+                        if (kept) "Showing only selected marks" else "Hiding selected marks",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colors.textSecondary,
+                        modifier = Modifier.weight(1f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    CloudyTextButton("Clear filter", onClearFilter)
                 }
             }
         }

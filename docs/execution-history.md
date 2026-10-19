@@ -313,3 +313,23 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   assertion (`expected 803`, actual `804`) and device timeouts.
 - Persisted selection, lasso, keep/exclude/drill, pointer hover and TalkBack
   multi-selection remain pending. Next: keep/exclude/drill semantics.
+
+## 2026-10-19 — keep/exclude mark filters
+
+- Added `MarkFilter`/`FilterMark` with optional worksheet persistence, exact
+  row/series identities and defensive JSON read. Field, series, mark and source
+  replacement clear filters that no longer describe the view.
+- `WorksheetQuery` now emits a validated, SQL-escaped `WHERE` predicate before
+  aggregation. Single-dimension marks use row equality; line marks use
+  `(row, series)` pairs; null identities use `IS NULL`. The Parquet snapshot is
+  untouched.
+- Product worksheet actions expose `Keep only`, `Exclude` and a labeled filter
+  bar with `Clear filter`; command palette mirrors them. Filters can be applied
+  only from an accepted unfiltered result, so no ambiguous compound filter is
+  attempted.
+- Emulator evidence: Bar keep leaves one North bar/table row at 60 while the
+  source footer remains 6 rows; Area exclude hides South and leaves North;
+  Clear restores both; force-stop/reopen retains `Excluded 1 mark`.
+- JVM 32/32, lint 0 errors/5 warnings, emulator filter suite plus engine/line
+  regressions 9/9. Drill remains blocked by the absent dimension hierarchy;
+  compound/cross-sheet filters and persisted selection remain pending.

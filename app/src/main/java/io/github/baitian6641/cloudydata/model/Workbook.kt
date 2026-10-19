@@ -157,6 +157,7 @@ data class WorksheetDef(
     val sortDescending: Boolean,
     val seriesFieldId: String? = null,
     val chart: ChartOptions = ChartOptions(),
+    val filter: MarkFilter? = null,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("id", id)
@@ -168,6 +169,7 @@ data class WorksheetDef(
         .put("sortDescending", sortDescending)
         .put("seriesFieldId", seriesFieldId ?: JSONObject.NULL)
         .put("chart", chart.toJson())
+        .put("filter", filter?.toJson() ?: JSONObject.NULL)
 
     companion object {
         fun fromJson(json: JSONObject): WorksheetDef {
@@ -189,6 +191,9 @@ data class WorksheetDef(
                 seriesFieldId = if (json.isNull("seriesFieldId")) null else json.optString("seriesFieldId").takeIf { it.isNotEmpty() },
                 // Log/legend line settings must not make a bar document unrenderable.
                 chart = if (markType == MarkType.LINE) parsedChart else parsedChart.copy(logScale = false),
+                filter = runCatching {
+                    json.optJSONObject("filter")?.let { MarkFilter.fromJson(it) }
+                }.getOrNull()?.takeIf { it.marks.isNotEmpty() },
             )
         }
     }

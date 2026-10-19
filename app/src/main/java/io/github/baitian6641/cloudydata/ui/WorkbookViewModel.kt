@@ -9,11 +9,13 @@ import io.github.baitian6641.cloudydata.data.CsvImportService
 import io.github.baitian6641.cloudydata.data.PendingCsvImport
 import io.github.baitian6641.cloudydata.data.WorkbookStore
 import io.github.baitian6641.cloudydata.engine.DuckDbEngine
+import io.github.baitian6641.cloudydata.engine.MarkFilters
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.FieldDef
+import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorkbookHistory
@@ -195,7 +197,7 @@ class WorkbookViewModel(
     }
 
     fun setRowField(field: FieldDef) {
-        updateActiveSheet { it.copy(rowFieldId = field.id) }
+        updateActiveSheet { it.copy(rowFieldId = field.id, filter = null) }
     }
 
     fun setMeasureField(field: FieldDef) {
@@ -208,7 +210,7 @@ class WorkbookViewModel(
     }
 
     fun clearRowField() {
-        updateActiveSheet { it.copy(rowFieldId = null) }
+        updateActiveSheet { it.copy(rowFieldId = null, filter = null) }
     }
 
     fun clearMeasureField() {
@@ -216,11 +218,11 @@ class WorkbookViewModel(
     }
 
     fun setSeriesField(field: FieldDef) {
-        updateActiveSheet { it.copy(seriesFieldId = field.id) }
+        updateActiveSheet { it.copy(seriesFieldId = field.id, filter = null) }
     }
 
     fun clearSeriesField() {
-        updateActiveSheet { it.copy(seriesFieldId = null) }
+        updateActiveSheet { it.copy(seriesFieldId = null, filter = null) }
     }
 
     fun setAggregation(aggregation: Aggregation) {
@@ -233,11 +235,13 @@ class WorkbookViewModel(
                 sheet.copy(markType = markType)
             } else {
                 // Color is a Line series channel in this build; switching away
-                // clears it instead of silently querying an unused column.
+                // clears it instead of silently querying an unused column. A
+                // row-only filter remains meaningful; a pair filter does not.
                 sheet.copy(
                     markType = markType,
                     seriesFieldId = null,
                     chart = sheet.chart.copy(logScale = false),
+                    filter = sheet.filter?.takeIf { it.seriesFieldId == null },
                 )
             }
         }
@@ -245,6 +249,30 @@ class WorkbookViewModel(
 
     fun setSortDescending(descending: Boolean) {
         updateActiveSheet { it.copy(sortDescending = descending) }
+    }
+
+    fun keepSelection(rows: Set<Int>) = applySelectionFilter(rows, FilterMode.KEEP)
+
+    fun excludeSelection(rows: Set<Int>) = applySelectionFilter(rows, FilterMode.EXCLUDE)
+
+    fun clearFilter() {
+        updateActiveSheet { it.copy(filter = null) }
+    }
+
+    private fun applySelectionFilter(rows: Set<Int>, mode: FilterMode) {
+        val sheet = _state.value.document?.activeWorksheet ?: return
+        if (sheet.filter != null || rows.isEmpty()) return
+        val result = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
+        // Only derive the filter from a result produced for this sheet shape.
+        if (result.rowField?.id != sheet.rowFieldId) return
+        val expectedSeriesId = if (sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA) {
+            sheet.seriesFieldId
+        } else {
+            null
+        }
+        if (result.seriesField?.id != expectedSeriesId) return
+        val filter = MarkFilters.fromResult(sheet, result, rows, mode) ?: return
+        updateActiveSheet { it.copy(filter = filter) }
     }
 
     fun updateChartSettings(options: ChartOptions) {
