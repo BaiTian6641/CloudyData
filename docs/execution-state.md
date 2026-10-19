@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `6f91aaf`; the area-stacking change is in the next
-local commit. `main` tracks `origin/main` at the pushed horizontal-bar baseline.
+**Source:** commits through `d02b7e3`; `main` tracks `origin/main`. The next
+task is local-only until it passes its gates.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -57,7 +57,8 @@ unless stated otherwise.
 - Lint: 0 errors (5 warnings). JVM: **72/72**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
-  decimal-format, chart-border, crowded-label, palette and bar-stacking cases.
+  decimal-format, chart-border, crowded-label, palette and bar/area-stacking
+  cases.
   Emulator renderer probe: **42/42**; Vega spec builder: **20/20**;
   chart-settings persistence: **12/12**; color-series bar query: **1/1**.
   Earlier keep/exclude, table-selection and View Data runs remain valid for the
