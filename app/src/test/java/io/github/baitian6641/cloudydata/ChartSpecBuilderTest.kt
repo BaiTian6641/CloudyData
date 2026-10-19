@@ -19,6 +19,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -189,6 +190,26 @@ class ChartSpecBuilderTest {
                 ChartOptions(hiddenSeries = setOf("sales")),
                 "derived",
             ).hiddenSeries,
+        )
+    }
+
+    @Test
+    fun legendMarkSampleIsCarriedAndDefaultsToMarker() {
+        assertEquals(
+            LegendMarkSample.LINE,
+            ChartSpecBuilder.build(
+                "legend", 0, lineResult(),
+                ChartOptions(legendMarkSample = LegendMarkSample.LINE),
+                "derived",
+            ).legend.markSample,
+        )
+        assertEquals(
+            LegendMarkSample.MARKER,
+            ChartSpecBuilder.build(
+                "legend", 0, lineResult(),
+                ChartOptions(),
+                "derived",
+            ).legend.markSample,
         )
     }
 

@@ -38,6 +38,8 @@ enum class LineInterpolation { LINEAR, STEP, MONOTONE }
 
 enum class LineDashStyle { SOLID, DASHED, DOTTED }
 
+enum class LegendMarkSample { MARKER, LINE }
+
 enum class ValueDisplayFormat { NUMBER, PERCENT }
 
 data class ChartOptions(
@@ -63,6 +65,7 @@ data class ChartOptions(
     val legendVisible: Boolean = true,
     val legendPosition: LegendPosition = LegendPosition.BOTTOM,
     val legendOrientation: LegendOrientation? = null,
+    val legendMarkSample: LegendMarkSample = LegendMarkSample.MARKER,
     val showTooltip: Boolean = true,
     val hiddenSeries: Set<String> = emptySet(),
     val yTickCount: Int? = null,
@@ -106,6 +109,7 @@ data class ChartOptions(
         .put("legendVisible", legendVisible)
         .put("legendPosition", legendPosition.name)
         .put("legendOrientation", legendOrientation?.name ?: JSONObject.NULL)
+        .put("legendMarkSample", legendMarkSample.name)
         .put("showTooltip", showTooltip)
         .put(
             "hiddenSeries",
@@ -197,6 +201,11 @@ data class ChartOptions(
             } else {
                 runCatching { LegendOrientation.valueOf(json.optString("legendOrientation")) }.getOrNull()
             },
+            legendMarkSample = runCatching {
+                LegendMarkSample.valueOf(
+                    json.optString("legendMarkSample", LegendMarkSample.MARKER.name),
+                )
+            }.getOrDefault(LegendMarkSample.MARKER),
             showTooltip = json.optBoolean("showTooltip", true),
             hiddenSeries = json.optJSONArray("hiddenSeries")?.let { array ->
                 buildSet {

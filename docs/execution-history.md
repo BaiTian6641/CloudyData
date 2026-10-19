@@ -692,3 +692,14 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   instrumentation VegaSpecBuilderTest 16/16, ChartSettingsPersistenceTest 10/10,
   opacity render 1/1; lint 0 errors/5 warnings. Googlebook untouched; visual
   contrast/export checks absent.
+
+## 2026-10-19 — CUST05 legend mark sample
+
+- Added persisted MARKER/LINE legend samples for Line charts. Marker preserves
+  prior behavior and marker shapes; line swatches use Vega stroke symbols with a
+  200-unit size, current width and dash pattern. Plot marks, data, selection and
+  legend hit targets are unchanged; Bar applies reset to MARKER.
+- Emulator-first validation: JVM 64/64; manual emulator-5580 API36 x86_64
+  instrumentation VegaSpecBuilderTest 17/17, ChartSettingsPersistenceTest 10/10,
+  legend-sample render 1/1; lint 0 errors/5 warnings. Googlebook untouched;
+  visual swatch/hit-target/export checks absent.

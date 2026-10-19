@@ -9,6 +9,7 @@ import io.github.baitian6641.cloudydata.model.AxisTitleAnchor
 import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.LineDashStyle
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
@@ -251,23 +252,23 @@ object VegaSpecBuilder {
                 JSONObject().put("value", lineInterpolationName(spec.lineInterpolation)),
             )
         }
-        when (spec.lineDashStyle) {
-            LineDashStyle.SOLID -> Unit
-            LineDashStyle.DASHED -> enter.put(
-                "strokeDash",
-                JSONObject().put("value", JSONArray().put(6).put(4)),
-            )
-            LineDashStyle.DOTTED -> {
-                val width = spec.lineWidth ?: defaultWidth
-                enter
-                    .put(
-                        "strokeDash",
-                        JSONObject().put("value", JSONArray().put(1).put(width + 3.0)),
-                    )
-                    .put("strokeCap", JSONObject().put("value", "round"))
-            }
+        lineDashArray(spec, defaultWidth)?.let {
+            enter.put("strokeDash", JSONObject().put("value", it))
+        }
+        if (spec.lineDashStyle == LineDashStyle.DOTTED) {
+            enter.put("strokeCap", JSONObject().put("value", "round"))
         }
     }
+
+    private fun lineDashArray(spec: ChartSpec, defaultWidth: Double): JSONArray? =
+        when (spec.lineDashStyle) {
+            LineDashStyle.SOLID -> null
+            LineDashStyle.DASHED -> JSONArray().put(6).put(4)
+            LineDashStyle.DOTTED -> {
+                val width = spec.lineWidth ?: defaultWidth
+                JSONArray().put(1).put(width + 3.0)
+            }
+        }
 
     private fun lineInterpolationName(interpolation: LineInterpolation): String =
         when (interpolation) {
@@ -794,8 +795,18 @@ object VegaSpecBuilder {
             .put("titleFontSize", 11)
         legend.put("direction", direction)
         legend.put("labelLimit", LegendLayout.labelLimitDp(widthDp))
-        if (spec.markers.shape != MarkerShape.CIRCLE) {
-            legend.put("symbolType", markerShapeName(spec.markers.shape))
+        when (spec.legend.markSample) {
+            LegendMarkSample.LINE -> {
+                legend.put("symbolType", "stroke")
+                    .put("symbolSize", 200)
+                    .put("symbolStrokeWidth", spec.lineWidth ?: 2.0)
+                lineDashArray(spec, 2.0)?.let { legend.put("symbolDash", it) }
+            }
+            LegendMarkSample.MARKER -> {
+                if (spec.markers.shape != MarkerShape.CIRCLE) {
+                    legend.put("symbolType", markerShapeName(spec.markers.shape))
+                }
+            }
         }
         if (direction == "horizontal") {
             legend.put(

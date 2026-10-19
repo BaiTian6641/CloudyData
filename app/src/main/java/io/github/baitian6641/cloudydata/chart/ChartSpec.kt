@@ -8,6 +8,7 @@ import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 
@@ -59,6 +60,7 @@ data class LegendSpec(
     val position: LegendPosition,
     val title: String?,
     val orientation: LegendOrientation? = null,
+    val markSample: LegendMarkSample = LegendMarkSample.MARKER,
 )
 
 data class MarkerSpec(

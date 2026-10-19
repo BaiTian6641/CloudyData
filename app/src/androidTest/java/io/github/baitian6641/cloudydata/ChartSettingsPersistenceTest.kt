@@ -12,6 +12,7 @@ import io.github.baitian6641.cloudydata.model.LabelPosition
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -100,6 +101,7 @@ class ChartSettingsPersistenceTest {
                             lineInterpolation = LineInterpolation.STEP,
                             lineDashStyle = LineDashStyle.DASHED,
                             lineOpacity = 0.5,
+                            legendMarkSample = LegendMarkSample.LINE,
                         ),
                     ),
                 ),
@@ -150,6 +152,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(LineInterpolation.STEP, reopenedSheet.chart.lineInterpolation)
         assertEquals(LineDashStyle.DASHED, reopenedSheet.chart.lineDashStyle)
         assertEquals(0.5, reopenedSheet.chart.lineOpacity!!, 0.0)
+        assertEquals(LegendMarkSample.LINE, reopenedSheet.chart.legendMarkSample)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -213,6 +216,14 @@ class ChartSettingsPersistenceTest {
             0.5,
             ChartOptions.fromJson(JSONObject().put("lineOpacity", 0.5)).lineOpacity!!,
             0.0,
+        )
+        assertEquals(
+            LegendMarkSample.MARKER,
+            ChartOptions.fromJson(JSONObject().put("legendMarkSample", "NOT_A_SAMPLE")).legendMarkSample,
+        )
+        assertEquals(
+            LegendMarkSample.LINE,
+            ChartOptions.fromJson(JSONObject().put("legendMarkSample", "LINE")).legendMarkSample,
         )
     }
 

@@ -467,6 +467,34 @@ class VegaRendererProbeTest {
     }
 
     @Test
+    fun lineLegendSampleRendersWithoutChangingPlotMarks() {
+        data class Rendered(val result: RendererProbeState.Result, val svg: String)
+        fun render(sample: String): Rendered {
+            RendererProbeState.reset()
+            val intent = Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                RendererProbeActivity::class.java,
+            ).putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+                .putExtra(RendererProbeActivity.EXTRA_LEGEND_SAMPLE, sample)
+            ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+                val result = RendererProbeState.await(30)
+                assertTrue("legend-sample render did not complete", result != null)
+                assertNull(result!!.error)
+                scenario.onActivity { it.exportForTest() }
+                val svg = RendererProbeState.awaitSvg(15)
+                assertTrue("legend-sample export did not complete", svg != null)
+                return Rendered(result, svg!!)
+            }
+        }
+        val marker = render("MARKER")
+        val line = render("LINE")
+        assertEquals(marker.result.markCount, line.result.markCount)
+        assertEquals(marker.result.sceneMarks["line"], line.result.sceneMarks["line"])
+        assertEquals(marker.result.sceneMarks["symbol"], line.result.sceneMarks["symbol"])
+        assertFalse("legend sample did not change export", marker.svg == line.svg)
+    }
+
+    @Test
     fun rendererDeathRecreatesHostAndReplaysCurrentLineSpec() {
         RendererProbeState.reset()
         val context = InstrumentationRegistry.getInstrumentation().targetContext

@@ -265,6 +265,7 @@ object ChartSpecBuilder {
                 position = options.legendPosition,
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
                 orientation = options.legendOrientation,
+                markSample = options.legendMarkSample,
             ),
             labels = LabelSpec(
                 show = options.showValueLabels,

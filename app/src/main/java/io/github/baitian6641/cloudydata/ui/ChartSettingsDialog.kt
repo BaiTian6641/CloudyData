@@ -41,6 +41,7 @@ import io.github.baitian6641.cloudydata.model.GridlineContrast
 import io.github.baitian6641.cloudydata.model.LabelCollisionPolicy
 import io.github.baitian6641.cloudydata.model.ValueDisplayFormat
 import io.github.baitian6641.cloudydata.model.LabelPosition
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LineDashStyle
@@ -99,6 +100,8 @@ fun ChartSettingsDialog(
     var reverseY by remember { mutableStateOf(current.reverseY) }
     var showTooltip by remember { mutableStateOf(current.showTooltip) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
+    var legendMarkSample by remember { mutableStateOf(current.legendMarkSample) }
+    var legendMarkSampleExpanded by remember { mutableStateOf(false) }
     var legendPosition by remember { mutableStateOf(current.legendPosition) }
     var legendOrientation by remember { mutableStateOf(current.legendOrientation) }
     var legendExpanded by remember { mutableStateOf(false) }
@@ -751,6 +754,45 @@ fun ChartSettingsDialog(
                             )
                         }
                     }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Legend sample", style = MaterialTheme.typography.labelLarge, color = colors.textPrimary)
+                            Text(
+                                if (legendMarkSample == LegendMarkSample.LINE) {
+                                    "Line swatch using current width and dash"
+                                } else {
+                                    "Marker swatch using current shape"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                        TextButton(onClick = { legendMarkSampleExpanded = true }) {
+                            Text(
+                                if (legendMarkSample == LegendMarkSample.LINE) "Line" else "Marker",
+                                color = colors.primary,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = legendMarkSampleExpanded,
+                            onDismissRequest = { legendMarkSampleExpanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Marker") },
+                                onClick = {
+                                    legendMarkSample = LegendMarkSample.MARKER
+                                    legendMarkSampleExpanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Line") },
+                                onClick = {
+                                    legendMarkSample = LegendMarkSample.LINE
+                                    legendMarkSampleExpanded = false
+                                },
+                            )
+                        }
+                    }
                 }
             }
         },
@@ -783,6 +825,11 @@ fun ChartSettingsDialog(
                             logScale = logScale && sheet.markType == MarkType.LINE,
                             reverseY = reverseY,
                             legendVisible = legendVisible && sheet.markType == MarkType.LINE,
+                            legendMarkSample = if (sheet.markType == MarkType.LINE) {
+                                legendMarkSample
+                            } else {
+                                LegendMarkSample.MARKER
+                            },
                             legendPosition = legendPosition,
                             legendOrientation = legendOrientation,
                             showTooltip = showTooltip,

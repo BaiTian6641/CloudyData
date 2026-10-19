@@ -18,6 +18,7 @@ import io.github.baitian6641.cloudydata.model.LegendOrientation
 import io.github.baitian6641.cloudydata.model.LegendPosition
 import io.github.baitian6641.cloudydata.model.LogicalType
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.LegendMarkSample
 import io.github.baitian6641.cloudydata.model.LineDashStyle
 import io.github.baitian6641.cloudydata.model.LineInterpolation
 import io.github.baitian6641.cloudydata.model.MarkerShape
@@ -294,6 +295,65 @@ class VegaSpecBuilderTest {
         assertEquals("Sales", major.getString("title"))
         assertEquals(true, major.getBoolean("grid"))
         assertEquals(2, json.getJSONArray("data").getJSONObject(0).getJSONArray("values").length())
+    }
+
+    @Test
+    fun legendMarkSampleIsLowered() {
+        val result = WorksheetResult(
+            result = EngineResult(
+                columns = listOf(
+                    EngineColumn("row", "VARCHAR"),
+                    EngineColumn("series", "VARCHAR"),
+                    EngineColumn("value", "BIGINT"),
+                ),
+                rows = listOf(
+                    listOf<Any?>("A", "North", 1L),
+                    listOf<Any?>("A", "South", 2L),
+                    listOf<Any?>("B", "North", 3L),
+                    listOf<Any?>("B", "South", 4L),
+                ),
+                truncated = false,
+            ),
+            rowField = month,
+            measureField = sales,
+            seriesField = region,
+            aggregation = Aggregation.SUM,
+            markType = MarkType.LINE,
+            sql = "test",
+        )
+        fun legend(options: ChartOptions): JSONObject {
+            val json = VegaSpecBuilder.build(
+                ChartSpecBuilder.build("legend", 0, result, options, "derived"),
+                false,
+                listOf(0x006A6A),
+                600f,
+                300f,
+            )
+            return json.getJSONArray("legends").getJSONObject(0)
+        }
+        assertFalse("default marker legend must omit symbolType", legend(ChartOptions()).has("symbolType"))
+        val line = legend(
+            ChartOptions(
+                legendMarkSample = LegendMarkSample.LINE,
+                lineDashStyle = LineDashStyle.DASHED,
+            ),
+        )
+        assertEquals("stroke", line.getString("symbolType"))
+        assertEquals(200.0, line.getDouble("symbolSize"), 0.0)
+        assertEquals(2.0, line.getDouble("symbolStrokeWidth"), 0.0)
+        assertEquals(6.0, line.getJSONArray("symbolDash").getDouble(0), 0.0)
+        val dottedWide = legend(
+            ChartOptions(
+                legendMarkSample = LegendMarkSample.LINE,
+                lineDashStyle = LineDashStyle.DOTTED,
+                lineWidth = 8.0,
+            ),
+        )
+        assertEquals(8.0, dottedWide.getDouble("symbolStrokeWidth"), 0.0)
+        assertEquals(1.0, dottedWide.getJSONArray("symbolDash").getDouble(0), 0.0)
+        assertEquals(11.0, dottedWide.getJSONArray("symbolDash").getDouble(1), 0.0)
+        val diamond = legend(ChartOptions(markerShape = MarkerShape.DIAMOND))
+        assertEquals("diamond", diamond.getString("symbolType"))
     }
 
     @Test

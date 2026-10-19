@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `75b99f2`. `main` tracks `origin/main`; the line
-opacity stage is pushed.
+**Source:** commits through `a7b67f6`; the legend-sample change is in the next
+local commit. `main` tracks `origin/main` at the pushed opacity baseline.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -54,7 +54,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **63/63**, including set-selection reducer,
+- Lint: 0 errors (5 warnings). JVM: **64/64**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast, decimal-format, chart-border and
   crowded-label, transparent-export and chart-border cases. Emulator renderer
@@ -119,6 +119,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust03-line-interpolation.md`
 - `qualification/evidence/2026-10-19-cust03-line-dash.md`
 - `qualification/evidence/2026-10-19-cust03-line-opacity.md`
+- `qualification/evidence/2026-10-19-cust05-legend-sample.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -224,6 +225,10 @@ unless stated otherwise.
 - **Line opacity.** Optional 0.1–1.0 paint opacity applies to Line marks and
   Area fill/outline; markers/selection remain opaque. Emulator line/area spec,
   persistence and render checks pass; visual contrast checks were not run.
+- **Legend mark sample.** Persisted marker/default or line swatch; line swatches
+  mirror width/dash (not dotted round caps) and leave plot marks, data and
+  selection unchanged. Emulator spec/persistence/render checks pass; visual
+  spacing/hit-target checks were not run.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.
@@ -312,17 +317,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST05 persisted legend mark sample.**
+**CUST03 persisted marker opacity.**
 
-- Requirements/stage: CUST05, F36/F38, Q21, S11. Prerequisites: multi-series
-  legend, marker shape, typed options and emulator probes.
-- Files: `ChartOptions`, `ChartSpec`/LegendSpec, builders, `VegaSpecBuilder`,
-  `ChartSettingsDialog`, tests/evidence.
-- Action: add a persisted legend sample choice (marker/default vs line swatch)
-  for Line marks, preserving current default output and marker-shape behavior.
-- Acceptance: default marker swatch unchanged; line swatch persists and affects
-  only the legend, not plot marks/data/selection; invalid values fall back to
-  marker. Emulator spec/render checks required; visual review unverified.
+- Requirements/stage: CUST03, F36/F38, Q21, S11. Prerequisites: marker
+  visibility/size/shape, line opacity, typed options and emulator probes.
+- Files: `ChartOptions`, `ChartSpec`/MarkerSpec, builders,
+  `VegaSpecBuilder`, `ChartSettingsDialog`, tests/evidence.
+- Action: add optional 0.1–1.0 marker opacity for Line/Area point symbols,
+  independent of line/area paint opacity, preserving default output.
+- Acceptance: default markers unchanged; opacity persists and affects only
+  point symbols, not lines/selection/data; invalid values fall back to opaque.
+  Emulator spec/render checks required; visual review unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
   marker, interpolation, dash, opacity and legend-sample visuals wait for an
