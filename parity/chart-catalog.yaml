@@ -99,8 +99,8 @@ families:
     family: Annotation and mark layers
     status: not_started
 customization_status_counts:
-  partial: 12
-  not_started: 5
+  partial: 13
+  not_started: 4
 customization:
   - id: CUST01
     area: Data and view
@@ -157,13 +157,13 @@ customization:
   - id: CUST12
     area: Tooltips
     controls: [fields, format, show_hide, bounded_values]
-    status: not_started
-    note: Exact values are available in the table and inspector; no chart tooltip.
+    status: partial
+    note: Bounded exact-value tooltip on selection/focus with persisted show/hide; fixed series/category/value fields and no field picker or format controls. Pointer-hover and TalkBack qualification are pending.
   - id: CUST13
     area: Selection and inspect
     controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
     status: partial
-    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range/lasso/keep-exclude/drill, visual mark highlight and tooltip remain absent.
+    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range/lasso/keep-exclude/drill and visual mark highlight remain absent; CUST12 covers the tooltip.
   - id: CUST14
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]

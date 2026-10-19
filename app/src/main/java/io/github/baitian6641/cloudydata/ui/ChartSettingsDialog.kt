@@ -59,6 +59,7 @@ fun ChartSettingsDialog(
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
     var logScale by remember { mutableStateOf(current.logScale) }
     var reverseY by remember { mutableStateOf(current.reverseY) }
+    var showTooltip by remember { mutableStateOf(current.showTooltip) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
     var legendPosition by remember { mutableStateOf(current.legendPosition) }
     var legendExpanded by remember { mutableStateOf(false) }
@@ -160,6 +161,12 @@ fun ChartSettingsDialog(
                     checked = showValueLabels,
                     onCheckedChange = { showValueLabels = it },
                 )
+                ChartToggleRow(
+                    title = "Tooltip",
+                    description = "Show the exact series, category and value on hover, focus or selection.",
+                    checked = showTooltip,
+                    onCheckedChange = { showTooltip = it },
+                )
                 if (sheet.markType != MarkType.AREA) {
                     ChartToggleRow(
                         title = "Zero baseline",
@@ -250,6 +257,7 @@ fun ChartSettingsDialog(
                             reverseY = reverseY,
                             legendVisible = legendVisible && sheet.markType == MarkType.LINE,
                             legendPosition = legendPosition,
+                            showTooltip = showTooltip,
                         ),
                     )
                 },

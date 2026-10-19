@@ -6,7 +6,8 @@
     ready: false,
     activeChartId: null,
     activeRevision: null,
-    selectedRow: -1
+    selectedRow: -1,
+    tooltipEnabled: true
   };
 
   function post(message) {
@@ -27,9 +28,65 @@
     post(message);
   }
 
+  function hideTooltip() {
+    var tooltip = document.getElementById('tooltip');
+    if (tooltip) tooltip.hidden = true;
+  }
+
+  function showTooltip(datum) {
+    if (!state.tooltipEnabled || !datum || typeof datum.sourceRowIndex !== 'number') return;
+    var tooltip = document.getElementById('tooltip');
+    if (!tooltip || !state.view) return;
+    var exact = datum.exactY !== null && datum.exactY !== undefined
+      ? String(datum.exactY)
+      : (typeof datum.y === 'number' && isFinite(datum.y) ? String(datum.y) : 'NULL');
+    var series = datum.series ? String(datum.series) + ' · ' : '';
+    tooltip.textContent = series + String(datum.x || '') + ' = ' + exact;
+    tooltip.hidden = false;
+    var x = 20;
+    var y = 20;
+    try {
+      var origin = typeof state.view.origin === 'function' ? state.view.origin() : [0, 0];
+      var scaleX = state.view.scale('x');
+      var scaleY = state.view.scale('y');
+      var sourceY = datum.y;
+      if (typeof sourceY !== 'number' || !isFinite(sourceY)) {
+        var rows = state.view.data('table') || [];
+        for (var i = 0; i < rows.length; i++) {
+          if (rows[i] && rows[i].sourceRowIndex === datum.sourceRowIndex) {
+            sourceY = rows[i].y;
+            break;
+          }
+        }
+      }
+      x = origin[0] + scaleX(datum.x) + (scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0) + 10;
+      y = typeof sourceY === 'number' && isFinite(sourceY)
+        ? origin[1] + scaleY(sourceY) - 28
+        : origin[1] + 10;
+    } catch (error) {
+      x = 20;
+      y = 20;
+    }
+    requestAnimationFrame(function () {
+      var svg = document.querySelector('#view svg');
+      var ctm = svg && svg.getScreenCTM ? svg.getScreenCTM() : null;
+      if (ctm) {
+        x = ctm.e + x * ctm.a;
+        y = ctm.f + y * ctm.d;
+      }
+      var width = tooltip.offsetWidth || 0;
+      var height = tooltip.offsetHeight || 0;
+      var maxX = (document.documentElement.clientWidth || window.innerWidth || 0) - width - 8;
+      var maxY = (document.documentElement.clientHeight || window.innerHeight || 0) - height - 8;
+      tooltip.style.left = Math.max(8, Math.min(x, maxX)) + 'px';
+      tooltip.style.top = Math.max(8, Math.min(y, maxY)) + 'px';
+    });
+  }
+
   function postSelection(chartId, revision, datum) {
     if (!datum || typeof datum.sourceRowIndex !== 'number') return;
     state.selectedRow = datum.sourceRowIndex;
+    showTooltip(datum);
     post({
       type: 'SelectionIntent',
       chartId: chartId,
@@ -117,6 +174,7 @@
   }
 
   function disposeView() {
+    hideTooltip();
     if (state.view) {
       try {
         state.view.finalize();
@@ -145,6 +203,8 @@
       state.activeChartId = chartId;
       state.activeRevision = revision;
       state.selectedRow = -1;
+      state.tooltipEnabled = !(message.spec.usermeta && message.spec.usermeta.tooltip === false);
+      hideTooltip();
       var runtime = vega.parse(message.spec, null, { ast: true });
       var view = new vega.View(runtime, {
         expr: vega.expressionInterpreter,
@@ -158,8 +218,23 @@
           postSelection(chartId, revision, {
             sourceRowIndex: value[0],
             series: value[1],
-            x: value[2]
+            x: value[2],
+            exactY: value[3],
+            y: value[4]
           });
+        }
+      });
+      view.addSignalListener('cloudyHover', function (name, value) {
+        if (Array.isArray(value) && typeof value[0] === 'number' && value[0] >= 0) {
+          showTooltip({
+            sourceRowIndex: value[0],
+            series: value[1],
+            x: value[2],
+            exactY: value[3],
+            y: value[4]
+          });
+        } else {
+          hideTooltip();
         }
       });
       view.runAsync().then(function () {

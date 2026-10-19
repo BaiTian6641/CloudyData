@@ -42,6 +42,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(null, sheet.chart.title)
         assertTrue(sheet.chart.showGridlines)
         assertFalse(sheet.chart.showValueLabels)
+        assertTrue("tooltip defaults on for old options", sheet.chart.showTooltip)
 
         val saved = store.save(
             document.copy(
@@ -63,6 +64,7 @@ class ChartSettingsPersistenceTest {
                             reverseY = true,
                             legendVisible = true,
                             legendPosition = LegendPosition.RIGHT,
+                            showTooltip = false,
                         ),
                     ),
                 ),
@@ -83,6 +85,7 @@ class ChartSettingsPersistenceTest {
         assertTrue(reopenedSheet.chart.logScale)
         assertTrue(reopenedSheet.chart.reverseY)
         assertEquals(LegendPosition.RIGHT, reopenedSheet.chart.legendPosition)
+        assertFalse(reopenedSheet.chart.showTooltip)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))
@@ -128,6 +131,7 @@ class ChartSettingsPersistenceTest {
         assertEquals("Legacy document title", loaded.worksheets.single().chart.title)
         assertFalse(loaded.worksheets.single().chart.showGridlines)
         assertTrue(loaded.worksheets.single().chart.showValueLabels)
+        assertTrue("legacy documents default the tooltip on", loaded.worksheets.single().chart.showTooltip)
 
         store.save(loaded)
         val rewritten = JSONObject(File(root, "workbooks/${document.id}/workbook.json").readText())

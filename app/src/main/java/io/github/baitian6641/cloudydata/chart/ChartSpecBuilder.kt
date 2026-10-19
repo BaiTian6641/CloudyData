@@ -103,6 +103,7 @@ object ChartSpecBuilder {
             // bar semantics exist; the legend control applies to line series.
             legend = LegendSpec(false, options.legendPosition, null),
             labels = LabelSpec(options.showValueLabels),
+            tooltip = TooltipSpec(options.showTooltip),
             series = listOf(ChartSeries("Values", points)),
             rowCount = rows.size,
             truncated = result.result.truncated,
@@ -204,6 +205,7 @@ object ChartSpecBuilder {
                 title = options.seriesTitle ?: result.seriesField?.name ?: "Series",
             ),
             labels = LabelSpec(options.showValueLabels),
+            tooltip = TooltipSpec(options.showTooltip),
             series = series,
             rowCount = result.result.rows.size,
             truncated = result.result.truncated,

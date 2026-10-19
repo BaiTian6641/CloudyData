@@ -127,7 +127,8 @@ object VegaSpecBuilder {
             .put("data", JSONArray().put(JSONObject().put("name", "table").put("values", rows)))
             .put("scales", JSONArray().put(xScale).put(yScale).put(colorScale))
             .put("axes", axes)
-            .put("signals", JSONArray().put(selectionSignal()))
+            .put("signals", JSONArray().put(selectionSignal()).put(hoverSignal()))
+            .put("usermeta", JSONObject().put("tooltip", spec.tooltip.show))
             .put("marks", marks)
         val legend = legendJson(spec, textColor)
         if (legend != null) root.put("legends", JSONArray().put(legend))
@@ -139,6 +140,7 @@ object VegaSpecBuilder {
         .put("y", point.y ?: JSONObject.NULL)
         .put("series", point.series)
         .put("sourceRowIndex", point.sourceRowIndex)
+        .put("exactY", point.exactY ?: JSONObject.NULL)
         .put("defined", point.defined)
 
     private fun axisJson(
@@ -394,14 +396,38 @@ object VegaSpecBuilder {
                 .put(
                     JSONObject()
                         .put("events", "@cloudyBar:click")
-                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x]"),
+                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]"),
                 )
                 .put(
                     JSONObject()
                         .put("events", "@cloudyHit:click")
-                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x]"),
+                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]"),
                 ),
         )
+
+    private fun hoverSignal(): JSONObject = JSONObject()
+        .put("name", "cloudyHover")
+        .put("value", JSONArray().put(-1).put("").put("").put("").put(JSONObject.NULL))
+        .put(
+            "on",
+            JSONArray()
+                .put(hoverEvent("@cloudyBar:pointermove"))
+                .put(hoverEvent("@cloudyHit:pointermove"))
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudyBar:pointerout")
+                        .put("update", "[-1, '', '', '', null]"),
+                )
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudyHit:pointerout")
+                        .put("update", "[-1, '', '', '', null]"),
+                ),
+        )
+
+    private fun hoverEvent(selector: String): JSONObject = JSONObject()
+        .put("events", selector)
+        .put("update", "[datum.sourceRowIndex, datum.series, datum.x, datum.exactY, datum.y]")
 
     private fun legendJson(spec: ChartSpec, textColor: String): JSONObject? {
         if (!spec.legend.visible || spec.kind != ChartKind.LINE) return null

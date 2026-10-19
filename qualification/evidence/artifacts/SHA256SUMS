@@ -1,7 +1,7 @@
-39685e2c61f1552a729c90e339e26a81773258213e48f0d9eee6a5a3d7a4d8e1  app/build/outputs/apk/debug/app-debug.apk
-f76f58a308f941894f9a324826aa5c352c35a564b1e09013accf2bcecfd07c3f  app/src/main/assets/renderer/host.js
-6d64d34b0c990f66a54ac197318001247fe3266834e4713ef810fabfbee4490f  app/src/main/assets/renderer/index.html
-e56200ab496a55553d2800ec4e24e6022b51089596314433f640101cc96fdb2b  app/src/main/assets/renderer/renderer.css
+7c592b4a541beb9977820afb951dff222b0de68769a2090c2c0169baf3ff91e5  app/build/outputs/apk/debug/app-debug.apk
+d49ca60de11b6295351a268b453de3a727b474fc209a79ad076a0a97bef6bb28  app/src/main/assets/renderer/host.js
+560957620bf931d20649b3afd22e1934f2a9cd31cbd85b316c2bffecafedae0b  app/src/main/assets/renderer/index.html
+e9b1f19c647fd8de6af562050b27ab945c3a4f542b949edd45f57eb6fc2d3bf8  app/src/main/assets/renderer/renderer.css
 ad3b3076d749ff1e378f4f45ff30f1dce97d3c1465c30a7d7c21f8fcbb7b15e5  app/src/main/assets/renderer/vega-interpreter.js
 8f6a3587cf8d4f42c7e08120e3eb05d067e746d554e39d2dcf52acc0bd5ba28f  app/src/main/assets/renderer/vega.min.js
 31f461972a3c89f4ede587e4040909b87b0ce24762eb85f76a929150ba49da77  app/src/main/jniLibs/arm64-v8a/libduckdb.so
@@ -38,6 +38,9 @@ dfb1034e9b7fd1b89da616bd0970ad54ebeddfc17529ac881bfe7b69ca964dc8  qualification/
 57ad2553412e972ed385b4cfd2746be5b66d6daecae005e131989f3075df1c7a  qualification/evidence/artifacts/2026-10-18-renderer-keyboard-selection.png
 ba4b2a3e5c4e7098a0fdc60b0fb4ba6189844e758a76347b53ad4acecce7bea4  qualification/evidence/artifacts/2026-10-18-renderer-selection-click-ui.xml
 cf499975e6b3f1e0905a37b285190e287132242cffeba2cdda1737b274853552  qualification/evidence/artifacts/2026-10-18-renderer-selection-click.png
+3ce4fca0c17aedbd83fe298a09e3749c02aa7c02533c5c22af3f0312325f0c1c  qualification/evidence/artifacts/2026-10-18-renderer-tooltip-click.png
+dfb1034e9b7fd1b89da616bd0970ad54ebeddfc17529ac881bfe7b69ca964dc8  qualification/evidence/artifacts/2026-10-18-renderer-tooltip-ui.xml
+3100b57c32bc56b28944a188cbe5232917568e9ce77a1f8b1ce291e57e752092  qualification/evidence/artifacts/2026-10-18-renderer-tooltip.png
 8cb9b2f9fa08ab02097c96262b88b41cc51eb0ff8d32303f5e09be9ef3ebcb44  qualification/evidence/artifacts/2026-10-18-reopen.png
 a380cc4cd036874125a3ae257251d6abc9c33c2f835e6a9957f5b0a4e18aeefb  qualification/evidence/artifacts/2026-10-18-settings-dark-compact.png
 325203fa4e25f6a04f50d9f9590634932f0310d068c9781b8e9f72b9642407f9  qualification/evidence/artifacts/2026-10-18-settings-light.png

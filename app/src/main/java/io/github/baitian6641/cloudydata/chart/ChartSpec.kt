@@ -45,6 +45,8 @@ data class LegendSpec(
 
 data class LabelSpec(val show: Boolean)
 
+data class TooltipSpec(val show: Boolean)
+
 /**
  * Renderer-independent visual specification built by the semantic layer. The
  * renderer may position marks and draw axes; it cannot change the supplied
@@ -60,6 +62,7 @@ data class ChartSpec(
     val gridlines: GridlineSpec,
     val legend: LegendSpec,
     val labels: LabelSpec,
+    val tooltip: TooltipSpec = TooltipSpec(true),
     val series: List<ChartSeries>,
     val rowCount: Int,
     val truncated: Boolean,

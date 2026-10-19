@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.baitian6641.cloudydata.RendererRevisionGateTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-19T01:42:24.316Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.001">
+<testsuite name="io.github.baitian6641.cloudydata.RendererRevisionGateTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-19T02:03:45.452Z" hostname="polar-hpzbookultrag1a14inchmobileworkstationpc" time="0.0">
   <properties/>
-  <testcase name="lateCompletionsFromSupersededChartOrRevisionAreRejected" classname="io.github.baitian6641.cloudydata.RendererRevisionGateTest" time="0.001"/>
+  <testcase name="lateCompletionsFromSupersededChartOrRevisionAreRejected" classname="io.github.baitian6641.cloudydata.RendererRevisionGateTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

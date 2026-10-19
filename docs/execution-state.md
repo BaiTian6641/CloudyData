@@ -53,7 +53,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (warnings documented). JVM tests: 23/23. Emulator instrumentation:
+- Lint: 0 errors (warnings documented). JVM tests: 24/24. Emulator instrumentation:
   35/35, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
@@ -71,6 +71,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-s01-renderer-lifecycle.md`
 - `qualification/evidence/2026-10-18-s11-renderer-selection.md`
 - `qualification/evidence/2026-10-18-s11-area-chart.md`
+- `qualification/evidence/2026-10-18-s11-tooltip.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -100,6 +101,11 @@ unless stated otherwise.
   focus/TalkBack traversal, live OS-window resize and memory limits remain
   unverified. The native summary/table is the current accessible equivalent.
 
+- **Current emulator caveat:** the rootable API 37 emulator disappeared during
+  the session. Newer reruns ran on an API 36 x86_64 AVD with a 2880×1800/240 dpi
+  display override; prior API 37/root evidence remains as recorded for those
+  runs, while new evidence is API 36 and non-root.
+
 ## Not implemented / blocked
 
 - S01.6 Arrow IPC, S01.8 million-row virtualized grid, S01.10 multiwindow,
@@ -108,8 +114,9 @@ unless stated otherwise.
   not real process kills; S01.7 now verifies emulator renderer death/recovery,
   generation retirement, recovery exhaustion, stale completion/failure
   rejection and exact surface/view sizes. Selection and Escape focus-exit are
-  verified; single-series Area is implemented and persists across reopen.
-  Additive/range selection, tooltip, export, TalkBack and live-window
+  verified; single-series Area is implemented and persists across reopen; a
+  bounded exact-value tooltip works on selection/focus with persisted show/hide.
+  Pointer hover, additive/range selection, export, TalkBack and live-window
   qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
@@ -122,19 +129,17 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST12 renderer tooltip / exact-value inspection (emulator-first).**
+**CUST14 visual export (SVG first, emulator-first).**
 
-- Files: `app/src/main/assets/renderer/host.js`, `VegaSpecBuilder.kt`,
-  `VegaRendererHost.kt`, `VegaChart.kt`, debug probe and instrumentation tests.
-- Action: on hover/focus of a selected mark, show a bounded tooltip with the
-  exact series/x/y already validated by the host; reject stale chart/revision
-  payloads; keep the native table/inspector authoritative.
-- Acceptance: actual emulator pointer hover/focus displays the exact source row
-  value; stale tooltip data is discarded; the tooltip is bounded, keyboard-
-  reachable via the existing selection path, and adds no SQL/file/network
-  authority.
-- Then: visual chart export/print, additive/range selection and the next chart
-  family (scatter or area).
+- Files: `host.js`/`index.html`, `VegaRendererHost.kt`, `VegaChart.kt`, export
+  UI/store, tests.
+- Action: request the renderer's SVG for the current chart/revision, validate a
+  bounded document, and save it through a user-chosen destination; keep a
+  native/offline fallback if the renderer fails. Do not export a stale revision.
+- Acceptance: actual export produces a valid SVG of the current chart with no
+  external references; stale/failed renders are rejected; a saved file opens.
+- Then: PNG/PDF/print, pointer-hover tooltip qualification and additive/range
+  selection.
 
 ## Protected context
 

@@ -112,9 +112,9 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
   generation retirement, automatic probe recreation/replay, recovery
   exhaustion, stale completion/failure rejection and exact surface/view sizes
   are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths
-  is implemented; additive/range selection, tooltips, product auto-recovery,
-  live OS-window resize, export, TalkBack and the full chart catalog remain
-  incomplete. No Arrow IPC transfer; no query service process, virtualized
+  and a bounded exact-value tooltip are implemented; pointer-hover qualification,
+  additive/range selection, product auto-recovery, live OS-window resize, export,
+  TalkBack and the full chart catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
   million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.

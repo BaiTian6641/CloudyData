@@ -221,3 +221,12 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Verified 11/22/30/4 aggregate values, area scene mark and offline rendering.
   JVM 23/23; emulator 35/35; lint 0 errors.
 - CH03 is partial; stacked/100%/multi-series area and tooltip/export remain.
+
+## 2026-10-18 — bounded chart tooltip
+
+- Added persisted `showTooltip`, exact-value serialization, a bounded DOM
+  tooltip on selection/focus, and a Vega hover signal.
+- Keyboard-selection tooltip evidence on the API 36 emulator: `North
+  2026-01-01 = 10.0`; show/hide persistence tested.
+- Pointer hover did not qualify through adb mouse injection and remains open.
+  JVM 24/24; emulator 35/35; lint 0 errors. CUST12 partial.

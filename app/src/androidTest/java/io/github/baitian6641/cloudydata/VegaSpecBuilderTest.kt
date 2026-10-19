@@ -87,6 +87,7 @@ class VegaSpecBuilderTest {
         assertEquals(4, xDomain.length())
         assertEquals("2026-01-01", xDomain.getString(0))
         assertEquals("2026-04-01", xDomain.getString(3))
+        assertTrue("tooltip visibility missing from the renderer spec", json.getJSONObject("usermeta").getBoolean("tooltip"))
         assertFalse("renderer must not receive analytical aggregation transforms", json.toString().contains("\"aggregate\""))
         val values = json.getJSONArray("data").getJSONObject(0).getJSONArray("values")
         assertEquals(6, values.length())
@@ -94,6 +95,7 @@ class VegaSpecBuilderTest {
             .map { values.getJSONObject(it) }
             .first { it.isNull("y") }
         assertEquals(false, nullPoint.getBoolean("defined"))
+        assertEquals("10", values.getJSONObject(0).getString("exactY"))
         assertEquals(
             "source row indices must survive lowering for exact selection",
             listOf(0, 2, 4, 1, 3, 5),

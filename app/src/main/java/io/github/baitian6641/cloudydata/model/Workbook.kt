@@ -36,6 +36,7 @@ data class ChartOptions(
     val reverseY: Boolean = false,
     val legendVisible: Boolean = true,
     val legendPosition: LegendPosition = LegendPosition.BOTTOM,
+    val showTooltip: Boolean = true,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -52,6 +53,7 @@ data class ChartOptions(
         .put("reverseY", reverseY)
         .put("legendVisible", legendVisible)
         .put("legendPosition", legendPosition.name)
+        .put("showTooltip", showTooltip)
 
     companion object {
         const val VERSION = 1
@@ -72,6 +74,7 @@ data class ChartOptions(
             legendPosition = runCatching {
                 LegendPosition.valueOf(json.optString("legendPosition", LegendPosition.BOTTOM.name))
             }.getOrDefault(LegendPosition.BOTTOM),
+            showTooltip = json.optBoolean("showTooltip", true),
         )
     }
 }

@@ -113,3 +113,12 @@ area + outline + symbols + labels + the existing selection hit target. The
 workbook persists `MarkType.AREA` and reopens it. Evidence:
 `qualification/evidence/2026-10-18-s11-area-chart.md`. Stacked/100%/multi-series
 area, tooltip and export remain pending.
+
+## Amendment — 2026-10-18 bounded tooltip
+
+Added a bounded DOM tooltip with exact `exactY` values, persisted
+`ChartOptions.showTooltip`, selection/focus display and a Vega hover signal.
+Selection still uses the validated chart/revision path; the native table remains
+authoritative. Evidence: `qualification/evidence/2026-10-18-s11-tooltip.md`.
+Pointer hover, field/format choices, collision policy and TalkBack announcement
+remain pending; CUST12 is partial.

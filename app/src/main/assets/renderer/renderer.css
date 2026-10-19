@@ -22,3 +22,20 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+#tooltip {
+  position: fixed;
+  z-index: 10;
+  max-width: 260px;
+  padding: 6px 8px;
+  border: 1px solid #35515A;
+  border-radius: 4px;
+  background: #182427;
+  color: #E1EBED;
+  font: 12px/1.35 system-ui, sans-serif;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}

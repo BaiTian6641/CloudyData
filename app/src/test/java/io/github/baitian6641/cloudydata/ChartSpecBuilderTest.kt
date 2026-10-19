@@ -67,6 +67,16 @@ class ChartSpecBuilderTest {
     }
 
     @Test
+    fun tooltipVisibilityIsCarriedOnTheSpec() {
+        val enabled = ChartSpecBuilder.build("line", 0, lineResult(), ChartOptions(), "derived")
+        assertTrue(enabled.tooltip.show)
+        val disabled = ChartSpecBuilder.build(
+            "line", 0, lineResult(), ChartOptions(showTooltip = false), "derived",
+        )
+        assertEquals(false, disabled.tooltip.show)
+    }
+
+    @Test
     fun areaSpecIsSingleSeriesAndForcesZeroBaselineWithoutLegend() {
         val result = WorksheetResult(
             result = EngineResult(
