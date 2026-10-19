@@ -781,3 +781,13 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   VegaSpecBuilderTest 18/18 (line + area), ChartSettingsPersistenceTest 12/12,
   border render 1/1; lint 0 errors/5 warnings. Googlebook untouched; visual/
   legend/export checks absent.
+
+## 2026-10-19 — CUST04 table header divider
+
+- Added persisted header-rule visibility, default on, sharing the existing table
+  divider width/contrast. Header content/data/selection unchanged; apply remains
+  presentation-only.
+- Emulator-first validation: JVM 65/65; emulator-5580 API36 x86_64
+  ChartSettingsPersistenceTest 12/12, TableSelectionTest 5/5,
+  VegaSpecBuilderTest 18/18; lint 0 errors/5 warnings. Googlebook untouched;
+  no Compose/table visual check.

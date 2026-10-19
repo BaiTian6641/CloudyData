@@ -82,6 +82,7 @@ data class ChartOptions(
     val showMarkers: Boolean = true,
     val showTableRowDividers: Boolean = true,
     val showTableColumnDividers: Boolean = false,
+    val showTableHeaderDivider: Boolean = true,
     val tableDividerWidth: Double? = null,
     val tableDividerContrast: TableDividerContrast = TableDividerContrast.DEFAULT,
     val markerSize: Double? = null,
@@ -142,6 +143,7 @@ data class ChartOptions(
         .put("showMarkers", showMarkers)
         .put("tableRowDividers", showTableRowDividers)
         .put("tableColumnDividers", showTableColumnDividers)
+        .put("tableHeaderDivider", showTableHeaderDivider)
         .put("tableDividerWidth", tableDividerWidth ?: JSONObject.NULL)
         .put("tableDividerContrast", tableDividerContrast.name)
         .put("markerSize", markerSize ?: JSONObject.NULL)
@@ -288,6 +290,7 @@ data class ChartOptions(
             showMarkers = json.optBoolean("showMarkers", true),
             showTableRowDividers = json.optBoolean("tableRowDividers", true),
             showTableColumnDividers = json.optBoolean("tableColumnDividers", false),
+            showTableHeaderDivider = json.optBoolean("tableHeaderDivider", true),
             tableDividerWidth = if (json.isNull("tableDividerWidth")) {
                 null
             } else {

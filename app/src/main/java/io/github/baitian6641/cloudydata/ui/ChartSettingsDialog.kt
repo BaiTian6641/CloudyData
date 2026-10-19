@@ -109,6 +109,7 @@ fun ChartSettingsDialog(
     var showTooltip by remember { mutableStateOf(current.showTooltip) }
     var showTableRowDividers by remember { mutableStateOf(current.showTableRowDividers) }
     var showTableColumnDividers by remember { mutableStateOf(current.showTableColumnDividers) }
+    var showTableHeaderDivider by remember { mutableStateOf(current.showTableHeaderDivider) }
     var tableDividerWidth by remember { mutableStateOf(current.tableDividerWidth?.toString().orEmpty()) }
     var tableDividerContrast by remember { mutableStateOf(current.tableDividerContrast) }
     var legendVisible by remember { mutableStateOf(current.legendVisible) }
@@ -343,6 +344,12 @@ fun ChartSettingsDialog(
                     description = "Show vertical rules between result columns.",
                     checked = showTableColumnDividers,
                     onCheckedChange = { showTableColumnDividers = it },
+                )
+                ChartToggleRow(
+                    title = "Table header divider",
+                    description = "Show the rule between the header and result rows.",
+                    checked = showTableHeaderDivider,
+                    onCheckedChange = { showTableHeaderDivider = it },
                 )
                 CloudyTextField(
                     value = tableDividerWidth,
@@ -989,6 +996,7 @@ fun ChartSettingsDialog(
                             showTooltip = showTooltip,
                             showTableRowDividers = showTableRowDividers,
                             showTableColumnDividers = showTableColumnDividers,
+                            showTableHeaderDivider = showTableHeaderDivider,
                             tableDividerWidth = parsedTableDividerWidth,
                             tableDividerContrast = tableDividerContrast,
                             yTickCount = parsedYTickCount,

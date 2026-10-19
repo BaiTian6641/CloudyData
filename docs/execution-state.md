@@ -127,6 +127,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust04-table-divider-contrast.md`
 - `qualification/evidence/2026-10-19-cust06-currency-display.md`
 - `qualification/evidence/2026-10-19-cust08-marker-border.md`
+- `qualification/evidence/2026-10-19-cust04-table-header-divider.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -251,6 +252,8 @@ unless stated otherwise.
 - **Table divider width/contrast.** Optional 0.5–3.0 dp thickness and
   divider/outline contrast apply to header/body/column rules; persistence and
   table-selection pass; visual alignment/contrast checks were not run.
+- **Table header divider.** Persisted header-rule toggle defaults on and shares
+  width/contrast; persistence/table-selection pass; visual checks were not run.
 - **Currency display.** Persisted USD/EUR/GBP/JPY formatting applies fixed
   two-decimal grouped values/symbols (matching U+2212 negatives) to axis and
   labels; exact values/tooltips/data remain. Emulator negative-render,
@@ -347,20 +350,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST04 persisted table header divider toggle.**
+**CUST07 persisted categorical palette.**
 
-- Requirements/stage: CUST04, F36/F38, Q21, S11. Prerequisites: table row/column
-  dividers, width/contrast, shared divider rendering and persistence tests.
-- Files: `ChartOptions`, settings dialog, `ResultTable`, tests/evidence.
-- Action: add a persisted header-rule visibility toggle, defaulting on to preserve
-  current structure and applying the same width/contrast as body rules.
-- Acceptance: default unchanged; disabling affects only the rule under the table
-  header, never header content/data/selection; persists across reopen. Emulator
-  persistence/table-selection checks required; visual review unverified.
+- Requirements/stage: CUST07, F36/F38, Q21, S11. Prerequisites: generated token
+  palette, series/category color lowering, legend and emulator renderer probes.
+- Files: `design-system/tokens.json`, generated `CloudyTokens`, `ChartOptions`,
+  `ChartSpec`, builders, `VegaChart`, `ChartSettingsDialog`, tests/evidence.
+- Action: add a bounded CLOUDY/COLORBLIND categorical palette choice using
+  generated tokens, defaulting to the current Cloudy palette and keeping the
+  existing stable label-to-color mapping within a palette.
+- Acceptance: default output unchanged; palette persists and affects only mark/
+  legend colors, not data/selection; invalid values fall back to Cloudy; token
+  generation and contrast checks pass. Emulator spec/render checks required;
+  visual review remains unverified.
 - Device-bound qualification remains blocked: lasso/product, Y tick, legend,
   labels, line width, titles, units, padding, X-label, border, gridline, percent,
-  marker, interpolation, dash, opacity, legend-sample and table visuals wait for
-  an authorized visual session.
+  marker, palette, interpolation, dash, opacity, legend-sample and table visuals
+  wait for an authorized visual session.
 
 ## Protected context
 

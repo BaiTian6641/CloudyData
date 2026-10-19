@@ -731,7 +731,9 @@ private fun ResultTable(
                 }
             }
         }
-        Box(Modifier.fillMaxWidth().height(dividerThickness).background(dividerColor))
+        if (options.showTableHeaderDivider) {
+            Box(Modifier.fillMaxWidth().height(dividerThickness).background(dividerColor))
+        }
         if (engineResult.rows.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("The current view returned no rows.", color = colors.textSecondary)

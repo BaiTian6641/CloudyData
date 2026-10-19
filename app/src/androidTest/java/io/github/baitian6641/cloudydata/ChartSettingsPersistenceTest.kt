@@ -110,6 +110,7 @@ class ChartSettingsPersistenceTest {
                             markerBorderWidth = 2.0,
                             showTableRowDividers = false,
                             showTableColumnDividers = true,
+                            showTableHeaderDivider = false,
                             tableDividerWidth = 2.0,
                             tableDividerContrast = TableDividerContrast.STRONG,
                         ),
@@ -169,6 +170,7 @@ class ChartSettingsPersistenceTest {
         assertEquals(2.0, reopenedSheet.chart.markerBorderWidth!!, 0.0)
         assertEquals(false, reopenedSheet.chart.showTableRowDividers)
         assertEquals(true, reopenedSheet.chart.showTableColumnDividers)
+        assertEquals(false, reopenedSheet.chart.showTableHeaderDivider)
         assertEquals(2.0, reopenedSheet.chart.tableDividerWidth!!, 0.0)
         assertEquals(TableDividerContrast.STRONG, reopenedSheet.chart.tableDividerContrast)
         assertEquals(2, reopened.formatVersion)
@@ -199,6 +201,7 @@ class ChartSettingsPersistenceTest {
         val options = ChartOptions.fromJson(JSONObject())
         assertEquals(true, options.showTableRowDividers)
         assertEquals(false, options.showTableColumnDividers)
+        assertEquals(true, options.showTableHeaderDivider)
         assertEquals(null, options.tableDividerWidth)
         assertEquals(
             2.0,
