@@ -3,6 +3,7 @@ package io.github.baitian6641.cloudydata.debug
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -62,6 +63,8 @@ class RendererProbeActivity : Activity() {
             text = "Starting offline renderer…"
             setTextColor(Color.rgb(24, 36, 39))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            isFocusable = true
+            isFocusableInTouchMode = true
         }
         container = FrameLayout(this)
         root.addView(status, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -153,6 +156,31 @@ class RendererProbeActivity : Activity() {
                     }
                 }
 
+                override fun onSelectionIntent(
+                    chartId: String,
+                    revision: Long,
+                    sourceRowIndex: Int,
+                    series: String,
+                    x: String,
+                ) {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        RendererProbeState.selectionRow.set(sourceRowIndex)
+                        RendererProbeState.selectionCount.incrementAndGet()
+                        status.text = "Selected row=$sourceRowIndex · series=$series · x=$x · $chartId r$revision"
+                    }
+                }
+
+                override fun onFocusExit() {
+                    runOnUiThread {
+                        if (generation != hostGeneration || destroyed) return@runOnUiThread
+                        RendererProbeState.focusExitCount.incrementAndGet()
+                        status.text = "Focus exit requested; WebView released"
+                        host?.webView?.clearFocus()
+                        status.requestFocus()
+                    }
+                }
+
                 override fun onRendererError(code: String, detail: String) {
                     runOnUiThread {
                         if (generation != hostGeneration || destroyed) return@runOnUiThread
@@ -174,6 +202,8 @@ class RendererProbeActivity : Activity() {
         newHost.initialize()
         newHost.webView?.let { web ->
             web.setBackgroundColor(Color.TRANSPARENT)
+            web.isFocusable = true
+            web.isFocusableInTouchMode = true
             val params = if (requestedWidthDp > 0f && requestedHeightDp > 0f) {
                 val density = resources.displayMetrics.density
                 FrameLayout.LayoutParams(
@@ -264,6 +294,17 @@ class RendererProbeActivity : Activity() {
         runOnUiThread { handleRendererGone("simulated") }
     }
 
+    fun focusRendererForTest(): Boolean = host?.webView?.requestFocus() == true
+
+
+    fun rendererBoundsForTest(): Rect? {
+        val web = host?.webView ?: return null
+        if (web.width <= 0 || web.height <= 0) return null
+        val location = IntArray(2)
+        web.getLocationOnScreen(location)
+        return Rect(location[0], location[1], location[0] + web.width, location[1] + web.height)
+    }
+
     private fun finishWithError(code: String, detail: String) {
         RendererProbeState.complete(
             RendererProbeState.Result(
@@ -317,9 +358,9 @@ class RendererProbeActivity : Activity() {
                 ChartSeries(
                     "South",
                     listOf(
-                        point("2026-01-01", 1.0, "South", 0),
-                        point("2026-02-01", 2.0, "South", 1),
-                        point("2026-04-01", 4.0, "South", 3),
+                        point("2026-01-01", 1.0, "South", 0, 3),
+                        point("2026-02-01", 2.0, "South", 1, 4),
+                        point("2026-04-01", 4.0, "South", 3, 5),
                     ),
                 ),
             ),
@@ -358,14 +399,20 @@ class RendererProbeActivity : Activity() {
         "Accessible summary: region A = 40, region B = 60."
     }
 
-    private fun point(x: String, y: Double, series: String, order: Int) = ChartPoint(
+    private fun point(
+        x: String,
+        y: Double,
+        series: String,
+        order: Int,
+        sourceRowIndex: Int = order,
+    ) = ChartPoint(
         x = x,
         xOrder = order,
         series = series,
         y = y,
         exactY = y.toString(),
         defined = true,
-        sourceRowIndex = order,
+        sourceRowIndex = sourceRowIndex,
     )
 
     companion object {
@@ -412,10 +459,16 @@ object RendererProbeState {
         private set
 
     val blockedRequests = AtomicInteger(0)
+    val selectionRow = AtomicInteger(-1)
+    val selectionCount = AtomicInteger(0)
+    val focusExitCount = AtomicInteger(0)
 
     fun reset() {
         result = null
         blockedRequests.set(0)
+        selectionRow.set(-1)
+        selectionCount.set(0)
+        focusExitCount.set(0)
         latch = CountDownLatch(1)
         recoveryLatch = CountDownLatch(1)
     }

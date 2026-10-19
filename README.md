@@ -111,8 +111,10 @@ device/emulator runner. Test data is synthetic and lives under `fixtures/`.
 - The Vega renderer covers bar and line marks; emulator renderer death,
   generation retirement, automatic probe recreation/replay, recovery
   exhaustion, stale completion/failure rejection and exact surface/view sizes
-  are qualified. Chart selection, product auto-recovery, live OS-window resize,
-  export, focus/TalkBack and the full chart catalog remain incomplete. No Arrow IPC transfer; no query service process, virtualized
+  are qualified. Exact chart-to-table selection with arrow/Escape keyboard paths
+  is implemented; additive/range selection, tooltips, product auto-recovery,
+  live OS-window resize, export, TalkBack and the full chart catalog remain
+  incomplete. No Arrow IPC transfer; no query service process, virtualized
   million-row grid, multiwindow conflict handling,
   migrations, relationships/LOD/table calculations, dashboards, connectors or
   Tableau interoperability are implemented yet.

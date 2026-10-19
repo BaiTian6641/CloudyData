@@ -8,13 +8,13 @@ io.github.baitian6641.cloudydata.LineChartQueryTest:.
 io.github.baitian6641.cloudydata.MediaStoreFixtureTest:.
 io.github.baitian6641.cloudydata.RecoveryTest:...
 io.github.baitian6641.cloudydata.ShortcutIntentTest:.
-io.github.baitian6641.cloudydata.VegaRendererProbeTest:.....
+io.github.baitian6641.cloudydata.VegaRendererProbeTest:.......
 io.github.baitian6641.cloudydata.VegaSpecBuilderTest:...
 io.github.baitian6641.cloudydata.WindowProbeTest:.
 io.github.baitian6641.cloudydata.WorkloadProbeTest:.
 
-Time: 30.763
+Time: 37.747
 
-OK (30 tests)
+OK (32 tests)
 
 

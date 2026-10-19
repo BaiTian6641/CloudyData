@@ -44,6 +44,14 @@ class VegaRendererHost(
             viewWidth: Int,
             viewHeight: Int,
         )
+        fun onSelectionIntent(
+            chartId: String,
+            revision: Long,
+            sourceRowIndex: Int,
+            series: String,
+            x: String,
+        )
+        fun onFocusExit()
         fun onRendererError(code: String, detail: String)
         fun onExternalRequestBlocked(url: String)
     }
@@ -266,6 +274,28 @@ class VegaRendererHost(
                     json.optInt("viewHeight", 0),
                 )
             }
+            "SelectionIntent" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (!revisionGate.isCurrent(chartId, revision)) return
+                val row = json.optInt("sourceRowIndex", -1)
+                if (row < 0 || row > MAX_SOURCE_ROW_INDEX) return
+                listener.onSelectionIntent(
+                    chartId,
+                    revision,
+                    row,
+                    json.optString("series").take(MAX_SELECTION_LABEL),
+                    json.optString("x").take(MAX_SELECTION_LABEL),
+                )
+            }
+            "FocusExitIntent" -> {
+                val chartId = json.optString("chartId")
+                val revision = json.optLong("revision", -1)
+                if (chartId.isNotEmpty() && revision >= 0 && !revisionGate.isCurrent(chartId, revision)) {
+                    return
+                }
+                listener.onFocusExit()
+            }
             "RendererError" -> {
                 val errorChartId = json.optString("chartId")
                 val errorRevision = json.optLong("revision", -1)
@@ -300,5 +330,7 @@ class VegaRendererHost(
         const val MAX_CHART_POINTS = 2000
         const val MAX_MESSAGE_CHARS = 64 * 1024
         const val MAX_SPEC_CHARS = 512 * 1024
+        private const val MAX_SOURCE_ROW_INDEX = 1_000_000
+        private const val MAX_SELECTION_LABEL = 512
     }
 }

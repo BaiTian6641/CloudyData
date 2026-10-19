@@ -85,3 +85,22 @@ Still pending: selection/hover/context-menu intents, product auto-recovery,
 tooltip, export/print, focus exit, TalkBack traversal, live OS-window resize,
 memory measurement and physical-device/WebView-provider qualification. This does
 not complete S01.7.
+
+## Amendment — 2026-10-18 selection and focus exit
+
+The renderer now lowers `sourceRowIndex` and emits typed `SelectionIntent` and
+`FocusExitIntent` messages. Bars use a named top-level rect; lines use top-level,
+nearly transparent hit symbols over observed points and a Vega signal, because
+facet-group child marks did not reliably carry click items. The bridge validates
+origin/main frame and rejects stale chart/revision messages.
+
+The worksheet maps the validated row index to the exact result row, highlights
+that table row, and keeps the inspector/table as the exact-value surface. Arrow
+keys move selection in source-table order; Escape/Tab moves keyboard routing out
+of the WebView (verified behaviorally, not as a complete accessibility-tree
+claim). Evidence:
+`qualification/evidence/2026-10-18-s11-renderer-selection.md`.
+
+Still absent: additive/range/lasso/keep-exclude/drill selection, visual mark
+highlighting, tooltip, context menu, export/print, TalkBack traversal, physical
+WebView-provider qualification. CUST13 remains partial.

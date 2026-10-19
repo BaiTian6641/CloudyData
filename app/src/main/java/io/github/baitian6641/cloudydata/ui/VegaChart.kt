@@ -23,12 +23,14 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -76,6 +78,9 @@ fun VegaChartCard(
     var retryToken by remember { mutableIntStateOf(0) }
     var requestRevision by remember { mutableIntStateOf(0) }
     val localDensity = LocalDensity.current
+    val focusManager = LocalFocusManager.current
+    val currentRowCount = rememberUpdatedState(result.result.rows.size)
+    val currentSelectRow = rememberUpdatedState(onSelectRow)
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -159,6 +164,24 @@ fun VegaChartCard(
                                         rendered = true
                                     }
 
+                                    override fun onSelectionIntent(
+                                        chartId: String,
+                                        revision: Long,
+                                        sourceRowIndex: Int,
+                                        series: String,
+                                        x: String,
+                                    ) {
+                                        if (sourceRowIndex in 0 until currentRowCount.value) {
+                                            hostRef.get()?.webView?.requestFocus()
+                                            currentSelectRow.value(sourceRowIndex)
+                                        }
+                                    }
+
+                                    override fun onFocusExit() {
+                                        hostRef.get()?.webView?.clearFocus()
+                                        focusManager.clearFocus(force = true)
+                                    }
+
                                     override fun onRendererError(code: String, detail: String) {
                                         rendererError = "$code: $detail"
                                     }
@@ -171,6 +194,8 @@ fun VegaChartCard(
                             host.initialize()
                             host.webView?.let { web ->
                                 web.setBackgroundColor(Color.TRANSPARENT)
+                                web.isFocusable = true
+                                web.isFocusableInTouchMode = true
                                 container.addView(
                                     web,
                                     FrameLayout.LayoutParams(
@@ -242,5 +267,5 @@ private fun accessibleSummary(spec: ChartSpec): String {
     }
     val suffix = if (spec.series.size > 4) " plus ${spec.series.size - 4} more series" else ""
     val kind = if (spec.kind == ChartKind.LINE) "Line" else "Bar"
-    return "$kind summary: $parts$suffix. Select a table row for exact values."
+    return "$kind summary: $parts$suffix. Click a mark or use arrow keys to select a table row; Escape leaves the chart."
 }

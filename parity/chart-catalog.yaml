@@ -24,7 +24,7 @@ families:
     customizations: [axis_range, zero_baseline, log, reverse, axis_titles, gridlines, legend, labels, color, line_style, markers, tooltip]
     owning_stages: S06, S11
     status: partial
-    note: Multi-series line with semantic grouping, observed-point order, 2000-point truncation refusal, missing-value gaps, axis titles/range/zero/log/reverse, gridlines, value labels, right/bottom legend and save/reopen. Interpolation/marker styling, temporal axis, dual axes, chart selection and export are pending.
+    note: Multi-series line with semantic grouping, observed-point order, 2000-point truncation refusal, missing-value gaps, axis titles/range/zero/log/reverse, gridlines, value labels, right/bottom legend, save/reopen, and exact chart-to-table selection with arrow/Escape keyboard paths. Interpolation/marker styling, temporal axis, dual axes, additive/range selection and visual export are pending.
   - id: CH03
     family: Area
     variants: [single, stacked, 100_percent]
@@ -162,7 +162,7 @@ customization:
     area: Selection and inspect
     controls: [select, additive, range, lasso, keep_exclude, drill, view_data]
     status: partial
-    note: Table row selection and exact inspector only; chart marks are not selectable.
+    note: Click and arrow selection map to the exact source table row; Escape releases WebView focus. Additive/range/lasso/keep-exclude/drill, visual mark highlight and tooltip remain absent.
   - id: CUST14
     area: Layout and export
     controls: [size, fit, zoom, padding, border, background, png, svg, pdf, print]

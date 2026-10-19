@@ -197,3 +197,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   qualification operation, not a sandbox.
 - Still open: selection/hover/context-menu intents, product auto-recovery,
   export/print, focus/TalkBack, live OS-window resize and memory limits.
+
+## 2026-10-18 — renderer selection and focus exit
+
+- Lowered `sourceRowIndex` into the Vega table and added typed
+  `SelectionIntent`/`FocusExitIntent` messages with chart/revision gating.
+- Added named bar rects and top-level line hit symbols driven by a Vega signal;
+  facet child click items were not reliable.
+- Product worksheet now maps a validated click/arrow selection to the exact
+  table row, advances in source-table order and releases native WebView focus on
+  Escape/Tab.
+- Actual emulator tap, hardware arrows and Escape verified on the debug probe
+  and the product worksheet. Full suite: 32/32; JVM 19/19; lint 0 errors.
+- CUST13 remains partial: additive/range/lasso selection, visual mark highlight,
+  tooltip, context menu and export are still absent.

@@ -93,6 +93,11 @@ class VegaSpecBuilderTest {
             .map { values.getJSONObject(it) }
             .first { it.isNull("y") }
         assertEquals(false, nullPoint.getBoolean("defined"))
+        assertEquals(
+            "source row indices must survive lowering for exact selection",
+            listOf(0, 2, 4, 1, 3, 5),
+            (0 until values.length()).map { values.getJSONObject(it).getInt("sourceRowIndex") },
+        )
     }
 
     @Test

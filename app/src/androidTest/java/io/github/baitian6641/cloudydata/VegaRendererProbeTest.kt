@@ -1,7 +1,11 @@
 package io.github.baitian6641.cloudydata
 
 import android.content.Intent
+import android.graphics.Rect
+import android.os.SystemClock
+import android.view.KeyEvent
 import androidx.test.core.app.ActivityScenario
+import androidx.test.uiautomator.UiDevice
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.debug.RendererProbeActivity
@@ -117,6 +121,102 @@ class VegaRendererProbeTest {
             assertEquals(3, terminal.rendererDeaths)
             assertEquals(2, terminal.recoveryAttempts)
         }
+    }
+
+    @Test
+    fun clickSelectsTheExactSourceRowFromTheVegaMark() {
+        RendererProbeState.reset()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, RendererProbeActivity::class.java)
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var bounds: Rect? = null
+            scenario.onActivity { bounds = it.rendererBoundsForTest() }
+            assertTrue("renderer bounds were not available", bounds != null)
+            val chart = bounds!!
+            val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            device.click(
+                (chart.left + chart.width() * 0.28f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+            )
+            assertTrue("click on bar A did not select row 0", waitFor(3000) {
+                RendererProbeState.selectionRow.get() == 0
+            })
+            device.click(
+                (chart.left + chart.width() * 0.72f).toInt(),
+                (chart.top + chart.height() * 0.78f).toInt(),
+            )
+            assertTrue("click on bar B did not select row 1", waitFor(3000) {
+                RendererProbeState.selectionRow.get() == 1
+            })
+            assertEquals(2, RendererProbeState.selectionCount.get())
+        }
+    }
+
+    @Test
+    fun keyboardArrowsMoveSelectionAndEscapeReleasesTheWebView() {
+        RendererProbeState.reset()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, RendererProbeActivity::class.java)
+            .putExtra(RendererProbeActivity.EXTRA_PROBE_KIND, "line")
+        ActivityScenario.launch<RendererProbeActivity>(intent).use { scenario ->
+            assertNull(RendererProbeState.await(30)!!.error)
+            var focused = false
+            scenario.onActivity { focused = it.focusRendererForTest() }
+            assertTrue("WebView did not accept focus", focused)
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            instrumentation.waitForIdleSync()
+            val device = UiDevice.getInstance(instrumentation)
+            sendKey(device, KeyEvent.KEYCODE_DPAD_RIGHT)
+            assertTrue("ArrowRight did not select the first row", waitFor(5000) {
+                RendererProbeState.selectionRow.get() == 0
+            })
+            sendKey(device, KeyEvent.KEYCODE_DPAD_RIGHT)
+            assertTrue("second ArrowRight did not advance", waitFor(5000) {
+                RendererProbeState.selectionRow.get() == 1
+            })
+            assertTrue("selection intents were not observed", RendererProbeState.selectionCount.get() >= 2)
+            sendKey(device, KeyEvent.KEYCODE_ESCAPE)
+            assertTrue("Escape did not emit a focus exit", waitFor(5000) {
+                RendererProbeState.focusExitCount.get() >= 1
+            })
+            val countAfterEscape = RendererProbeState.selectionCount.get()
+            sendKey(device, KeyEvent.KEYCODE_DPAD_RIGHT)
+            SystemClock.sleep(700)
+            assertEquals(
+                "ArrowRight still reached the WebView after Escape",
+                countAfterEscape,
+                RendererProbeState.selectionCount.get(),
+            )
+
+            scenario.onActivity { it.focusRendererForTest() }
+            instrumentation.waitForIdleSync()
+            sendKey(device, KeyEvent.KEYCODE_TAB)
+            assertTrue("Tab did not emit a second focus exit", waitFor(5000) {
+                RendererProbeState.focusExitCount.get() >= 2
+            })
+            val countAfterTab = RendererProbeState.selectionCount.get()
+            sendKey(device, KeyEvent.KEYCODE_DPAD_RIGHT)
+            SystemClock.sleep(700)
+            assertEquals(
+                "ArrowRight still reached the WebView after Tab",
+                countAfterTab,
+                RendererProbeState.selectionCount.get(),
+            )
+        }
+    }
+
+    private fun sendKey(device: UiDevice, keyCode: Int) {
+        device.pressKeyCode(keyCode)
+    }
+
+    private fun waitFor(timeoutMs: Long, condition: () -> Boolean): Boolean {
+        val end = SystemClock.uptimeMillis() + timeoutMs
+        while (SystemClock.uptimeMillis() < end) {
+            if (condition()) return true
+            SystemClock.sleep(100)
+        }
+        return condition()
     }
 
     private fun renderAt(widthDp: Float, heightDp: Float): RendererProbeState.Result {

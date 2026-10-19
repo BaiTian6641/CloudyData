@@ -54,7 +54,7 @@ unless stated otherwise.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
 - Lint: 0 errors (warnings documented). JVM tests: 19/19. Emulator instrumentation:
-  30/30, 0 failures. The physical Googlebook was removed by the owner; new
+  32/32, 0 failures. The physical Googlebook was removed by the owner; new
   lifecycle/line evidence is emulator-only.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
   emulator honored 1200×900. Caption insets reported zero/unavailable.
@@ -69,6 +69,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-18-token-contrast.md`
 - `qualification/evidence/2026-10-18-s11-line-chart.md`
 - `qualification/evidence/2026-10-18-s01-renderer-lifecycle.md`
+- `qualification/evidence/2026-10-18-s11-renderer-selection.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/`
 - Captures/hashes: `qualification/evidence/artifacts/`
@@ -90,9 +91,13 @@ unless stated otherwise.
   stale completion/failure rejection and two exact renderer surface sizes are
   verified on the rootable emulator. The real kill run reports
   `surface=640x400 · view=640x400 · host=3 · recovered after 1 death(s)`.
-  Selection/hover/context-menu intents, product auto-recovery, export,
-  focus/TalkBack, live OS-window resize and memory limits remain unverified. The
-  native summary/table is the current accessible equivalent.
+- Renderer selection is verified: actual emulator taps select exact source table
+  rows, hardware arrows move in table order, Escape/Tab move keyboard routing
+  out of the WebView (extra arrows no longer select), and stale chart/revision
+  intents are gated. Additive/range/lasso
+  selection, visual mark highlight, tooltip, product auto-recovery, export,
+  focus/TalkBack traversal, live OS-window resize and memory limits remain
+  unverified. The native summary/table is the current accessible equivalent.
 
 ## Not implemented / blocked
 
@@ -101,8 +106,9 @@ unless stated otherwise.
   worker/process-death qualification; S01.5 covers constructed recovery states,
   not real process kills; S01.7 now verifies emulator renderer death/recovery,
   generation retirement, recovery exhaustion, stale completion/failure
-  rejection and exact surface/view sizes, but still lacks
-  selection/export/focus/TalkBack/live-window qualification.
+  rejection and exact surface/view sizes. Selection and Escape focus-exit are
+  now verified, but additive/range selection, tooltip, export, TalkBack and
+  live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -114,20 +120,19 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S11.C0 renderer selection intent + accessible focus path (emulator-first).**
+**CUST12 renderer tooltip / exact-value inspection (emulator-first).**
 
-- Files: `app/src/main/assets/renderer/host.js`, `VegaSpecBuilder.kt`, `VegaRendererHost.kt`,
-  `VegaChart.kt`, debug probe, instrumentation tests; preserve the native
-  summary/table equivalent.
-- Action: emit typed `SelectionIntent`/`FocusExitIntent` messages from generated
-  bar/line marks, validate chart ID/revision and main-frame/origin, map the
-  selected series/x to the exact table row, and reject stale intents. Provide a
-  native keyboard route to move selection and exit the WebView.
-- Acceptance: actual emulator click/selection updates the same row as the table;
-  stale/dead-renderer intents are discarded; focus is visible and exits; no
-  renderer SQL/file/network authority; native table remains exact.
-- Then: renderer export, focus/TalkBack qualification and the next chart family
-  (scatter or area).
+- Files: `app/src/main/assets/renderer/host.js`, `VegaSpecBuilder.kt`,
+  `VegaRendererHost.kt`, `VegaChart.kt`, debug probe and instrumentation tests.
+- Action: on hover/focus of a selected mark, show a bounded tooltip with the
+  exact series/x/y already validated by the host; reject stale chart/revision
+  payloads; keep the native table/inspector authoritative.
+- Acceptance: actual emulator pointer hover/focus displays the exact source row
+  value; stale tooltip data is discarded; the tooltip is bounded, keyboard-
+  reachable via the existing selection path, and adds no SQL/file/network
+  authority.
+- Then: visual chart export/print, additive/range selection and the next chart
+  family (scatter or area).
 
 ## Protected context
 

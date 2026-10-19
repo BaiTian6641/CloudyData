@@ -100,6 +100,10 @@ object VegaSpecBuilder {
             if (spec.labels.show) marks.put(barLabelMark(textColor))
         } else {
             marks.put(lineGroup(spec, textColor))
+            // Facet groups do not reliably surface the child point datum on a
+            // click. A top-level, nearly transparent symbol gives every observed
+            // point a stable hit target that carries sourceRowIndex.
+            marks.put(lineHitMark())
         }
 
         val root = JSONObject()
@@ -111,6 +115,7 @@ object VegaSpecBuilder {
             .put("data", JSONArray().put(JSONObject().put("name", "table").put("values", rows)))
             .put("scales", JSONArray().put(xScale).put(yScale).put(colorScale))
             .put("axes", axes)
+            .put("signals", JSONArray().put(selectionSignal()))
             .put("marks", marks)
         val legend = legendJson(spec, textColor)
         if (legend != null) root.put("legends", JSONArray().put(legend))
@@ -121,6 +126,7 @@ object VegaSpecBuilder {
         .put("x", point.x)
         .put("y", point.y ?: JSONObject.NULL)
         .put("series", point.series)
+        .put("sourceRowIndex", point.sourceRowIndex)
         .put("defined", point.defined)
 
     private fun axisJson(
@@ -152,6 +158,7 @@ object VegaSpecBuilder {
     }
 
     private fun barMark(): JSONObject = JSONObject()
+        .put("name", "cloudyBar")
         .put("type", "rect")
         .put("from", JSONObject().put("data", "table"))
         .put("clip", true)
@@ -274,6 +281,43 @@ object VegaSpecBuilder {
             )
             .put("marks", childMarks)
     }
+
+    private fun lineHitMark(): JSONObject = JSONObject()
+        .put("name", "cloudyHit")
+        .put("type", "symbol")
+        .put("from", JSONObject().put("data", "table"))
+        .put("clip", true)
+        .put(
+            "encode",
+            JSONObject().put(
+                "enter",
+                JSONObject()
+                    .put("x", JSONObject().put("scale", "x").put("field", "x").put("band", 0.5))
+                    .put("y", JSONObject().put("scale", "y").put("field", "y"))
+                    .put("fill", JSONObject().put("value", "#000000"))
+                    .put("size", JSONObject().put("value", 180))
+                    .put("opacity", JSONObject().put("value", 0.001))
+                    .put("defined", JSONObject().put("signal", "isValid(datum.y)")),
+            ),
+        )
+
+    private fun selectionSignal(): JSONObject = JSONObject()
+        .put("name", "cloudySelection")
+        .put("value", JSONArray().put(-1).put("").put(""))
+        .put(
+            "on",
+            JSONArray()
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudyBar:click")
+                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x]"),
+                )
+                .put(
+                    JSONObject()
+                        .put("events", "@cloudyHit:click")
+                        .put("update", "[datum.sourceRowIndex, datum.series, datum.x]"),
+                ),
+        )
 
     private fun legendJson(spec: ChartSpec, textColor: String): JSONObject? {
         if (!spec.legend.visible || spec.kind != ChartKind.LINE) return null
