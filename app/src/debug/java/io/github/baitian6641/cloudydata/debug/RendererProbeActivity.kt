@@ -201,6 +201,7 @@ class RendererProbeActivity : Activity() {
                 override fun onPngExport(
                     chartId: String,
                     revision: Long,
+                    purpose: String,
                     width: Int,
                     height: Int,
                     png: ByteArray,

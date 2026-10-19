@@ -53,6 +53,7 @@ import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
 import io.github.baitian6641.cloudydata.model.ChartOptions
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.renderer.PdfExportWriter
 import io.github.baitian6641.cloudydata.renderer.VegaRendererHost
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.Dispatchers
@@ -94,9 +95,17 @@ fun VegaChartCard(
     val exportModel: ChartExportViewModel = viewModel(key = "svg-export-$chartId")
     val scope = rememberCoroutineScope()
     var exportStatus by remember { mutableStateOf<String?>(null) }
-    fun savePending(uri: android.net.Uri?, isPng: Boolean) {
-        val pending = if (isPng) exportModel.pendingPng else exportModel.pendingSvg
-        if (isPng) exportModel.pendingPng = null else exportModel.pendingSvg = null
+    fun savePending(uri: android.net.Uri?, format: String) {
+        val pending = when (format) {
+            "png" -> exportModel.pendingPng
+            "pdf" -> exportModel.pendingPdf
+            else -> exportModel.pendingSvg
+        }
+        when (format) {
+            "png" -> exportModel.pendingPng = null
+            "pdf" -> exportModel.pendingPdf = null
+            else -> exportModel.pendingSvg = null
+        }
         if (uri == null) {
             exportStatus = null
         } else if (pending == null) {
@@ -118,10 +127,13 @@ fun VegaChartCard(
     }
     val saveSvg = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("image/svg+xml"),
-    ) { savePending(it, isPng = false) }
+    ) { savePending(it, format = "svg") }
     val savePng = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("image/png"),
-    ) { savePending(it, isPng = true) }
+    ) { savePending(it, format = "png") }
+    val savePdf = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/pdf"),
+    ) { savePending(it, format = "pdf") }
 
     Column(modifier.background(colors.surface).padding(horizontal = density.spaceMedium, vertical = density.spaceSmall)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -160,6 +172,13 @@ fun VegaChartCard(
                 CloudyTextButton("PNG", {
                     exportStatus = null
                     hostRef.get()?.requestPngExport() ?: run {
+                        exportStatus = "Renderer is unavailable."
+                    }
+                })
+                Spacer(Modifier.width(density.spaceSmall))
+                CloudyTextButton("PDF", {
+                    exportStatus = null
+                    hostRef.get()?.requestPdfExport() ?: run {
                         exportStatus = "Renderer is unavailable."
                     }
                 })
@@ -252,17 +271,36 @@ fun VegaChartCard(
                                     override fun onPngExport(
                                         chartId: String,
                                         revision: Long,
+                                        purpose: String,
                                         width: Int,
                                         height: Int,
                                         png: ByteArray,
                                     ) {
                                         if (hostRef.get() == null) return
-                                        exportModel.pendingPng = PendingExport(
-                                            bytes = png,
-                                            label = "PNG",
-                                        )
-                                        exportStatus = "Choose a destination for the PNG."
-                                        savePng.launch("cloudy-chart.png")
+                                        if (purpose == "pdf") {
+                                            scope.launch {
+                                                exportStatus = "Preparing PDF."
+                                                withContext(Dispatchers.IO) {
+                                                    runCatching { PdfExportWriter.fromPng(png) }
+                                                }.onSuccess { pdf ->
+                                                    exportModel.pendingPdf = PendingExport(
+                                                        bytes = pdf,
+                                                        label = "PDF",
+                                                    )
+                                                    exportStatus = "Choose a destination for the PDF."
+                                                    savePdf.launch("cloudy-chart.pdf")
+                                                }.onFailure { error ->
+                                                    exportStatus = "Export failed: ${error.message}"
+                                                }
+                                            }
+                                        } else {
+                                            exportModel.pendingPng = PendingExport(
+                                                bytes = png,
+                                                label = "PNG",
+                                            )
+                                            exportStatus = "Choose a destination for the PNG."
+                                            savePng.launch("cloudy-chart.png")
+                                        }
                                     }
 
                                     override fun onExportError(message: String) {
@@ -378,4 +416,5 @@ internal data class PendingExport(
 internal class ChartExportViewModel : ViewModel() {
     var pendingSvg: PendingExport? = null
     var pendingPng: PendingExport? = null
+    var pendingPdf: PendingExport? = null
 }

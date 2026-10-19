@@ -54,7 +54,14 @@ class VegaRendererHost(
         )
         fun onFocusExit()
         fun onSvgExport(chartId: String, revision: Long, svg: String)
-        fun onPngExport(chartId: String, revision: Long, width: Int, height: Int, png: ByteArray)
+        fun onPngExport(
+            chartId: String,
+            revision: Long,
+            purpose: String,
+            width: Int,
+            height: Int,
+            png: ByteArray,
+        )
         fun onExportError(message: String)
         fun onRendererError(code: String, detail: String)
         fun onExternalRequestBlocked(url: String)
@@ -186,13 +193,19 @@ class VegaRendererHost(
         }
     }
 
-    fun requestPngExport() {
+    fun requestPngExport() = requestRasterExport("png")
+
+    fun requestPdfExport() = requestRasterExport("pdf")
+
+    private fun requestRasterExport(purpose: String) {
         val view = webView
         if (view == null || !ready || disposed) {
             listener.onExportError("The renderer is not ready to export.")
             return
         }
-        val message = JSONObject().put("type", "ExportPng")
+        val message = JSONObject()
+            .put("type", "ExportPng")
+            .put("purpose", purpose)
         mainHandler.post {
             if (!disposed && webView === view) {
                 view.evaluateJavascript(
@@ -356,6 +369,7 @@ class VegaRendererHost(
                 if (!revisionGate.isCurrent(chartId, revision)) return
                 val width = json.optInt("width", 0)
                 val height = json.optInt("height", 0)
+                val purpose = if (json.optString("purpose") == "pdf") "pdf" else "png"
                 val encoded = json.optString("pngBase64")
                 if (width !in 1..MAX_EXPORT_DIMENSION || height !in 1..MAX_EXPORT_DIMENSION) {
                     listener.onExportError("The PNG dimensions are outside the allowed range.")
@@ -380,7 +394,7 @@ class VegaRendererHost(
                     listener.onExportError("The PNG dimensions do not match the declared bounds.")
                     return
                 }
-                listener.onPngExport(chartId, revision, pngWidth, pngHeight, bytes)
+                listener.onPngExport(chartId, revision, purpose, pngWidth, pngHeight, bytes)
             }
             "ExportError" -> {
                 val chartId = json.optString("chartId")

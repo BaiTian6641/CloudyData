@@ -206,7 +206,7 @@
     });
   }
 
-  function exportPng() {
+  function exportPng(purpose) {
     // Snapshot the revision before asynchronous rasterization; a later spec must
     // not relabel this image as current.
     var chartId = state.activeChartId;
@@ -246,6 +246,7 @@
             type: 'PngExport',
             chartId: chartId,
             revision: revision,
+            purpose: purpose === 'pdf' ? 'pdf' : 'png',
             width: width,
             height: height,
             pngBase64: dataUrl.substring(comma + 1)
@@ -394,7 +395,7 @@
         exportSvg();
         break;
       case 'ExportPng':
-        exportPng();
+        exportPng(message.purpose);
         break;
       case 'Dispose':
         disposeView();

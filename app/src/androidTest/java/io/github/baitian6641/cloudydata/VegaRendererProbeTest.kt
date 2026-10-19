@@ -2,6 +2,8 @@ package io.github.baitian6641.cloudydata
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.pdf.PdfRenderer
+import android.os.ParcelFileDescriptor
 import android.graphics.Rect
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -11,6 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.baitian6641.cloudydata.debug.RendererProbeActivity
 import io.github.baitian6641.cloudydata.debug.RendererProbeState
+import io.github.baitian6641.cloudydata.renderer.PdfExportWriter
 import io.github.baitian6641.cloudydata.renderer.SvgExportValidator
 import java.io.File
 import org.junit.Assert.assertEquals
@@ -277,6 +280,24 @@ class VegaRendererProbeTest {
                 "exported-chart.png",
             ).readBytes()
             assertTrue("probe PNG evidence file does not match the payload", png.contentEquals(fileBytes))
+
+            val pdf = PdfExportWriter.fromPng(png)
+            assertTrue("PDF signature is wrong", pdf.size > 5 && pdf.copyOfRange(0, 5).contentEquals("%PDF-".toByteArray()))
+            assertTrue("PDF exceeded the bounded limit", pdf.size <= PdfExportWriter.MAX_PDF_BYTES)
+            val pdfFile = File(
+                InstrumentationRegistry.getInstrumentation().targetContext.filesDir,
+                "exported-chart.pdf",
+            )
+            pdfFile.writeBytes(pdf)
+            ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY).use { descriptor ->
+                PdfRenderer(descriptor).use { renderer ->
+                    assertEquals("PDF must contain one chart page", 1, renderer.pageCount)
+                    renderer.openPage(0).use { page ->
+                        assertEquals("PDF page width does not match the PNG", width, page.width)
+                        assertEquals("PDF page height does not match the PNG", height, page.height)
+                    }
+                }
+            }
         }
     }
 

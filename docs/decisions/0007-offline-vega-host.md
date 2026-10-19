@@ -129,9 +129,10 @@ Added typed ExportSvg/SvgExport and ExportPng/PngExport paths. The renderer
 serializes its current SVG or rasterizes it in an offscreen canvas. The host gates
 chart/revision, bounds documents (2 MiB SVG, 4 MiB PNG base64, 4096 px),
 validates SVG elements/attributes (no scripts, event handlers, foreignObject,
-embedded objects or external URLs) and validates the PNG signature. The
-worksheet opens CreateDocument pickers and writes image/svg+xml or image/png.
+embedded objects or external URLs) and validates the PNG signature/IHDR. The
+worksheet opens CreateDocument pickers for SVG, PNG and a one-page PDF generated
+natively from the validated PNG.
 Export errors are non-fatal, saves run on Dispatchers.IO, and the pending payload
 is retained in a ViewModel. Debug export evidence:
 `qualification/evidence/2026-10-18-s11-svg-export.md`. Product end-to-end
-save/open, PDF/print and pixel comparison remain pending; CUST14 is partial.
+save/open, print and pixel comparison remain pending; CUST14 is partial.

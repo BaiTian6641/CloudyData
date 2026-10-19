@@ -117,9 +117,9 @@ unless stated otherwise.
   rejection and exact surface/view sizes. Selection and Escape focus-exit are
   verified; single-series Area is implemented and persists across reopen; a
   bounded exact-value tooltip works on selection/focus with persisted show/hide;
-  bounded SVG and PNG export are implemented; both decode/parse and match their
-  probe evidence files. Pointer hover, product end-to-end save/open, PDF/print,
-  additive/range selection, TalkBack and live-window qualification remain.
+  bounded SVG, PNG and one-page PDF export are implemented; all decode/parse and
+  match their probe evidence files. Pointer hover, product end-to-end save/open,
+  print, additive/range selection, TalkBack and live-window qualification remain.
 - Query service process, Arrow transport, Room metadata, cross-window
   coordinator/conflict handling, formula parser, LOD/filters, relationships,
   totals, table calculations, dashboards, connectors, export, Tableau
@@ -131,11 +131,11 @@ unless stated otherwise.
 
 ## Next exact task
 
-**CUST14 product export end-to-end + PDF/print.**
+**CUST14 product export end-to-end + print.**
 
 - Files: `VegaChart.kt`, export store/UI, `VegaRendererHost.kt`, probe/tests.
 - Action: exercise the SaveDocument callback through an actual product
-  worksheet and reopen the saved SVG/PNG; then add a bounded PDF/print path with
+  worksheet and reopen the saved SVG/PNG/PDF; then add a bounded print path with
   the same stale-revision and size limits.
 - Acceptance: a real product export writes a file the app can reopen; stale
   renders cannot be exported; no network/script reference; bounded payload.
