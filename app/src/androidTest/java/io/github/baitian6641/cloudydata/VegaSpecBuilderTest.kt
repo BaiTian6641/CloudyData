@@ -82,6 +82,14 @@ class VegaSpecBuilderTest {
             "isValid(datum.y)",
             line.getJSONObject("encode").getJSONObject("enter").getJSONObject("defined").getString("signal"),
         )
+        assertFalse(
+            "automatic Y axis must not emit an explicit tick count",
+            json.getJSONArray("axes").getJSONObject(1).has("tickCount"),
+        )
+        assertFalse(
+            "automatic Y axis must not emit labelOverlap",
+            json.getJSONArray("axes").getJSONObject(1).has("labelOverlap"),
+        )
         assertTrue("legend missing for multi-series line", json.has("legends"))
         assertEquals("right", json.getJSONArray("legends").getJSONObject(0).getString("orient"))
         val xDomain = json.getJSONArray("scales").getJSONObject(0).getJSONArray("domain")
@@ -193,8 +201,14 @@ class VegaSpecBuilderTest {
             markType = MarkType.BAR,
             sql = "test",
         )
-        val spec = ChartSpecBuilder.build("bar", 0, result, ChartOptions(legendVisible = true), "derived")
+        val spec = ChartSpecBuilder.build(
+            "bar", 0, result,
+            ChartOptions(legendVisible = true, yTickCount = 6),
+            "derived",
+        )
         val json = VegaSpecBuilder.build(spec, false, listOf(0x006A6A), 400f, 300f)
+        assertEquals(6, json.getJSONArray("axes").getJSONObject(1).getInt("tickCount"))
+        assertEquals("greedy", json.getJSONArray("axes").getJSONObject(1).getString("labelOverlap"))
         assertFalse(json.has("legends"))
         val bar = json.getJSONArray("marks").getJSONObject(0)
         assertEquals("rect", bar.getString("type"))

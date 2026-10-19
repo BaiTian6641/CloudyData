@@ -336,6 +336,27 @@ class ChartSpecBuilderTest {
         }
     }
 
+    @Test
+    fun axisTickCountsAreCarriedAndValidated() {
+        val spec = ChartSpecBuilder.build(
+            "ticks", 2, lineResult(),
+            ChartOptions(yTickCount = 7),
+            "derived",
+        )
+        assertEquals(7, spec.yAxis.tickCount)
+
+        try {
+            ChartSpecBuilder.build(
+                "ticks", 2, lineResult(),
+                ChartOptions(yTickCount = 1),
+                "derived",
+            )
+            throw AssertionError("expected tick-count rejection")
+        } catch (expected: ChartSpecException) {
+            assertTrue(expected.message!!.contains("2 and 50"))
+        }
+    }
+
     private fun lineResult(): WorksheetResult = WorksheetResult(
         result = EngineResult(
             columns = listOf(

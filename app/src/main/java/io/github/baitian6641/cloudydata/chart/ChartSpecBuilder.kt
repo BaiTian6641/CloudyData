@@ -227,6 +227,7 @@ object ChartSpecBuilder {
         zero = options.zeroBaseline && !options.logScale,
         log = options.logScale,
         reverse = options.reverseY,
+        tickCount = options.yTickCount,
     )
 
     private fun validateAxisOptions(options: ChartOptions) {
@@ -240,6 +241,13 @@ object ChartSpecBuilder {
         if (options.logScale) {
             if (min != null && min <= 0.0) throw ChartSpecException("A log Y minimum must be greater than zero.")
             if (max != null && max <= 0.0) throw ChartSpecException("A log Y maximum must be greater than zero.")
+        }
+        if (options.yTickCount != null &&
+            options.yTickCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT
+        ) {
+            throw ChartSpecException(
+                "Y tick count must be between ${ChartOptions.MIN_TICK_COUNT} and ${ChartOptions.MAX_TICK_COUNT}.",
+            )
         }
     }
 

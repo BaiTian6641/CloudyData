@@ -116,7 +116,7 @@ customization:
     area: Axes and scales
     controls: [range, zero_baseline, log, reverse, ticks, dual_axis, synchronize]
     status: partial
-    note: Y range, zero baseline, log (positive-value validation), reverse and X/Y titles are implemented. Tick counts, dual axes, synchronization and temporal x scaling are pending.
+    note: Y range, zero baseline, log (positive-value validation), reverse, X/Y titles and a persisted Y tick count (2–50, greedy label overlap) are implemented. X/categorical tick control, dual axes, synchronization and temporal x scaling are pending.
   - id: CUST04
     area: Gridlines and dividers
     controls: [major_gridlines, minor_gridlines, color, width, row_dividers, column_dividers]

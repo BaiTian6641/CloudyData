@@ -54,6 +54,7 @@ fun ChartSettingsDialog(
     var seriesTitle by remember { mutableStateOf(current.seriesTitle.orEmpty()) }
     var yMin by remember { mutableStateOf(current.yMin?.toString().orEmpty()) }
     var yMax by remember { mutableStateOf(current.yMax?.toString().orEmpty()) }
+    var yTickCount by remember { mutableStateOf(current.yTickCount?.toString().orEmpty()) }
     var showGridlines by remember { mutableStateOf(current.showGridlines) }
     var showValueLabels by remember { mutableStateOf(current.showValueLabels) }
     var zeroBaseline by remember { mutableStateOf(current.zeroBaseline) }
@@ -66,12 +67,16 @@ fun ChartSettingsDialog(
 
     val parsedMin = yMin.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
     val parsedMax = yMax.trim().takeIf { it.isNotEmpty() }?.toDoubleOrNull()
+    val parsedYTickCount = yTickCount.trim().takeIf { it.isNotEmpty() }?.toIntOrNull()
     val numericError = when {
         yMin.trim().isNotEmpty() && (parsedMin == null || !parsedMin.isFinite()) -> "Y minimum must be a finite number."
         yMax.trim().isNotEmpty() && (parsedMax == null || !parsedMax.isFinite()) -> "Y maximum must be a finite number."
         parsedMin != null && parsedMax != null && parsedMin >= parsedMax -> "Y minimum must be less than Y maximum."
         logScale && parsedMin != null && parsedMin <= 0.0 -> "A log Y minimum must be greater than zero."
         logScale && parsedMax != null && parsedMax <= 0.0 -> "A log Y maximum must be greater than zero."
+        yTickCount.trim().isNotEmpty() && (parsedYTickCount == null ||
+            parsedYTickCount !in ChartOptions.MIN_TICK_COUNT..ChartOptions.MAX_TICK_COUNT) ->
+            "Y tick count must be a whole number from ${ChartOptions.MIN_TICK_COUNT} to ${ChartOptions.MAX_TICK_COUNT}."
         else -> null
     }
 
@@ -141,6 +146,14 @@ fun ChartSettingsDialog(
                         modifier = Modifier.padding(top = 4.dp),
                     )
                 }
+                Spacer(Modifier.height(8.dp))
+                CloudyTextField(
+                    value = yTickCount,
+                    onValueChange = { yTickCount = it },
+                    label = "Y tick count",
+                    supportingText = "${ChartOptions.MIN_TICK_COUNT}–${ChartOptions.MAX_TICK_COUNT}, blank for automatic.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
                 Spacer(Modifier.height(8.dp))
                 CloudyTextField(
                     value = seriesTitle,
@@ -258,6 +271,7 @@ fun ChartSettingsDialog(
                             legendVisible = legendVisible && sheet.markType == MarkType.LINE,
                             legendPosition = legendPosition,
                             showTooltip = showTooltip,
+                            yTickCount = parsedYTickCount,
                         ),
                     )
                 },

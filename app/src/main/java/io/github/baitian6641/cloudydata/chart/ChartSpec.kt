@@ -33,6 +33,7 @@ data class AxisSpec(
     val zero: Boolean = true,
     val log: Boolean = false,
     val reverse: Boolean = false,
+    val tickCount: Int? = null,
 )
 
 data class GridlineSpec(val show: Boolean)

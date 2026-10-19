@@ -65,6 +65,7 @@ class ChartSettingsPersistenceTest {
                             legendVisible = true,
                             legendPosition = LegendPosition.RIGHT,
                             showTooltip = false,
+                            yTickCount = 6,
                         ),
                     ),
                 ),
@@ -86,6 +87,7 @@ class ChartSettingsPersistenceTest {
         assertTrue(reopenedSheet.chart.reverseY)
         assertEquals(LegendPosition.RIGHT, reopenedSheet.chart.legendPosition)
         assertFalse(reopenedSheet.chart.showTooltip)
+        assertEquals(6, reopenedSheet.chart.yTickCount)
         assertEquals(2, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
         assertEquals(2, raw.getInt("formatVersion"))

@@ -93,6 +93,7 @@ object VegaSpecBuilder {
                     gridColor = gridColor,
                     grid = spec.gridlines.show,
                     labelAngle = 0,
+                    tickCount = spec.yAxis.tickCount,
                 ),
             )
 
@@ -166,6 +167,7 @@ object VegaSpecBuilder {
         gridColor: String,
         grid: Boolean,
         labelAngle: Int,
+        tickCount: Int? = null,
     ): JSONObject {
         val axis = JSONObject()
             .put("orient", orient)
@@ -177,6 +179,9 @@ object VegaSpecBuilder {
             .put("grid", grid)
             .put("gridColor", gridColor)
             .put("labelAngle", labelAngle)
+        if (tickCount != null) {
+            axis.put("tickCount", tickCount).put("labelOverlap", "greedy")
+        }
         if (!title.isNullOrBlank()) {
             axis.put("title", title)
                 .put("titleColor", textColor)

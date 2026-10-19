@@ -37,6 +37,7 @@ data class ChartOptions(
     val legendVisible: Boolean = true,
     val legendPosition: LegendPosition = LegendPosition.BOTTOM,
     val showTooltip: Boolean = true,
+    val yTickCount: Int? = null,
 ) {
     fun toJson(): JSONObject = JSONObject()
         .put("version", VERSION)
@@ -54,9 +55,12 @@ data class ChartOptions(
         .put("legendVisible", legendVisible)
         .put("legendPosition", legendPosition.name)
         .put("showTooltip", showTooltip)
+        .put("yTickCount", yTickCount ?: JSONObject.NULL)
 
     companion object {
         const val VERSION = 1
+        const val MIN_TICK_COUNT = 2
+        const val MAX_TICK_COUNT = 50
 
         fun fromJson(json: JSONObject): ChartOptions = ChartOptions(
             title = if (json.isNull("title")) null else json.optString("title").takeIf { it.isNotEmpty() },
@@ -75,6 +79,11 @@ data class ChartOptions(
                 LegendPosition.valueOf(json.optString("legendPosition", LegendPosition.BOTTOM.name))
             }.getOrDefault(LegendPosition.BOTTOM),
             showTooltip = json.optBoolean("showTooltip", true),
+            yTickCount = if (json.isNull("yTickCount")) {
+                null
+            } else {
+                json.optInt("yTickCount").takeIf { it in MIN_TICK_COUNT..MAX_TICK_COUNT }
+            },
         )
     }
 }

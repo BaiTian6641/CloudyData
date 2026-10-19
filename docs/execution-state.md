@@ -2,7 +2,9 @@
 
 **Updated:** 2026-10-19
 **Branch:** `main`
-**Source:** commits through `159c4b2`. Remote push not performed/authorized.
+**Source:** commits through `598f1f9`; the Y tick-count change is in the next
+local commit. `main` tracks `origin/main`; the pushed baseline through
+`598f1f9` is on the intended GitHub remote.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -53,12 +55,13 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **35/35**, including set-selection reducer
-  cases. Emulator renderer probe: 17/17 (pre-lasso); Vega spec builder: 4/4;
+- Lint: 0 errors (5 warnings). JVM: **36/36**, including set-selection reducer
+  and Y tick-count cases. Emulator renderer probe: 17/17 (pre-lasso);
+  Vega spec builder: 4/4;
   keep/exclude query suite plus engine and line regressions: 9/9;
   table-selection plus keep/exclude/renderer/spec: 27/27; View Data plus that
-  suite: 32/32. The final lasso slice was not instrumented after device handoff;
-  see **Implemented but unverified**. A three-device connected run still hits a
+  suite: 32/32. The final lasso slice and Y tick-count UI/spec assertions were
+  not instrumented after device handoff; see **Implemented but unverified**. A three-device connected run still hits a
   physical-Googlebook PNG export assertion (`expected 803`, actual `804`) and
   device timeouts; the emulator suites are clean.
 - Window probe: physical launch bounds were ignored (observed 2880×1800);
@@ -88,6 +91,7 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-19-cust13-table-selection.md`
 - `qualification/evidence/2026-10-19-cust13-view-data.md`
 - `qualification/evidence/2026-10-19-cust13-lasso.md`
+- `qualification/evidence/2026-10-19-cust03-y-ticks.md`
 - `docs/decisions/0008-chart-ir-and-format-v2.md`
 - Raw results: `qualification/evidence/android-test-results/2026-10-18/` and
   `qualification/evidence/android-test-results/2026-10-19/`
@@ -103,6 +107,12 @@ unless stated otherwise.
   changes and the product-level worksheet path were not rerun: the owner
   resumed using the physical device, `emulator-5582` disappeared from `adb`, and
   the API36 emulator was not used further because it consumes laptop memory.
+- **Y tick count.** Persisted `ChartOptions.yTickCount` (2–50), spec validation,
+  chart-settings UI and Vega `tickCount`/`labelOverlap: greedy` output are
+  implemented. JVM model/spec tests pass; persistence and Vega-output
+  instrumentation assertions compile but were not executed. No device visual or
+  export evidence exists. The X control was removed because current X scales are
+  band scales where `tickCount` has no effect.
 - Native visual/interaction acceptance. Captures were leader-inspected only; no
   independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
   focus return, shortcuts, density modes and light/dark require their own runs.

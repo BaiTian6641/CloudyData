@@ -397,3 +397,17 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Final device/product qualification is blocked: the owner resumed using the
   physical device, `emulator-5582` disappeared, and the API36 emulator was not
   used because of laptop memory pressure. No raw final device log exists.
+
+## 2026-10-19 — CUST03 persisted Y tick count
+
+- Added optional `ChartOptions.yTickCount` with shared 2–50 bounds, defensive
+  old-document loading, `AxisSpec.tickCount`, chart-settings input/validation and
+  Vega Y-axis `tickCount` plus `labelOverlap: greedy`. Settings remain
+  presentation-only and do not rerun SQL.
+- Independent review found X `tickCount` is a no-op on the current band scale;
+  the X control/field was removed rather than shipping a control without its
+  real operation. Y ticks, invalid-input blocking and Area zero-baseline
+  preservation are covered by JVM/spec tests.
+- JVM 36/36; lint 0 errors/5 warnings; debug/test APKs compile. Persistence and
+  Vega-output instrumentation compiled but were not run; no device visual
+  evidence exists.
