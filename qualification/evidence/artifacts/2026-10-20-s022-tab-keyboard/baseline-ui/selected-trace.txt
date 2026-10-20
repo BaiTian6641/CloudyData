@@ -1,0 +1,2 @@
+initial expected=East keyboard actual=[]
+west-focus-timeout expected=East keyboard actual=[]

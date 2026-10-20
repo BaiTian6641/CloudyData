@@ -1308,3 +1308,32 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   probe, then qualify/fix selected tab semantics and Cloudy focus-ring behavior.
   Nonfocusable text children alone are not a traversal failure. Physical hold,
   16 KiB/Tableau, Room/source history/full lifecycle and C0 gates remain open.
+
+## 2026-10-20 — S02.2/S02.4 native worksheet-tab selected semantics and focus
+
+- Continued clean main/upstream/live b68abb1; all135 prior source hashes fresh.
+  Three already-read plans/master/scoped original assets and metadata/token
+  authority remain intact. F01/F64,Q21/Q19; root local Screen/docs, disjoint native
+  test worker and independent review, existing emulator only.
+- Untouched baseline hit stale accessibility focus after24Tab; pixels/XML differed.
+  Fresh-cache discriminator on byte-identical production reachedWest onTab8 and
+  passed full keyboard/query/checkpoint/bytes path, failing selected=[] at9phases.
+  Competing hypotheses, exact source/logs/artifacts and captures retained.
+- Local strip now selectableGroup, each tab selectable(Role.Tab,selected), stable
+  worksheet keys and remembered focus with existing2dp token border. No extra
+  focus target/manualEnter, query/model/storage/authority/token/layout changes.
+- Fixed native selected owner omits redundant click while remaining focusable;
+  initial harness overconstraint was corrected from actual native counterexample.
+  A duplicate BySelector selected criterion was then corrected to property read.
+  Exact key bounds/selection/value/byte assertions retained; all failed probes saved.
+- Focused keyboard1/1 in13.931s; finalcombined157/157,no skips,78.775s. Native
+  East15/West20/Data source focus-versus-activation and exact checkpoint/source bytes
+  pass. Nine final phases have one selected tab; independent focus/selected pixel
+  and role-metadata review passes at2880×1800/light/Comfortable/fontScale1.
+- Default/x86 builds,JVM75/75,lint0/6 retained,bothdefaultABIs,tokenscurrent,
+  contrast40/40 pass. Evidence plus136 source/fixture hashes:
+  qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md.
+- Next exact action: native Right/Left/manualEnter and single-Tab group-exit/
+  ShiftTab selected reentry probe. Current per-tabTab routes require an explicit
+  qualified contract migration; preserve all existing value/Data/byte oracles.
+  Roving/panel/overflow/TalkBack/physical/fullmatrix and C0/Room/reference stay open.

@@ -1,0 +1,1 @@
+/sdcard/Android/data/io.github.baitian6641.cloudydata/files/qualification/workbook-selection-e722cfab-6df0-4a93-a0f2-78b8568a3cb7/./: 15 files pulled, 0 skipped. 8.7 MB/s (858319 bytes in 0.095s)

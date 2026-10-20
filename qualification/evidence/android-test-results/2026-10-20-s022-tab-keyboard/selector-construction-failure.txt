@@ -1,0 +1,130 @@
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest:
+INSTRUMENTATION_STATUS: test=tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: Selected selector is already defined
+	at androidx.test.uiautomator.BySelector.selected(BySelector.java:598)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.selectedObservations(WorkbookTabKeyboardTest.kt:362)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.recordCapture(WorkbookTabKeyboardTest.kt:424)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct(WorkbookTabKeyboardTest.kt:128)
+
+INSTRUMENTATION_STATUS: stream=
+Error in tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct(io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest):
+java.lang.IllegalStateException: Selected selector is already defined
+	at androidx.test.uiautomator.BySelector.selected(BySelector.java:598)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.selectedObservations(WorkbookTabKeyboardTest.kt:362)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.recordCapture(WorkbookTabKeyboardTest.kt:424)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct(WorkbookTabKeyboardTest.kt:128)
+
+INSTRUMENTATION_STATUS: test=tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest:
+INSTRUMENTATION_STATUS: test=rapidTabChangeInvalidatesOldViewDataWhileSharedEditsKeepEachLocalTarget
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=rapidTabChangeInvalidatesOldViewDataWhileSharedEditsKeepEachLocalTarget
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=danglingStoredDefaultResolvesOneLocalSheetForQueryAndViewData
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=danglingStoredDefaultResolvesOneLocalSheetForQueryAndViewData
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=validStoredWestDefaultKeepsWestQueryAndExactSourceRowWithoutWrites
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=validStoredWestDefaultKeepsWestQueryAndExactSourceRowWithoutWrites
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=nullableLegacyDefaultsAndEmptyWorkbooksResolveLocallyWithoutRepairWrites
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=nullableLegacyDefaultsAndEmptyWorkbooksResolveLocallyWithoutRepairWrites
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=queuedGenericEditCannotRetargetFirstSheetAfterUndoRemovesSelectedAddition
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionConsistencyTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=queuedGenericEditCannotRetargetFirstSheetAfterUndoRemovesSelectedAddition
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionUiTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=
+io.github.baitian6641.cloudydata.WorkbookSelectionUiTest:
+INSTRUMENTATION_STATUS: test=nativeLaunchResolvesFirstSheetAndExplicitTabsKeepVisibleValuesAndOwnershipCoherent
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookSelectionUiTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=7
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=nativeLaunchResolvesFirstSheetAndExplicitTabsKeepVisibleValuesAndOwnershipCoherent
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 10.121
+There was 1 failure:
+1) tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct(io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest)
+java.lang.IllegalStateException: Selected selector is already defined
+	at androidx.test.uiautomator.BySelector.selected(BySelector.java:598)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.selectedObservations(WorkbookTabKeyboardTest.kt:362)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.recordCapture(WorkbookTabKeyboardTest.kt:424)
+	at io.github.baitian6641.cloudydata.WorkbookTabKeyboardTest.tabAndShiftTabEnterSelectExactWorksheetWhileFocusAndSelectedStateRemainDistinct(WorkbookTabKeyboardTest.kt:128)
+
+FAILURES!!!
+Tests run: 7,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1

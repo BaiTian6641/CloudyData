@@ -1,0 +1,20 @@
+{
+  "production_commit": "b68abb1df1e0f26b79661dbd3fa336321d585e0c",
+  "files": [
+    {
+      "path": "/tmp/cloudydata-s022-tab-fresh-baseline.apk",
+      "bytes": 116037141,
+      "sha256": "f37f0ac9024470acb6837a1ac48e74918bf980e65ce3c18cc794a8c978b014f0"
+    },
+    {
+      "path": "/tmp/cloudydata-s022-tab-fresh-baseline-tests.apk",
+      "bytes": 5331368,
+      "sha256": "5b3f769b4823685607dd070ce366ac84dfb33f3a1d4b115d9de005a18ef44068"
+    },
+    {
+      "path": "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorkbookTabKeyboardTest.kt",
+      "bytes": 25873,
+      "sha256": "65d1b9088c244e8b6203d5ff5b56745cce20563406e099ef1504713136b0c410"
+    }
+  ]
+}

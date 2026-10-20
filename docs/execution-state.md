@@ -2,10 +2,10 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.2/S03.4 view-local worksheet selection consistency through implementation
-`e7ceffae56e4254583c1e52110a073d4dc7c8c2f`, bound by all 135 committed source/fixture hashes
-in `qualification/evidence/artifacts/2026-10-20-s032-selection/`;
-see `qualification/evidence/2026-10-20-s03-selection-consistency.md`.
+**Source:** S02.2/S02.4 native worksheet-tab selected semantics and focus, based on
+`b68abb1df1e0f26b79661dbd3fa336321d585e0c`, bound by all 136 source/fixture hashes
+in `qualification/evidence/artifacts/2026-10-20-s022-tab-keyboard/`;
+see `qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -48,8 +48,19 @@ unless stated otherwise.
   falling through to another sheet. New native 6/6 and combined 156/156 pass,
   including exact East 15 / West 20, source rows 10/5/20, stale View Data rejection,
   independent views, legacy/null/empty defaults and real Activity pointer controls.
-  Five native captures qualify this wide light window only; keyboard/tab semantics,
+  Five native captures qualify this wide light window only; the full tab contract,
   frame-level atomic rendering and complete Q19 remain open.
+- S02.2/S02.4 worksheet/Data source tabs bind Compose Role.Tab and a selection
+  group, with native selected state and the existing Cloudy 2dp focus border. One native
+  focused owner remains separate from the active tab; Tab/Shift+Tab/Enter selects
+  exact East 15 / West 20/Data source and preserves checkpoint/CSV/Parquet bytes. Nine
+  final native phases verify exactly one selected tab and visible selected and
+  unselected focus rings at 2880×1800/light/Comfortable/fontScale 1. The selected
+  native tab may omit its redundant click action while remaining focusable;
+  unselected tabs retain activation. Physical keyboard/TalkBack, roving entry/
+  arrows, panel relationships, close/overflow and the full visual matrix remain
+  open. Stable worksheet composition keys are implemented; removal focus transfer
+  is not separately qualified.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -191,6 +202,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md`
 - `qualification/evidence/2026-10-20-s03-selection-consistency.md`
 - `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`
 - `qualification/evidence/2026-10-20-s03-workbook-revision-admission.md`
@@ -205,8 +217,8 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`
 - `qualification/evidence/2026-10-20-s00-original-assets.md`
 - Current source/APK/capture manifests and raw logs:
-  `qualification/evidence/artifacts/2026-10-20-s032-selection/` and
-  `qualification/evidence/android-test-results/2026-10-20-s032-selection/`
+  `qualification/evidence/artifacts/2026-10-20-s022-tab-keyboard/` and
+  `qualification/evidence/android-test-results/2026-10-20-s022-tab-keyboard/`
 - `qualification/evidence/2026-10-18-s00-toolchain.md`
 - `qualification/evidence/2026-10-18-s01-native-engine.md`
 - `qualification/evidence/2026-10-18-s01-import-and-worksheet.md`
@@ -531,55 +543,57 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 x86_64 emulator-5580 combined **156/156**, no skips, **77.362 s**.
-  Focused new six pass in 6.815 s. Default/x86 debug/test builds pass; JVM 75/75;
-  lint zero errors/six retained warnings; default arm64-v8a and x86_64 packaged;
-  generated tokens current and contrast 40/40.
-- Unchanged-production baseline four produced three expected failures: dangling
-  selection queried East 15 while the Activity said missing sheet; View Data was
-  Idle; queued AVG after Undo changed unrelated East to 7.5 at revision 7. The
-  valid West 20 control passed. Baseline logs/APK hashes/three captures retained.
-- Final native fallback, legacy/null/empty and independent-view controls preserve
-  stored defaults and exact files. Queued removed-target edit refuses, leaving
-  only Undo revision 6 and exact East 15 / West 20. Pending old View Data cannot
-  return after selecting another sheet. Shared rename/count edits remain targeted.
-- Actual Activity pointer path East 15 → West 20 → East 15 → Data source → West 20
-  passes with unchanged canonical/source/Parquet bytes. Root and independent
-  reviewer inspected five native captures plus metadata: 2880×1800, 240 dpi,
-  fontScale 1, System→Light, Comfortable, configured IBM Plex Sans/Mono. The Data
-  source surface preserves the hidden last-sheet query while showing schema.
-- Runtime APK 388a7e275c5ea8677c63e270becf964796950bf8f5ad241770e15a4a1352e912;
-  test APK 4b88053d3b82d05e18958682d963e284a8a5ba4fd58d914821eca841c036c348.
-  The manifest binds both APKs, default dual-ABI APK, 135 sources/fixtures and all
-  eight baseline/final capture sets. Evidence:
-  qualification/evidence/2026-10-20-s03-selection-consistency.md.
-- Independent actual combined source/oracle/visual review has no material issue.
-  Physical hold, 16 KiB, Tableau, Room, source history and C0 remain unchanged.
+- Final frozen source on existing API36 x86_64 emulator-5580: **157/157** native,
+  no skips/failures, **78.775 s**. Focused keyboard case passes in 13.931 s;
+  six prior selection/pointer cases also pass in the final combined revision.
+- Untouched-production baseline diagnosed stale accessibility observations;
+  cache-refreshed 24-key probe reached West on Tab8 and completed the entire
+  key/query/bytes path, failing only absent selected state at all nine phases.
+  Initial/fresh probe sources, raw failures, hashes and captures are retained.
+- Final native focus and selected state agree with exact East 15 / West 20 and real
+  Data source transitions. Metadata/revision/history/receipts/CSV/Parquet remain
+  unchanged. Corrected harness distinguishes selected nonclickable native Tab
+  owners from unselected clickable owners and avoids duplicate selector criteria;
+  original product invariants and key bounds remain.
+- Root and independent reviewer inspect final native focus/selection captures,
+  metadata and actual combined source. Existing Cloudy 2dp border is visible over
+  selected/unselected tabs. Source binds Role.Tab; native metadata reports selected flags and collection-item metadata
+  presence, not a tab announcement or TalkBack/physical keyboard qualification. Full focus-offset/matrix remains open.
+- Verified default/x86 debug/test builds pass; JVM 75/75; lint 0 errors/6 retained
+  warnings; default arm64-v8a+x86_64; generated tokens current and contrast 40/40.
+- Runtime APK f2530f3ca9fd00c000eab63764765ed14c9d79b0ed29287423e1a82654973759;
+  test APK 6f2e96c320c43b4d9bab79998c7df31fe6a98b64a931db51d398f50fd7712066.
+  Manifest binds 136 source/fixture hashes, final APKs, baseline/final captures
+  and cached/fresh focus traces. Evidence:
+  qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md.
+- No material independent review finding remains. Room/source history/full
+  lifecycle, physical hold, 16 KiB/Tableau and C0 gates are unchanged.
 
 ## Next exact task
 
-**S02.2/S02.4 native worksheet-tab keyboard and semantics qualification.**
+**S02.2/S02.4 manual-activation roving worksheet-tab focus.**
 
-- IDs F01/F64; Q21, retaining Q19 selection invariants. Prerequisites: unique
-  sheets, shared checkpoint authority, coherent local selection/query ownership
-  and actual pointer/native source-data transitions, qualified by final 156/156.
-- Read-only source/XML audit: WorkbookScreen's local WorkbookTab uses a clickable,
-  focusable parent around a nonfocusable text child. The child's focus flag does
-  not establish a keyboard failure. Explicit tab role, selected semantics and
-  Cloudy focus-ring state are absent; native parents report selected=false.
-- First exact action: a fresh real two-sheet Activity, no pointer selection, at
-  most 24 Tab presses, retaining parent-aware focused-node XML after each press.
-  Focus West must leave East 15 and its query owner unchanged until Enter; then
-  require West 20. Shift+Tab/Enter returns East 15, then Data source; Tab/Enter
-  returns East 15. Preserve metadata/revision/receipts/source bytes and capture
-  focused-before-activation and selected-after-activation states with metadata.
-- Root owns a new WorkbookTabKeyboardTest and narrow local WorkbookTab/strip fixes
-  only after the probe, plus docs/evidence. A disjoint worker may own the test;
-  independent actual combined source/oracle/native focus-pixel review is required.
-  Use existing emulator only; no hardware hold or window/preference mutation.
-- Do not infer physical keyboard/TalkBack, roving-arrow behavior or complete native
-  visual matrix acceptance. S11.C0 partial, S13.C0/S15.C0 absent stay mandatory when
-  applicable; full package/Room/source-version/hardware/reference gates stay open.
+- IDs F01/F64; Q21 with Q19 local-selection invariants. Prerequisites: final 157/157,
+  coherent local selection, exact query ownership, actual native Tab/selected
+  semantics, fresh focus observation and preserved checkpoint/source bytes.
+- CD05 requires roving focus and CD06 arrow navigation. Current individual native
+  Tab stops are only a bounded keyboard route; full tab acceptance remains open.
+  Close is optional and has no current command; do not invent close behavior first.
+- First exact action: fresh real East15/West20 fixture, bounded native focus to
+  East; Right must focus West without selecting, Enter selects West20; Left must
+  focus East without selecting, Enter restores East15. One Tab must leave the
+  group for New worksheet; Shift+Tab must reenter selected East. Keep exact
+  checkpoint/default/revision/receipts/history/CSV/Parquet unchanged and capture
+  native focused/selected owners and rings. Do not assume endpoint wrap policy.
+- Root owns narrow WorkbookScreen tab/strip implementation and docs/evidence;
+  a disjoint worker may own WorkbookTabRovingFocusTest. Existing keyboard test's
+  per-tab Tab/Shift+Tab route assertions must be deliberately superseded only by
+  this qualified roving contract, preserving all value/selection/Data/byte oracles.
+  Independent actual combined source and native focus-pixel review is required.
+- Existing emulator only. Physical keyboard/TalkBack, removal focus transfer,
+  overflow/panel relationships/full visual matrix and full Q19/Q21 remain separate.
+  S11.C0 partial and S13.C0/S15.C0 absent stay mandatory when applicable; Room,
+  source-version, hardware and licensed-reference gates are unchanged.
 
 ## Protected context
 

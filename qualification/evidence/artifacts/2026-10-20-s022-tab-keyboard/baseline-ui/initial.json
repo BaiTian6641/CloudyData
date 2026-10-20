@@ -1,0 +1,97 @@
+{
+  "windowBoundsPx": "[0,0][2880,1800]",
+  "windowWidthPx": 2880,
+  "windowHeightPx": 1800,
+  "decorWidthPx": 2880,
+  "decorHeightPx": 1800,
+  "screenWidthDp": 1920,
+  "screenHeightDp": 1200,
+  "densityDpi": 240,
+  "fontScale": 1,
+  "configuredFontFamilies": "IBM Plex Sans \/ IBM Plex Mono",
+  "appearancePreference": "System",
+  "densityPreference": "Comfortable",
+  "effectiveAppearance": "Light",
+  "configurationNightMode": 16,
+  "captionInsetsPx": "Insets{left=0, top=0, right=0, bottom=0}",
+  "taskId": 2466,
+  "phase": "initial",
+  "workbookId": "b3f42c22-da6b-4609-8b10-15278f77f26f",
+  "canonicalActiveWorksheetId": "e4cfbd99-a5b1-4d29-a44f-81d4ae73fdb1",
+  "visibleActiveWorksheetId": "e4cfbd99-a5b1-4d29-a44f-81d4ae73fdb1",
+  "queryWorksheetId": "e4cfbd99-a5b1-4d29-a44f-81d4ae73fdb1",
+  "queryRows": "[[East, 15]]",
+  "expectedSelectedTab": "East keyboard",
+  "tabs": [
+    {
+      "label": "Data source",
+      "className": "android.view.View",
+      "ownerText": null,
+      "contentDescription": null,
+      "focused": false,
+      "selected": false,
+      "clickable": true,
+      "focusable": true,
+      "boundsPx": "[12,133][197,205]"
+    },
+    {
+      "label": "East keyboard",
+      "className": "android.view.View",
+      "ownerText": null,
+      "contentDescription": null,
+      "focused": false,
+      "selected": false,
+      "clickable": true,
+      "focusable": true,
+      "boundsPx": "[197,133][403,205]"
+    },
+    {
+      "label": "West keyboard",
+      "className": "android.view.View",
+      "ownerText": null,
+      "contentDescription": null,
+      "focused": false,
+      "selected": false,
+      "clickable": true,
+      "focusable": true,
+      "boundsPx": "[403,133][615,205]"
+    }
+  ],
+  "nativeRoleEvidence": [
+    {
+      "label": "Data source",
+      "className": "android.view.View",
+      "selected": false,
+      "focused": false,
+      "boundsPx": "[12,133][197,205]",
+      "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
+      "collectionInfo": null,
+      "collectionItemInfo": null
+    },
+    {
+      "label": "East keyboard",
+      "className": "android.view.View",
+      "selected": false,
+      "focused": false,
+      "boundsPx": "[197,133][403,205]",
+      "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
+      "collectionInfo": null,
+      "collectionItemInfo": null
+    },
+    {
+      "label": "West keyboard",
+      "className": "android.view.View",
+      "selected": false,
+      "focused": false,
+      "boundsPx": "[403,133][615,205]",
+      "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
+      "collectionInfo": null,
+      "collectionItemInfo": null
+    }
+  ],
+  "dataSourceSurfaceVisible": false,
+  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-keyboard-bb5b874a-f7bf-4902-82bc-b004e88c0996\/initial.png",
+  "captureSha256": "847e04f97871fcaeb6c9ca0065ca939979c1796ebde3785301bb61b7102ebf4e",
+  "captureWidthPx": 2880,
+  "captureHeightPx": 1800
+}

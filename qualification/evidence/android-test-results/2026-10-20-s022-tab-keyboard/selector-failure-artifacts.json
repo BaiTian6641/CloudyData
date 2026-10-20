@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "path": "/tmp/cloudydata-s022-tab-runtime.apk",
+      "bytes": 116037141,
+      "sha256": "f2530f3ca9fd00c000eab63764765ed14c9d79b0ed29287423e1a82654973759"
+    },
+    {
+      "path": "/tmp/cloudydata-s022-tab-runtime-tests.apk",
+      "bytes": 3515211,
+      "sha256": "83996e8f398e6e46015bfc9642dc57d8d94ab3554a480da8cbe790dc00e64cd3"
+    },
+    {
+      "path": "qualification/evidence/android-test-results/2026-10-20-s022-tab-keyboard/WorkbookTabKeyboardTest.owner-probe.kt",
+      "bytes": 27074,
+      "sha256": "4745005d870f3133fc96207470120dd1fc025ad5e66f6b5f3fb0dcc49f37c2b2"
+    }
+  ]
+}

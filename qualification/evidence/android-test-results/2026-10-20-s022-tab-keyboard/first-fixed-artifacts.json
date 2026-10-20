@@ -1,0 +1,21 @@
+{
+  "source_base_commit": "b68abb1df1e0f26b79661dbd3fa336321d585e0c",
+  "production_diff": "WorkbookScreen selectable group, Role.Tab, stable keys and focus border",
+  "files": [
+    {
+      "path": "/tmp/cloudydata-s022-tab-runtime.apk",
+      "bytes": 117487225,
+      "sha256": "436c17312d91fd8962f2b5b21defa5b4f070b284036449a210331d3fa204d925"
+    },
+    {
+      "path": "/tmp/cloudydata-s022-tab-first-fixed-tests.apk",
+      "bytes": 5331368,
+      "sha256": "5b3f769b4823685607dd070ce366ac84dfb33f3a1d4b115d9de005a18ef44068"
+    },
+    {
+      "path": "qualification/evidence/android-test-results/2026-10-20-s022-tab-keyboard/WorkbookTabKeyboardTest.fresh-probe.kt",
+      "bytes": 25873,
+      "sha256": "65d1b9088c244e8b6203d5ff5b56745cce20563406e099ef1504713136b0c410"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -43,6 +46,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,8 +64,10 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.foundation.focusable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -616,6 +622,7 @@ private fun WorkbookTabStrip(
             .heightIn(min = 40.dp)
             .background(colors.surfaceMuted)
             .horizontalScroll(rememberScrollState())
+            .selectableGroup()
             .padding(horizontal = density.spaceSmall),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -626,12 +633,14 @@ private fun WorkbookTabStrip(
             leadingIcon = Icons.Default.List,
         )
         document.worksheets.forEach { sheet ->
-            WorkbookTab(
-                label = sheet.name,
-                selected = activeTab == sheet.id,
-                onClick = { onSelect(sheet.id) },
-                leadingIcon = Icons.Default.List,
-            )
+            key(sheet.id) {
+                WorkbookTab(
+                    label = sheet.name,
+                    selected = activeTab == sheet.id,
+                    onClick = { onSelect(sheet.id) },
+                    leadingIcon = Icons.Default.List,
+                )
+            }
         }
         CloudyIconButton(Icons.Default.Add, "New worksheet", onAddSheet)
     }
@@ -646,12 +655,20 @@ private fun WorkbookTab(
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
+    val shape = RoundedCornerShape(CloudyTokens.Shape.button.dp)
+    var focused by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .heightIn(min = density.minTarget)
-            .clip(RoundedCornerShape(CloudyTokens.Shape.button.dp))
+            .clip(shape)
             .background(if (selected) colors.primaryContainer else androidx.compose.ui.graphics.Color.Transparent)
-            .clickable(onClick = onClick)
+            .border(
+                width = if (focused) CloudyTokens.Geometry.focusRingDp.dp else 0.dp,
+                color = if (focused) colors.focus else androidx.compose.ui.graphics.Color.Transparent,
+                shape = shape,
+            )
+            .onFocusChanged { focused = it.isFocused }
+            .selectable(selected = selected, role = Role.Tab, onClick = onClick)
             .padding(horizontal = density.spaceMedium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
