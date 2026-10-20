@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** implementation through `f535f8c74194c0c3ac1995a470aa2ed642ce1e99`; asset reconciliation `caf3751`.
-Exact tested source/APK manifests are in
-`qualification/evidence/2026-10-20-s03-workbook-coordinator.md`.
+**Source:** S03.3 combined implementation over `c2c6b65`; source/artifact manifest
+is in `qualification/evidence/2026-10-20-s03-durable-command-journal.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -46,8 +45,16 @@ unless stated otherwise.
 - Typed `ChartSpec` and multi-series line rendering with facet-separated series,
   observed-gap handling, truncation refusal, chart/X/Y/legend titles, Y
   range/zero/log/reverse, gridlines, value labels and bottom/right legend.
-- Workbook format v2 with nested chart options and v1 read migration; no legacy
-  dual-write, and future versions are rejected before migration.
+- Workbook format v3 adds the atomic durable command/history envelope. v1/v2
+  documents migrate on first save with exact original bytes preserved; unknown
+  future v4 and corrupt/missing journals are refused without rewriting evidence.
+- S03.3 typed rename/chart commands and generic content checkpoints restore
+  bounded undo/redo after reopen. Retained identical command IDs cannot replay;
+  changed request identity is refused. Real native writer-process death at temp
+  fsync and post-replacement recovers exact before/after states. Final native
+  run54/54 includes journal12, process-death2, coordinator14 and regressions26.
+  This qualifies single-writer process death; Room, full typed catalog and
+  whole-product-process lifecycle remain separate.
 - Home recents/favorites/all filters; favorite toggle code exists but is not yet
   tested.
 - Offline Vega 6.4.0 + CSP interpreter host renders trusted bar and multi-series
@@ -70,7 +77,7 @@ unless stated otherwise.
   is not yet exercised against a slow query.
 - Import receipts/rollback reconcile constructed interrupted, published and
   prepared states; previous Parquet is restored when metadata was not published.
-- Lint: 0 errors (5 warnings). JVM: **75/75**, including set-selection reducer,
+- Lint: 0 errors (6 warnings). JVM: **75/75**, including set-selection reducer,
   Y tick-count, legend-layout, label-position/font-size, line-width,
   title/caption, units/anchor, padding, X-label, gridline-width/contrast,
   decimal-format, chart-border, crowded-label, palette, bar/area-stacking and
@@ -94,6 +101,8 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-durable-command-journal.md`
+- `docs/decisions/0009-atomic-command-checkpoints.md`
 - `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`
 - `qualification/evidence/2026-10-20-s00-original-assets.md`
 - Current source/APK/capture manifests and raw logs:
@@ -320,9 +329,15 @@ unless stated otherwise.
   only the native interrupt and query-generation invalidation code exist.
 - The shared coordinator now rejects stale revisions and serializes same-view
   edits, imports and snapshot reads in one app process (14/14 native tests).
-  Full typed command IDs/durable journal, rejected-proposal review/reapply,
-  cross-process ownership and real process-kill recovery remain unimplemented.
-  Conflict-banner native visual/input review remains unverified.
+  Rename/chart IDs and atomic durable history now have12 journal+2 actual
+  writer-process-death cases. Complete typed command coverage, Room integration,
+  rejected-proposal review/reapply, cross-process ownership and whole-product
+  process restoration remain open. Conflict-banner visual/input review remains
+  unverified. History50/receipts4096/metadata32MiB bounds are explicit; receipt
+  capacity refuses new typed commands instead of silently evicting IDs.
+- Unpublished metadata temporary files can remain after a writer SIGKILL.
+  Accepted canonical metadata recovers, but orphan-temp cleanup is not implemented;
+  corrupt canonical files and possible recovery candidates must be preserved.
 - The chart's first-appearance category colors can change when result order or filters change;
   no persisted palette map exists.
 - Renderer death/recreation/replay, generation retirement, recovery exhaustion,
@@ -394,12 +409,13 @@ unless stated otherwise.
   remaining Q18 failures, final lasso/rectangle device and product qualification,
   drill/hierarchy, compound or cross-sheet filters, persisted selection, TalkBack
   and live-window qualification remain.
-- Query service process, Arrow transport, Room metadata/command journal,
+- Query service process, Arrow transport, Room integration and the remaining
+  fully typed command catalog,
   cross-process coordination and full conflict-resolution workflow, formula
   parser, LOD/filters, relationships, totals, table calculations, dashboards,
   connectors, complete portable/output workflows and Tableau interoperability.
-  Bounded shared undo/redo now persists accepted content, but history itself
-  remains process-local.
+  Bounded shared undo/redo history now persists in the same atomic metadata
+  checkpoint. Full source-version history and all command kinds remain partial.
 - 16 KiB runtime device and licensed Tableau reference are unavailable.
 - Original tokens/generators/platform Rule 0 were located in the sibling Cloudy
   Workspace and hash-bound on 2026-10-20. Common numeric tokens match 74/74 checks.
@@ -410,34 +426,39 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Default `:app:assembleDebug :app:assembleDebugAndroidTest :app:testDebugUnitTest
-  :app:lintDebug` passed after restoring both ABIs; JVM 75/75, lint 0 errors/5 warnings.
-- `-PcloudyDataAbis=x86_64` qualification APK ran on existing `emulator-5580`:
-  coordinator 14/14 and affected native regressions 26/26, no skips.
-- Actual runtime APK `e830c93e90f5a22cd5b391bebed0f9f1ac6483bb605885962a40310fbfd5420b`;
-  final test APK `9e1ac5bbf1af20431398915eb88773bdfb7ec4c351dcb666f9ec13bb23c1075d`.
-- Tokens current, declared contrast 40/40. Original native ABI hashes unchanged.
-  Independent code review findings resolved; final shared-title native capture
-  independently inspected. No physical-device or Tableau acceptance was added.
+- Default dual-ABI debug/test APK build and JVM75/75 pass; lint0 errors/6 warnings.
+  The added ChromeOsAbiSupport warning is retained; default APK ZIP inspection
+  confirms arm64-v8a+x86_64. No test/assertion/lint check was disabled.
+- Existing API36 emulator5580 final native run54/54, no skips: journal12,
+  actual writer-process-death2, coordinator14, affected regressions26.
+- Actual runtime APK `9426b9091a5933d4965bef393e19b613372ea76b4f1aa884f06355ed0cb47211`;
+  test APK `bc97ebbc16e032f22a932562eacd7aa048f745d2e666d14e7f2a77e1b83e7634`.
+- Real writer PIDs23503(REPLACED)/23520(TEMP_SYNCED) died, independently observed
+  by test PID23448 via Binder. Process death is distinct from power loss and
+  concurrent cross-process ownership. Native tasks2386/2387 observed fullscreen.
+- Tokens current; declared contrast40/40. Root/independent source review and final
+  shared-title native capture accepted within the recorded bounded scope.
+- Current raw logs: qualification/evidence/android-test-results/2026-10-20-s033/;
+  source/artifact manifests: qualification/evidence/artifacts/2026-10-20-s033/.
+  No physical Googlebook,16KiB or Tableau acceptance was added.
 
 ## Next exact task
 
-**S03.3 first durable command-journal slice: rename and chart edits.**
+**S03.3 metadata orphan-temp recovery cleanup.**
 
-- IDs: F01/F64, Q17/Q34 (and Q19 conflict invariants).
-- Prerequisites: the verified bounded S03.2 coordinator path and accepted
-  ADR0003/0006 local metadata/snapshot authority. Room 2.8.5 is pinned but not
-  wired; changing metadata authority requires an explicit tested ADR amendment.
-- Paths: `data/WorkbookCoordinator.kt`, `data/WorkbookStore.kt`, a typed journal
-  implementation under `data/`, focused native tests, and evidence/state docs.
-- Action: give those two command kinds stable command IDs and durable
-  expected/accepted-revision journal/checkpoint recovery. Reject duplicates and
-  recover accepted content/history after process death without replaying imports.
-- Independent oracles: rename then chart edit; restart at each journal/checkpoint
-  boundary; exact before/after states and increasing revisions; stale commands
-  cannot overwrite. Independently review source and native recovery results.
-- CUST09.4 secondary-axis bounds/ticks and pointer legend testing remains a ready
-  chart-slice follow-up after this earlier foundation work; it does not close S11.C0.
+- IDs: F01/F64, Q17/Q34. Prerequisite: verified atomic v3 checkpoint and actual
+  pre-replacement writer-death evidence under ADR0009.
+- Paths: data/WorkbookStore.kt, registry recovery entry, focused native crash tests,
+  evidence/state. Use the existing Store write lock; preserve shared-file ownership.
+- Action: remove only known unpublished metadata temp files after validating the
+  canonical checkpoint and excluding a live in-process writer. Preserve temp
+  candidates when canonical metadata is missing/corrupt; never blindly promote one.
+- Independent oracle: TEMP_SYNCED SIGKILL leaves one stale temp with the old valid
+  checkpoint; recovery keeps exact document/history/receipts and removes only that
+  stale temp. Corrupt canonical metadata retains candidates. Review source and
+  real native kill/recovery results independently.
+- Room migration and remaining typed command families follow this bounded recovery
+  hygiene task. CUST09.4 remains a chart follow-up and does not close S11.C0.
 
 ## Protected context
 

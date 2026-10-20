@@ -600,16 +600,16 @@ data class WorkbookDocument(
         .put("tags", JSONArray(tags))
 
     companion object {
-        const val CURRENT_FORMAT_VERSION = 2
+        const val CURRENT_FORMAT_VERSION = 3
 
         fun fromJson(json: JSONObject): WorkbookDocument {
             val version = json.getInt("formatVersion")
-            require(version <= CURRENT_FORMAT_VERSION) {
+            require(version in 1..CURRENT_FORMAT_VERSION) {
                 "Workbook format $version is newer than this build supports ($CURRENT_FORMAT_VERSION)."
             }
             val sheetsJson = json.getJSONArray("worksheets")
             return WorkbookDocument(
-                // Normalize accepted v1 documents to the current shape so a
+                // Normalize accepted v1/v2 documents to the current shape so a
                 // subsequent save cannot write new options under format v1.
                 formatVersion = CURRENT_FORMAT_VERSION,
                 id = json.getString("id"),

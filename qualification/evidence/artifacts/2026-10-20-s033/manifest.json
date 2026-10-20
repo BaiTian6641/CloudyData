@@ -1,0 +1,35 @@
+{
+  "source_base_commit": "c2c6b65de8028a5bf9850643c747e55db7468b0d",
+  "source_file_count": 112,
+  "source_manifest_sha256": "512c56ec6d6dc30f7f69687cfa3a5b55d4b881feed458c1dc4d5fc7b03e34def",
+  "artifacts": [
+    {
+      "name": "runtime_x86_64_apk",
+      "bytes": 116331777,
+      "sha256": "9426b9091a5933d4965bef393e19b613372ea76b4f1aa884f06355ed0cb47211",
+      "abis": [
+        "x86_64"
+      ]
+    },
+    {
+      "name": "runtime_test_apk",
+      "bytes": 3120000,
+      "sha256": "bc97ebbc16e032f22a932562eacd7aa048f745d2e666d14e7f2a77e1b83e7634",
+      "abis": []
+    },
+    {
+      "name": "default_dual_abi_apk",
+      "bytes": 163993347,
+      "sha256": "2eb2e47161495e9026666484590b14a1241672b34a46111ce7a8d3e03838fe42",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ]
+    },
+    {
+      "name": "shared-title.png",
+      "bytes": 75413,
+      "sha256": "de69197d6b2d75f4c8fd3fcc83d7c4b32f7f70bc8133eb5d2707b217ba6c2ffd"
+    }
+  ]
+}

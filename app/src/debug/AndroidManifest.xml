@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
+        <service
+            android:name=".debug.JournalCrashProbeService"
+            android:exported="false"
+            android:process=":journal_probe" />
         <activity
             android:name=".debug.RendererProbeActivity"
             android:exported="true"

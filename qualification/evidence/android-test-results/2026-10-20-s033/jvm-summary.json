@@ -1,0 +1,82 @@
+{
+  "suites": [
+    {
+      "name": "io.github.baitian6641.cloudydata.AxisLabelSelectionTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.502Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.CategoryPaletteTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.522Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.ChartSpecBuilderTest",
+      "tests": "46",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.553Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.LegendLayoutTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.602Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.MarkFilterTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.604Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.RendererRevisionGateTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.615Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.RowSelectionReducerTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.618Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.SqlAndTypeTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.624Z"
+    },
+    {
+      "name": "io.github.baitian6641.cloudydata.WorkbookHistoryTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T17:39:09.628Z"
+    }
+  ],
+  "total": {
+    "tests": 75,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

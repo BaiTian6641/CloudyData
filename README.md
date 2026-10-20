@@ -41,11 +41,16 @@ and the x86_64 API 37 emulator, the debug app can:
 The worksheet Bar and multi-series Line marks use the qualified offline Vega host
 with a native fallback/table and a native accessible summary. Line results refuse
 silent truncation, preserve observed gaps, and never synthesize absent members.
-Chart selection, renderer death, export and matched resize/input remain
-unqualified; the table is the exact-value surface. The bounded offline Vega
-renderer required by the architecture has **not** been integrated, so S01.7 and
-the visual-grammar stages are not complete. `docs/execution-state.md` records the
-exact verified/pending boundary.
+The exact renderer/selection/export/input qualification boundary is recorded in
+`docs/execution-state.md`; S01.7 and the visual-grammar stages remain partial.
+
+The 2026-10-20 S03.3 update is separately qualified on the existing API36 x86_64
+emulator: shared revision-checked metadata, typed rename/chart receipts and bounded
+undo/redo persist across reopen and two real writer-process-death boundaries.
+Metadata format v3 preserves v1/v2 originals before migration. Room integration,
+full command coverage and whole-product lifecycle acceptance remain open; the
+physical Googlebook is on owner hold. See
+`qualification/evidence/2026-10-20-s03-durable-command-journal.md`.
 
 ## Prerequisites
 

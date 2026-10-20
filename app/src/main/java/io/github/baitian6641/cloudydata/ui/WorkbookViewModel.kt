@@ -24,6 +24,7 @@ import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
+import io.github.baitian6641.cloudydata.model.WorkbookCommand
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import java.util.UUID
 import kotlinx.coroutines.Job
@@ -91,6 +92,7 @@ class WorkbookViewModel(
     val state: StateFlow<WorkbookUiState> = _state.asStateFlow()
 
     private val importService = CsvImportService(application, store)
+    private val originWindowId = UUID.randomUUID().toString()
     private var coordinator: WorkbookCoordinator? = null
     private var coordinatorObserver: Job? = null
     private var activeWorksheetId: String? = null
@@ -344,14 +346,9 @@ class WorkbookViewModel(
     }
 
     fun updateChartSettings(options: ChartOptions) {
-        // Presentation-only change: persist and recompose without rerunning SQL.
-        mutateDocument { document ->
-            val active = document.activeWorksheet ?: return@mutateDocument document
-            document.copy(
-                worksheets = document.worksheets.map {
-                    if (it.id != active.id) it else it.copy(chart = options)
-                },
-            )
+        val worksheetId = _state.value.document?.activeWorksheet?.id ?: return
+        submitTyped { id, revision ->
+            WorkbookCommand.SetChart(id, workbookId, originWindowId, revision, worksheetId, options)
         }
     }
 
@@ -464,7 +461,9 @@ class WorkbookViewModel(
     fun renameWorkbook(name: String) {
         val trimmed = name.trim()
         if (trimmed.isEmpty()) return
-        mutateDocument { it.copy(name = trimmed) }
+        submitTyped { id, revision ->
+            WorkbookCommand.Rename(id, workbookId, originWindowId, revision, trimmed)
+        }
     }
 
     fun addWorksheet() {
@@ -539,10 +538,31 @@ class WorkbookViewModel(
         )
     }
 
+    private fun submitTyped(factory: (String, Long) -> WorkbookCommand) {
+        val revision = _state.value.document?.revision ?: return
+        val shared = coordinator ?: return
+        val id = UUID.randomUUID().toString()
+        var request: WorkbookCommand? = null
+        var acceptedEdge: Pair<Long, Long>? = null
+        runEdit(
+            expectedRevision = revision,
+            operation = { effectiveRevision ->
+                // Freeze the complete request at first dispatch; retries retain its
+                // ID, payload, window and expected revision across lost acknowledgements.
+                val frozen = request ?: factory(id, effectiveRevision).also { request = it }
+                val outcome = shared.execute(frozen)
+                acceptedEdge = frozen.expectedRevision to outcome.acceptedRevision
+                outcome.document
+            },
+            revisionEdge = { acceptedEdge },
+        )
+    }
+
     private fun runEdit(
         expectedRevision: Long,
         operation: suspend (Long) -> WorkbookDocument,
         afterAccepted: (WorkbookDocument) -> Unit = {},
+        revisionEdge: (() -> Pair<Long, Long>?)? = null,
     ) {
         retryEdit = null
         _state.update { it.copy(save = SaveState.Saving) }
@@ -553,8 +573,9 @@ class WorkbookViewModel(
                 var expected = expectedRevision
                 while (ownRevisions.containsKey(expected)) expected = ownRevisions.getValue(expected)
                 runCatching { operation(expected) }.onSuccess { saved ->
-                    if (saved.revision != expected) {
-                        ownRevisions[expected] = saved.revision
+                    val edge = revisionEdge?.invoke() ?: if (revisionEdge == null && saved.revision != expected) expected to saved.revision else null
+                    if (edge != null && edge.second > edge.first) {
+                        ownRevisions[edge.first] = edge.second
                         if (ownRevisions.size > 100) ownRevisions.remove(ownRevisions.keys.first())
                     }
                     afterAccepted(saved)
@@ -565,7 +586,7 @@ class WorkbookViewModel(
                         coordinator?.state?.value?.let(::acceptDocument)
                         _state.update { it.copy(save = SaveState.Conflict(error.message.orEmpty())) }
                     } else {
-                        retryEdit = { runEdit(expectedRevision, operation, afterAccepted) }
+                        retryEdit = { runEdit(expectedRevision, operation, afterAccepted, revisionEdge) }
                         _state.update { it.copy(save = SaveState.Failed(error.message ?: "Could not save the workbook.")) }
                     }
                 }

@@ -205,9 +205,9 @@ class ChartSettingsPersistenceTest {
         assertEquals(false, reopenedSheet.chart.showTableHeaderDivider)
         assertEquals(2.0, reopenedSheet.chart.tableDividerWidth!!, 0.0)
         assertEquals(TableDividerContrast.STRONG, reopenedSheet.chart.tableDividerContrast)
-        assertEquals(2, reopened.formatVersion)
+        assertEquals(3, reopened.formatVersion)
         val raw = JSONObject(File(root, "workbooks/${saved.id}/workbook.json").readText())
-        assertEquals(2, raw.getInt("formatVersion"))
+        assertEquals(3, raw.getInt("formatVersion"))
         val rawSheet = raw.getJSONArray("worksheets").getJSONObject(0)
         assertTrue(rawSheet.has("chart"))
         assertFalse(rawSheet.has("chartTitle"))
@@ -458,6 +458,7 @@ class ChartSettingsPersistenceTest {
         val document = store.create("Legacy document")
         val raw = JSONObject(File(root, "workbooks/${document.id}/workbook.json").readText())
         raw.put("formatVersion", 1)
+        raw.remove("commandJournal")
         val sheet = raw.getJSONArray("worksheets").getJSONObject(0)
         sheet.remove("chart")
         sheet.remove("seriesFieldId")
@@ -467,7 +468,7 @@ class ChartSettingsPersistenceTest {
         File(root, "workbooks/${document.id}/workbook.json").writeText(raw.toString())
 
         val loaded = store.load(document.id)
-        assertEquals(2, loaded.formatVersion)
+        assertEquals(3, loaded.formatVersion)
         assertEquals("Legacy document title", loaded.worksheets.single().chart.title)
         assertFalse(loaded.worksheets.single().chart.showGridlines)
         assertTrue(loaded.worksheets.single().chart.showValueLabels)
@@ -475,7 +476,7 @@ class ChartSettingsPersistenceTest {
 
         store.save(loaded)
         val rewritten = JSONObject(File(root, "workbooks/${document.id}/workbook.json").readText())
-        assertEquals(2, rewritten.getInt("formatVersion"))
+        assertEquals(3, rewritten.getInt("formatVersion"))
         val rewrittenSheet = rewritten.getJSONArray("worksheets").getJSONObject(0)
         assertTrue(rewrittenSheet.has("chart"))
         assertFalse(rewrittenSheet.has("chartTitle"))
@@ -485,7 +486,7 @@ class ChartSettingsPersistenceTest {
     fun futureWorkbookVersionIsRejectedBeforeMigration() {
         val base = store.create("Future")
         val json = JSONObject(File(root, "workbooks/${base.id}/workbook.json").readText())
-        json.put("formatVersion", 3)
+        json.put("formatVersion", 4)
         io.github.baitian6641.cloudydata.model.WorkbookDocument.fromJson(json)
     }
 

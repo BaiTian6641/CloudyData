@@ -985,3 +985,38 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   process-kill history, full conflict workflow, cross-process service/Arrow,
   physical desktop/input/accessibility and side-by-side gates remain separate.
   Next exact task is S03.3's durable rename/chart command-journal slice.
+
+## 2026-10-20 — S03.3 typed metadata commands and atomic durable checkpoints
+
+- Reinspected clean main/remote at c2c6b65; plans unchanged and all107 prior
+  source/fixture hashes matched. Selected the exact next S03.3/F01,F64/Q17,Q34
+  rename/chart journal slice over the verified S03.2 coordinator path.
+- ADR0009 extends the interim JSON authority without introducing a second store:
+  v3 metadata atomically includes accepted command receipts, head/checksum and
+  bounded undo/redo checkpoints. v1/v2 originals are preserved by atomic backup
+  before migration; older builds reject v3 instead of dropping history. Room and
+  full typed command coverage remain open. No stored command runs on file open.
+- Typed request IDs/window/expected revision are frozen across retries; duplicate
+  receipts return the original acceptance plus current document with no replay.
+  Generic coordinator history also persists. Raw/import saves clear obsolete
+  snapshot history while retaining receipt tombstones. Limits50/4096/32MiB are
+  explicit; reaching receipt capacity refuses a new typed command, not eviction.
+- Test and probe workers owned disjoint new native test/service files. Independent
+  review found no material blocker. Root resolved legacy/revision validation,
+  atomic original-backup creation and safe expected→accepted acknowledgement
+  edges; two real-write acknowledgement-error tests cover the queue case.
+- Initial native12/12 passed. Final combined native54/54 passed in16.759s after
+  review changes: journal12, writer-death2, coordinator14, affected regressions26.
+  Native writer PIDs23503/23520 genuinely died at REPLACED/TEMP_SYNCED, observed
+  via Binder by PID23448. Fixed states and real import totals35→7 were exact.
+- Default dual-ABI debug/test build and JVM75/75 pass; lint0 errors/6 warnings.
+  ChromeOsAbiSupport warning remains visible for dynamic ABI selection, while
+  default package inspection confirms both ABIs. Tokens current, contrast40/40.
+  Runtime used the existing x86 qualification package; no emulator data was deleted.
+- Root/independent reviewer accepted the current shared-title native capture at
+ 2880×1800; tasks2386/2387 were distinct fullscreen Activities. No physical/input,
+  accessibility, side-by-side, power-loss or concurrent process-writer gate passed.
+- Metadata temp files can survive a pre-replacement SIGKILL; accepted state recovers
+  but cleanup remains the next exact task. Source/artifact hashes and raw native
+  proof are in qualification/evidence/2026-10-20-s03-durable-command-journal.md.
+  Physical Googlebook hold and S11.C0/S13.C0/S15.C0 boundaries remain unchanged.

@@ -10,9 +10,15 @@ import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import org.json.JSONObject
 import java.util.UUID
 
-class WorkbookStore(rootDir: File) {
+enum class WorkbookCommitPhase { TEMP_SYNCED, REPLACED }
+
+class WorkbookStore(
+    rootDir: File,
+    private val commitObserver: (WorkbookCommitPhase) -> Unit = {},
+) {
     val root: File = File(rootDir, "workbooks").apply { mkdirs() }
     val coordinators: WorkbookRegistry by lazy { WorkbookRegistry(this) }
     private val writeLock = synchronized(writeLocks) { writeLocks.getOrPut(root.canonicalPath) { Any() } }
@@ -48,28 +54,70 @@ class WorkbookStore(rootDir: File) {
         return save(document)
     }
 
+    /** Raw saves/import publication are durable history barriers, preserving accepted IDs. */
     fun save(document: WorkbookDocument): WorkbookDocument = synchronized(writeLock) {
-        require(isSafeId(document.id)) { "invalid workbook id" }
-        val dir = workbookDir(document.id)
-        val metadata = File(dir, "workbook.json")
-        if (metadata.exists()) {
-            val actual = load(document.id).revision
-            if (actual != document.revision) throw WorkbookConflictException(document.revision, actual)
-        }
-        if (!dir.exists() && !dir.mkdirs()) error("Could not create workbook directory")
-        val now = System.currentTimeMillis()
-        val next = document.copy(
-            revision = document.revision + 1,
-            updatedAtEpochMs = now,
-        )
-        atomicWrite(File(dir, "workbook.json"), next.toJson().toString())
-        next
+        val existing = metadataFile(document.id).takeIf { it.exists() }?.let { loadCheckpoint(document.id) }
+        writeCheckpoint(WorkbookCheckpoint(document, receipts = existing?.receipts.orEmpty())).document
     }
 
-    fun load(id: String): WorkbookDocument {
-        require(isSafeId(id)) { "invalid workbook id" }
-        val file = File(workbookDir(id), "workbook.json")
-        return WorkbookDocument.fromJson(org.json.JSONObject(file.readText(StandardCharsets.UTF_8)))
+    fun saveCheckpoint(checkpoint: WorkbookCheckpoint): WorkbookCheckpoint = synchronized(writeLock) {
+        writeCheckpoint(checkpoint)
+    }
+
+    private fun writeCheckpoint(checkpoint: WorkbookCheckpoint): WorkbookCheckpoint {
+        val document = checkpoint.document
+        require(isSafeId(document.id)) { "invalid workbook id" }
+        val metadata = metadataFile(document.id)
+        if (metadata.exists()) {
+            val actual = loadCheckpoint(document.id).document.revision
+            if (actual != document.revision) throw WorkbookConflictException(document.revision, actual)
+        }
+        val dir = workbookDir(document.id)
+        if (!dir.exists() && !dir.mkdirs()) error("Could not create workbook directory")
+        // Existing field/worksheet normalization is performed before acceptance,
+        // so the saved object and a fresh reopen describe exactly the same content.
+        val normalized = WorkbookDocument.fromJson(document.toJson())
+        val next = checkpoint.copy(document = normalized.copy(
+            revision = Math.addExact(document.revision, 1),
+            updatedAtEpochMs = System.currentTimeMillis(),
+        ))
+        val bytes = next.toJson().toString().toByteArray(StandardCharsets.UTF_8)
+        require(bytes.size <= MAX_METADATA_BYTES) { "Workbook metadata exceeds the 32 MiB limit." }
+        if (metadata.exists()) {
+            val oldVersion = JSONObject(metadata.readText(StandardCharsets.UTF_8)).getInt("formatVersion")
+            if (oldVersion < WorkbookDocument.CURRENT_FORMAT_VERSION) preserveLegacy(metadata, oldVersion)
+        }
+        atomicWrite(metadata, bytes)
+        return next
+    }
+
+    fun load(id: String): WorkbookDocument = loadCheckpoint(id).document
+
+    fun loadCheckpoint(id: String): WorkbookCheckpoint {
+        val file = metadataFile(id)
+        require(file.length() <= MAX_METADATA_BYTES) { "Workbook metadata exceeds the 32 MiB limit." }
+        return WorkbookCheckpoint.fromJson(JSONObject(file.readText(StandardCharsets.UTF_8))).also {
+            require(it.document.id == id) { "Workbook metadata identity does not match its directory." }
+        }
+    }
+
+    private fun metadataFile(id: String) = File(workbookDir(id), "workbook.json")
+
+    private fun preserveLegacy(metadata: File, version: Int) {
+        val dir = File(metadata.parentFile, "migration").apply { mkdirs() }
+        val original = File(dir, "workbook-v$version-original.json")
+        if (original.exists()) return
+        val temporary = File.createTempFile("legacy-", ".tmp", dir)
+        try {
+            FileOutputStream(temporary).use { output ->
+                metadata.inputStream().use { it.copyTo(output) }
+                output.flush()
+                output.fd.sync()
+            }
+            Files.move(temporary.toPath(), original.toPath(), StandardCopyOption.ATOMIC_MOVE)
+        } finally {
+            temporary.delete()
+        }
     }
 
     fun list(): List<WorkbookSummary> {
@@ -108,15 +156,17 @@ class WorkbookStore(rootDir: File) {
         return save(document.copy(snapshot = snapshot))
     }
 
-    private fun atomicWrite(target: File, text: String) {
+    private fun atomicWrite(target: File, bytes: ByteArray) {
         val temp = File.createTempFile("workbook-", ".tmp", target.parentFile)
         try {
             FileOutputStream(temp).use { stream ->
-                stream.write(text.toByteArray(StandardCharsets.UTF_8))
+                stream.write(bytes)
                 stream.flush()
                 stream.fd.sync()
             }
+            commitObserver(WorkbookCommitPhase.TEMP_SYNCED)
             Files.move(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
+            commitObserver(WorkbookCommitPhase.REPLACED)
             runCatching {
                 java.nio.channels.FileChannel.open(target.parentFile.toPath(), java.nio.file.StandardOpenOption.READ).use { it.force(true) }
             }
@@ -129,6 +179,7 @@ class WorkbookStore(rootDir: File) {
 
     private companion object {
         // Same-process handles share the CAS lock. Cross-process writers remain unsupported.
+        const val MAX_METADATA_BYTES = 32 * 1024 * 1024
         val writeLocks = mutableMapOf<String, Any>()
     }
 }

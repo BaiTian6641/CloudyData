@@ -1,0 +1,23 @@
+--------- beginning of main
+10-20 12:19:49.968 22908 22925 I CloudyCoordinatorProbe: workbook=58dc6783-1e67-4879-8013-5e3f0a66cc8c; firstTask=2382, bounds=Rect(0, 0 - 2880, 1800); secondTask=2383, bounds=Rect(0, 0 - 2880, 1800)
+10-20 12:19:50.159 22908 22925 I CloudyCoordinatorProbe: capture=/data/user/0/io.github.baitian6641.cloudydata/files/coordinator-two-activities.png, pixels=2880x1800
+10-20 12:21:18.718 23114 23152 I CloudyCoordinatorProbe: workbook=ac439168-0aa3-4dd0-bbf6-85e5a7d9d11e; firstTask=2384, bounds=Rect(0, 0 - 2880, 1800); secondTask=2385, bounds=Rect(0, 0 - 2880, 1800)
+10-20 12:21:19.436 23114 23152 I CloudyCoordinatorProbe: capture=/data/user/0/io.github.baitian6641.cloudydata/files/coordinator-two-activities.png, pixels=2880x1800
+10-20 12:36:05.756 23357 23370 I JournalCrashProbe: KILL pid=23357 phase=REPLACED workbook=5b580d33-239a-44b0-b5ed-07cc59eee075 command=4a1a1807-a29c-4b54-b35c-425ec9d5ba6c
+10-20 12:36:05.763 23305 23339 I JournalCrashProbe: BINDER_DEATH pid=23357 expectedPhase=REPLACED testPid=23305
+10-20 12:36:05.763 23305 23346 I JournalCrashProbe: VERIFIED_DEATH pid=23357 phase=REPLACED workbook=5b580d33-239a-44b0-b5ed-07cc59eee075 command=4a1a1807-a29c-4b54-b35c-425ec9d5ba6c
+10-20 12:36:05.763 23305 23305 I JournalCrashProbe: DISCONNECTED pid=23357 expectedPhase=REPLACED
+10-20 12:36:06.154 23373 23386 I JournalCrashProbe: KILL pid=23373 phase=TEMP_SYNCED workbook=ccdb3044-09ff-4bf9-8f6c-acc93dfd69a9 command=4db7dd52-1403-4542-b7d7-a5520b315400
+10-20 12:36:06.161 23305 23339 I JournalCrashProbe: BINDER_DEATH pid=23373 expectedPhase=TEMP_SYNCED testPid=23305
+10-20 12:36:06.161 23305 23305 I JournalCrashProbe: DISCONNECTED pid=23373 expectedPhase=TEMP_SYNCED
+10-20 12:36:06.161 23305 23346 I JournalCrashProbe: VERIFIED_DEATH pid=23373 phase=TEMP_SYNCED workbook=ccdb3044-09ff-4bf9-8f6c-acc93dfd69a9 command=4db7dd52-1403-4542-b7d7-a5520b315400
+10-20 12:40:03.671 23503 23516 I JournalCrashProbe: KILL pid=23503 phase=REPLACED workbook=88943461-dafd-4770-bc7b-43d425b6d264 command=a1ba27c9-2255-44d9-9ec2-ed32d46d2f5c
+10-20 12:40:03.678 23448 23458 I JournalCrashProbe: BINDER_DEATH pid=23503 expectedPhase=REPLACED testPid=23448
+10-20 12:40:03.678 23448 23491 I JournalCrashProbe: VERIFIED_DEATH pid=23503 phase=REPLACED workbook=88943461-dafd-4770-bc7b-43d425b6d264 command=a1ba27c9-2255-44d9-9ec2-ed32d46d2f5c
+10-20 12:40:03.678 23448 23448 I JournalCrashProbe: DISCONNECTED pid=23503 expectedPhase=REPLACED
+10-20 12:40:04.034 23520 23534 I JournalCrashProbe: KILL pid=23520 phase=TEMP_SYNCED workbook=61287767-905c-496e-b3b5-2369df76ba52 command=1f29692b-2a00-4ca2-9ef1-e79e3eb436b8
+10-20 12:40:04.041 23448 23458 I JournalCrashProbe: BINDER_DEATH pid=23520 expectedPhase=TEMP_SYNCED testPid=23448
+10-20 12:40:04.041 23448 23448 I JournalCrashProbe: DISCONNECTED pid=23520 expectedPhase=TEMP_SYNCED
+10-20 12:40:04.041 23448 23491 I JournalCrashProbe: VERIFIED_DEATH pid=23520 phase=TEMP_SYNCED workbook=61287767-905c-496e-b3b5-2369df76ba52 command=1f29692b-2a00-4ca2-9ef1-e79e3eb436b8
+10-20 12:40:06.517 23448 23491 I CloudyCoordinatorProbe: workbook=7055e565-9cd3-4aa0-9f10-98e2d0848353; firstTask=2386, bounds=Rect(0, 0 - 2880, 1800); secondTask=2387, bounds=Rect(0, 0 - 2880, 1800)
+10-20 12:40:07.256 23448 23491 I CloudyCoordinatorProbe: capture=/data/user/0/io.github.baitian6641.cloudydata/files/coordinator-two-activities.png, pixels=2880x1800
