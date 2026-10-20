@@ -2,7 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 workbook-version implementation, bound by all127 source/fixture
+**Source:** S03.4 workbook-version implementation through `29780fa7d0d3fe5bef7072b2641d3285f61a5439`,
+bound by all127 source/fixture
 hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-version/`;
 see `qualification/evidence/2026-10-20-s03-workbook-version-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.

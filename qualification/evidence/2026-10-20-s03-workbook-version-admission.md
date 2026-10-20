@@ -3,6 +3,7 @@
 **Date:** 2026-10-20 (America/Chicago)
 **IDs:** S03.4; F01/F64; Q33/Q34.
 **Status:** verified for the bounded decoded-version admission/migration cases below; full S03/package validation remains partial.
+**Implementation commit:** `29780fa7d0d3fe5bef7072b2641d3285f61a5439`; all127 hashes verified against committed blobs.
 **Source base:** `d2f3d0bd30c7a58d5fefa368a6d98e6b30d15b14`.
 
 ## Readiness and ownership
@@ -78,7 +79,7 @@ Independent static review of combined source and independent oracles found no
 material issue. Final independent audit verifies all127 current source hashes,
 manifest6f78113696ff03fb707f9063b2d68335ac750cf8a7f6f0cd9810d2cc01d70b2b,
 actual runtime/test/default APK bindings and raw test/build/lint/token results;
-no material evidence discrepancy remains. Committed-source binding follows.
+no material evidence discrepancy remains. All127 hashes also match committed source.
 
 ## Limits
 
