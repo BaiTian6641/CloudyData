@@ -1,0 +1,40 @@
+{
+  "source_base_commit": "caf3751",
+  "source_manifest": "source-sha256.txt",
+  "source_manifest_sha256": "47891539fc9c3c9b7ccb7374486a98a359e41f2f038773020f76550a55865ea6",
+  "artifacts": [
+    {
+      "name": "runtime_x86_64_apk",
+      "bytes": 115889617,
+      "sha256": "e830c93e90f5a22cd5b391bebed0f9f1ac6483bb605885962a40310fbfd5420b",
+      "abis": [
+        "x86_64"
+      ]
+    },
+    {
+      "name": "runtime_test_apk",
+      "bytes": 2856652,
+      "sha256": "9e1ac5bbf1af20431398915eb88773bdfb7ec4c351dcb666f9ec13bb23c1075d",
+      "abis": []
+    },
+    {
+      "name": "default_dual_abi_apk",
+      "bytes": 163927743,
+      "sha256": "0c6695701fc1576ee116748ff181380adf5752abe4faa3b5c6cfd01ede52298a",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ]
+    },
+    {
+      "name": "two-activities-before-frame-wait.png",
+      "bytes": 75124,
+      "sha256": "5d80f9c5b1393917f5dcf84e2a0e15d72f871978fdb212477ae1552462e6af0b"
+    },
+    {
+      "name": "two-activities.png",
+      "bytes": 75062,
+      "sha256": "e093cbbb69b0dc2d0323d02ff5a17de0abefdf4dfc3bb5a10d4b0f143da35ebf"
+    }
+  ]
+}

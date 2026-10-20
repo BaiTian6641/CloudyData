@@ -262,11 +262,15 @@ fun HomeScreen(
                                         onOpen = { onOpenWorkbook(summary.id) },
                                         onToggleFavorite = {
                                             scope.launch {
-                                                withContext(Dispatchers.IO) {
-                                                    val document = store.load(summary.id)
-                                                    store.save(document.copy(favorite = !document.favorite))
+                                                runCatching {
+                                                    val shared = store.coordinators.open(summary.id)
+                                                    val revision = shared.state.value.document.revision
+                                                    shared.edit(revision) { it.copy(favorite = !it.favorite) }
+                                                }.onSuccess {
+                                                    reloadToken++
+                                                }.onFailure {
+                                                    loadError = it.message ?: "Could not update the favorite."
                                                 }
-                                                reloadToken++
                                             }
                                         },
                                     )

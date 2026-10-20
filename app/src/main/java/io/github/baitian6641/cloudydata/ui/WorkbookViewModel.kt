@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import io.github.baitian6641.cloudydata.data.CsvImportService
 import io.github.baitian6641.cloudydata.data.PendingCsvImport
 import io.github.baitian6641.cloudydata.data.WorkbookStore
+import io.github.baitian6641.cloudydata.data.WorkbookCoordinator
+import io.github.baitian6641.cloudydata.data.WorkbookConflictException
+import io.github.baitian6641.cloudydata.data.CoordinatedWorkbook
 import io.github.baitian6641.cloudydata.engine.DuckDbEngine
 import io.github.baitian6641.cloudydata.engine.MarkFilters
 import io.github.baitian6641.cloudydata.engine.UnderlyingRowsQuery
@@ -21,9 +24,9 @@ import io.github.baitian6641.cloudydata.model.FieldDef
 import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
-import io.github.baitian6641.cloudydata.model.WorkbookHistory
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import java.util.UUID
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,6 +57,7 @@ sealed interface SaveState {
     data object Saved : SaveState
     data object Saving : SaveState
     data class Failed(val message: String) : SaveState
+    data class Conflict(val message: String) : SaveState
 }
 
 sealed interface ViewDataState {
@@ -87,9 +91,13 @@ class WorkbookViewModel(
     val state: StateFlow<WorkbookUiState> = _state.asStateFlow()
 
     private val importService = CsvImportService(application, store)
-    private val saveMutex = Mutex()
+    private var coordinator: WorkbookCoordinator? = null
+    private var coordinatorObserver: Job? = null
+    private var activeWorksheetId: String? = null
+    private var retryEdit: (() -> Unit)? = null
+    private val commandMutex = Mutex()
+    private val ownRevisions = linkedMapOf<Long, Long>()
     private var engine: DuckDbEngine? = null
-    private var history: WorkbookHistory? = null
     private var queryGeneration = 0L
     private var viewDataGeneration = 0L
 
@@ -112,25 +120,20 @@ class WorkbookViewModel(
         viewModelScope.launch {
             _state.update { it.copy(loading = true, loadError = null) }
             try {
-                val recovery = withContext(Dispatchers.IO) { importService.reconcile(workbookId) }
-                val document = withContext(Dispatchers.IO) { store.load(workbookId) }
-                history = WorkbookHistory(document)
-                _state.update {
-                    it.copy(
-                        loading = false,
-                        document = document,
-                        loadError = null,
-                        save = SaveState.Saved,
-                        recoveryMessages = recovery.messages,
-                        canUndo = false,
-                        canRedo = false,
-                    )
+                val shared = store.coordinators.open(workbookId)
+                if (coordinator != null) shared.reload()
+                coordinator = shared
+                retryEdit = null
+                _state.update { it.copy(save = SaveState.Saved) }
+                coordinatorObserver?.cancel()
+                acceptDocument(shared.state.value)
+                coordinatorObserver = viewModelScope.launch {
+                    shared.state.collect { acceptDocument(it) }
                 }
                 val error = ensureEngine()
                 if (error != null) {
                     _state.update { it.copy(engineError = error) }
                 }
-                refreshQuery()
             } catch (error: Throwable) {
                 _state.update {
                     it.copy(
@@ -166,28 +169,24 @@ class WorkbookViewModel(
             is ImportUiState.Failed -> import.pending
             else -> null
         } ?: return
+        val shared = coordinator ?: return
         _state.update { it.copy(import = ImportUiState.Applying(pending)) }
         viewModelScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) { importService.apply(document, pending) }
+                shared.importSnapshot(document.revision) { current -> importService.apply(current, pending) }
             }.onSuccess { saved ->
-                // Import/replace is a source-side effect; it is not replayed by
-                // undo. Start a fresh history for the published snapshot.
-                history = WorkbookHistory(saved)
-                _state.update {
-                    it.copy(
-                        document = saved,
-                        import = ImportUiState.Idle,
-                        save = SaveState.Saved,
-                        canUndo = false,
-                        canRedo = false,
-                    )
-                }
+                acceptDocument(shared.state.value)
+                _state.update { it.copy(import = ImportUiState.Idle, save = SaveState.Saved) }
                 autoPlace(snapshotColumns = saved.snapshot?.columns.orEmpty())
-                refreshQuery()
             }.onFailure { error ->
+                acceptDocument(shared.state.value)
+                val published = shared.state.value.document.snapshot?.id != document.snapshot?.id
                 _state.update {
-                    it.copy(import = ImportUiState.Failed(error.message ?: "Could not complete the import.", pending))
+                    it.copy(import = ImportUiState.Failed(
+                        (if (published) "The imported snapshot was saved locally, but finalization failed. " else "") +
+                            (error.message ?: "Could not complete the import."),
+                        if (published) null else pending,
+                    ))
                 }
             }
         }
@@ -357,23 +356,15 @@ class WorkbookViewModel(
     }
 
     fun undo() {
-        val previousActive = _state.value.document?.activeWorksheetId
-        val restored = history?.undo() ?: return
-        _state.update {
-            it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
-        }
-        persistLatest()
-        refreshQuery(keepPrevious = restored.activeWorksheetId == previousActive)
+        val revision = _state.value.document?.revision ?: return
+        val shared = coordinator ?: return
+        runEdit(revision, { shared.undo(it) })
     }
 
     fun redo() {
-        val previousActive = _state.value.document?.activeWorksheetId
-        val restored = history?.redo() ?: return
-        _state.update {
-            it.copy(document = restored, canUndo = history?.canUndo == true, canRedo = history?.canRedo == true)
-        }
-        persistLatest()
-        refreshQuery(keepPrevious = restored.activeWorksheetId == previousActive)
+        val revision = _state.value.document?.revision ?: return
+        val shared = coordinator ?: return
+        runEdit(revision, { shared.redo(it) })
     }
 
     fun retryQuery() {
@@ -430,13 +421,13 @@ class WorkbookViewModel(
             }
             val result = runCatching {
                 withContext(Dispatchers.IO) {
-                    UnderlyingRowsQuery(activeEngine).query(
+                    coordinator!!.readSnapshot(snapshot.id) { UnderlyingRowsQuery(activeEngine).query(
                         snapshot = snapshot,
                         sheet = sheet,
                         worksheetResult = accepted,
                         selectedRows = selectedRows,
                         snapshotPath = path,
-                    )
+                    ) }
                 }
             }
             if (generation != viewDataGeneration) return@launch
@@ -465,7 +456,9 @@ class WorkbookViewModel(
     }
 
     fun saveNow() {
-        persistLatest()
+        val retry = retryEdit
+        if (retry != null) retry() else if (_state.value.save is SaveState.Conflict) load()
+        // Accepted commands are already persisted; an extra Save creates no revision.
     }
 
     fun renameWorkbook(name: String) {
@@ -485,20 +478,17 @@ class WorkbookViewModel(
             markType = MarkType.TABLE,
             sortDescending = true,
         )
-        mutateDocument {
-            it.copy(worksheets = it.worksheets + sheet, activeWorksheetId = sheet.id)
+        mutateDocument(activateSheetId = sheet.id) {
+            it.copy(worksheets = it.worksheets + sheet)
         }
-        refreshQuery(keepPrevious = false)
     }
 
     fun selectWorksheet(id: String) {
         val document = _state.value.document ?: return
         if (document.activeWorksheetId == id) return
-        // Active-tab state is not an undoable analytical command.
-        val updated = history?.replaceCurrent { it.copy(activeWorksheetId = id) }
-            ?: document.copy(activeWorksheetId = id)
-        _state.update { it.copy(document = updated) }
-        persistLatest()
+        if (document.worksheets.none { it.id == id }) return
+        activeWorksheetId = id
+        _state.update { it.copy(document = document.copy(activeWorksheetId = id)) }
         refreshQuery(keepPrevious = false)
     }
 
@@ -528,47 +518,86 @@ class WorkbookViewModel(
                 worksheets = document.worksheets.map { if (it.id == active.id) transform(it) else it },
             )
         }
-        refreshQuery()
     }
 
-    private fun mutateDocument(transform: (WorkbookDocument) -> WorkbookDocument) {
-        val updated = history?.apply(transform) ?: return
-        _state.update {
-            it.copy(
-                document = updated,
-                canUndo = history?.canUndo == true,
-                canRedo = history?.canRedo == true,
-            )
-        }
-        persistLatest()
+    private fun mutateDocument(
+        activateSheetId: String? = null,
+        transform: (WorkbookDocument) -> WorkbookDocument,
+    ) {
+        val visible = _state.value.document ?: return
+        val shared = coordinator ?: return
+        runEdit(
+            expectedRevision = visible.revision,
+            operation = { revision ->
+                shared.edit(revision) { current ->
+                    val next = transform(current.copy(activeWorksheetId = visible.activeWorksheetId))
+                    // Active sheet/focus are local to this view. Keep the document's reopen default.
+                    next.copy(activeWorksheetId = current.activeWorksheetId)
+                }
+            },
+            afterAccepted = { if (activateSheetId != null) activeWorksheetId = activateSheetId },
+        )
     }
 
-    private fun persistLatest() {
+    private fun runEdit(
+        expectedRevision: Long,
+        operation: suspend (Long) -> WorkbookDocument,
+        afterAccepted: (WorkbookDocument) -> Unit = {},
+    ) {
+        retryEdit = null
+        _state.update { it.copy(save = SaveState.Saving) }
         viewModelScope.launch {
-            saveMutex.withLock {
-                while (true) {
-                    val current = _state.value.document ?: return@withLock
-                    _state.update { it.copy(save = SaveState.Saving) }
-                    val saved = runCatching {
-                        withContext(Dispatchers.IO) { store.save(current) }
-                    }.getOrElse { error ->
-                        _state.update {
-                            it.copy(save = SaveState.Failed(error.message ?: "Could not save the workbook."))
-                        }
-                        return@withLock
+            commandMutex.withLock {
+                // Rebase only through this view's own preceding accepted commands.
+                // Any intervening command from another view still produces a conflict.
+                var expected = expectedRevision
+                while (ownRevisions.containsKey(expected)) expected = ownRevisions.getValue(expected)
+                runCatching { operation(expected) }.onSuccess { saved ->
+                    if (saved.revision != expected) {
+                        ownRevisions[expected] = saved.revision
+                        if (ownRevisions.size > 100) ownRevisions.remove(ownRevisions.keys.first())
                     }
-                    val latest = _state.value.document
-                    _state.update {
-                        if (it.document?.revision == current.revision) {
-                            history?.adoptSavedRevision(saved)
-                            it.copy(document = saved, save = SaveState.Saved)
-                        } else {
-                            it.copy(save = SaveState.Saving)
-                        }
+                    afterAccepted(saved)
+                    coordinator?.state?.value?.let(::acceptDocument)
+                    _state.update { it.copy(save = SaveState.Saved) }
+                }.onFailure { error ->
+                    if (error is WorkbookConflictException) {
+                        coordinator?.state?.value?.let(::acceptDocument)
+                        _state.update { it.copy(save = SaveState.Conflict(error.message.orEmpty())) }
+                    } else {
+                        retryEdit = { runEdit(expectedRevision, operation, afterAccepted) }
+                        _state.update { it.copy(save = SaveState.Failed(error.message ?: "Could not save the workbook.")) }
                     }
-                    if (latest?.revision == current.revision) return@withLock
                 }
             }
+        }
+    }
+
+    private fun acceptDocument(shared: CoordinatedWorkbook) {
+        val previous = _state.value.document
+        val canonical = shared.document
+        val active = activeWorksheetId?.takeIf { id -> canonical.worksheets.any { it.id == id } }
+            ?: canonical.activeWorksheetId
+        activeWorksheetId = active
+        val visible = canonical.copy(activeWorksheetId = active)
+        _state.update {
+            it.copy(
+                loading = false,
+                document = visible,
+                loadError = null,
+                canUndo = shared.canUndo,
+                canRedo = shared.canRedo,
+                recoveryMessages = shared.recoveryMessages,
+            )
+        }
+        // Presentation edits and renames do not change query semantics.
+        if (previous == null || previous.snapshot != visible.snapshot ||
+            previous.activeWorksheet?.copy(chart = ChartOptions()) != visible.activeWorksheet?.copy(chart = ChartOptions())
+        ) {
+            refreshQuery(
+                keepPrevious = previous?.activeWorksheetId == visible.activeWorksheetId &&
+                    previous?.snapshot?.id == visible.snapshot?.id,
+            )
         }
     }
 
@@ -577,6 +606,7 @@ class WorkbookViewModel(
             viewDataGeneration++
             _state.update { it.copy(viewData = ViewDataState.Idle) }
         }
+        val generation = ++queryGeneration
         val document = _state.value.document
         val snapshot = document?.snapshot
         val sheet = document?.activeWorksheet
@@ -584,7 +614,6 @@ class WorkbookViewModel(
             _state.update { it.copy(query = WorksheetQueryState.Empty) }
             return
         }
-        val generation = ++queryGeneration
         val previous = if (keepPrevious) {
             (_state.value.query as? WorksheetQueryState.Ready)?.result
                 ?: (_state.value.query as? WorksheetQueryState.Loading)?.previous
@@ -606,14 +635,16 @@ class WorkbookViewModel(
             val snapshotPath = runCatching {
                 store.resolveInsideWorkbook(document.id, snapshot.snapshotFile).absolutePath
             }.getOrElse { error ->
-                _state.update {
+                if (generation == queryGeneration) _state.update {
                     it.copy(query = WorksheetQueryState.Failed(error.message ?: "Snapshot path is invalid.", previous))
                 }
                 return@launch
             }
             val result = runCatching {
                 withContext(Dispatchers.IO) {
-                    WorksheetQuery(activeEngine).query(snapshot, sheet, snapshotPath)
+                    coordinator!!.readSnapshot(snapshot.id) {
+                        WorksheetQuery(activeEngine).query(snapshot, sheet, snapshotPath)
+                    }
                 }
             }
             if (generation != queryGeneration) return@launch

@@ -949,3 +949,39 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Read all three plans and the master runbook. Independent audit selected earlier
   S03.2 process-local workbook authority ahead of CUST09.4; no S11.C0, S13.C0 or
   S15.C0 completion was inferred. Physical Googlebook remains on owner hold.
+
+## 2026-10-20 — S03.2 workbook coordinator and native multi-Activity qualification
+
+- Replaced per-ViewModel editable document/history/save ownership with one shared
+  per-workbook coordinator in the app Store registry. Save is revision-checked
+  against disk and completes before observable publication. Undo/redo persist
+  increasing revisions; imports and snapshot readers serialize with commands.
+  Local tabs stay independent, same-view commands queue, and stale foreign edits
+  report explicit conflicts. Favorites use the same authority.
+- Independent review exposed and fixed new-sheet activation, ordinary same-view
+  rapid-command rejection, stale save/error UI, save/publication cancellation,
+  import errors after metadata publication, and ImportRecovery's nonthrowing
+  retained-operation failure. Reads/edits now stay blocked until recovery repairs
+  the actual accepted snapshot. Full proposal/reapply UI and journal remain gaps.
+- Tests worker authored 14 meaningful native tests with fixed states and real
+  DuckDB imports: count3/sum35, replacement count1/sum7, actual EACCES write,
+  cancellation/exception after real save, failed rollback and later repair,
+  observer isolation, local tabs, undo/redo and two real Activity tasks.
+- First universal APK install failed with insufficient emulator storage. Probed
+  /data (594 MiB free) and own app data/cache (<1 MiB); hypothesized package install
+  overhead rather than stale Cloudy Data files. Discriminating opt-in x86_64-only
+  build installed successfully; no apps/data/caches were deleted. Default build
+  retains arm64-v8a+x86_64 and passed again. New build property rejects unknown ABIs.
+- First native capture was taken before Compose displayed the updated title.
+  Preserved it as a diagnostic; strengthened the test to assert actual UI text
+  before capture and after undo. Final native suite 14/14, regressions 26/26;
+  JVM 75/75, lint 0 errors/5 warnings, token check current, contrast 40/40.
+- Actual emulator tasks 2384/2385 both observed 2880×1800 fullscreen. Root and
+  independent reviewer inspected the final Shared Activity title capture and
+  accepted only that bounded empty-workbook render. Native source/artifact hashes,
+  raw logs, earlier diagnostic and limitations are recorded in
+  `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`.
+- Physical Googlebook remained on owner hold. S03 stays partial: command IDs/journal,
+  process-kill history, full conflict workflow, cross-process service/Arrow,
+  physical desktop/input/accessibility and side-by-side gates remain separate.
+  Next exact task is S03.3's durable rename/chart command-journal slice.

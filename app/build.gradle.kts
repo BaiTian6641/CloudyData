@@ -3,6 +3,15 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// A focused local qualification build can omit the unused ABI to fit a runner's
+// install budget. Normal builds retain both supported Android ABIs.
+val supportedAbis = listOf("arm64-v8a", "x86_64")
+val qualificationAbis = providers.gradleProperty("cloudyDataAbis").orNull
+    ?.split(',')?.map { it.trim() }?.distinct() ?: supportedAbis
+require(qualificationAbis.isNotEmpty() && qualificationAbis.all { it in supportedAbis }) {
+    "cloudyDataAbis must name arm64-v8a and/or x86_64."
+}
+
 android {
     namespace = "io.github.baitian6641.cloudydata"
     compileSdk = 37
@@ -17,7 +26,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters += listOf("arm64-v8a", "x86_64")
+            abiFilters += qualificationAbis
         }
     }
 

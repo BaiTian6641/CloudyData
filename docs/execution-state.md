@@ -1,9 +1,10 @@
 # Execution state
 
-**Updated:** 2026-10-19
+**Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** commits through `6494746`; `main` tracks `origin/main`. The next
-task is local-only until it passes its gates.
+**Source:** asset reconciliation `caf3751`; S03.2 implementation and exact tested
+source manifest are recorded in `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`.
+`main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
 the three plan addenda, `docs/design/chart-grammar-and-customization.md` and
@@ -22,8 +23,22 @@ unless stated otherwise.
   import, Parquet snapshot publication, original source preservation and verified
   row count.
 - Workbook create, atomic metadata save, process-restart reopen, and local
-  worksheet query. Worksheet tab selection commits the active sheet and requeries
-  it, clearing the previous sheet's accepted result while loading.
+  worksheet query. Worksheet selection is now window-local and requeries that
+  view, clearing the previous sheet's accepted result while loading. The stored
+  active-sheet ID remains the reopen default; per-window process-death tab
+  restoration is not yet implemented.
+- S03.2 bounded process-local authority on the API36 x86_64 emulator: one
+  coordinator per workbook; atomic save before publication; revision conflicts;
+  shared undo/redo with monotonically increasing revisions; same-view command
+  sequencing; independent local tabs; fixed-path snapshot readers serialized
+  against imports. Native coordinator tests **14/14** and affected engine/
+  persistence/recovery/filter/View Data/dual-axis regressions **26/26** pass.
+  Real native totals 35 → 7, failed writes, cancellation after save, post-save
+  import errors and unresolved-recovery read/edit blocking have explicit oracles.
+  Two real Activities in tasks 2384/2385 share rename/undo and the survivor saves
+  after the other closes. Actual title text assertions and an independently
+  inspected native capture pass. Both observed bounds are 2880×1800; side-by-side
+  placement, physical input and full Q19/S03 acceptance remain unverified.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -78,6 +93,11 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`
+- `qualification/evidence/2026-10-20-s00-original-assets.md`
+- Current source/APK/capture manifests and raw logs:
+  `qualification/evidence/artifacts/2026-10-20-s03-coordinator/` and
+  `qualification/evidence/android-test-results/2026-10-20/`
 - `qualification/evidence/2026-10-18-s00-toolchain.md`
 - `qualification/evidence/2026-10-18-s01-native-engine.md`
 - `qualification/evidence/2026-10-18-s01-import-and-worksheet.md`
@@ -288,15 +308,20 @@ unless stated otherwise.
   applies to Line/Area symbols; defaults/other marker encodings unchanged.
   Emulator spec/persistence/render checks pass; visual contrast checks were not
   run.
-- Native visual/interaction acceptance. Captures were leader-inspected only; no
-  independent reviewer has accepted them. Keyboard traversal, IME, TalkBack,
-  focus return, shortcuts, density modes and light/dark require their own runs.
-- Favorites toggle, workbook rename, new worksheet, aggregation choices other
-  than SUM and the replacement-import path have code but no dedicated tests.
+- Earlier chart/customization captures remain leader-inspected only. The S03.2
+  shared-title empty-workbook capture now has independent bounded acceptance;
+  keyboard traversal, IME, TalkBack, focus return, shortcuts, density modes and
+  light/dark coverage still require their own runs.
+- Rename, new worksheet/local tabs and real replacement import now have bounded
+  S03.2 native cases. Their complete dialog/pointer/keyboard workflow acceptance,
+  favorites-toggle UI and full non-SUM aggregate conformance remain unverified.
 - The worksheet Cancel action's UI wiring is not exercised against a slow query;
   only the native interrupt and query-generation invalidation code exist.
-- Save mutex prevents an older save from replacing newer state in the same
-  process; cross-window/conflict behavior is not implemented or tested.
+- The shared coordinator now rejects stale revisions and serializes same-view
+  edits, imports and snapshot reads in one app process (14/14 native tests).
+  Full typed command IDs/durable journal, rejected-proposal review/reapply,
+  cross-process ownership and real process-kill recovery remain unimplemented.
+  Conflict-banner native visual/input review remains unverified.
 - The chart's first-appearance category colors can change when result order or filters change;
   no persisted palette map exists.
 - Renderer death/recreation/replay, generation retirement, recovery exhaustion,
@@ -337,17 +362,20 @@ unless stated otherwise.
   title/source provenance. Cancellation writes nothing; an unknown SAF tree
   returns an explicit provider failure. PDF is still raster-only, and storage-full/
   mid-write failure injection, accessible PDF and print remain partial.
-- **Current device state:** the owner is using the API37 physical Googlebook
-  (`C1L63708PZ`); no further interaction is permitted. The rootable
-  `emulator-5582` disappeared from `adb` during the renderer suite. Only the
-  API36 `emulator-5580` remains, and it was not started/used further because it
-  consumes laptop memory. Final lasso/product instrumentation is blocked until
-  an available device is provided.
+- **Current device state:** the physical API37 Googlebook (`C1L63708PZ`) remains
+  on owner hold and was not interacted with. Existing API36 `emulator-5580` was
+  reused for S03.2 without boot/resize/density changes. A first dual-ABI APK
+  install failed with insufficient storage (594 MiB free); an explicit x86_64-only
+  qualification package installed and passed. Default builds still include both
+  ABIs. The absent rootable `emulator-5582` was not restarted or reprobed.
 
 ## Not implemented / blocked
 
-- S01.6 Arrow IPC, S01.8 million-row virtualized grid, S01.10 multiwindow,
-  S01.11 16 KiB runtime. S01.4 has a native interrupt probe and UI action but no
+- S01.6 Arrow IPC, S01.8 million-row virtualized grid and S01.11 16 KiB runtime
+  remain unimplemented/unqualified. S01.10 is partial: two same-workbook native
+  Activity tasks share edits/undo and survive closing one on the API36 emulator;
+  full three-view/workbook, placement/conflict and physical-input acceptance
+  remains open. S01.4 has a native interrupt probe and UI action but no
   worker/process-death qualification; S01.5 covers constructed recovery states,
   not real process kills; S01.7 now verifies emulator renderer death/recovery,
   generation retirement, recovery exhaustion, stale completion/failure
@@ -365,34 +393,50 @@ unless stated otherwise.
   remaining Q18 failures, final lasso/rectangle device and product qualification,
   drill/hierarchy, compound or cross-sheet filters, persisted selection, TalkBack
   and live-window qualification remain.
-- Query service process, Arrow transport, Room metadata, cross-window
-  coordinator/conflict handling, formula parser, LOD/filters, relationships,
-  totals, table calculations, dashboards, connectors, export, Tableau
-  interoperability. A bounded undo/redo history exists; full command-journal
-  durability does not.
+- Query service process, Arrow transport, Room metadata/command journal,
+  cross-process coordination and full conflict-resolution workflow, formula
+  parser, LOD/filters, relationships, totals, table calculations, dashboards,
+  connectors, complete portable/output workflows and Tableau interoperability.
+  Bounded shared undo/redo now persists accepted content, but history itself
+  remains process-local.
 - 16 KiB runtime device and licensed Tableau reference are unavailable.
-- Canonical upstream token source, generator history and platform-rule-zero are
-  absent. Tokens remain provisional.
+- Original tokens/generators/platform Rule 0 were located in the sibling Cloudy
+  Workspace and hash-bound on 2026-10-20. Common numeric tokens match 74/74 checks.
+  The original source itself says proposed; adoption and native design acceptance
+  remain separate. Cloudy Data tokens remain the single provisional source.
+- S11.C0 remains partial; S13.C0 and S15.C0 are absent. Their worker-backed
+  dependency rules remain mandatory; none is promoted by this coordinator slice.
+
+## Last verification (2026-10-20)
+
+- Default `:app:assembleDebug :app:assembleDebugAndroidTest :app:testDebugUnitTest
+  :app:lintDebug` passed after restoring both ABIs; JVM 75/75, lint 0 errors/5 warnings.
+- `-PcloudyDataAbis=x86_64` qualification APK ran on existing `emulator-5580`:
+  coordinator 14/14 and affected native regressions 26/26, no skips.
+- Actual runtime APK `e830c93e90f5a22cd5b391bebed0f9f1ac6483bb605885962a40310fbfd5420b`;
+  final test APK `9e1ac5bbf1af20431398915eb88773bdfb7ec4c351dcb666f9ec13bb23c1075d`.
+- Tokens current, declared contrast 40/40. Original native ABI hashes unchanged.
+  Independent code review findings resolved; final shared-title native capture
+  independently inspected. No physical-device or Tableau acceptance was added.
 
 ## Next exact task
 
-**CUST09.4 secondary axis bounds/ticks and pointer legend verification.**
+**S03.3 first durable command-journal slice: rename and chart edits.**
 
-- Requirements/stage: CUST09, CH04/F36/F38, S11.C0. Prerequisite: committed
-  secondary formatting/interactive-legend slice.
-- Files: `ChartOptions`/`ChartLayer` secondary bounds/ticks, settings, Vega `y2`
-  domain, probe/pointer tests.
-- Action: persist optional secondary min/max/tick-count, validate them, and add
-  a device-level legend click test that hides/restores only the secondary line
-  while primary bars remain unchanged.
-- Acceptance: explicit secondary bounds override the auto domain; invalid bounds
-  are rejected/fallback safely; legend toggling changes only secondary marks;
-  synchronized mode and primary axes remain unchanged. Emulator spec/render/
-  persistence and pointer checks required; visual review unverified.
-- Device-bound qualification remains blocked: dual-axis readability, legend,
-  labels, line crossings, Y ticks, lasso/product, titles, units, gridline,
-  palette, marker, dash, bar/area/table and horizontal visuals wait for an
-  authorized visual session.
+- IDs: F01/F64, Q17/Q34 (and Q19 conflict invariants).
+- Prerequisites: the verified bounded S03.2 coordinator path and accepted
+  ADR0003/0006 local metadata/snapshot authority. Room 2.8.5 is pinned but not
+  wired; changing metadata authority requires an explicit tested ADR amendment.
+- Paths: `data/WorkbookCoordinator.kt`, `data/WorkbookStore.kt`, a typed journal
+  implementation under `data/`, focused native tests, and evidence/state docs.
+- Action: give those two command kinds stable command IDs and durable
+  expected/accepted-revision journal/checkpoint recovery. Reject duplicates and
+  recover accepted content/history after process death without replaying imports.
+- Independent oracles: rename then chart edit; restart at each journal/checkpoint
+  boundary; exact before/after states and increasing revisions; stale commands
+  cannot overwrite. Independently review source and native recovery results.
+- CUST09.4 secondary-axis bounds/ticks and pointer legend testing remains a ready
+  chart-slice follow-up after this earlier foundation work; it does not close S11.C0.
 
 ## Protected context
 

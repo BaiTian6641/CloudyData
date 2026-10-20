@@ -254,6 +254,12 @@ fun WorkbookScreen(
                     onRetry = viewModel::saveNow,
                 )
             }
+            if (state.save is SaveState.Conflict) {
+                SaveFailureBanner(
+                    message = (state.save as SaveState.Conflict).message,
+                    onRetry = viewModel::load,
+                )
+            }
             if (state.engineError != null) {
                 SaveFailureBanner(
                     message = "Local engine unavailable: ${state.engineError}",
@@ -591,6 +597,7 @@ private fun SaveBadge(save: SaveState) {
         SaveState.Saved -> CloudyBadge("Saved locally", tone = CloudyBadgeTone.Success)
         SaveState.Saving -> CloudyBadge("Saving…", tone = CloudyBadgeTone.Neutral)
         is SaveState.Failed -> CloudyBadge("Not saved", tone = CloudyBadgeTone.Danger)
+        is SaveState.Conflict -> CloudyBadge("Change not applied", tone = CloudyBadgeTone.Warning)
     }
 }
 

@@ -14,6 +14,8 @@ import java.util.UUID
 
 class WorkbookStore(rootDir: File) {
     val root: File = File(rootDir, "workbooks").apply { mkdirs() }
+    val coordinators: WorkbookRegistry by lazy { WorkbookRegistry(this) }
+    private val writeLock = synchronized(writeLocks) { writeLocks.getOrPut(root.canonicalPath) { Any() } }
 
     fun create(name: String): WorkbookDocument {
         val trimmed = name.trim().ifEmpty { "Untitled workbook" }
@@ -43,13 +45,17 @@ class WorkbookStore(rootDir: File) {
         workbookDir(id).mkdirs()
         File(workbookDir(id), "data").mkdirs()
         File(workbookDir(id), "source").mkdirs()
-        save(document)
-        return document
+        return save(document)
     }
 
-    fun save(document: WorkbookDocument): WorkbookDocument {
+    fun save(document: WorkbookDocument): WorkbookDocument = synchronized(writeLock) {
         require(isSafeId(document.id)) { "invalid workbook id" }
         val dir = workbookDir(document.id)
+        val metadata = File(dir, "workbook.json")
+        if (metadata.exists()) {
+            val actual = load(document.id).revision
+            if (actual != document.revision) throw WorkbookConflictException(document.revision, actual)
+        }
         if (!dir.exists() && !dir.mkdirs()) error("Could not create workbook directory")
         val now = System.currentTimeMillis()
         val next = document.copy(
@@ -57,7 +63,7 @@ class WorkbookStore(rootDir: File) {
             updatedAtEpochMs = now,
         )
         atomicWrite(File(dir, "workbook.json"), next.toJson().toString())
-        return next
+        next
     }
 
     fun load(id: String): WorkbookDocument {
@@ -120,4 +126,9 @@ class WorkbookStore(rootDir: File) {
     }
 
     private fun isSafeId(id: String): Boolean = id.isNotEmpty() && id.all { it.isLetterOrDigit() || it == '-' }
+
+    private companion object {
+        // Same-process handles share the CAS lock. Cross-process writers remain unsupported.
+        val writeLocks = mutableMapOf<String, Any>()
+    }
 }

@@ -1,0 +1,5 @@
+--------- beginning of main
+10-20 12:19:49.968 22908 22925 I CloudyCoordinatorProbe: workbook=58dc6783-1e67-4879-8013-5e3f0a66cc8c; firstTask=2382, bounds=Rect(0, 0 - 2880, 1800); secondTask=2383, bounds=Rect(0, 0 - 2880, 1800)
+10-20 12:19:50.159 22908 22925 I CloudyCoordinatorProbe: capture=/data/user/0/io.github.baitian6641.cloudydata/files/coordinator-two-activities.png, pixels=2880x1800
+10-20 12:21:18.718 23114 23152 I CloudyCoordinatorProbe: workbook=ac439168-0aa3-4dd0-bbf6-85e5a7d9d11e; firstTask=2384, bounds=Rect(0, 0 - 2880, 1800); secondTask=2385, bounds=Rect(0, 0 - 2880, 1800)
+10-20 12:21:19.436 23114 23152 I CloudyCoordinatorProbe: capture=/data/user/0/io.github.baitian6641.cloudydata/files/coordinator-two-activities.png, pixels=2880x1800
