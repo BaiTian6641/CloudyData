@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 decoded-reference admission on source base
-`c37eccfd7d8f6bfe28e853ae79621c0c4ef53760`; 121 source/fixture hashes bind the
-combined revision in `qualification/evidence/2026-10-20-s03-reference-admission.md`.
+**Source:** S03.4 decoded-reference implementation through `48d4f8f4bc40d73d8ed9679df48d451e7334dced`;
+all121 committed source/fixture hashes match the artifact manifest in
+`qualification/evidence/2026-10-20-s03-reference-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

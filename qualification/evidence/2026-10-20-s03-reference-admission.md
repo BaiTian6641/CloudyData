@@ -4,7 +4,8 @@
 **IDs:** S03.4; F01/F05/F14/F64; Q01/Q16/Q17/Q19/Q34.
 **Status:** verified for the bounded decoded-reference/query cases below; full
 S03 package validation, schema reconciliation and semantic compiler remain open.
-**Source base:** c37eccfd7d8f6bfe28e853ae79621c0c4ef53760.
+**Implementation commit:** `48d4f8f4bc40d73d8ed9679df48d451e7334dced`; all121 source/fixture hashes verified
+against committed blobs. Source base: `c37eccfd7d8f6bfe28e853ae79621c0c4ef53760`.
 
 ## Readiness and authority
 
