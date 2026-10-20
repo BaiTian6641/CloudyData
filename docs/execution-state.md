@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** asset reconciliation `caf3751`; S03.2 implementation and exact tested
-source manifest are recorded in `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`.
+**Source:** implementation through `f535f8c74194c0c3ac1995a470aa2ed642ce1e99`; asset reconciliation `caf3751`.
+Exact tested source/APK manifests are in
+`qualification/evidence/2026-10-20-s03-workbook-coordinator.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

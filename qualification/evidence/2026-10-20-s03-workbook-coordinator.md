@@ -5,6 +5,8 @@
 receipt-recovery cases. Q02 precision remains covered by the native regressions.
 **Status:** verified for the bounded in-process/emulator cases below; full S03,
 physical desktop/input, durable journal and cross-process ownership remain partial.
+**Implementation commit:** `f535f8c74194c0c3ac1995a470aa2ed642ce1e99`. The committed source matches all 107
+source/fixture hashes of the combined tested revision.
 **Source base:** `caf3751` plus the combined implementation identified by
 `artifacts/2026-10-20-s03-coordinator/source-sha256.txt` (107 files).
 **Platform:** `qualification/platform-profiles/android-16-api36-existing-emulator.md`.

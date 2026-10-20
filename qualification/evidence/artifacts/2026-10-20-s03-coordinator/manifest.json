@@ -36,5 +36,6 @@
       "bytes": 75062,
       "sha256": "e093cbbb69b0dc2d0323d02ff5a17de0abefdf4dfc3bb5a10d4b0f143da35ebf"
     }
-  ]
+  ],
+  "implementation_commit": "f535f8c74194c0c3ac1995a470aa2ed642ce1e99"
 }
