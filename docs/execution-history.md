@@ -1049,3 +1049,34 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Full S03, Room, typed command catalog and S11.C0/S13.C0/S15.C0 stay partial/open.
   Next exact action: typed AddWorksheet with frozen request/sheet identity,
   idempotent retry/reopen, durable undo/redo and view-local activation.
+
+## 2026-10-20 — S03.3 typed AddWorksheet and retry admission
+
+- Reinspected clean main 6599320 and live matching origin; all 113 prior source/
+  fixture hashes matched, plans unchanged/already read. The next ready task was
+  AddWorksheet, F01/F64/Q17,Q19,Q34, over the verified interim checkpoint authority.
+- Typed additions append exact unmapped Table defaults with stable new identity,
+  one acceptance and durable history. Duplicate after undo cannot recreate a sheet.
+  IDs retained by current/history/receipts cannot be recycled, including after a
+  raw-save history barrier. UI freezes first-unused default name/request at first
+  dispatch and activates only its own view after proven acceptance; stored reopen
+  default and other local tabs stay unchanged. Unknown saved kinds/fields fail
+  closed; v3/journal1 shape is retained with older readers refusing new kinds.
+- Independent review found a pre-existing hidden-retry/Saved hazard. Root added a
+  per-view failure barrier: later Add/no-op/import attempts are explicitly refused,
+  original frozen retry stays visible, duplicate Save tokens cannot redispatch.
+  Known invalid requests are terminal Change not applied so corrected actions can
+  proceed. Import shares admission and checks pending identity after waiting so
+  queued Apply cannot resurrect discarded staging. Full proposal reapply is open.
+- Disjoint workers authored 14 command/admission tests and 2 real-death tests, plus
+  only the bounded debug service extension. First combined native 77/77 passed
+  in 20.406s with no skips; old 61 regressions all passed. Actual new writer
+  PIDs24232/24249 died at TEMP_SYNCED/REPLACED, Binder-proven by PID24199.
+- Real EACCES captured exact retry identity; actual staged CSV, rapid adds/lost ack,
+  queued failure/no-op/import, terminal validation and Apply→Discard have fixed
+  oracles. Default/x86 build and JVM 75/75 pass; lint 0 errors/6 warnings retained;
+  default ZIP both ABIs, tokens current, contrast 40/40. No disabled assertions.
+- Evidence and 115 source/fixture hashes: qualification/evidence/2026-10-20-s03-add-worksheet.md.
+  Native ViewModel/state evidence does not close new banner visual/input acceptance.
+  Physical hold,16KiB/Tableau blockers and S11.C0/S13.C0/S15.C0 bounds are unchanged.
+  Next exact task: typed desired-value SetFavorite and stable native Home retry.

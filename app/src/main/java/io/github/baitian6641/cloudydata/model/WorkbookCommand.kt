@@ -27,6 +27,15 @@ sealed interface WorkbookCommand {
         val options: ChartOptions,
     ) : WorkbookCommand
 
+    data class AddWorksheet(
+        override val commandId: String,
+        override val workbookId: String,
+        override val originWindowId: String,
+        override val expectedRevision: Long,
+        val worksheetId: String,
+        val name: String,
+    ) : WorkbookCommand
+
     fun validate() {
         for (id in listOf(commandId, workbookId, originWindowId)) {
             require(id.length in 1..128 && id.all { it.isLetterOrDigit() || it in "-_." }) { "Invalid command identity." }
@@ -38,11 +47,23 @@ sealed interface WorkbookCommand {
                 require(worksheetId.length in 1..128) { "Invalid worksheet identity." }
                 require(ChartOptions.fromJson(options.toJson()) == options) { "Chart options are invalid or unsupported." }
             }
+            is AddWorksheet -> {
+                require(worksheetId.length in 1..128 && worksheetId.all { it.isLetterOrDigit() || it in "-_." }) {
+                    "Invalid new worksheet identity."
+                }
+                require(name.isNotBlank() && name == name.trim() && name.length <= 512) {
+                    "Worksheet name must contain 1–512 characters."
+                }
+            }
         }
     }
 
     fun toJson(): JSONObject = JSONObject()
-        .put("kind", if (this is Rename) "rename" else "setChart")
+        .put("kind", when (this) {
+            is Rename -> "rename"
+            is SetChart -> "setChart"
+            is AddWorksheet -> "addWorksheet"
+        })
         .put("commandId", commandId)
         .put("workbookId", workbookId)
         .put("originWindowId", originWindowId)
@@ -51,6 +72,7 @@ sealed interface WorkbookCommand {
             when (val command = this@WorkbookCommand) {
                 is Rename -> put("name", command.name)
                 is SetChart -> put("worksheetId", command.worksheetId).put("options", command.options.toJson())
+                is AddWorksheet -> put("worksheetId", command.worksheetId).put("name", command.name)
             }
         }
 
@@ -63,6 +85,7 @@ sealed interface WorkbookCommand {
             val command = when (json.getString("kind")) {
                 "rename" -> Rename(id, workbook, window, revision, json.getString("name"))
                 "setChart" -> SetChart(id, workbook, window, revision, json.getString("worksheetId"), ChartOptions.fromJson(json.getJSONObject("options")))
+                "addWorksheet" -> AddWorksheet(id, workbook, window, revision, json.getString("worksheetId"), json.getString("name"))
                 else -> error("Unsupported workbook command kind.")
             }
             command.validate()

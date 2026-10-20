@@ -97,6 +97,8 @@ class WorkbookViewModel(
     private var coordinatorObserver: Job? = null
     private var activeWorksheetId: String? = null
     private var retryEdit: (() -> Unit)? = null
+    private var failedEditId: Any? = null
+    private var retryFailureMessage: String? = null
     private val commandMutex = Mutex()
     private val ownRevisions = linkedMapOf<Long, Long>()
     private var engine: DuckDbEngine? = null
@@ -126,6 +128,8 @@ class WorkbookViewModel(
                 if (coordinator != null) shared.reload()
                 coordinator = shared
                 retryEdit = null
+                failedEditId = null
+                retryFailureMessage = null
                 _state.update { it.copy(save = SaveState.Saved) }
                 coordinatorObserver?.cancel()
                 acceptDocument(shared.state.value)
@@ -172,23 +176,38 @@ class WorkbookViewModel(
             else -> null
         } ?: return
         val shared = coordinator ?: return
-        _state.update { it.copy(import = ImportUiState.Applying(pending)) }
         viewModelScope.launch {
-            runCatching {
-                shared.importSnapshot(document.revision) { current -> importService.apply(current, pending) }
-            }.onSuccess { saved ->
-                acceptDocument(shared.state.value)
-                _state.update { it.copy(import = ImportUiState.Idle, save = SaveState.Saved) }
-                autoPlace(snapshotColumns = saved.snapshot?.columns.orEmpty())
-            }.onFailure { error ->
-                acceptDocument(shared.state.value)
-                val published = shared.state.value.document.snapshot?.id != document.snapshot?.id
-                _state.update {
-                    it.copy(import = ImportUiState.Failed(
-                        (if (published) "The imported snapshot was saved locally, but finalization failed. " else "") +
-                            (error.message ?: "Could not complete the import."),
-                        if (published) null else pending,
-                    ))
+            commandMutex.withLock {
+                val currentPending = when (val current = _state.value.import) {
+                    is ImportUiState.Ready -> current.pending
+                    is ImportUiState.Failed -> current.pending
+                    else -> null
+                }
+                // Applying may wait behind an edit. Do not resurrect a discarded,
+                // replaced or already-completed staged import when it dequeues.
+                if (currentPending?.operationId != pending.operationId) return@withLock
+                val blocked = refuseWhileSaveFailed()
+                if (blocked != null) {
+                    _state.update { it.copy(import = ImportUiState.Failed("This import was not applied. $blocked", pending)) }
+                    return@withLock
+                }
+                _state.update { it.copy(import = ImportUiState.Applying(pending)) }
+                runCatching {
+                    shared.importSnapshot(document.revision) { current -> importService.apply(current, pending) }
+                }.onSuccess { saved ->
+                    acceptDocument(shared.state.value)
+                    _state.update { it.copy(import = ImportUiState.Idle, save = SaveState.Saved) }
+                    autoPlace(snapshotColumns = saved.snapshot?.columns.orEmpty())
+                }.onFailure { error ->
+                    acceptDocument(shared.state.value)
+                    val published = shared.state.value.document.snapshot?.id != document.snapshot?.id
+                    _state.update {
+                        it.copy(import = ImportUiState.Failed(
+                            (if (published) "The imported snapshot was saved locally, but finalization failed. " else "") +
+                                (error.message ?: "Could not complete the import."),
+                            if (published) null else pending,
+                        ))
+                    }
                 }
             }
         }
@@ -467,18 +486,19 @@ class WorkbookViewModel(
     }
 
     fun addWorksheet() {
-        val document = _state.value.document ?: return
-        val sheet = WorksheetDef(
-            id = UUID.randomUUID().toString(),
-            name = "Sheet ${document.worksheets.size + 1}",
-            rowFieldId = null,
-            measureFieldId = null,
-            aggregation = Aggregation.SUM,
-            markType = MarkType.TABLE,
-            sortDescending = true,
-        )
-        mutateDocument(activateSheetId = sheet.id) {
-            it.copy(worksheets = it.worksheets + sheet)
+        if (_state.value.document == null) return
+        val shared = coordinator ?: return
+        val sheetId = UUID.randomUUID().toString()
+        submitTyped(afterAccepted = {
+            // A duplicate can return a newer document in which this addition
+            // has already been undone. Do not recreate or activate that sheet.
+            if (shared.state.value.document.worksheets.any { it.id == sheetId }) activeWorksheetId = sheetId
+        }) { id, revision ->
+            val sheets = shared.state.value.document.worksheets
+            val names = sheets.map { it.name }.toSet()
+            var number = 1
+            while ("Sheet $number" in names) number++
+            WorkbookCommand.AddWorksheet(id, workbookId, originWindowId, revision, sheetId, "Sheet $number")
         }
     }
 
@@ -519,10 +539,7 @@ class WorkbookViewModel(
         }
     }
 
-    private fun mutateDocument(
-        activateSheetId: String? = null,
-        transform: (WorkbookDocument) -> WorkbookDocument,
-    ) {
+    private fun mutateDocument(transform: (WorkbookDocument) -> WorkbookDocument) {
         val visible = _state.value.document ?: return
         val shared = coordinator ?: return
         runEdit(
@@ -534,11 +551,13 @@ class WorkbookViewModel(
                     next.copy(activeWorksheetId = current.activeWorksheetId)
                 }
             },
-            afterAccepted = { if (activateSheetId != null) activeWorksheetId = activateSheetId },
         )
     }
 
-    private fun submitTyped(factory: (String, Long) -> WorkbookCommand) {
+    private fun submitTyped(
+        afterAccepted: (WorkbookDocument) -> Unit = {},
+        factory: (String, Long) -> WorkbookCommand,
+    ) {
         val revision = _state.value.document?.revision ?: return
         val shared = coordinator ?: return
         val id = UUID.randomUUID().toString()
@@ -554,6 +573,7 @@ class WorkbookViewModel(
                 acceptedEdge = frozen.expectedRevision to outcome.acceptedRevision
                 outcome.document
             },
+            afterAccepted = afterAccepted,
             revisionEdge = { acceptedEdge },
         )
     }
@@ -563,11 +583,22 @@ class WorkbookViewModel(
         operation: suspend (Long) -> WorkbookDocument,
         afterAccepted: (WorkbookDocument) -> Unit = {},
         revisionEdge: (() -> Pair<Long, Long>?)? = null,
+        retryOf: Any? = null,
     ) {
-        retryEdit = null
-        _state.update { it.copy(save = SaveState.Saving) }
+        val editId = retryOf ?: Any()
         viewModelScope.launch {
             commandMutex.withLock {
+                // Keep the first failed intent visible. A later queued action
+                // cannot overwrite its retry slot or claim all work was saved.
+                if (retryOf != null && retryOf !== failedEditId) return@withLock
+                if (failedEditId != null && retryOf !== failedEditId) {
+                    refuseWhileSaveFailed()
+                    return@withLock
+                }
+                retryEdit = null
+                failedEditId = null
+                retryFailureMessage = null
+                _state.update { it.copy(save = SaveState.Saving) }
                 // Rebase only through this view's own preceding accepted commands.
                 // Any intervening command from another view still produces a conflict.
                 var expected = expectedRevision
@@ -582,16 +613,28 @@ class WorkbookViewModel(
                     coordinator?.state?.value?.let(::acceptDocument)
                     _state.update { it.copy(save = SaveState.Saved) }
                 }.onFailure { error ->
-                    if (error is WorkbookConflictException) {
+                    if (error is WorkbookConflictException || error is IllegalArgumentException) {
                         coordinator?.state?.value?.let(::acceptDocument)
                         _state.update { it.copy(save = SaveState.Conflict(error.message.orEmpty())) }
                     } else {
-                        retryEdit = { runEdit(expectedRevision, operation, afterAccepted, revisionEdge) }
-                        _state.update { it.copy(save = SaveState.Failed(error.message ?: "Could not save the workbook.")) }
+                        val message = error.message ?: "Could not save the workbook."
+                        failedEditId = editId
+                        retryFailureMessage = message
+                        retryEdit = { runEdit(expectedRevision, operation, afterAccepted, revisionEdge, retryOf = editId) }
+                        _state.update { it.copy(save = SaveState.Failed(message)) }
                     }
                 }
             }
         }
+    }
+
+    /** Called under commandMutex; later refused actions are never automatically replayed. */
+    private fun refuseWhileSaveFailed(): String? {
+        if (failedEditId == null) return null
+        val message = "${retryFailureMessage.orEmpty()} A later change was not applied. " +
+            "Retry the previous change with Save before applying the later change again."
+        _state.update { it.copy(save = SaveState.Failed(message)) }
+        return message
     }
 
     private fun acceptDocument(shared: CoordinatedWorkbook) {

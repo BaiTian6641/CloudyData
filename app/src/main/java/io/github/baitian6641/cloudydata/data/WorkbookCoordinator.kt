@@ -3,6 +3,9 @@ package io.github.baitian6641.cloudydata.data
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorkbookCommand
 import io.github.baitian6641.cloudydata.model.CommandOutcome
+import io.github.baitian6641.cloudydata.model.Aggregation
+import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.WorksheetDef
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,6 +97,24 @@ class WorkbookCoordinator internal constructor(
                 current.copy(worksheets = current.worksheets.map {
                     if (it.id == request.worksheetId) it.copy(chart = request.options) else it
                 })
+            }
+            is WorkbookCommand.AddWorksheet -> {
+                // Stable worksheet identity is never recycled through undo or a
+                // fresh command ID while its history/receipt is retained.
+                require((listOf(current) + checkpoint.undo + checkpoint.redo).none { document ->
+                    document.worksheets.any { it.id == request.worksheetId }
+                } && checkpoint.receipts.none {
+                    (it.command as? WorkbookCommand.AddWorksheet)?.worksheetId == request.worksheetId
+                }) { "Worksheet identity is already in use or retained by history." }
+                current.copy(worksheets = current.worksheets + WorksheetDef(
+                    id = request.worksheetId,
+                    name = request.name,
+                    rowFieldId = null,
+                    measureFieldId = null,
+                    aggregation = Aggregation.SUM,
+                    markType = MarkType.TABLE,
+                    sortDescending = true,
+                ))
             }
         }
         require(WorkbookDocument.fromJson(candidate.toJson()) == candidate) { "The command contains invalid or unsupported metadata." }

@@ -1,0 +1,64 @@
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:167: Warning: addWebMessageListener should only be called if the feature WEB_MESSAGE_LISTENER is present; to check call androidx.webkit.WebViewFeature#isFeatureSupported [RequiresFeature]
+        WebViewCompat.addWebMessageListener(
+        ^
+
+   Explanation for issues of type "RequiresFeature":
+   Some APIs require optional features to be present. This check makes sure
+   that calls to these APIs are surrounded by a check which enforces this.
+
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:135: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+        view.webViewClient = object : WebViewClientCompat() {
+                                      ~~~~~~~~~~~~~~~~~~~~~
+/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt:135: Warning: WebViewClient should implement onRenderProcessGone to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down. [MissingOnRenderProcessGone from androidx.webkit]
+        view.webViewClient = object : WebViewClientCompat() {
+                                      ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "MissingOnRenderProcessGone":
+   If a WebView's render process is shut down, the app will crash unless the
+   WebViewClient implements onRenderProcessGone and returns true. It is highly
+   recommended to handle this callback.
+
+   https://developer.android.com/develop/ui/views/layout/webapps/handle-termination
+
+   Vendor: Android Open Source Project
+   Identifier: androidx.webkit
+   Feedback: https://issuetracker.google.com/issues/new?component=460423
+
+/home/polar/CloudyData/gradle/libs.versions.toml:3: Warning: A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.10 is available: 2.4.21 [NewerVersionAvailable]
+kotlin = "2.2.10"
+         ~~~~~~~~
+
+   Explanation for issues of type "NewerVersionAvailable":
+   This detector checks with a central repository to see if there are newer
+   versions available for the dependencies used by this project. This is
+   similar to the GradleDependency check, which checks for newer versions
+   available in the Android SDK tools and libraries, but this works with any
+   MavenCentral dependency, and connects to the library every time, which
+   makes it more flexible but also much slower.
+
+/home/polar/CloudyData/app/build.gradle.kts:29: Warning: Missing x86_64 ABI support for ChromeOS [ChromeOsAbiSupport]
+            abiFilters += qualificationAbis
+                          ~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ChromeOsAbiSupport":
+   To properly support ChromeOS, your Android application should have an x86
+   and/or x86_64 binary as part of the build configuration. To fix the issue,
+   ensure your files are properly optimized for ARM; the binary translator
+   will then ensure compatibility with x86. Alternatively, add an abiSplit for
+   x86 within your build.gradle file and create the required x86
+   dependencies.
+
+   https://developer.android.com/ndk/guides/abis
+
+/home/polar/CloudyData/app/src/main/res/mipmap-anydpi-v26: Warning: This folder configuration (v26) is unnecessary; minSdkVersion is 35. Merge all the resources in this folder into mipmap-anydpi. [ObsoleteSdkInt]
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+0 errors, 6 warnings

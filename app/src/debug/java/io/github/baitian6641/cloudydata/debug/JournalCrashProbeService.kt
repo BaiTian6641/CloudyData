@@ -66,6 +66,14 @@ class JournalCrashProbeService : Service() {
                         worksheetId = config.worksheetId,
                         options = ChartOptions(title = config.value),
                     )
+                    KIND_ADD_WORKSHEET -> WorkbookCommand.AddWorksheet(
+                        commandId = config.commandId,
+                        workbookId = config.workbookId,
+                        originWindowId = ORIGIN_WINDOW,
+                        expectedRevision = config.expectedRevision,
+                        worksheetId = config.worksheetId,
+                        name = config.value,
+                    )
                     else -> error("Unsupported synthetic probe command")
                 }
                 coordinator.execute(command)
@@ -95,7 +103,7 @@ class JournalCrashProbeService : Service() {
         ).also {
             UUID.fromString(it.runId)
             require(it.expectedRevision >= 0)
-            require(it.kind in setOf(KIND_RENAME, KIND_CHART))
+            require(it.kind in setOf(KIND_RENAME, KIND_CHART, KIND_ADD_WORKSHEET))
             require(it.value.length <= 200)
         }
         return messenger.binder
@@ -122,6 +130,7 @@ class JournalCrashProbeService : Service() {
         const val ORIGIN_WINDOW = "journal-crash-probe"
         const val KIND_RENAME = "rename"
         const val KIND_CHART = "chart"
+        const val KIND_ADD_WORKSHEET = "addWorksheet"
         const val EXTRA_RUN_ID = "probeRunId"
         const val EXTRA_WORKBOOK_ID = "workbookId"
         const val EXTRA_COMMAND_ID = "commandId"

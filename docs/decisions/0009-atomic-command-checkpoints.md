@@ -18,9 +18,28 @@ No journal file competes with the workbook as a second source of truth.
 - Format v3 stores a version-1 `commandJournal` envelope with the exact head hash,
   bounded undo/redo document snapshots and typed acceptance receipts. Canonical
   structural hashes detect corruption; they are not signatures or trust grants.
-- Typed Rename and SetChart requests contain command/workbook/window identity,
-  expected revision, explicit payload and (for chart) affected worksheet identity.
+- Typed Rename, SetChart and AddWorksheet requests contain command/workbook/window
+  identity, expected revision and explicit payload. Chart edits identify their
+  target sheet; additions carry the frozen new sheet ID and name.
   Opening a file reconstructs state; it never executes or replays saved commands.
+- AddWorksheet creates a default unmapped Table worksheet without changing the
+  stored reopen default. IDs retained by current content, either history direction
+  or accepted AddWorksheet receipts cannot be recycled under a new request. An
+  identical retry after undo returns its original acceptance without recreating
+  the sheet. Only the requesting view activates a still-present sheet after proven
+  acceptance; other views keep their local selection. The first unused default
+  Sheet N label is selected once from canonical state at first dispatch.
+- The additive command kind keeps the v3/journal-v1 envelope. Readers that do not
+  recognize it fail closed on the unknown command kind without rewriting the
+  file, rather than silently dropping receipts. Existing Rename/SetChart records
+  retain their exact shape and remain readable.
+- A failed view edit retains its first frozen retry. Later queued edits and
+  imports are explicitly refused before dispatch until that failure is retried;
+  they cannot overwrite the retry or display Saved. Refused later actions are
+  not automatically replayed. Repeated Save invocations cannot reuse a completed
+  retry token. Deterministic request-validation failures are Change not applied
+  results without a retry token, so a corrected action can be submitted. Full
+  preservation/review/reapply of multiple rejected proposals remains open.
 - A retained identical request resolves before stale-revision rejection and causes
   no new revision/write. Reusing an ID with changed request data is refused. The
   original accepted revision and the current document are distinct reply fields.

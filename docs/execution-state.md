@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 implementation through `07883301e0f251c6e9d3a4dea5f0b61c0182c4c5`;
-all 113 committed source/fixture hashes match the artifact manifest in
-`qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md`.
+**Source:** S03.3 typed AddWorksheet/admission combined over `6599320`; 115
+source/fixture hashes and exact runtime artifacts are recorded in
+`qualification/evidence/2026-10-20-s03-add-worksheet.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -49,17 +49,29 @@ unless stated otherwise.
 - Workbook format v3 adds the atomic durable command/history envelope. v1/v2
   documents migrate on first save with exact original bytes preserved; unknown
   future v4 and corrupt/missing journals are refused without rewriting evidence.
-- S03.3 typed rename/chart commands and generic content checkpoints restore
+- S03.3 typed rename/chart/worksheet-add commands and generic checkpoints restore
   bounded undo/redo after reopen. Retained identical command IDs cannot replay;
   changed request identity is refused. Real native writer-process death at temp
   fsync and post-replacement recovers exact before/after states. Final native
-  run 61/61 includes metadata recovery 6, journal 12, process-death 3, coordinator 14
-  and regressions 26. Valid canonical recovery removes abandoned direct metadata
+  run 77/77 includes worksheet commands/admission 14, metadata recovery 6, journal
+  12, process-death 5, coordinator 14 and regressions 26. Valid canonical recovery removes abandoned direct metadata
   temps; missing/corrupt canonical files preserve candidates. Live same-process
   writers, symlinks and unrelated files are protected. Permission-denied cleanup
   preserves accepted access and retries on a later load.
   This qualifies single-writer process death; Room, full typed catalog and
   whole-product-process lifecycle remain separate.
+- AddWorksheet accepts one exact default Table definition and durable receipt.
+  Identical retries cannot add another sheet or recreate an undone addition.
+  Retained current/history/receipt IDs cannot be recycled. Only the requesting
+  native ViewModel activates an accepted still-present sheet; other views keep
+  local tabs and the stored reopen default stays unchanged. Rapid additions pick
+  the first unused Sheet N labels and retain frozen identities across retry.
+- A failed view save retains its first retry and stays failed when later queued
+  edits, no-ops or imports are explicitly refused before dispatch. Save retries
+  that exact intent; refused later actions require a new request. Staged imports
+  survive refusal; discarded/replaced/completed queued imports cannot resurrect.
+  Deterministic invalid requests are Change not applied without a retry token,
+  so corrected actions can proceed. Full rejected-proposal review/reapply is open.
 - Home recents/favorites/all filters; favorite toggle code exists but is not yet
   tested.
 - Offline Vega 6.4.0 + CSP interpreter host renders trusted bar and multi-series
@@ -328,18 +340,23 @@ unless stated otherwise.
   keyboard traversal, IME, TalkBack, focus return, shortcuts, density modes and
   light/dark coverage still require their own runs.
 - Rename, new worksheet/local tabs and real replacement import now have bounded
-  S03.2 native cases. Their complete dialog/pointer/keyboard workflow acceptance,
+  S03.2 native cases and S03.3 typed-add/ViewModel admission cases. Their complete
+  dialog/pointer/keyboard workflow acceptance,
   favorites-toggle UI and full non-SUM aggregate conformance remain unverified.
 - The worksheet Cancel action's UI wiring is not exercised against a slow query;
   only the native interrupt and query-generation invalidation code exist.
 - The shared coordinator now rejects stale revisions and serializes same-view
   edits, imports and snapshot reads in one app process (14/14 native tests).
-  Rename/chart IDs and atomic durable history now have 12 journal tests, 3 actual
-  writer-process-death cases and 6 metadata-recovery tests. Complete typed command
-  coverage, Room integration, rejected-proposal review/reapply, cross-process ownership and whole-product
+  Rename/chart/add IDs and atomic durable history now have 12 journal tests, 14
+  worksheet/admission tests, 5 actual writer-death cases and 6 recovery tests.
+  Complete typed command coverage, Room integration, rejected-proposal review/
+  reapply, cross-process ownership and whole-product
   process restoration remain open. Conflict-banner visual/input review remains
   unverified. History50/receipts4096/metadata32MiB bounds are explicit; receipt
   capacity refuses new typed commands instead of silently evicting IDs.
+- New retry/admission error messages are verified as native ViewModel states;
+  their banner pixels, short-window wrapping, keyboard/pointer Retry and TalkBack
+  remain implemented_unverified. Existing banner components/layout are reused.
 - Missing/corrupt canonical metadata and permission-denied cleanup preserve
   metadata temporary candidates. Validated recovery removes only known abandoned
   direct regular files; no automatic promotion or manual recovery is implemented.
@@ -431,47 +448,51 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Default dual-ABI debug/test APK build and JVM 75/75 pass; lint 0 errors/6 warnings.
-  The existing ChromeOsAbiSupport warning remains visible; default ZIP inspection
-  confirms arm64-v8a+x86_64. No test/assertion/lint check was disabled.
-- Existing API36 emulator-5580 final native run 61/61, no skips, 19.017s: metadata
-  recovery 6, journal 12, actual writer-process-death 3, coordinator 14, regressions 26.
-- Actual runtime APK `f6c6b6757d04092e7cf23a46c2647d241300736737861bdaa9c201f425162741`;
-  test APK `9689e1445183d663313a88cb87324ea89394e87c51aad8f18e81054d842b933c`.
-- Real writer PIDs23800(TEMP_SYNCED)/23817(REPLACED)/23833(TEMP_SYNCED) died,
-  observed by PID23769 via Binder. Recovery removes a real orphan only when the
-  canonical checkpoint validates; constructed corruption after actual death
-  retains both exact candidates. Real chmod0555 deletion denial is diagnostic,
-  preserving valid workbook availability. Reentrant/concurrent Store tests pass.
-- Tokens current; declared contrast 40/40. Independent source/test review found
-  no material finding. This storage-only change adds no surface; preceding scoped
-  native capture remains evidence for its own source revision.
-- Current raw logs: qualification/evidence/android-test-results/2026-10-20-s033-temp-recovery/;
-  source/artifact manifests: qualification/evidence/artifacts/2026-10-20-s033-temp-recovery/.
-  No physical Googlebook,16KiB, Tableau, power-loss or cross-process acceptance added.
+- Combined x86 and default dual-ABI debug/test build and JVM 75/75 pass; lint
+  0 errors/6 warnings. Existing ChromeOsAbiSupport warning remains visible;
+  default ZIP contains arm64-v8a+x86_64. No checks/assertions were disabled.
+- Existing API36 emulator-5580 first combined native run 77/77, no skips, 20.406s:
+  AddWorksheet/admission14, new add deaths2, metadata recovery6, journal12,
+  prior journal deaths3, coordinator14, engine/persistence/query regressions26.
+- Runtime APK `62b045ae5ec0e52e68979285a95aa0cdab44183f8dd0b1bdc4e0f679164b2e03`;
+  test APK `d0d8f8353fa04a72275e83a3765001f99ee3a3d1d4a8a4d7e6ee213c0beffdbf`.
+- New add writer PIDs24232(TEMP_SYNCED)/24249(REPLACED) actually died, observed
+  from PID24199 via Binder. Prior chart/recovery deaths also passed at
+  PIDs24274/24290/24306. Exact definitions, stored default, receipts and durable
+  undo/reopen/redo passed; duplicate-after-undo did not recreate the sheet.
+- Real move-time EACCES, post-replacement acknowledgement loss, staged native CSV,
+  blocked queued Add/no-op/import, invalid→corrected request and queued Apply→
+  Discard all have independent exact oracles. Tokens current; contrast 40/40.
+- Independent source/test review resolved failure-barrier, import admission,
+  terminal-validation and stale pending-operation findings before this run.
+  No new native pixel/input acceptance is claimed for the failure-banner text.
+- Current logs: qualification/evidence/android-test-results/2026-10-20-s033-add-worksheet/;
+  source/artifact manifest: qualification/evidence/artifacts/2026-10-20-s033-add-worksheet/.
+  Physical Googlebook,16KiB,Tableau,power-loss,cross-process gates remain open/blocked.
 
 ## Next exact task
 
-**S03.3 typed AddWorksheet command and retry-safe view activation.**
+**S03.3 typed SetFavorite(desiredValue) and retry-safe Home intent.**
 
-- IDs: F01/F64, Q17/Q19/Q34. Prerequisites: verified typed receipt/checkpoint
-  authority, durable history, shared coordinator and orphan-temp recovery under
-  ADR0009. Room and full source-version history remain open independently.
-- Paths: model/WorkbookCommand.kt, data/WorkbookCoordinator.kt,
-  ui/WorkbookViewModel.kt, disjoint focused native command tests, evidence/state.
-- Action: freeze the new sheet ID/name and request identity before first dispatch;
-  add the sheet exactly once through the coordinator and persistent receipt.
-  Preserve the stored reopen default and other windows' local active tabs; only
-  the requesting view activates its sheet after proven acceptance. Reject invalid
-  identity/collisions and incompatible saved command versions without rewriting.
-- Independent oracle: new command adds one exact sheet and one receipt/revision;
-  acknowledgement loss and identical retry/reopen never add another sheet;
-  changed request under the same ID is refused; durable undo/reopen/redo restores
-  exact definitions and independent views retain their local selections. Cover
-  stale foreign edits and real write/death boundaries, then independently review
-  the actual combined source/native evidence before committing.
-- Remaining typed command families and Room follow; CUST09.4 remains a chart
-  follow-up and does not close S11.C0. S13.C0/S15.C0 remain mandatory when relevant.
+- IDs: F01/F64, Q17/Q19/Q34; bounded Q21 Home-action checks. Prerequisites:
+  verified typed receipts/checkpoint, durable history, shared coordinator and
+  native failure admission. No new engine or worker capability is needed.
+- Paths: model/WorkbookCommand.kt, data/WorkbookCoordinator.kt, ui/HomeScreen.kt
+  or a narrow Home command owner, disjoint focused native tests, evidence/state.
+- Action: replace Home's generic replayable toggle with an explicit desired
+  Boolean and frozen command/workbook/window/expected-revision identity. Keep
+  the same exact request across acknowledgement loss/retry, expose pending/error
+  truthfully, and reload the actual accepted library state. Preserve other views,
+  workbooks, worksheets, snapshot and stored default.
+- Independent oracle: false→true accepts once/one receipt; duplicate after rename
+  returns current document without writing; changed desired value under the same
+  ID is refused; undo/reopen/duplicate leaves false and redo alone restores true.
+  No-op acceptance adds no history step. Exercise the actual native Home star and
+  Favorites filter, target semantics and nested-row non-opening; inspect affected
+  native render/input, then independently review the combined revision/results.
+- Room, full proposals, remaining typed mapping/aggregation/sort families and
+  source-version history remain separate. S11.C0 stays partial; S13.C0/S15.C0
+  remain mandatory when applicable and are not promoted by this local slice.
 
 ## Protected context
 
