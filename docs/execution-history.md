@@ -1020,3 +1020,32 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   but cleanup remains the next exact task. Source/artifact hashes and raw native
   proof are in qualification/evidence/2026-10-20-s03-durable-command-journal.md.
   Physical Googlebook hold and S11.C0/S13.C0/S15.C0 boundaries remain unchanged.
+
+## 2026-10-20 — S03.3 validated metadata orphan cleanup
+
+- Continued after the durable journal implementation 92f8aaa and source binding
+  99e770d; both were normally pushed and remote main was verified. The next exact
+  ready task was abandoned metadata-temp recovery, F01/F64/Q17,Q34.
+- WorkbookStore now validates canonical content/journal/directory identity under
+  its shared root lock before removing only direct regular numeric metadata temps.
+  It never promotes a candidate, follows a candidate symlink, recurses or cleans
+  missing/corrupt/future metadata. Per-root active registration protects reentrant
+  loads; same-process readers wait for the writer. Failed cleanup is logged and
+  valid accepted work remains available.
+- Disjoint test workers added six filesystem/concurrency tests and extended three
+  actual writer-death tests. Native 61/61 passed in 19.017s with no skips, including
+  journal 12, coordinator 14 and native engine/import/query/persistence regressions 26.
+  Binder confirmed writer PIDs23800/23817/23833 from observer PID23769. Exact content,
+  history, receipts and bytes survived cleanup; real corrupt-canonical and chmod
+  denial cases retained candidates. Real symlinks/targets and other files survived.
+- Both x86 qualification and default dual-ABI debug/test builds passed. JVM 75/75;
+  lint 0 errors/6 warnings retained. Default ZIP contains arm64-v8a+x86_64. Token
+  generation current; contrast 40/40 declared pairs. No disabled checks or deleted
+  emulator data. Independent source/test review found no material finding.
+- Evidence, raw logs, 113 source/fixture hashes and exact runtime/package hashes:
+  qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md. No new visible
+  surface or physical-input acceptance was claimed. Physical Googlebook remains
+  on hold; power loss and concurrent cross-process writers remain unqualified.
+- Full S03, Room, typed command catalog and S11.C0/S13.C0/S15.C0 stay partial/open.
+  Next exact action: typed AddWorksheet with frozen request/sheet identity,
+  idempotent retry/reopen, durable undo/redo and view-local activation.

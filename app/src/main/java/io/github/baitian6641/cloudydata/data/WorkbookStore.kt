@@ -1,5 +1,6 @@
 package io.github.baitian6641.cloudydata.data
 
+import android.util.Log
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
@@ -9,6 +10,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.nio.file.LinkOption
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import org.json.JSONObject
 import java.util.UUID
@@ -21,7 +24,7 @@ class WorkbookStore(
 ) {
     val root: File = File(rootDir, "workbooks").apply { mkdirs() }
     val coordinators: WorkbookRegistry by lazy { WorkbookRegistry(this) }
-    private val writeLock = synchronized(writeLocks) { writeLocks.getOrPut(root.canonicalPath) { Any() } }
+    private val writeLock = synchronized(writeLocks) { writeLocks.getOrPut(root.canonicalPath) { WriteState() } }
 
     fun create(name: String): WorkbookDocument {
         val trimmed = name.trim().ifEmpty { "Untitled workbook" }
@@ -93,15 +96,41 @@ class WorkbookStore(
 
     fun load(id: String): WorkbookDocument = loadCheckpoint(id).document
 
-    fun loadCheckpoint(id: String): WorkbookCheckpoint {
+    fun loadCheckpoint(id: String): WorkbookCheckpoint = synchronized(writeLock) {
         val file = metadataFile(id)
         require(file.length() <= MAX_METADATA_BYTES) { "Workbook metadata exceeds the 32 MiB limit." }
-        return WorkbookCheckpoint.fromJson(JSONObject(file.readText(StandardCharsets.UTF_8))).also {
+        val checkpoint = WorkbookCheckpoint.fromJson(JSONObject(file.readText(StandardCharsets.UTF_8))).also {
             require(it.document.id == id) { "Workbook metadata identity does not match its directory." }
         }
+        // Only an accepted canonical checkpoint makes unpublished metadata expendable.
+        // Never promote a temporary file or discard candidates when validation fails.
+        runCatching { removeAbandonedMetadataTemps(file.parentFile) }.onFailure {
+            Log.w("WorkbookStore", "Could not inspect abandoned metadata temporary files.", it)
+        }
+        checkpoint
     }
 
     private fun metadataFile(id: String) = File(workbookDir(id), "workbook.json")
+
+    private fun removeAbandonedMetadataTemps(directory: File) {
+        val parent = directory.canonicalFile.toPath()
+        val entries = directory.listFiles() ?: run {
+            Log.w("WorkbookStore", "Could not inspect abandoned metadata temporary files.")
+            return
+        }
+        entries.forEach { candidate ->
+            val path = candidate.toPath()
+            if (!METADATA_TEMP_NAME.matches(candidate.name) ||
+                !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) ||
+                parent.resolve(candidate.name) in writeLock.activeMetadataTemps
+            ) return@forEach
+            // Recovery remains available if a stale file cannot be removed. Delete
+            // only this direct path, never a link target or anything recursively.
+            runCatching { Files.deleteIfExists(path) }.onFailure {
+                Log.w("WorkbookStore", "Could not remove an abandoned metadata temporary file.", it)
+            }
+        }
+    }
 
     private fun preserveLegacy(metadata: File, version: Int) {
         val dir = File(metadata.parentFile, "migration").apply { mkdirs() }
@@ -158,6 +187,10 @@ class WorkbookStore(
 
     private fun atomicWrite(target: File, bytes: ByteArray) {
         val temp = File.createTempFile("workbook-", ".tmp", target.parentFile)
+        // Shared among handles for this root. Monitors are reentrant: an observer
+        // can load through another Store on this same thread during TEMP_SYNCED.
+        val tempKey = temp.parentFile.canonicalFile.toPath().resolve(temp.name)
+        writeLock.activeMetadataTemps.add(tempKey)
         try {
             FileOutputStream(temp).use { stream ->
                 stream.write(bytes)
@@ -171,15 +204,24 @@ class WorkbookStore(
                 java.nio.channels.FileChannel.open(target.parentFile.toPath(), java.nio.file.StandardOpenOption.READ).use { it.force(true) }
             }
         } finally {
-            if (temp.exists()) temp.delete()
+            try {
+                if (temp.exists()) temp.delete()
+            } finally {
+                writeLock.activeMetadataTemps.remove(tempKey)
+            }
         }
     }
 
     private fun isSafeId(id: String): Boolean = id.isNotEmpty() && id.all { it.isLetterOrDigit() || it == '-' }
 
+    private class WriteState {
+        val activeMetadataTemps = mutableSetOf<Path>()
+    }
+
     private companion object {
         // Same-process handles share the CAS lock. Cross-process writers remain unsupported.
         const val MAX_METADATA_BYTES = 32 * 1024 * 1024
-        val writeLocks = mutableMapOf<String, Any>()
+        val METADATA_TEMP_NAME = Regex("workbook-[0-9]+\\.tmp")
+        val writeLocks = mutableMapOf<String, WriteState>()
     }
 }

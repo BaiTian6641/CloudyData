@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.runBlocking
 import org.junit.After
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
@@ -81,10 +82,22 @@ class WorkbookJournalCrashTest {
 
     @Test
     fun killAfterTemporaryFileSyncKeepsAcceptedRenameAndItsHistory() = runBlocking {
+        val acceptedMetadata = metadataFile().readBytes()
+        val acceptedCheckpoint = WorkbookStore(root).loadCheckpoint(original.id)
+        assertEquals(renamed, acceptedCheckpoint.document)
         killWriterAt(WorkbookCommitPhase.TEMP_SYNCED)
+        val abandoned = abandonedMetadataTemps()
+        assertEquals("SIGKILL after fsync must leave one known unpublished metadata temp", 1, abandoned.size)
+        assertTrue("The fully written abandoned candidate must contain bytes", abandoned.single().length() > 0)
+        assertArrayEquals("The unpublished chart cannot replace accepted canonical metadata", acceptedMetadata, metadataFile().readBytes())
+
         val reopenedStore = WorkbookStore(root)
         val reopened = reopenedStore.coordinators.open(original.id)
         val durable = reopened.state.value.document
+        assertTrue("A validated accepted canonical checkpoint makes its abandoned temp disposable", abandonedMetadataTemps().isEmpty())
+        assertFalse(abandoned.single().exists())
+        assertArrayEquals("Cleanup must not rewrite accepted metadata", acceptedMetadata, metadataFile().readBytes())
+        assertEquals("Cleanup must preserve content, history and receipts", acceptedCheckpoint, reopenedStore.loadCheckpoint(original.id))
         assertEquals(renamed, durable)
         assertEquals("Workbook B", durable.name)
         assertEquals(ChartOptions(), durable.worksheets.single().chart)
@@ -95,6 +108,7 @@ class WorkbookJournalCrashTest {
         assertTrue(duplicateRename.duplicate)
         assertEquals(renamed.revision, duplicateRename.acceptedRevision)
         assertEquals(renamed.revision, duplicateRename.document.revision)
+        assertArrayEquals("Duplicate recognition must not rewrite recovered metadata", acceptedMetadata, metadataFile().readBytes())
         val undone = reopened.undo(renamed.revision)
         assertEquals("Workbook A", undone.name)
         assertEquals(ChartOptions(), undone.worksheets.single().chart)
@@ -102,6 +116,28 @@ class WorkbookJournalCrashTest {
         assertFalse(reopened.state.value.canUndo)
         assertTrue(reopened.state.value.canRedo)
         assertEquals(undone, WorkbookStore(root).load(original.id))
+    }
+
+    @Test
+    fun killBeforeReplacementThenCorruptCanonicalRetainsBothRecoveryCandidates() = runBlocking {
+        val acceptedMetadata = metadataFile().readBytes()
+        killWriterAt(WorkbookCommitPhase.TEMP_SYNCED)
+        val abandoned = abandonedMetadataTemps()
+        assertEquals("Real SIGKILL must produce the recovery candidate", 1, abandoned.size)
+        val candidate = abandoned.single()
+        val candidateBytes = candidate.readBytes()
+        assertTrue(candidateBytes.isNotEmpty())
+        assertArrayEquals(acceptedMetadata, metadataFile().readBytes())
+
+        // Corruption is constructed after the real writer death. Neither the
+        // malformed canonical nor the unpublished candidate has promotion authority.
+        val corruptCanonical = "{broken canonical after real writer SIGKILL".toByteArray(Charsets.UTF_8)
+        metadataFile().writeBytes(corruptCanonical)
+        val failure = runCatching { WorkbookStore(root).coordinators.open(original.id) }.exceptionOrNull()
+        assertTrue("A corrupt canonical checkpoint must refuse reopen instead of promoting an unpublished temp", failure != null)
+        assertArrayEquals("Failed reopen must preserve corrupt canonical bytes for diagnosis", corruptCanonical, metadataFile().readBytes())
+        assertEquals(listOf(candidate.name), abandonedMetadataTemps().map { it.name })
+        assertArrayEquals("Failed reopen must retain the exact unpublished candidate", candidateBytes, candidate.readBytes())
     }
 
     @Test
@@ -143,6 +179,13 @@ class WorkbookJournalCrashTest {
         assertEquals(redone, duplicateAfterHistory.document)
         assertEquals(redone, WorkbookStore(root).load(original.id))
     }
+
+    private fun metadataFile(): File = File(File(File(root, "workbooks"), original.id), "workbook.json")
+
+    private fun abandonedMetadataTemps(): List<File> = metadataFile().parentFile!!.listFiles()
+        .orEmpty()
+        .filter { it.isFile && it.name.matches(Regex("workbook-[0-9]+\\.tmp")) }
+        .sortedBy { it.name }
 
     private fun killWriterAt(phase: WorkbookCommitPhase) {
         val completed = CountDownLatch(1)

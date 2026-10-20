@@ -1,0 +1,67 @@
+         1792518681.778 23769 23783 W WorkbookStore: Could not remove an abandoned metadata temporary file.
+         1792518681.778 23769 23783 W WorkbookStore: java.nio.file.AccessDeniedException: /data/user/0/io.github.baitian6641.cloudydata/files/metadata-recovery-test-3eb0b5de-7aff-47fd-a57c-994203d21249/workbooks/88bde51f-d802-4663-ae53-5a26e34f2e14/workbook-401.tmp
+         1792518681.778 23769 23783 W WorkbookStore: 	at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:250)
+         1792518681.778 23769 23783 W WorkbookStore: 	at sun.nio.fs.AbstractFileSystemProvider.deleteIfExists(AbstractFileSystemProvider.java:110)
+         1792518681.778 23769 23783 W WorkbookStore: 	at java.nio.file.Files.deleteIfExists(Files.java:1181)
+         1792518681.778 23769 23783 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.removeAbandonedMetadataTemps(WorkbookStore.kt:129)
+         1792518681.778 23769 23783 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.loadCheckpoint(WorkbookStore.kt:107)
+         1792518681.778 23769 23783 W WorkbookStore: 	at io.github.baitian6641.cloudydata.WorkbookMetadataRecoveryTest$deniedTempDeletionKeepsValidWorkbookAvailableAndRetainsCandidateBytes$1.invokeSuspend(WorkbookMetadataRecoveryTest.kt:175)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+         1792518681.778 23769 23783 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+         1792518681.778 23769 23783 W WorkbookStore: 	at io.github.baitian6641.cloudydata.WorkbookMetadataRecoveryTest.deniedTempDeletionKeepsValidWorkbookAvailableAndRetainsCandidateBytes(WorkbookMetadataRecoveryTest.kt:164)
+         1792518681.778 23769 23783 W WorkbookStore: 	at java.lang.reflect.Method.invoke(Native Method)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.internal.runner.junit4.statement.RunBefores.evaluate(RunBefores.java:80)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.internal.runner.junit4.statement.RunAfters.evaluate(RunAfters.java:61)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.ext.junit.runners.AndroidJUnit4.run(AndroidJUnit4.java:162)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.Suite.runChild(Suite.java:128)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.Suite.runChild(Suite.java:27)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+         1792518681.778 23769 23783 W WorkbookStore: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:68)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:59)
+         1792518681.778 23769 23783 W WorkbookStore: 	at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:467)
+         1792518681.778 23769 23783 W WorkbookStore: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2627)
+         1792518693.318 23800 23813 I JournalCrashProbe: KILL pid=23800 phase=TEMP_SYNCED workbook=91341e2f-b54a-44c4-a64f-ec301130bb63 command=c7c6c525-8dd6-4ff1-8597-54a81f8764dd
+         1792518693.326 23769 23779 I JournalCrashProbe: BINDER_DEATH pid=23800 expectedPhase=TEMP_SYNCED testPid=23769
+         1792518693.326 23769 23769 I JournalCrashProbe: DISCONNECTED pid=23800 expectedPhase=TEMP_SYNCED
+         1792518693.326 23769 23783 I JournalCrashProbe: VERIFIED_DEATH pid=23800 phase=TEMP_SYNCED workbook=91341e2f-b54a-44c4-a64f-ec301130bb63 command=c7c6c525-8dd6-4ff1-8597-54a81f8764dd
+         1792518693.638 23817 23830 I JournalCrashProbe: KILL pid=23817 phase=REPLACED workbook=c6ded6ff-48f3-47b9-980d-dafc16725d38 command=e3335bc8-6835-43f2-abb1-847ba801e086
+         1792518693.645 23769 23779 I JournalCrashProbe: BINDER_DEATH pid=23817 expectedPhase=REPLACED testPid=23769
+         1792518693.645 23769 23769 I JournalCrashProbe: DISCONNECTED pid=23817 expectedPhase=REPLACED
+         1792518693.645 23769 23783 I JournalCrashProbe: VERIFIED_DEATH pid=23817 phase=REPLACED workbook=c6ded6ff-48f3-47b9-980d-dafc16725d38 command=e3335bc8-6835-43f2-abb1-847ba801e086
+         1792518694.047 23833 23846 I JournalCrashProbe: KILL pid=23833 phase=TEMP_SYNCED workbook=1964b2ad-6bed-4cc3-9f4c-a4a3282b7e39 command=de813e81-65a8-4cdf-a61a-13e3194ea589
+         1792518694.054 23769 23779 I JournalCrashProbe: BINDER_DEATH pid=23833 expectedPhase=TEMP_SYNCED testPid=23769
+         1792518694.054 23769 23769 I JournalCrashProbe: DISCONNECTED pid=23833 expectedPhase=TEMP_SYNCED
+         1792518694.054 23769 23783 I JournalCrashProbe: VERIFIED_DEATH pid=23833 phase=TEMP_SYNCED workbook=1964b2ad-6bed-4cc3-9f4c-a4a3282b7e39 command=de813e81-65a8-4cdf-a61a-13e3194ea589

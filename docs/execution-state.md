@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 implementation through `92f8aaab8f5ba3db84de7c272c9779c7af6f99cb`;
-all112 committed source/fixture hashes match the source/artifact manifest in
-`qualification/evidence/2026-10-20-s03-durable-command-journal.md`.
+**Source:** S03.3 metadata-temp recovery combined over `99e770d`; 113 source/fixture
+hashes and runtime artifact hashes are recorded in
+`qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -53,7 +53,11 @@ unless stated otherwise.
   bounded undo/redo after reopen. Retained identical command IDs cannot replay;
   changed request identity is refused. Real native writer-process death at temp
   fsync and post-replacement recovers exact before/after states. Final native
-  run54/54 includes journal12, process-death2, coordinator14 and regressions26.
+  run 61/61 includes metadata recovery 6, journal 12, process-death 3, coordinator 14
+  and regressions 26. Valid canonical recovery removes abandoned direct metadata
+  temps; missing/corrupt canonical files preserve candidates. Live same-process
+  writers, symlinks and unrelated files are protected. Permission-denied cleanup
+  preserves accepted access and retries on a later load.
   This qualifies single-writer process death; Room, full typed catalog and
   whole-product-process lifecycle remain separate.
 - Home recents/favorites/all filters; favorite toggle code exists but is not yet
@@ -330,15 +334,15 @@ unless stated otherwise.
   only the native interrupt and query-generation invalidation code exist.
 - The shared coordinator now rejects stale revisions and serializes same-view
   edits, imports and snapshot reads in one app process (14/14 native tests).
-  Rename/chart IDs and atomic durable history now have12 journal+2 actual
-  writer-process-death cases. Complete typed command coverage, Room integration,
-  rejected-proposal review/reapply, cross-process ownership and whole-product
+  Rename/chart IDs and atomic durable history now have 12 journal tests, 3 actual
+  writer-process-death cases and 6 metadata-recovery tests. Complete typed command
+  coverage, Room integration, rejected-proposal review/reapply, cross-process ownership and whole-product
   process restoration remain open. Conflict-banner visual/input review remains
   unverified. History50/receipts4096/metadata32MiB bounds are explicit; receipt
   capacity refuses new typed commands instead of silently evicting IDs.
-- Unpublished metadata temporary files can remain after a writer SIGKILL.
-  Accepted canonical metadata recovers, but orphan-temp cleanup is not implemented;
-  corrupt canonical files and possible recovery candidates must be preserved.
+- Missing/corrupt canonical metadata and permission-denied cleanup preserve
+  metadata temporary candidates. Validated recovery removes only known abandoned
+  direct regular files; no automatic promotion or manual recovery is implemented.
 - The chart's first-appearance category colors can change when result order or filters change;
   no persisted palette map exists.
 - Renderer death/recreation/replay, generation retirement, recovery exhaustion,
@@ -381,7 +385,7 @@ unless stated otherwise.
   mid-write failure injection, accessible PDF and print remain partial.
 - **Current device state:** the physical API37 Googlebook (`C1L63708PZ`) remains
   on owner hold and was not interacted with. Existing API36 `emulator-5580` was
-  reused for S03.2 without boot/resize/density changes. A first dual-ABI APK
+  reused for S03.2/S03.3 without boot/resize/density changes. A first dual-ABI APK
   install failed with insufficient storage (594 MiB free); an explicit x86_64-only
   qualification package installed and passed. Default builds still include both
   ABIs. The absent rootable `emulator-5582` was not restarted or reprobed.
@@ -427,39 +431,47 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Default dual-ABI debug/test APK build and JVM75/75 pass; lint0 errors/6 warnings.
-  The added ChromeOsAbiSupport warning is retained; default APK ZIP inspection
+- Default dual-ABI debug/test APK build and JVM 75/75 pass; lint 0 errors/6 warnings.
+  The existing ChromeOsAbiSupport warning remains visible; default ZIP inspection
   confirms arm64-v8a+x86_64. No test/assertion/lint check was disabled.
-- Existing API36 emulator5580 final native run54/54, no skips: journal12,
-  actual writer-process-death2, coordinator14, affected regressions26.
-- Actual runtime APK `9426b9091a5933d4965bef393e19b613372ea76b4f1aa884f06355ed0cb47211`;
-  test APK `bc97ebbc16e032f22a932562eacd7aa048f745d2e666d14e7f2a77e1b83e7634`.
-- Real writer PIDs23503(REPLACED)/23520(TEMP_SYNCED) died, independently observed
-  by test PID23448 via Binder. Process death is distinct from power loss and
-  concurrent cross-process ownership. Native tasks2386/2387 observed fullscreen.
-- Tokens current; declared contrast40/40. Root/independent source review and final
-  shared-title native capture accepted within the recorded bounded scope.
-- Current raw logs: qualification/evidence/android-test-results/2026-10-20-s033/;
-  source/artifact manifests: qualification/evidence/artifacts/2026-10-20-s033/.
-  No physical Googlebook,16KiB or Tableau acceptance was added.
+- Existing API36 emulator-5580 final native run 61/61, no skips, 19.017s: metadata
+  recovery 6, journal 12, actual writer-process-death 3, coordinator 14, regressions 26.
+- Actual runtime APK `f6c6b6757d04092e7cf23a46c2647d241300736737861bdaa9c201f425162741`;
+  test APK `9689e1445183d663313a88cb87324ea89394e87c51aad8f18e81054d842b933c`.
+- Real writer PIDs23800(TEMP_SYNCED)/23817(REPLACED)/23833(TEMP_SYNCED) died,
+  observed by PID23769 via Binder. Recovery removes a real orphan only when the
+  canonical checkpoint validates; constructed corruption after actual death
+  retains both exact candidates. Real chmod0555 deletion denial is diagnostic,
+  preserving valid workbook availability. Reentrant/concurrent Store tests pass.
+- Tokens current; declared contrast 40/40. Independent source/test review found
+  no material finding. This storage-only change adds no surface; preceding scoped
+  native capture remains evidence for its own source revision.
+- Current raw logs: qualification/evidence/android-test-results/2026-10-20-s033-temp-recovery/;
+  source/artifact manifests: qualification/evidence/artifacts/2026-10-20-s033-temp-recovery/.
+  No physical Googlebook,16KiB, Tableau, power-loss or cross-process acceptance added.
 
 ## Next exact task
 
-**S03.3 metadata orphan-temp recovery cleanup.**
+**S03.3 typed AddWorksheet command and retry-safe view activation.**
 
-- IDs: F01/F64, Q17/Q34. Prerequisite: verified atomic v3 checkpoint and actual
-  pre-replacement writer-death evidence under ADR0009.
-- Paths: data/WorkbookStore.kt, registry recovery entry, focused native crash tests,
-  evidence/state. Use the existing Store write lock; preserve shared-file ownership.
-- Action: remove only known unpublished metadata temp files after validating the
-  canonical checkpoint and excluding a live in-process writer. Preserve temp
-  candidates when canonical metadata is missing/corrupt; never blindly promote one.
-- Independent oracle: TEMP_SYNCED SIGKILL leaves one stale temp with the old valid
-  checkpoint; recovery keeps exact document/history/receipts and removes only that
-  stale temp. Corrupt canonical metadata retains candidates. Review source and
-  real native kill/recovery results independently.
-- Room migration and remaining typed command families follow this bounded recovery
-  hygiene task. CUST09.4 remains a chart follow-up and does not close S11.C0.
+- IDs: F01/F64, Q17/Q19/Q34. Prerequisites: verified typed receipt/checkpoint
+  authority, durable history, shared coordinator and orphan-temp recovery under
+  ADR0009. Room and full source-version history remain open independently.
+- Paths: model/WorkbookCommand.kt, data/WorkbookCoordinator.kt,
+  ui/WorkbookViewModel.kt, disjoint focused native command tests, evidence/state.
+- Action: freeze the new sheet ID/name and request identity before first dispatch;
+  add the sheet exactly once through the coordinator and persistent receipt.
+  Preserve the stored reopen default and other windows' local active tabs; only
+  the requesting view activates its sheet after proven acceptance. Reject invalid
+  identity/collisions and incompatible saved command versions without rewriting.
+- Independent oracle: new command adds one exact sheet and one receipt/revision;
+  acknowledgement loss and identical retry/reopen never add another sheet;
+  changed request under the same ID is refused; durable undo/reopen/redo restores
+  exact definitions and independent views retain their local selections. Cover
+  stale foreign edits and real write/death boundaries, then independently review
+  the actual combined source/native evidence before committing.
+- Remaining typed command families and Room follow; CUST09.4 remains a chart
+  follow-up and does not close S11.C0. S13.C0/S15.C0 remain mandatory when relevant.
 
 ## Protected context
 

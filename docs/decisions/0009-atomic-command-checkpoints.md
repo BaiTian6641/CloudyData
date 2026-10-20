@@ -46,6 +46,14 @@ No journal file competes with the workbook as a second source of truth.
   Before their first accepted save, preserve exact original bytes under
   `migration/workbook-v<version>-original.json` through temp+fsync+atomic move.
   The v3 version prevents old builds from saving away durable history.
+- After a canonical checkpoint fully validates, load may remove abandoned direct
+  regular `workbook-<digits>.tmp` files under the same-process root write lock.
+  A shared per-root active-temp set protects reentrant observers; concurrent
+  same-process readers wait for the writer. Candidate symlinks, directories and
+  other names are untouched. Missing/corrupt canonical metadata retains every
+  candidate and never triggers promotion. Permission-denied cleanup is a logged
+  best-effort failure and does not make a valid workbook unavailable. This rule
+  does not establish cross-process writer exclusion.
 
 ## Qualification and remaining scope
 
