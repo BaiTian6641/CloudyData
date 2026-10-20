@@ -930,3 +930,22 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ChartSettingsPersistenceTest 12/12; VegaRendererProbeTest 43/43; lint 0
   errors/5 warnings. Googlebook untouched; manual secondary bounds, pointer
   legend testing, arbitrary layers and visual checks remain open.
+
+## 2026-10-20 — S00.2 original asset and evidence reconciliation
+
+- Inspected the existing clean `main` at `50dd16f`; the intended origin matched
+  and remote `main` resolved to the same SHA. Default SSH failed on permissions
+  of `/etc/ssh/ssh_config.d/20-systemd-ssh-proxy.conf`; read-only remote inspection
+  succeeded with `GIT_SSH_COMMAND='ssh -F /dev/null'` without changing SSH config.
+- Located original Cloudy tokens, both generators, design specimen and platform
+  Rule 0 in the existing sibling Cloudy Workspace at `bccb328`. Recorded original
+  paths/commits/hashes and a 74/74 common-token comparison. Original tokens say
+  `proposed`; Cloudy Data retains its single provisional source and scope.
+- Fresh token-generation check passed; contrast 40/40 declared pairs passed.
+  Corrected the CH04 note to acknowledge the already implemented CUST09.3
+  secondary formatting/legend subset, retaining its partial status and missing
+  pointer/visual/bounds gates. The behavioral source still matches `6494746`;
+  intervening `67ff8a3`/`50dd16f` only changed documentation.
+- Read all three plans and the master runbook. Independent audit selected earlier
+  S03.2 process-local workbook authority ahead of CUST09.4; no S11.C0, S13.C0 or
+  S15.C0 completion was inferred. Physical Googlebook remains on owner hold.

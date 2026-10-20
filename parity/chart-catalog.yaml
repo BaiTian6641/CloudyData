@@ -34,7 +34,7 @@ families:
     family: Combo / dual axis
     variants: [bar_line, dual_measure, synchronized]
     status: partial
-    note: Vertical primary bars can carry one persisted secondary measure as a right-axis line with an independent or synchronized domain, independent aggregation, secondary legend, markers/labels and shared row identity. Secondary number/currency/units formatting, interactive legend toggling, color-series combination, horizontal dual axes and visual export are pending.
+    note: Vertical primary bars can carry one persisted secondary measure as a right-axis line with an independent or synchronized domain, independent aggregation, secondary legend, markers/labels and shared row identity. Independent secondary number/percent/currency/units formatting and interactive legend toggling are implemented; pointer/visual verification, secondary manual bounds/ticks, color-series combination, horizontal dual axes and visual export remain pending.
   - id: CH05
     family: Scatter
     variants: [single, multi_series, sized]

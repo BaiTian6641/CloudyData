@@ -43,15 +43,35 @@ Read in this order:
 | CD17 | RDP interaction contract | `design/desktop-rdp-interaction-contract.md` | Out of scope. |
 | CD18 | Remote session presentation | `design/remote-session-presentation.md` | Out of scope. |
 
-## Missing upstream assets
+## Original assets and provisional token authority
 
-The supplied corpus refers to `shared/design-system/tokens.json`,
-`tools/generate_design_tokens.py`, `tools/generate_android_tokens.py`, packaged
-fonts, previews and `../00-project/platform-rule-zero.md`; none were present in
-the supplied directory. The numeric values in `design/tokens.css` and the plan
-documents were used to create `design-system/tokens.json`, explicitly marked
-provisional. `design-system/tokens.json` is the single source for the generated
-Android constants; do not hand-edit the generated Kotlin file.
+The original supplied packet omitted the referenced token JSON, generators,
+fonts, previews and platform Rule 0 document. A read-only local discovery on
+2026-10-20 located the original Cloudy Workspace repository at
+`/home/polar/Documents/ChatGPT/Cloudy Workspace`, observed at commit
+`bccb328b85f891ecfeedcf7e6e491c033cb706bd`. Its relevant assets are:
+
+| Asset | Path relative to the original Cloudy Workspace repository | Cloudy Data use |
+| --- | --- | --- |
+| Original token source | `shared/design-system/tokens.json` | Compare applicable common roles; the original source itself says `status: proposed`. |
+| CSS generator | `tools/generate_design_tokens.py` | Provenance for the original design specimen; not Cloudy Data's generator. |
+| Android generator | `tools/generate_android_tokens.py` | Provenance for the original Console/Desktop constants; not run against Cloudy Data. |
+| Original design corpus and specimen | `docs/04-design/` | Original source for the scoped corpus above; the specimen remains a design study. |
+| Original desktop Rule 0 | `docs/00-project/platform-rule-zero.md` | Desktop/Android context only; its two-app, host, terminal and remote-session requirements do not transfer. |
+
+The scoped common-token comparison matched **74/74** checks: 23 color roles in
+each appearance, five typography roles, spacing, shape, motion and density
+minimum targets. Cloudy Data's disabled roles, chart palettes and other local
+additions remain provisional. Discovery does not replace this product's
+document authority or accept the original project's implementation evidence.
+
+`design-system/tokens.json` remains Cloudy Data's single provisional source,
+with `tools/generate_tokens.py` as its generator. Do not hand-edit generated
+`CloudyTokens.kt` or substitute either original generator. Packaged IBM Plex
+Sans/Mono fonts already exist in `app/src/main/res/font/`, with the recorded OFL
+notice in `licenses/IBM-Plex-OFL.txt`. Paths, source commits, hashes, comparison
+method and remaining limits are recorded in
+[`2026-10-20-s00-original-assets.md`](../qualification/evidence/2026-10-20-s00-original-assets.md).
 
 ## Planning-file relocation
 
