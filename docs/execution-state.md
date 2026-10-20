@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.2/S03.4 view-local worksheet selection consistency, based on
-`3dc4c0528eeb6195561bbb59701783b541c1c131`, bound by all 135 source/fixture hashes
+**Source:** S03.2/S03.4 view-local worksheet selection consistency through implementation
+`e7ceffae56e4254583c1e52110a073d4dc7c8c2f`, bound by all 135 committed source/fixture hashes
 in `qualification/evidence/artifacts/2026-10-20-s032-selection/`;
 see `qualification/evidence/2026-10-20-s03-selection-consistency.md`.
 `main` tracks `origin/main`; no release/distribution was created.

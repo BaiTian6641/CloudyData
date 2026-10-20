@@ -4,6 +4,7 @@
 **IDs:** S03.2/S03.4; F01/F64; Q16/Q19/Q33/Q34.
 **Status:** verified for the bounded API36 x86_64 native slice; full stages remain partial.
 **Source base:** `3dc4c0528eeb6195561bbb59701783b541c1c131`.
+**Implementation commit:** `e7ceffae56e4254583c1e52110a073d4dc7c8c2f`; all 135 hashes verified against committed blobs.
 
 ## Readiness and ownership
 
