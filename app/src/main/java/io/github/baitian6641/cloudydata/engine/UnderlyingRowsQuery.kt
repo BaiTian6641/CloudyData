@@ -2,7 +2,6 @@ package io.github.baitian6641.cloudydata.engine
 
 import io.github.baitian6641.cloudydata.model.DataSnapshot
 import io.github.baitian6641.cloudydata.model.FilterMode
-import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 
 data class UnderlyingRowsResult(
@@ -27,7 +26,9 @@ class UnderlyingRowsQuery(private val engine: DuckDbEngine) {
         selectedRows: Set<Int>,
         snapshotPath: String,
     ): UnderlyingRowsResult? {
-        val rowField = worksheetResult.rowField ?: return null
+        val refs = WorksheetReferences.resolve(snapshot, sheet)
+        val rowField = refs.rowField ?: return null
+        WorksheetReferences.requireCurrentResult(snapshot, sheet, worksheetResult)
         val selection = MarkFilters.fromResult(
             sheet = sheet,
             result = worksheetResult,
@@ -39,25 +40,15 @@ class UnderlyingRowsQuery(private val engine: DuckDbEngine) {
             MarkFilterSql.predicate(
                 selection,
                 rowField.name,
-                worksheetResult.seriesField?.name.takeIf { selection.seriesFieldId != null },
+                refs.usedSeriesField?.name,
             ),
         )
-        val seriesMarks = sheet.markType == MarkType.LINE ||
-            sheet.markType == MarkType.AREA ||
-            sheet.markType == MarkType.BAR
-        val usedSeriesId = worksheetResult.seriesField?.id.takeIf {
-            seriesMarks && worksheetResult.hasSeriesColumn
-        }
-        val worksheetFilter = sheet.filter?.takeIf { filter ->
-            filter.marks.isNotEmpty() &&
-                filter.rowFieldId == rowField.id &&
-                filter.seriesFieldId == usedSeriesId
-        }
+        val worksheetFilter = refs.filter
         if (worksheetFilter != null) {
             clauses += MarkFilterSql.predicate(
                 worksheetFilter,
                 rowField.name,
-                worksheetResult.seriesField?.name.takeIf { usedSeriesId != null },
+                refs.usedSeriesField?.name,
             )
         }
         val sql = "SELECT * FROM $source WHERE ${clauses.joinToString(" AND ")} LIMIT ${MAX_ROWS + 1}"

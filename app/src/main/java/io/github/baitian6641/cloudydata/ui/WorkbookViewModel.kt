@@ -17,6 +17,7 @@ import io.github.baitian6641.cloudydata.engine.UnderlyingRowsQuery
 import io.github.baitian6641.cloudydata.engine.UnderlyingRowsResult
 import io.github.baitian6641.cloudydata.engine.WorksheetQuery
 import io.github.baitian6641.cloudydata.engine.WorksheetResult
+import io.github.baitian6641.cloudydata.engine.WorksheetReferences
 import io.github.baitian6641.cloudydata.model.Aggregation
 import io.github.baitian6641.cloudydata.model.StackMode
 import io.github.baitian6641.cloudydata.model.ChartOptions
@@ -349,17 +350,8 @@ class WorkbookViewModel(
         val sheet = _state.value.document?.activeWorksheet ?: return
         if (sheet.filter != null || rows.isEmpty()) return
         val result = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
-        // Only derive the filter from a result produced for this sheet shape.
-        if (result.rowField?.id != sheet.rowFieldId) return
-        val expectedSeriesId = if (sheet.markType == MarkType.LINE ||
-            sheet.markType == MarkType.AREA ||
-            sheet.markType == MarkType.BAR
-        ) {
-            sheet.seriesFieldId
-        } else {
-            null
-        }
-        if (result.seriesField?.id != expectedSeriesId) return
+        val snapshot = _state.value.document?.snapshot ?: return
+        if (runCatching { WorksheetReferences.requireCurrentResult(snapshot, sheet, result) }.isFailure) return
         val filter = MarkFilters.fromResult(sheet, result, rows, mode) ?: return
         updateActiveSheet { it.copy(filter = filter) }
     }
@@ -404,16 +396,14 @@ class WorkbookViewModel(
         if (document.activeWorksheetId != sheetId) return
         if (selectedRows.isEmpty()) return
         val accepted = (_state.value.query as? WorksheetQueryState.Ready)?.result ?: return
-        if (accepted.rowField?.id != sheet.rowFieldId) return
-        val expectedSeriesId = if (sheet.markType == MarkType.LINE ||
-            sheet.markType == MarkType.AREA ||
-            sheet.markType == MarkType.BAR
-        ) {
-            sheet.seriesFieldId
-        } else {
-            null
+        val referenceError = runCatching {
+            WorksheetReferences.requireCurrentResult(snapshot, sheet, accepted)
+        }.exceptionOrNull()
+        if (referenceError != null) {
+            viewDataGeneration++
+            _state.update { it.copy(viewData = ViewDataState.Failed(referenceError.message ?: "The selected result is stale.")) }
+            return
         }
-        if (accepted.seriesField?.id != expectedSeriesId) return
         val generation = ++viewDataGeneration
         _state.update { it.copy(viewData = ViewDataState.Loading) }
         viewModelScope.launch {

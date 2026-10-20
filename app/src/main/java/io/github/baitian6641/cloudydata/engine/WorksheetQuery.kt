@@ -17,6 +17,7 @@ data class WorksheetResult(
     val sourceNote: String? = null,
     val secondaryMeasureField: FieldDef? = null,
     val secondaryAggregation: Aggregation? = null,
+    val queryIdentity: WorksheetQueryIdentity? = null,
 ) {
     /** A series column exists in line/area and color-series bar query shapes. */
     val hasSeriesColumn: Boolean
@@ -35,29 +36,15 @@ data class WorksheetResult(
 class WorksheetQuery(private val engine: DuckDbEngine) {
 
     fun query(snapshot: DataSnapshot, sheet: WorksheetDef, snapshotPath: String): WorksheetResult {
-        val rowField = sheet.rowFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
-        val measureField = sheet.measureFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
-        val seriesField = sheet.seriesFieldId?.let { id -> snapshot.columns.firstOrNull { it.id == id } }
-        val secondaryMeasureField = sheet.secondaryMeasureFieldId?.let { id ->
-            snapshot.columns.firstOrNull { it.id == id }
-        }
+        val refs = WorksheetReferences.resolve(snapshot, sheet)
+        val rowField = refs.rowField
+        val measureField = refs.measureField
+        val seriesField = refs.seriesField
         val source = "read_parquet(${Sql.string(snapshotPath)})"
         val timeSeries = sheet.markType == MarkType.LINE || sheet.markType == MarkType.AREA
-        val seriesMarks = timeSeries || sheet.markType == MarkType.BAR
-        val usedSeriesFieldId = seriesField?.id.takeIf {
-            seriesMarks && rowField != null && measureField != null
-        }
-        val activeFilter = sheet.filter?.takeIf { filter ->
-            filter.marks.isNotEmpty() &&
-                filter.rowFieldId == rowField?.id &&
-                filter.seriesFieldId == usedSeriesFieldId
-        }
-        val usedSecondaryMeasure = secondaryMeasureField?.takeIf {
-            sheet.markType == MarkType.BAR &&
-                rowField != null &&
-                measureField != null &&
-                usedSeriesFieldId == null
-        }
+        val usedSeriesFieldId = refs.usedSeriesField?.id
+        val activeFilter = refs.filter
+        val usedSecondaryMeasure = refs.usedSecondaryMeasure
         val filterWhere = if (activeFilter != null && rowField != null) {
             val seriesName = if (usedSeriesFieldId != null) seriesField?.name else null
             " WHERE " + MarkFilterSql.predicate(activeFilter, rowField.name, seriesName)
@@ -139,6 +126,7 @@ class WorksheetQuery(private val engine: DuckDbEngine) {
                 "snapshot ${snapshot.id.take(8)}",
             secondaryMeasureField = usedSecondaryMeasure,
             secondaryAggregation = sheet.secondaryAggregation.takeIf { usedSecondaryMeasure != null },
+            queryIdentity = WorksheetQueryIdentity.from(snapshot.id, sheet),
         )
     }
 

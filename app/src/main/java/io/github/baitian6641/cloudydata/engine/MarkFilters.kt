@@ -15,6 +15,12 @@ object MarkFilters {
     ): MarkFilter? {
         val rowFieldId = sheet.rowFieldId ?: return null
         if (selectedRows.isEmpty()) return null
+        if (result.rowField?.id != rowFieldId || result.measureField?.id != sheet.measureFieldId ||
+            result.seriesField?.id != sheet.seriesFieldId || result.markType != sheet.markType ||
+            result.aggregation != sheet.aggregation || result.queryIdentity?.matchesSheet(sheet) == false) {
+            throw WorksheetReferenceException(WorksheetReferenceChannel.RESULT, null,
+                "The selected marks no longer match this worksheet query. Refresh the worksheet before filtering.")
+        }
         val rows = result.result.rows
         val seriesFieldId = if (result.hasSeriesColumn) sheet.seriesFieldId else null
         val marks = selectedRows

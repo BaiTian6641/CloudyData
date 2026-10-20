@@ -1109,3 +1109,30 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   16KiB/Tableau, full design matrix, Room/full commands and C0 bounds unchanged.
   Next exact action:S03.4 typed persisted-reference refusal before SQL/View Data,
   with real source replacement retaining IDs until explicit repair.
+
+## 2026-10-20 — S03.4 decoded-reference admission
+
+- Continued clean c37eccf after normally pushing favorite implementation/binding;
+  live upstream matched and118 substrate hashes were fresh. Selected first
+  persisted-reference slice F01/F05/F14/F64; Q01/Q16/Q17/Q19/Q34.
+- Typed read-only resolver rejects missing mappings, ambiguous/blank field IDs
+  and incompatible active filter anchors before choosing SQL grain. Every
+  nonnull channel resolves even when inactive; no auto-clear/name guessing.
+  View Data requires runtime snapshot/sheet/query ownership and matching field
+  definitions; chart/name changes remain compatible. Native selection admission
+  refuses stale ownership; no persisted format/renderer/import rewrite.
+- Disjoint workers authored7 reference and2 real source-replacement cases.
+  First focused9/9 in0.866s; final combined101/101, no skips,50.672s includes old89
+  and Bar1/Line+Area2 regressions. Exact15/20,series10/5/20,AVG3/8,7/11 after explicit
+  rebind and source rows passed. Missing-path refusal precedes SQL and preserves
+  exact metadata/checkpoint/history/receipts/source/Parquet bytes.
+- Real undo/reopen restores broken mapping against the same replacement snapshot;
+  redo restores repaired7/11. No earlier source version is retained by that undo.
+  Final x86/default build, JVM75/75, lint0/6 retained, both default ABIs, current
+  tokens and contrast40/40 pass. Independent source/oracle review has no material
+  finding; no new error/rebind UI/native pixel claim.
+- Evidence and121 source/fixture hashes:
+  qualification/evidence/2026-10-20-s03-reference-admission.md. C0, physical hold,
+  16KiB/Tableau, full semantic/package/Room/source-history boundaries unchanged.
+  Next exact action: fail-closed malformed/future legacy filter decoding, retaining
+  valid v1/v2 defaults/migration originals and v3's existing strict raw guard.

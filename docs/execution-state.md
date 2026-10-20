@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 desired-value favorite implementation through `e27d204663d308b4e9f6d843273c8103049d0ccf`;
-all118 committed source/fixture hashes match the artifact manifest in
-`qualification/evidence/2026-10-20-s03-set-favorite.md`.
+**Source:** S03.4 decoded-reference admission on source base
+`c37eccfd7d8f6bfe28e853ae79621c0c4ef53760`; 121 source/fixture hashes bind the
+combined revision in `qualification/evidence/2026-10-20-s03-reference-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -72,6 +72,16 @@ unless stated otherwise.
   survive refusal; discarded/replaced/completed queued imports cannot resurrect.
   Deterministic invalid requests are Change not applied without a retry token,
   so corrected actions can proceed. Full rejected-proposal review/reapply is open.
+- S03.4 decoded-reference admission refuses unresolved nonnull Rows/Values/
+  Color/secondary mappings, duplicate/blank snapshot field IDs and incompatible
+  active filter anchors before SQL. Null mappings remain intentional; metadata
+  stays repairable. Runtime query ownership binds snapshot/sheet/query shape and
+  resolved field definitions for View Data/selection; chart/name-only changes
+  remain compatible. Real replacement preserves old mapping IDs, refuses wrong
+  grain/counts, then explicit rebind/reopen yields East 7 / West 11 and exact source
+  row 7. Undo/redo repairs only metadata against the same new snapshot. Native 9/9
+  new cases plus final 101/101 combined pass. Full package/type/schema checks and
+  legacy decoder fallback remain open.
 - Home recents/favorites/all filters and typed desired-value SetFavorite are
   verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
   retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
@@ -127,6 +137,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-reference-admission.md`
 - `qualification/evidence/2026-10-20-s03-set-favorite.md`
 - `qualification/evidence/2026-10-20-s03-durable-command-journal.md`
 - `docs/decisions/0009-atomic-command-checkpoints.md`
@@ -459,52 +470,49 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Final existing API36 emulator-5580 combined native 89/89, no skips, 50.208s:
-  favorite/controller 10, Home 1, worksheet/admission 14, writer-death 5, metadata
-  recovery 6, journal 12, coordinator 14, engine/query/persistence 26 and palette 1.
-- Real EACCES, post-replacement acknowledgement loss, corrupt postcommit refresh,
-  later recovery-blocked retry, stale conflict, no-op/redo, duplicate after undo,
-  sibling reload and exact two native Home favorite receipts have fixed oracles.
-  No new favorite-specific process death, power loss or cross-process claim.
-- Final x86 and default dual-ABI debug/test builds pass; JVM 75/75, lint 0 errors/
-  6 existing warnings. Default ZIP contains arm64-v8a+x86_64. Tokens current;
-  contrast 40/40. No disabled checks or deleted emulator data.
-- Runtime APK `0ebadc5effd73332c649a3f0dafff78269287f67fe3fa1694da341afa99a0861`;
-  test APK `bc749afae5eeb696965c3a1a1a9236d504855e0a68168219d6c6c9a683748d54`.
-- Independent review resolved known-acceptance retention. A focused diagnostic
-  proved label-on-Icon incorrectly exposed enabled=true under disabled button;
-  shared labels now belong to actionable Buttons. Exact disabled/pointer and
-  Tab8/Enter assertions pass with bounded native publication waits. Initial
-  failures and discriminating XML/pixels remain in evidence, not hidden.
-- Root/independent reviewer accept actual final native failure/saved captures in
-  2880×1800 light/default-font scope. Short/narrow/dark/large-text/TalkBack and
-  physical pointer/keyboard remain unqualified. Original worksheet banner gates
-  remain separate. Physical Googlebook hold,16KiB,Tableau and C0 bounds unchanged.
-- Evidence: qualification/evidence/2026-10-20-s03-set-favorite.md; raw logs and 118
-  source/fixture hashes under the matching android-test-results/artifacts paths.
+- Existing API36 emulator-5580 combined native 101/101, no skips, 50.672s: new
+  reference 7 / replacement 2, previous 89 and additional Bar 1 / Line+Area 2 query cases.
+  First focused 9/9 in 0.866s. No new failed probe, mocks or weakened assertion.
+- Exact East 15 / West 20, series 10/5/20, secondary AVG 3/8 and filtered source rows
+  pass. Missing mappings/filter anchors, duplicate/blank IDs and stale query
+  ownership fail before unavailable-path SQL. Refusal preserves canonical bytes,
+  checkpoint history/receipts, accepted source and Parquet. Real replacement and
+  explicit rebind/reopen/undo/redo yield exact new 7/11 source values.
+- Final x86/default dual-ABI debug/test builds pass; JVM 75/75, lint 0 errors/6
+  retained warnings; both default ABIs present. Tokens current; contrast 40/40.
+- Runtime APK `4233cbee2c148bbade431c13ea212c5c6bb956b3a9eddcdaf009432a2cb54e22`;
+  test APK `a3774e22113cbbf8825b2bef18228db7b46322bc3e6cf0514d30ea670d5930af`.
+- Independent source/test review accepts the selected semantic boundary. Error/
+  rebind pixels and the new stale ViewModel branch are not separately exercised.
+  Existing Home native case reran successfully; earlier wide light Home captures
+  remain bounded to their unchanged source surface and own evidence.
+- Evidence: qualification/evidence/2026-10-20-s03-reference-admission.md; raw logs
+  and 121 source/fixture hashes in matching android-test-results/artifacts paths.
+  Physical owner hold,16KiB,Tableau,Room,source history and C0 gates unchanged.
 
 ## Next exact task
 
-**S03.4 first persisted-reference admission slice.**
+**S03.4 fail-closed legacy filter/package decoding.**
 
-- IDs: F01/F05/F14/F64; Q01/Q16/Q17/Q19/Q34. Prerequisites: verified interim
-  checkpoint/coordinator/native query authority and source-bound reference audit.
-- Paths: model/typed reference validator, engine/WorksheetQuery.kt and
-  UnderlyingRowsQuery.kt, bounded ViewModel result admission if needed, disjoint
-  native tests and evidence/state. No renderer/import mapping resets.
-- Action: reject unresolved nonnull mapping/filter IDs or ambiguous duplicate
-  snapshot field identities before SQL. Keep genuinely null mappings intentional.
-  Preserve repairable metadata and snapshot; do not guess by display name, clear
-  references or classify normal replacement as corrupt package. Reuse resolution
-  for View Data and refuse stale result/snapshot ownership.
-- Independent oracle: CSV East 10/East 5/West 20 groups East 15/West 20; bad row/measure/
-  series/secondary/filter refs fail explicitly rather than global 35, counts or
-  collapsed marks. Invalid refs plus unavailable path must fail before SQL.
-  Real replacement East 7/West 11 retains old IDs and fails until explicit rebind;
-  repaired/reopened query and View Data must return exact 7/11 source values.
-- Evidence level: current bug is a source finding, not yet a new native pass.
-  Full package/semantic validation, Room, source history and schema reconciliation
-  remain separate. S11.C0 partial; S13.C0/S15.C0 mandatory when applicable, absent.
+- IDs: F01/F05/F14/F64; Q16/Q17/Q34. Prerequisites: committed strict v3 checkpoint,
+  source-bound reference admission and exact native replacement/repair evidence.
+- Paths: model/Workbook.kt and MarkFilter.kt plus narrowly required checkpoint
+  load validation, disjoint native legacy/migration tests, evidence/state.
+- Action: discriminate valid legacy defaults/migrations from malformed or future
+  filter records before WorksheetDef's runCatching can erase them. Preserve
+  original package bytes and recovery candidates; opening must not silently drop
+  a filter or normalize a nonnull invalid ID into an executable unfiltered query.
+- Independent oracle: valid v1/v2 filtered fixtures preserve exact constrained
+  rows across migration/reopen and keep original bytes; future filter version,
+  malformed mode/mark/anchor or empty nonnull reference must refuse without
+  rewriting metadata/history/backups. Recomputed valid v3 envelope hashes must
+  not bypass its existing raw-content guard. No blanket legacy roundtrip rule
+  that rejects legitimate older defaults.
+- Evidence level: decoder fallback is currently a source finding, specifically
+  legacy v1/v2 early return; v3 already compares raw content against decoded form.
+  Full package/schema validation, source versions, Room and complete typed
+  commands remain open. S11.C0 partial; S13.C0/S15.C0 absent and mandatory when
+  worker-backed dependencies apply.
 
 ## Protected context
 

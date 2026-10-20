@@ -6,8 +6,8 @@ generated_from: docs/plans/Cloudy_Data_01_Product_and_Design_Contract.md
 reference_profile: pending_no_licensed_tableau
 atomic_inventory_complete: false
 status_counts:
-  not_started: 59
-  partial: 13
+  not_started: 58
+  partial: 14
 features:
   - id: F01
     family: "Workbooks and data-source documents"
@@ -51,9 +51,9 @@ features:
     owning_stages: "S04, S05, S14"
     reference_release: pending
     status: partial
-    tests: []
-    evidence: []
-    note: "Imported row count, field names/types and source provenance are visible. Profiling, distributions, aliases, descriptions, schema drift and full/sample distinction are pending."
+    tests: [WorksheetReferenceTest, SourceReferenceRepairTest]
+    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md]
+    note: "Imported row count, field names/types and source provenance are visible. Decoded nonnull references resolve uniquely before SQL; duplicate/blank field identities are refused. Profiling, distributions, aliases, descriptions, schema drift and full/sample distinction are pending."
   - id: F06
     family: "Live and extract operation"
     outcome: "Choose an eligible source mode; show snapshot time, cache/staleness, source identity and pushdown limits; offline cached work remains truthful."
@@ -131,10 +131,10 @@ features:
     outcome: "Replace a source with field mapping, dependency repair, impact preview and reversible commit; retain broken references visibly."
     owning_stages: "S14"
     reference_release: pending
-    status: not_started
-    tests: []
-    evidence: []
-    note: "Seed family only; no atomic inventory or evidence yet."
+    status: partial
+    tests: [WorksheetReferenceTest, SourceReferenceRepairTest]
+    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md]
+    note: "Real same-header CSV replacement issues new field IDs while preserving old mappings as repairable state. Query/View Data refuse unresolved references; explicit rebind/reopen produces exact new values, and mapping undo/redo stays within the accepted replacement snapshot. Impact preview, schema reconciliation, prior source-version recovery and repair UI acceptance remain pending."
   - id: F15
     family: "Data pane and organization"
     outcome: "Search, folders, aliases, hidden fields, hierarchies, default properties and dependency discovery."
@@ -582,9 +582,9 @@ features:
     owning_stages: "S03, all authoring stages"
     reference_release: pending
     status: partial
-    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest]
-    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md]
-    note: "Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
+    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest, WorksheetReferenceTest, SourceReferenceRepairTest]
+    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md, qualification/evidence/2026-10-20-s03-reference-admission.md]
+    note: "Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Decoded references and runtime result ownership are validated before SQL; source replacement remains repairable until explicit rebind. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
   - id: F65
     family: "Publishing"
     outcome: "Publish workbook/data-source revisions to the Cloudy service, with preview, destination, version, permissions and rollback."
