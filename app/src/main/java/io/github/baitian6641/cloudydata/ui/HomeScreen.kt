@@ -3,6 +3,8 @@ package io.github.baitian6641.cloudydata.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -58,6 +60,8 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import io.github.baitian6641.cloudydata.data.WorkbookStore
@@ -73,6 +77,7 @@ import io.github.baitian6641.cloudydata.design.CloudyToolbar
 import io.github.baitian6641.cloudydata.design.LocalCloudyColors
 import io.github.baitian6641.cloudydata.design.LocalCloudyDensity
 import io.github.baitian6641.cloudydata.model.WorkbookSummary
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -92,9 +97,11 @@ fun HomeScreen(
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
     val scope = rememberCoroutineScope()
-    var workbooks by remember { mutableStateOf<List<WorkbookSummary>>(emptyList()) }
-    var loaded by remember { mutableStateOf(false) }
-    var loadError by remember { mutableStateOf<String?>(null) }
+    val libraryController = remember(store) { HomeLibraryController(store) }
+    val library by libraryController.state.collectAsStateWithLifecycle()
+    val workbooks = library.workbooks
+    val loaded = library.loaded
+    val loadError = library.loadError
     var search by rememberSaveable { mutableStateOf("") }
     var section by rememberSaveable { mutableStateOf(HomeSection.Recents) }
     var reloadToken by remember { mutableIntStateOf(0) }
@@ -104,17 +111,7 @@ fun HomeScreen(
     val rootFocusRequester = remember { FocusRequester() }
     val searchFocusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(reloadToken) {
-        runCatching {
-            withContext(Dispatchers.IO) { store.list() }
-        }.onSuccess {
-            workbooks = it
-            loadError = null
-        }.onFailure {
-            loadError = it.message ?: "Could not read the local workbook library."
-        }
-        loaded = true
-    }
+    LaunchedEffect(libraryController, reloadToken) { libraryController.reload() }
 
     val filtered = remember(workbooks, section, search) {
         val base = when (section) {
@@ -237,7 +234,22 @@ fun HomeScreen(
                     }
                     Spacer(Modifier.height(density.spaceMedium))
                     if (loadError != null) {
-                        InlineError(loadError!!) { reloadToken++ }
+                        InlineError(loadError) { reloadToken++ }
+                    }
+                    val favoriteErrors = library.favoriteActions.values.filter { it.phase != HomeFavoritePhase.SAVING }
+                    if (favoriteErrors.isNotEmpty()) {
+                        Column(Modifier.fillMaxWidth().heightIn(max = 240.dp).verticalScroll(rememberScrollState())) {
+                            favoriteErrors.forEach { action ->
+                                val name = workbooks.firstOrNull { it.id == action.request.workbookId }?.name
+                                    ?: action.workbookName ?: "Workbook ${action.request.workbookId.take(8)}"
+                                FavoriteError(
+                                    name = name,
+                                    action = action,
+                                    onRetry = { scope.launch { libraryController.retryFavorite(action.request.workbookId) } },
+                                    onDismiss = { scope.launch { libraryController.dismissFavorite(action.request.workbookId) } },
+                                )
+                            }
+                        }
                     }
                     WorkbookTableHeader()
                     CloudyDivider()
@@ -259,18 +271,11 @@ fun HomeScreen(
                                 items(filtered, key = { it.id }) { summary ->
                                     WorkbookRow(
                                         summary = summary,
+                                        favoriteAction = library.favoriteActions[summary.id],
                                         onOpen = { onOpenWorkbook(summary.id) },
                                         onToggleFavorite = {
                                             scope.launch {
-                                                runCatching {
-                                                    val shared = store.coordinators.open(summary.id)
-                                                    val revision = shared.state.value.document.revision
-                                                    shared.edit(revision) { it.copy(favorite = !it.favorite) }
-                                                }.onSuccess {
-                                                    reloadToken++
-                                                }.onFailure {
-                                                    loadError = it.message ?: "Could not update the favorite."
-                                                }
+                                                libraryController.setFavorite(summary.id, summary.revision, !summary.favorite)
                                             }
                                         },
                                     )
@@ -451,6 +456,7 @@ private fun WorkbookTableHeader() {
 @Composable
 private fun WorkbookRow(
     summary: WorkbookSummary,
+    favoriteAction: HomeFavoriteAction?,
     onOpen: () -> Unit,
     onToggleFavorite: () -> Unit,
 ) {
@@ -460,7 +466,7 @@ private fun WorkbookRow(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = density.minTarget)
-            .clickable(onClick = onOpen)
+            .clickable(enabled = favoriteAction == null, onClick = onOpen)
             .padding(horizontal = density.spaceSmall, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -473,7 +479,12 @@ private fun WorkbookRow(
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                if (summary.hasSnapshot) "Workbook" else "Workbook · no data source",
+                when (favoriteAction?.phase) {
+                    HomeFavoritePhase.SAVING -> "Saving favorite change…"
+                    HomeFavoritePhase.FAILED -> if (favoriteAction.acceptedRevision != null) "Saved · library refresh needs attention" else "Favorite change needs attention"
+                    HomeFavoritePhase.CONFLICT -> "Favorite change not applied"
+                    null -> if (summary.hasSnapshot) "Workbook" else "Workbook · no data source"
+                },
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.textSecondary,
             )
@@ -501,9 +512,31 @@ private fun WorkbookRow(
         )
         CloudyIconButton(
             icon = if (summary.favorite) Icons.Default.Star else Icons.Default.StarBorder,
-            contentDescription = if (summary.favorite) "Remove from favorites" else "Add to favorites",
+            contentDescription = if (summary.favorite) "Remove ${summary.name} from favorites" else "Add ${summary.name} to favorites",
             onClick = onToggleFavorite,
+            enabled = favoriteAction == null,
         )
+    }
+}
+
+@Composable
+private fun FavoriteError(name: String, action: HomeFavoriteAction, onRetry: () -> Unit, onDismiss: () -> Unit) {
+    val colors = LocalCloudyColors.current
+    val density = LocalCloudyDensity.current
+    Row(
+        modifier = Modifier.fillMaxWidth().background(colors.dangerContainer).padding(density.spaceMedium),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text("$name: ${action.message.orEmpty()}", style = MaterialTheme.typography.bodyMedium,
+            color = colors.danger, modifier = Modifier.weight(1f))
+        if (action.phase == HomeFavoritePhase.FAILED) {
+            TextButton(onClick = onRetry, modifier = Modifier.semantics {
+                contentDescription = "Retry favorite change for $name"
+            }) { Text("Retry favorite change") }
+        }
+        TextButton(onClick = onDismiss, modifier = Modifier.semantics {
+            contentDescription = "Dismiss favorite change for $name and reload"
+        }) { Text("Dismiss and reload") }
     }
 }
 

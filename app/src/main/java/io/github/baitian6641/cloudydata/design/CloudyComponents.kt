@@ -38,6 +38,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -215,8 +218,10 @@ fun CloudyIconButton(
                 shape = shape,
             )
             .onFocusChanged { focused = it.isFocused }
+            .semantics { this.contentDescription = contentDescription }
             .clickable(
                 enabled = enabled,
+                role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = onClick,
@@ -225,7 +230,7 @@ fun CloudyIconButton(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = contentDescription,
+            contentDescription = null,
             tint = if (enabled) colors.textPrimary else colors.disabledForeground,
             modifier = Modifier.size(20.dp),
         )

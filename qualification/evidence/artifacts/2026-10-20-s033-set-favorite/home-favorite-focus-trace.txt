@@ -1,0 +1,49 @@
+Native Tab focus probe target=Remove Favorite UI 375b89af target from favorites maximumTabPresses=24
+beforeTab=1
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[0,36][2880,1752] focused=true focusable=true enabled=true clickable=false
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=1 exactTargetFocused=false
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=2
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=2 exactTargetFocused=false
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=3
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=3 exactTargetFocused=false
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=4
+focused=<none>
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=4 exactTargetFocused=false
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=5
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=5 exactTargetFocused=false
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=6
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=6 exactTargetFocused=false
+focused=class=android.widget.EditText package=io.github.baitian6641.cloudydata description= text=Favorite UI 375b89af target bounds=[2406,140][2856,236] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=7
+focused=class=android.widget.EditText package=io.github.baitian6641.cloudydata description= text=Favorite UI 375b89af target bounds=[2406,140][2856,236] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=7 exactTargetFocused=false
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[362,328][2856,406] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+beforeTab=8
+focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[362,328][2856,406] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+afterTab=8 exactTargetFocused=true
+focused=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=true focusable=true enabled=true clickable=true
+target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=true focusable=true enabled=true clickable=true

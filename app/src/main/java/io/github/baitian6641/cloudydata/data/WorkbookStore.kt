@@ -156,6 +156,7 @@ class WorkbookStore(
                 val doc = load(dir.name)
                 WorkbookSummary(
                     id = doc.id,
+                    revision = doc.revision,
                     name = doc.name,
                     updatedAtEpochMs = doc.updatedAtEpochMs,
                     sourceDisplayName = doc.snapshot?.displayName,

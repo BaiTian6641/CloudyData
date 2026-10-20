@@ -636,6 +636,7 @@ data class WorkbookDocument(
 
 data class WorkbookSummary(
     val id: String,
+    val revision: Long,
     val name: String,
     val updatedAtEpochMs: Long,
     val sourceDisplayName: String?,

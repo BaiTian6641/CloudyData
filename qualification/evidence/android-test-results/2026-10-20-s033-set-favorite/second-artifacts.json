@@ -1,0 +1,16 @@
+{
+  "source_base": "77185fdd8396fd221efb205976f2ee5a779a317a",
+  "description": "Second combined run: 87 pass; search synchronization passed; Home failed at disabled star enabled-state assertion. Product unchanged.",
+  "artifacts": [
+    {
+      "name": "cloudydata-s033-favorite-runtime-x86_64.apk",
+      "bytes": 116004373,
+      "sha256": "5fe0af570460319322dbb81fb207d183efc24b055247b0fa7f79b709ab4c5fba"
+    },
+    {
+      "name": "cloudydata-s033-favorite-runtime-tests.apk",
+      "bytes": 2759471,
+      "sha256": "a9d9b77562a07139278a437ddab6a5c76b19083ee93632afe60f0e70f6363e10"
+    }
+  ]
+}

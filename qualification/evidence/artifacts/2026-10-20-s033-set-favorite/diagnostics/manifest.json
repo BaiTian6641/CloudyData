@@ -1,0 +1,27 @@
+{
+  "focus-probe-trace.txt": {
+    "bytes": 6108,
+    "sha256": "978d12fe80de5bc03509ed287eb51ffb57a14bda1fd3b107fd70d0f994a2739d",
+    "scope": "intermediate diagnostic; not final acceptance"
+  },
+  "home-favorite-disabled-failure.png": {
+    "bytes": 102465,
+    "sha256": "4e7add89f7ce1e576d9624725ee3ad0075419dd6e306af3d8e6f9d9939edcfb2",
+    "scope": "intermediate diagnostic; not final acceptance"
+  },
+  "home-favorite-disabled-failure.xml": {
+    "bytes": 45684,
+    "sha256": "615b2e3f7010fb5982019bee4709d859d8fe239510a135307ce1c78ead2f3a2e",
+    "scope": "intermediate diagnostic; not final acceptance"
+  },
+  "intermediate-home-favorite-failed.png": {
+    "bytes": 91116,
+    "sha256": "8c4bbd21a94c829932c5c3b908c400a5c72d6f084443e667128ca9bb71ef24c6",
+    "scope": "intermediate diagnostic; not final acceptance"
+  },
+  "intermediate-home-favorite-saved.png": {
+    "bytes": 95773,
+    "sha256": "01dfe47ff5c23105b2090578abb6a78af90b51adaebd0324100a82ff8864a614",
+    "scope": "intermediate diagnostic; not final acceptance"
+  }
+}

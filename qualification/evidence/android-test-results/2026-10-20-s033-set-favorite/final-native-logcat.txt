@@ -1,0 +1,142 @@
+         1792523427.450 25695 25709 I HomeFavoriteUiTest: CAPTURE path=/data/user/0/io.github.baitian6641.cloudydata/files/home-favorite-failed.png sha256=0fff4bac7460869f68506b3a75d2f4cea45718f0d62c39da0705d10d5610bedd pixels=2880x1800
+         1792523429.451 25695 25709 I HomeFavoriteUiTest: CAPTURE path=/data/user/0/io.github.baitian6641.cloudydata/files/home-favorite-saved.png sha256=bc6bdb8f7a414616a25a77e4f9cbc87df5f939a8f6b13dd81f4971a757582505 pixels=2880x1800
+         1792523429.472 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=1
+         1792523429.472 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[0,36][2880,1752] focused=true focusable=true enabled=true clickable=false
+         1792523429.472 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523430.029 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=1 exactTargetFocused=false
+         1792523430.029 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523430.029 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523430.033 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=2
+         1792523430.033 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523430.033 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523430.591 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=2 exactTargetFocused=false
+         1792523430.591 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523430.591 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523430.594 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=3
+         1792523430.594 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523430.594 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523431.159 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=3 exactTargetFocused=false
+         1792523431.159 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523431.159 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523431.165 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=4
+         1792523431.165 25695 25709 I HomeFavoriteUiTest: focused=<none>
+         1792523431.165 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523431.744 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=4 exactTargetFocused=false
+         1792523431.744 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+         1792523431.744 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523431.748 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=5
+         1792523431.748 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+         1792523431.748 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523432.307 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=5 exactTargetFocused=false
+         1792523432.307 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+         1792523432.307 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523432.311 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=6
+         1792523432.311 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[18,1662][318,1734] focused=true focusable=true enabled=true clickable=true
+         1792523432.311 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523434.016 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=6 exactTargetFocused=false
+         1792523434.016 25695 25709 I HomeFavoriteUiTest: focused=class=android.widget.EditText package=io.github.baitian6641.cloudydata description= text=Favorite UI 375b89af target bounds=[2406,140][2856,236] focused=true focusable=true enabled=true clickable=true
+         1792523434.016 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523434.025 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=7
+         1792523434.025 25695 25709 I HomeFavoriteUiTest: focused=class=android.widget.EditText package=io.github.baitian6641.cloudydata description= text=Favorite UI 375b89af target bounds=[2406,140][2856,236] focused=true focusable=true enabled=true clickable=true
+         1792523434.025 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523435.047 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=7 exactTargetFocused=false
+         1792523435.047 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[362,328][2856,406] focused=true focusable=true enabled=true clickable=true
+         1792523435.047 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523435.051 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION beforeTab=8
+         1792523435.051 25695 25709 I HomeFavoriteUiTest: focused=class=android.view.View package=io.github.baitian6641.cloudydata description= text= bounds=[362,328][2856,406] focused=true focusable=true enabled=true clickable=true
+         1792523435.051 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=false focusable=true enabled=true clickable=true
+         1792523435.422 25695 25709 I HomeFavoriteUiTest: FOCUS_OBSERVATION afterTab=8 exactTargetFocused=true
+         1792523435.422 25695 25709 I HomeFavoriteUiTest: focused=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=true focusable=true enabled=true clickable=true
+         1792523435.422 25695 25709 I HomeFavoriteUiTest: target=class=android.widget.Button package=io.github.baitian6641.cloudydata description=Remove Favorite UI 375b89af target from favorites text= bounds=[2772,331][2844,403] focused=true focusable=true enabled=true clickable=true
+         1792523436.107 25695 25709 I HomeFavoriteUiTest: NATIVE_HOME_PASS target=a91b2f1c-0f27-4187-a0fe-41785ed7c410 baseRevision=2 acceptedRevision=3 removedRevision=4 receipts=2 keyboard=Tab+Enter
+         1792523437.885 25695 25750 W WorkbookStore: Could not remove an abandoned metadata temporary file.
+         1792523437.885 25695 25750 W WorkbookStore: java.nio.file.AccessDeniedException: /data/user/0/io.github.baitian6641.cloudydata/files/add-worksheet-test-79c1655f-f08b-4dad-9ac5-3aafad521e48/workbooks/ebe79fc4-960d-42b6-807a-ed0ec8d585ba/workbook-5723997264458578706.tmp
+         1792523437.885 25695 25750 W WorkbookStore: 	at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:250)
+         1792523437.885 25695 25750 W WorkbookStore: 	at sun.nio.fs.AbstractFileSystemProvider.deleteIfExists(AbstractFileSystemProvider.java:110)
+         1792523437.885 25695 25750 W WorkbookStore: 	at java.nio.file.Files.deleteIfExists(Files.java:1181)
+         1792523437.885 25695 25750 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.removeAbandonedMetadataTemps(WorkbookStore.kt:129)
+         1792523437.885 25695 25750 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.loadCheckpoint(WorkbookStore.kt:107)
+         1792523437.885 25695 25750 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookCoordinator$commit$saved$disk$1.invokeSuspend(WorkbookCoordinator.kt:242)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+         1792523437.885 25695 25750 W WorkbookStore: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+         1792523438.480 25756 25770 I JournalCrashProbe: KILL pid=25756 phase=TEMP_SYNCED workbook=213e4112-627c-4ca2-80fb-df167f47249e command=f75f54c1-9221-457b-8acd-58b6f7d98a46
+         1792523438.487 25695 25728 I JournalCrashProbe: ADD_BINDER_DEATH pid=25756 expectedPhase=TEMP_SYNCED testPid=25695
+         1792523438.487 25695 25695 I JournalCrashProbe: ADD_DISCONNECTED pid=25756 expectedPhase=TEMP_SYNCED
+         1792523438.487 25695 25709 I JournalCrashProbe: ADD_VERIFIED_DEATH pid=25756 phase=TEMP_SYNCED workbook=213e4112-627c-4ca2-80fb-df167f47249e command=f75f54c1-9221-457b-8acd-58b6f7d98a46
+         1792523438.769 25773 25786 I JournalCrashProbe: KILL pid=25773 phase=REPLACED workbook=7d39ebad-3484-4050-bc42-5c8a367a9eeb command=feece729-e0cf-4f75-8125-37ddd23c2e15
+         1792523438.776 25695 25728 I JournalCrashProbe: ADD_BINDER_DEATH pid=25773 expectedPhase=REPLACED testPid=25695
+         1792523438.777 25695 25709 I JournalCrashProbe: ADD_VERIFIED_DEATH pid=25773 phase=REPLACED workbook=7d39ebad-3484-4050-bc42-5c8a367a9eeb command=feece729-e0cf-4f75-8125-37ddd23c2e15
+         1792523438.777 25695 25695 I JournalCrashProbe: ADD_DISCONNECTED pid=25773 expectedPhase=REPLACED
+         1792523439.464 25695 25709 W WorkbookStore: Could not remove an abandoned metadata temporary file.
+         1792523439.464 25695 25709 W WorkbookStore: java.nio.file.AccessDeniedException: /data/user/0/io.github.baitian6641.cloudydata/files/metadata-recovery-test-df061d3e-7e9d-4031-a039-82e5afdd669f/workbooks/beca176e-c49a-4cc3-bf3d-2efe5c68bd95/workbook-401.tmp
+         1792523439.464 25695 25709 W WorkbookStore: 	at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:250)
+         1792523439.464 25695 25709 W WorkbookStore: 	at sun.nio.fs.AbstractFileSystemProvider.deleteIfExists(AbstractFileSystemProvider.java:110)
+         1792523439.464 25695 25709 W WorkbookStore: 	at java.nio.file.Files.deleteIfExists(Files.java:1181)
+         1792523439.464 25695 25709 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.removeAbandonedMetadataTemps(WorkbookStore.kt:129)
+         1792523439.464 25695 25709 W WorkbookStore: 	at io.github.baitian6641.cloudydata.data.WorkbookStore.loadCheckpoint(WorkbookStore.kt:107)
+         1792523439.464 25695 25709 W WorkbookStore: 	at io.github.baitian6641.cloudydata.WorkbookMetadataRecoveryTest$deniedTempDeletionKeepsValidWorkbookAvailableAndRetainsCandidateBytes$1.invokeSuspend(WorkbookMetadataRecoveryTest.kt:175)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+         1792523439.464 25695 25709 W WorkbookStore: 	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+         1792523439.464 25695 25709 W WorkbookStore: 	at io.github.baitian6641.cloudydata.WorkbookMetadataRecoveryTest.deniedTempDeletionKeepsValidWorkbookAvailableAndRetainsCandidateBytes(WorkbookMetadataRecoveryTest.kt:164)
+         1792523439.464 25695 25709 W WorkbookStore: 	at java.lang.reflect.Method.invoke(Native Method)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.internal.runner.junit4.statement.RunBefores.evaluate(RunBefores.java:80)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.internal.runner.junit4.statement.RunAfters.evaluate(RunAfters.java:61)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.ext.junit.runners.AndroidJUnit4.run(AndroidJUnit4.java:162)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.Suite.runChild(Suite.java:128)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.Suite.runChild(Suite.java:27)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+         1792523439.464 25695 25709 W WorkbookStore: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:68)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:59)
+         1792523439.464 25695 25709 W WorkbookStore: 	at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:467)
+         1792523439.464 25695 25709 W WorkbookStore: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2627)
+         1792523449.924 25796 25811 I JournalCrashProbe: KILL pid=25796 phase=TEMP_SYNCED workbook=050e6c5a-417e-46dc-be48-bf556d8b7ed0 command=1a10594b-955a-42b3-a507-4e6516d691c2
+         1792523449.931 25695 25728 I JournalCrashProbe: BINDER_DEATH pid=25796 expectedPhase=TEMP_SYNCED testPid=25695
+         1792523449.931 25695 25695 I JournalCrashProbe: DISCONNECTED pid=25796 expectedPhase=TEMP_SYNCED
+         1792523449.931 25695 25709 I JournalCrashProbe: VERIFIED_DEATH pid=25796 phase=TEMP_SYNCED workbook=050e6c5a-417e-46dc-be48-bf556d8b7ed0 command=1a10594b-955a-42b3-a507-4e6516d691c2
+         1792523450.229 25814 25827 I JournalCrashProbe: KILL pid=25814 phase=REPLACED workbook=d6f130c5-3783-4ff1-8f03-648ecd298038 command=39292180-d5f0-4c16-a2fe-27272c079108
+         1792523450.236 25695 25728 I JournalCrashProbe: BINDER_DEATH pid=25814 expectedPhase=REPLACED testPid=25695
+         1792523450.236 25695 25709 I JournalCrashProbe: VERIFIED_DEATH pid=25814 phase=REPLACED workbook=d6f130c5-3783-4ff1-8f03-648ecd298038 command=39292180-d5f0-4c16-a2fe-27272c079108
+         1792523450.236 25695 25695 I JournalCrashProbe: DISCONNECTED pid=25814 expectedPhase=REPLACED
+         1792523450.602 25830 25843 I JournalCrashProbe: KILL pid=25830 phase=TEMP_SYNCED workbook=04544f75-5cda-489f-be61-8e3f7826fc54 command=6e7fef1a-437f-4dad-8a12-fc39a6d2b23f
+         1792523450.609 25695 25728 I JournalCrashProbe: BINDER_DEATH pid=25830 expectedPhase=TEMP_SYNCED testPid=25695
+         1792523450.609 25695 25695 I JournalCrashProbe: DISCONNECTED pid=25830 expectedPhase=TEMP_SYNCED
+         1792523450.609 25695 25709 I JournalCrashProbe: VERIFIED_DEATH pid=25830 phase=TEMP_SYNCED workbook=04544f75-5cda-489f-be61-8e3f7826fc54 command=6e7fef1a-437f-4dad-8a12-fc39a6d2b23f

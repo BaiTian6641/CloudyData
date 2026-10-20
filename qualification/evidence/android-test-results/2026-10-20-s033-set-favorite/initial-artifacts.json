@@ -1,0 +1,16 @@
+{
+  "source_base": "77185fdd8396fd221efb205976f2ee5a779a317a",
+  "description": "Initial combined run: 87 pass, Home UI fails immediate accessibility search-text read before star action; product source unchanged by the test-wait correction.",
+  "artifacts": [
+    {
+      "name": "cloudydata-s033-favorite-runtime-x86_64.apk",
+      "bytes": 116004373,
+      "sha256": "5fe0af570460319322dbb81fb207d183efc24b055247b0fa7f79b709ab4c5fba"
+    },
+    {
+      "name": "cloudydata-s033-favorite-runtime-tests.apk",
+      "bytes": 2758523,
+      "sha256": "6ebc557f9f79328ec26a3b049162e870a22db45129f2074bda0a7b55a806ef08"
+    }
+  ]
+}

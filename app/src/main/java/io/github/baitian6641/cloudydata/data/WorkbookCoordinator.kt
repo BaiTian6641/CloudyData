@@ -92,6 +92,7 @@ class WorkbookCoordinator internal constructor(
         }
         val candidate = when (request) {
             is WorkbookCommand.Rename -> current.copy(name = request.name)
+            is WorkbookCommand.SetFavorite -> current.copy(favorite = request.value)
             is WorkbookCommand.SetChart -> {
                 require(current.worksheets.any { it.id == request.worksheetId }) { "Command worksheet is missing." }
                 current.copy(worksheets = current.worksheets.map {

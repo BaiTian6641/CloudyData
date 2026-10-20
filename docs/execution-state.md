@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 implementation through `eac7f6087fbbb94fadb0acf7b0f4b66a8b7c9e3c`;
-all 115 committed source/fixture hashes match the artifact manifest in
-`qualification/evidence/2026-10-20-s03-add-worksheet.md`.
+**Source:** S03.3 desired-value favorite implementation on base
+`77185fdd8396fd221efb205976f2ee5a779a317a`; 118 source/fixture hashes bind the
+combined revision in `qualification/evidence/2026-10-20-s03-set-favorite.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -72,8 +72,17 @@ unless stated otherwise.
   survive refusal; discarded/replaced/completed queued imports cannot resurrect.
   Deterministic invalid requests are Change not applied without a retry token,
   so corrected actions can proceed. Full rejected-proposal review/reapply is open.
-- Home recents/favorites/all filters; favorite toggle code exists but is not yet
-  tested.
+- Home recents/favorites/all filters and typed desired-value SetFavorite are
+  verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
+  retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
+  receipts retain redo. One pending intent per workbook blocks replacement;
+  sibling workbooks stay independent. Real write/refresh failures retain the
+  exact retry and known acceptance survives a later recovery-blocked retry.
+  Native Home preserves failure across sibling reload/search/section changes,
+  disables affected row/star, contains pointer taps without opening the workbook,
+  retries once, and exposes exact Favorites state; Tab8+Enter removes it with a
+  second receipt. Shared icon labels now live on the actual Button with its
+  enabled/focus/action state. Independent final wide light captures pass.
 - Offline Vega 6.4.0 + CSP interpreter host renders trusted bar and multi-series
   line specs from packaged assets; screen/SVG content, no external request,
   native accessible summary and origin-validated messages are observed. The
@@ -118,6 +127,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-set-favorite.md`
 - `qualification/evidence/2026-10-20-s03-durable-command-journal.md`
 - `docs/decisions/0009-atomic-command-checkpoints.md`
 - `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`
@@ -342,13 +352,14 @@ unless stated otherwise.
 - Rename, new worksheet/local tabs and real replacement import now have bounded
   S03.2 native cases and S03.3 typed-add/ViewModel admission cases. Their complete
   dialog/pointer/keyboard workflow acceptance,
-  favorites-toggle UI and full non-SUM aggregate conformance remain unverified.
+  full favorite UI matrix and non-SUM aggregate conformance remain unverified.
 - The worksheet Cancel action's UI wiring is not exercised against a slow query;
   only the native interrupt and query-generation invalidation code exist.
 - The shared coordinator now rejects stale revisions and serializes same-view
   edits, imports and snapshot reads in one app process (14/14 native tests).
-  Rename/chart/add IDs and atomic durable history now have 12 journal tests, 14
-  worksheet/admission tests, 5 actual writer-death cases and 6 recovery tests.
+  Rename/chart/add/favorite IDs and atomic durable history now have 12 journal tests,
+  14 worksheet/admission tests, 10 favorite/controller cases, 5 actual writer-death
+  cases and 6 recovery tests.
   Complete typed command coverage, Room integration, rejected-proposal review/
   reapply, cross-process ownership and whole-product
   process restoration remain open. Conflict-banner visual/input review remains
@@ -448,51 +459,52 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Combined x86 and default dual-ABI debug/test build and JVM 75/75 pass; lint
-  0 errors/6 warnings. Existing ChromeOsAbiSupport warning remains visible;
-  default ZIP contains arm64-v8a+x86_64. No checks/assertions were disabled.
-- Existing API36 emulator-5580 first combined native run 77/77, no skips, 20.406s:
-  AddWorksheet/admission14, new add deaths2, metadata recovery6, journal12,
-  prior journal deaths3, coordinator14, engine/persistence/query regressions26.
-- Runtime APK `62b045ae5ec0e52e68979285a95aa0cdab44183f8dd0b1bdc4e0f679164b2e03`;
-  test APK `d0d8f8353fa04a72275e83a3765001f99ee3a3d1d4a8a4d7e6ee213c0beffdbf`.
-- New add writer PIDs24232(TEMP_SYNCED)/24249(REPLACED) actually died, observed
-  from PID24199 via Binder. Prior chart/recovery deaths also passed at
-  PIDs24274/24290/24306. Exact definitions, stored default, receipts and durable
-  undo/reopen/redo passed; duplicate-after-undo did not recreate the sheet.
-- Real move-time EACCES, post-replacement acknowledgement loss, staged native CSV,
-  blocked queued Add/no-op/import, invalid→corrected request and queued Apply→
-  Discard all have independent exact oracles. Tokens current; contrast 40/40.
-- Independent source/test review resolved failure-barrier, import admission,
-  terminal-validation and stale pending-operation findings before this run.
-  No new native pixel/input acceptance is claimed for the failure-banner text.
-- Current logs: qualification/evidence/android-test-results/2026-10-20-s033-add-worksheet/;
-  source/artifact manifest: qualification/evidence/artifacts/2026-10-20-s033-add-worksheet/.
-  Physical Googlebook,16KiB,Tableau,power-loss,cross-process gates remain open/blocked.
+- Final existing API36 emulator-5580 combined native 89/89, no skips, 50.208s:
+  favorite/controller 10, Home 1, worksheet/admission 14, writer-death 5, metadata
+  recovery 6, journal 12, coordinator 14, engine/query/persistence 26 and palette 1.
+- Real EACCES, post-replacement acknowledgement loss, corrupt postcommit refresh,
+  later recovery-blocked retry, stale conflict, no-op/redo, duplicate after undo,
+  sibling reload and exact two native Home favorite receipts have fixed oracles.
+  No new favorite-specific process death, power loss or cross-process claim.
+- Final x86 and default dual-ABI debug/test builds pass; JVM 75/75, lint 0 errors/
+  6 existing warnings. Default ZIP contains arm64-v8a+x86_64. Tokens current;
+  contrast 40/40. No disabled checks or deleted emulator data.
+- Runtime APK `0ebadc5effd73332c649a3f0dafff78269287f67fe3fa1694da341afa99a0861`;
+  test APK `bc749afae5eeb696965c3a1a1a9236d504855e0a68168219d6c6c9a683748d54`.
+- Independent review resolved known-acceptance retention. A focused diagnostic
+  proved label-on-Icon incorrectly exposed enabled=true under disabled button;
+  shared labels now belong to actionable Buttons. Exact disabled/pointer and
+  Tab8/Enter assertions pass with bounded native publication waits. Initial
+  failures and discriminating XML/pixels remain in evidence, not hidden.
+- Root/independent reviewer accept actual final native failure/saved captures in
+  2880×1800 light/default-font scope. Short/narrow/dark/large-text/TalkBack and
+  physical pointer/keyboard remain unqualified. Original worksheet banner gates
+  remain separate. Physical Googlebook hold,16KiB,Tableau and C0 bounds unchanged.
+- Evidence: qualification/evidence/2026-10-20-s03-set-favorite.md; raw logs and 118
+  source/fixture hashes under the matching android-test-results/artifacts paths.
 
 ## Next exact task
 
-**S03.3 typed SetFavorite(desiredValue) and retry-safe Home intent.**
+**S03.4 first persisted-reference admission slice.**
 
-- IDs: F01/F64, Q17/Q19/Q34; bounded Q21 Home-action checks. Prerequisites:
-  verified typed receipts/checkpoint, durable history, shared coordinator and
-  native failure admission. No new engine or worker capability is needed.
-- Paths: model/WorkbookCommand.kt, data/WorkbookCoordinator.kt, ui/HomeScreen.kt
-  or a narrow Home command owner, disjoint focused native tests, evidence/state.
-- Action: replace Home's generic replayable toggle with an explicit desired
-  Boolean and frozen command/workbook/window/expected-revision identity. Keep
-  the same exact request across acknowledgement loss/retry, expose pending/error
-  truthfully, and reload the actual accepted library state. Preserve other views,
-  workbooks, worksheets, snapshot and stored default.
-- Independent oracle: false→true accepts once/one receipt; duplicate after rename
-  returns current document without writing; changed desired value under the same
-  ID is refused; undo/reopen/duplicate leaves false and redo alone restores true.
-  No-op acceptance adds no history step. Exercise the actual native Home star and
-  Favorites filter, target semantics and nested-row non-opening; inspect affected
-  native render/input, then independently review the combined revision/results.
-- Room, full proposals, remaining typed mapping/aggregation/sort families and
-  source-version history remain separate. S11.C0 stays partial; S13.C0/S15.C0
-  remain mandatory when applicable and are not promoted by this local slice.
+- IDs: F01/F05/F14/F64; Q01/Q16/Q17/Q19/Q34. Prerequisites: verified interim
+  checkpoint/coordinator/native query authority and source-bound reference audit.
+- Paths: model/typed reference validator, engine/WorksheetQuery.kt and
+  UnderlyingRowsQuery.kt, bounded ViewModel result admission if needed, disjoint
+  native tests and evidence/state. No renderer/import mapping resets.
+- Action: reject unresolved nonnull mapping/filter IDs or ambiguous duplicate
+  snapshot field identities before SQL. Keep genuinely null mappings intentional.
+  Preserve repairable metadata and snapshot; do not guess by display name, clear
+  references or classify normal replacement as corrupt package. Reuse resolution
+  for View Data and refuse stale result/snapshot ownership.
+- Independent oracle: CSV East 10/East 5/West 20 groups East 15/West 20; bad row/measure/
+  series/secondary/filter refs fail explicitly rather than global 35, counts or
+  collapsed marks. Invalid refs plus unavailable path must fail before SQL.
+  Real replacement East 7/West 11 retains old IDs and fails until explicit rebind;
+  repaired/reopened query and View Data must return exact 7/11 source values.
+- Evidence level: current bug is a source finding, not yet a new native pass.
+  Full package/semantic validation, Room, source history and schema reconciliation
+  remain separate. S11.C0 partial; S13.C0/S15.C0 mandatory when applicable, absent.
 
 ## Protected context
 

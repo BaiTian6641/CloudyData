@@ -1080,3 +1080,32 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   Native ViewModel/state evidence does not close new banner visual/input acceptance.
   Physical hold,16KiB/Tableau blockers and S11.C0/S13.C0/S15.C0 bounds are unchanged.
   Next exact task: typed desired-value SetFavorite and stable native Home retry.
+
+## 2026-10-20 — S03.3 typed SetFavorite and native Home intent
+
+- Reconciled clean main77185fd/live matching origin and all115 prior source hashes;
+  plans unchanged/already read, original-asset/design authority preserved.
+  Earliest ready task:F01/F64/Q17,Q19,Q34 with bounded Q21 native Home checks.
+- SetFavorite freezes explicit Boolean/request/window/workbook/revision; identical
+  retries cannot toggle/replay after rename/undo/reopen. No-op retains redo.
+  Home carries real summary revision, one unresolved intent per workbook and
+  serialized list publication. Failure survives reload/filter/search; sibling
+  workbooks proceed. Known acceptance remains saved even if later retry fails
+  before a new outcome. Dismissal only clears a local proposal, not accepted data.
+- Disjoint workers authored10 native command/controller cases and1 real Home UI
+  case; independent review found and verified the acceptance-retention correction.
+  Real directory EACCES and postcommit-corruption/recovery guard use exact oracles.
+- Initial search and later Tab assertions raced native semantics publication;
+  bounded exact waits preserve original checks. A repeated disabled-star failure
+  was discriminated by XML/pixels: label on enabled decorative Icon under disabled
+  Box/row. Root moved shared label to actual Role.Button; strict disabled/pointer
+  behavior passes. Focus trace reaches exact star afterTab8; Enter persists false.
+- Final combined native89/89,no skips,50.208s, including old77 and palette1.
+  Default/x86 debug/test build and JVM75/75 pass; lint0/6 retained; both default
+  ABIs present; tokens current,contrast40/40. Independent source/trace/pixel review
+  accepts final wide light Home failure/saved captures with no material findings.
+- Evidence, failures, diagnostic hypotheses/probes and118 source/fixture hashes:
+  qualification/evidence/2026-10-20-s03-set-favorite.md. Physical owner hold,
+  16KiB/Tableau, full design matrix, Room/full commands and C0 bounds unchanged.
+  Next exact action:S03.4 typed persisted-reference refusal before SQL/View Data,
+  with real source replacement retaining IDs until explicit repair.

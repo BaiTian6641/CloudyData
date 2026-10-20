@@ -18,10 +18,21 @@ No journal file competes with the workbook as a second source of truth.
 - Format v3 stores a version-1 `commandJournal` envelope with the exact head hash,
   bounded undo/redo document snapshots and typed acceptance receipts. Canonical
   structural hashes detect corruption; they are not signatures or trust grants.
-- Typed Rename, SetChart and AddWorksheet requests contain command/workbook/window
+- Typed Rename, SetChart, AddWorksheet and SetFavorite requests contain command/workbook/window
   identity, expected revision and explicit payload. Chart edits identify their
   target sheet; additions carry the frozen new sheet ID and name.
   Opening a file reconstructs state; it never executes or replays saved commands.
+- SetFavorite carries an explicit desired Boolean, never a replayable toggle.
+  Home freezes that value and expected revision from its displayed summary. A
+  per-Home controller keeps one pending/failed proposal per workbook, permits
+  independent workbook actions, and retries the exact request. Ordinary library
+  reloads and filter/search changes cannot discard an unresolved proposal.
+- A Home favorite remains pending through real library refresh; success requires
+  the target summary at least as recent as the returned current document. Proven
+  accepted revision survives later retry/refresh failures, with saved-locally copy.
+  Dismiss/reload removes only the local proposal and never undoes accepted data.
+  This controller is an in-memory view projection, not persistent intent recovery
+  after leaving Home, configuration recreation or whole-product process death.
 - AddWorksheet creates a default unmapped Table worksheet without changing the
   stored reopen default. IDs retained by current content, either history direction
   or accepted AddWorksheet receipts cannot be recycled under a new request. An

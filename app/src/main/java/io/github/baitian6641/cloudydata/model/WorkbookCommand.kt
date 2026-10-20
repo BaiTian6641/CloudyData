@@ -36,12 +36,21 @@ sealed interface WorkbookCommand {
         val name: String,
     ) : WorkbookCommand
 
+    data class SetFavorite(
+        override val commandId: String,
+        override val workbookId: String,
+        override val originWindowId: String,
+        override val expectedRevision: Long,
+        val value: Boolean,
+    ) : WorkbookCommand
+
     fun validate() {
         for (id in listOf(commandId, workbookId, originWindowId)) {
             require(id.length in 1..128 && id.all { it.isLetterOrDigit() || it in "-_." }) { "Invalid command identity." }
         }
         require(expectedRevision in 1 until Long.MAX_VALUE) { "Invalid expected revision." }
         when (this) {
+            is SetFavorite -> Unit
             is Rename -> require(name.isNotBlank() && name == name.trim() && name.length <= 512) { "Workbook name must contain 1–512 characters." }
             is SetChart -> {
                 require(worksheetId.length in 1..128) { "Invalid worksheet identity." }
@@ -63,6 +72,7 @@ sealed interface WorkbookCommand {
             is Rename -> "rename"
             is SetChart -> "setChart"
             is AddWorksheet -> "addWorksheet"
+            is SetFavorite -> "setFavorite"
         })
         .put("commandId", commandId)
         .put("workbookId", workbookId)
@@ -73,6 +83,7 @@ sealed interface WorkbookCommand {
                 is Rename -> put("name", command.name)
                 is SetChart -> put("worksheetId", command.worksheetId).put("options", command.options.toJson())
                 is AddWorksheet -> put("worksheetId", command.worksheetId).put("name", command.name)
+                is SetFavorite -> put("value", command.value)
             }
         }
 
@@ -86,6 +97,7 @@ sealed interface WorkbookCommand {
                 "rename" -> Rename(id, workbook, window, revision, json.getString("name"))
                 "setChart" -> SetChart(id, workbook, window, revision, json.getString("worksheetId"), ChartOptions.fromJson(json.getJSONObject("options")))
                 "addWorksheet" -> AddWorksheet(id, workbook, window, revision, json.getString("worksheetId"), json.getString("name"))
+                "setFavorite" -> SetFavorite(id, workbook, window, revision, json.getBoolean("value"))
                 else -> error("Unsupported workbook command kind.")
             }
             command.validate()

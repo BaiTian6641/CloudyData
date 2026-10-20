@@ -1,0 +1,65 @@
+{
+  "source_base_commit": "77185fdd8396fd221efb205976f2ee5a779a317a",
+  "source_file_count": 118,
+  "source_manifest_sha256": "ad2f578dbba18e888a1b081d727fee82f2d804025138b8d49c3842149f8cbab8",
+  "artifacts": [
+    {
+      "name": "runtime_x86_64_apk",
+      "bytes": 116122733,
+      "sha256": "0ebadc5effd73332c649a3f0dafff78269287f67fe3fa1694da341afa99a0861",
+      "abis": [
+        "x86_64"
+      ]
+    },
+    {
+      "name": "runtime_test_apk",
+      "bytes": 3835968,
+      "sha256": "bc749afae5eeb696965c3a1a1a9236d504855e0a68168219d6c6c9a683748d54",
+      "abis": []
+    },
+    {
+      "name": "default_dual_abi_apk",
+      "bytes": 164042499,
+      "sha256": "21db336e48018425373bcc1db67143f447553d1ef32e865703a0b8de10fc2fe0",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ]
+    },
+    {
+      "name": "home-favorite-failed.png",
+      "path": "qualification/evidence/artifacts/2026-10-20-s033-set-favorite/home-favorite-failed.png",
+      "bytes": 93104,
+      "sha256": "0fff4bac7460869f68506b3a75d2f4cea45718f0d62c39da0705d10d5610bedd",
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "name": "home-favorite-saved.png",
+      "path": "qualification/evidence/artifacts/2026-10-20-s033-set-favorite/home-favorite-saved.png",
+      "bytes": 96164,
+      "sha256": "bc6bdb8f7a414616a25a77e4f9cbc87df5f939a8f6b13dd81f4971a757582505",
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "name": "home-favorite-focus-trace.txt",
+      "path": "qualification/evidence/artifacts/2026-10-20-s033-set-favorite/home-favorite-focus-trace.txt",
+      "bytes": 6108,
+      "sha256": "b988d573060d5d7fa99ef59763b054f5103b1885f6c6b2fd5880e4a1aeeac06b"
+    }
+  ],
+  "native": {
+    "tests": 89,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 50.208,
+    "serial": "emulator-5580",
+    "runtime_abi": "x86_64",
+    "api": 36
+  }
+}

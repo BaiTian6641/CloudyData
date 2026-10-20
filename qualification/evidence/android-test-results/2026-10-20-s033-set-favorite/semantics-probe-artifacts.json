@@ -1,0 +1,11 @@
+{
+  "runtime_x86_64_apk": {
+    "bytes": 116122733,
+    "sha256": "0ebadc5effd73332c649a3f0dafff78269287f67fe3fa1694da341afa99a0861"
+  },
+  "runtime_test_apk": {
+    "bytes": 2760875,
+    "sha256": "b99652361a10d0e5e8138e00cacdfdd7b52f778f79b14bf0efa00bd248c56b49"
+  },
+  "scope": "Post accessibility-label correction; Tab focus gate failed. See semantics-probe-native.txt."
+}

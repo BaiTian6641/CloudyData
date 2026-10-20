@@ -1,0 +1,19 @@
+
+io.github.baitian6641.cloudydata.HomeFavoriteUiTest:
+Error in actualHomeKeepsFailedIntentAcrossReloadThenRetriesOnceAndKeyboardRemovesIt(io.github.baitian6641.cloudydata.HomeFavoriteUiTest):
+java.lang.AssertionError: The failed star's exact native accessibility node must publish disabled state
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.HomeFavoriteUiTest.actualHomeKeepsFailedIntentAcrossReloadThenRetriesOnceAndKeyboardRemovesIt(HomeFavoriteUiTest.kt:105)
+
+
+Time: 10.221
+There was 1 failure:
+1) actualHomeKeepsFailedIntentAcrossReloadThenRetriesOnceAndKeyboardRemovesIt(io.github.baitian6641.cloudydata.HomeFavoriteUiTest)
+java.lang.AssertionError: The failed star's exact native accessibility node must publish disabled state
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.HomeFavoriteUiTest.actualHomeKeepsFailedIntentAcrossReloadThenRetriesOnceAndKeyboardRemovesIt(HomeFavoriteUiTest.kt:105)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1
