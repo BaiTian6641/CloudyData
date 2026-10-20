@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 secondary aggregation decoding on source base
-`b752e46161b3d876edc48a77c5f5f55e09593c0f`; 125 source/fixture hashes bind the
-combined revision in `qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md`.
+**Source:** S03.4 secondary aggregation implementation through `112465c8556d9165553f730c3059f2e56616fdc8`;
+all125 committed source/fixture hashes match the artifact manifest in
+`qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

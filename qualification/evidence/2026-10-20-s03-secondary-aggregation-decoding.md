@@ -4,7 +4,8 @@
 **IDs:** S03.4; F01/F17/F36/F64; Q33/Q34 migration/history, exact native dual-axis controls.
 **Status:** verified for the bounded secondary enum/migration cases below;
 full S03 and aggregation/parity families remain partial.
-**Source base:** `b752e46161b3d876edc48a77c5f5f55e09593c0f`.
+**Implementation commit:** `112465c8556d9165553f730c3059f2e56616fdc8`; all125 source/fixture hashes verified
+against committed blobs. Source base: `b752e46161b3d876edc48a77c5f5f55e09593c0f`.
 
 ## Readiness and ownership
 
