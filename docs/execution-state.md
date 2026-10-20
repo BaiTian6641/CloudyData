@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 decoded workbook-revision admission on source base
-`2242d29648cce50b8cbf21e657dd81e1ba3e5acf`, bound by all 131 source/fixture
+**Source:** S03.4 decoded workbook-revision admission through implementation
+`eb930b72b763accf03efe60a5ca836a03d40edf1`, bound by all 131 committed source/fixture
 hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-revision/`;
 see `qualification/evidence/2026-10-20-s03-workbook-revision-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.

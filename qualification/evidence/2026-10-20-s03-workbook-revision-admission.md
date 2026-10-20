@@ -3,6 +3,7 @@
 **Date:** 2026-10-20 (America/Chicago)
 **IDs:** S03.4; F01/F64; Q33/Q34.
 **Status:** verified for the bounded decoded revision cases below; S03/full package validation remains partial.
+**Implementation commit:** `eb930b72b763accf03efe60a5ca836a03d40edf1`; all 131 source/fixture hashes match committed blobs.
 **Source base:** `2242d29648cce50b8cbf21e657dd81e1ba3e5acf`.
 
 ## Readiness and ownership
