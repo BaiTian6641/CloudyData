@@ -7,6 +7,8 @@ process-death slice. Full S03, Room integration and the complete typed command
 catalog remain partial.
 **Source base:** `c2c6b65de8028a5bf9850643c747e55db7468b0d`; combined tested source is
 bound by 112 source/fixture hashes in `artifacts/2026-10-20-s033/source-sha256.txt`.
+**Implementation commit:** `92f8aaab8f5ba3db84de7c272c9779c7af6f99cb`; all112
+source/fixture hashes independently match `git show` from that committed revision.
 **Platform:** existing `emulator-5580`, Android 16/API36, x86_64, 4 KiB pages,
 2880×1800 pre-existing size override, 240 dpi, font scale1.0, WebView143.0.7499.35.
 The physical Googlebook remained on owner hold. Licensed Tableau was unavailable.

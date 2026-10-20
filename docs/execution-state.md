@@ -2,8 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 combined implementation over `c2c6b65`; source/artifact manifest
-is in `qualification/evidence/2026-10-20-s03-durable-command-journal.md`.
+**Source:** S03.3 implementation through `92f8aaab8f5ba3db84de7c272c9779c7af6f99cb`;
+all112 committed source/fixture hashes match the source/artifact manifest in
+`qualification/evidence/2026-10-20-s03-durable-command-journal.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

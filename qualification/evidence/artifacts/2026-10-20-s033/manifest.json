@@ -31,5 +31,6 @@
       "bytes": 75413,
       "sha256": "de69197d6b2d75f4c8fd3fcc83d7c4b32f7f70bc8133eb5d2707b217ba6c2ffd"
     }
-  ]
+  ],
+  "implementation_commit": "92f8aaab8f5ba3db84de7c272c9779c7af6f99cb"
 }
