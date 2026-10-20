@@ -72,6 +72,11 @@ No journal file competes with the workbook as a second source of truth.
   history and future versions fail closed without rewriting the source file.
   Canonical round-trip checks prevent permissive model parsers from silently
   changing the meaning of stored journal records.
+- Workbook schema selection and legacy backup naming share the same decoded
+  version reader: only finite integral Number values in1..3 are accepted, with
+  range validation before Int conversion. Strings, fractions and wrapped large
+  integers cannot select a legacy branch. Equivalent supported decimal/exponent
+  numeric forms retain their meaning; raw JSON lexical validation is separate.
 - v1/v2 documents without a journal load through the existing model migration.
   Present filter records must decode completely: supported typed version/mode,
   known fields, nonblank string anchors,1–2001 complete text/NULL marks and

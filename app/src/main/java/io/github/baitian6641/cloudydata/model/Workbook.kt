@@ -607,11 +607,21 @@ data class WorkbookDocument(
     companion object {
         const val CURRENT_FORMAT_VERSION = 3
 
-        fun fromJson(json: JSONObject): WorkbookDocument {
-            val version = json.getInt("formatVersion")
-            require(version in 1..CURRENT_FORMAT_VERSION) {
-                "Workbook format $version is newer than this build supports ($CURRENT_FORMAT_VERSION)."
+        internal fun readFormatVersion(json: JSONObject): Int {
+            // getInt also coerces strings, truncates fractions and wraps large Longs.
+            // Check the decoded number before it can select a schema or backup name.
+            val raw = json.get("formatVersion")
+            require(raw is Number) { "Workbook format version must be a supported whole number." }
+            val version = raw.toDouble()
+            require(version.isFinite() && version % 1.0 == 0.0 &&
+                version >= 1.0 && version <= CURRENT_FORMAT_VERSION.toDouble()) {
+                "Workbook format version must be a whole number from 1 to $CURRENT_FORMAT_VERSION."
             }
+            return version.toInt()
+        }
+
+        fun fromJson(json: JSONObject): WorkbookDocument {
+            readFormatVersion(json)
             val sheetsJson = json.getJSONArray("worksheets")
             return WorkbookDocument(
                 // Normalize accepted v1/v2 documents to the current shape so a

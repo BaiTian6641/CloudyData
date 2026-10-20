@@ -1186,3 +1186,25 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   unchanged. Next exact action: strict shared workbook-version admission; installed
   Android JSON source coerces fractions/strings/wrappedLongs into legacy2, still
   requiring a discriminating native version probe and byte-preservation controls.
+
+## 2026-10-20 — S03.4 shared decoded workbook-version admission
+
+- Continued clean/upstream/live-matchingd2f3d0b; all125 prior source hashes fresh,
+  already-read plans/master/scoped original assets and authority unchanged.
+  SelectedF01/F64,Q33/Q34; root source/docs, disjoint native workers and review.
+- Pre-edit native probe accepted2.9,string"2",Long4294967298 into legacy parsing,
+  normalized3, executedEast15/West20 and removed candidates. Failure/hashes retained.
+- One shared Number/finite/whole/range-beforeInt reader now governs document,
+  checkpoint branch and backup naming. Existing raw/hash/journal guards unchanged;
+  equivalent integral decimal/exponent numeric1..3 remains compatible.
+- Native new refusal4/migration3 pass7/7 in1.729s; combined126/126,no skips,59.938s.
+  Twenty-six malformed decoded/stored cases, actual NaN/±Infinity and rehashed
+  v3head/history preserve rejected bytes. Literal tokens/original backups,
+  history/receipts/reopen/duplicate and nativeEast15/West20/sourceEast10/5 pass.
+- Default/x86 builds,JVM75/75,lint0/6 retained,both default ABIs,tokenscurrent and
+  contrast40/40 pass; independent source/oracle review has no material finding.
+  Evidence+127 hashes:qualification/evidence/2026-10-20-s03-workbook-version-admission.md.
+  Raw lexical precision/grammar, hardware/reference,C0,Room/fullpackage remain open.
+- Next exact action: discriminating native duplicate-sheet-ID multiwrite probe,
+  then unique-per-document head/history admission with byte-preserving refusal;
+  retain intentional missing/null active/default and empty-sheet compatibility.

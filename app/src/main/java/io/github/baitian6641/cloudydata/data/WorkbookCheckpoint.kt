@@ -57,7 +57,7 @@ data class WorkbookCheckpoint(
         const val RECEIPT_LIMIT = 4096
 
         fun fromJson(json: JSONObject): WorkbookCheckpoint {
-            val version = json.getInt("formatVersion")
+            val version = WorkbookDocument.readFormatVersion(json)
             val document = WorkbookDocument.fromJson(json)
             if (version < 3 && !json.has("commandJournal")) return WorkbookCheckpoint(document).also { it.validate() }
             require(version == 3 && json.has("commandJournal")) { "Workbook command checkpoint is missing or unsupported." }

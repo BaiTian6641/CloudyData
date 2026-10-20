@@ -87,7 +87,7 @@ class WorkbookStore(
         val bytes = next.toJson().toString().toByteArray(StandardCharsets.UTF_8)
         require(bytes.size <= MAX_METADATA_BYTES) { "Workbook metadata exceeds the 32 MiB limit." }
         if (metadata.exists()) {
-            val oldVersion = JSONObject(metadata.readText(StandardCharsets.UTF_8)).getInt("formatVersion")
+            val oldVersion = WorkbookDocument.readFormatVersion(JSONObject(metadata.readText(StandardCharsets.UTF_8)))
             if (oldVersion < WorkbookDocument.CURRENT_FORMAT_VERSION) preserveLegacy(metadata, oldVersion)
         }
         atomicWrite(metadata, bytes)
