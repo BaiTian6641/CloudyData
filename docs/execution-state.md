@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 strict legacy filter implementation through `7c78e8dff3062948ca9fd36d913c94e40e564b28`;
-all123 committed source/fixture hashes match the artifact manifest in
-`qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`.
+**Source:** S03.4 secondary aggregation decoding on source base
+`b752e46161b3d876edc48a77c5f5f55e09593c0f`; 125 source/fixture hashes bind the
+combined revision in `qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -88,6 +88,14 @@ unless stated otherwise.
   values survive migration/v3 reopen with exact original backups. Native12/12
   new cases and combined113/113 pass; malformed load/open/save preserves metadata,
   both candidates and accepted source/Parquet bytes. v3 content/hash guards remain.
+- S03.4 secondary aggregation decoding preserves SUM only for an absent key;
+  every present value must be an exact supported enum string, including inactive
+  secondary channels. Native migration AVG 100 versus explicit/absent SUM 200 keeps
+  January's exact two source rows, byte-exact originals and accepted history/
+  receipts through reopen and later duplicate acknowledgement. Malformed values
+  fail load/open/save before canonical cleanup; candidates/source remain intact.
+  New 6/6 plus combined 119/119 pass. Enum syntax is qualified separately from
+  unsupported aggregation/mark combinations; version admission remains open.
 - Home recents/favorites/all filters and typed desired-value SetFavorite are
   verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
   retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
@@ -143,6 +151,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md`
 - `qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`
 - `qualification/evidence/2026-10-20-s03-reference-admission.md`
 - `qualification/evidence/2026-10-20-s03-set-favorite.md`
@@ -477,51 +486,48 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 emulator-5580 combined113/113, no skips,56.062s: new refusal7 +
-  migration5 and previous101. First post-fix focused12/12 in2.565s. The unchanged
-  baseline method first failed on actual v1/v2 filter=null, unfiltered15/20 and
-  deleted recovery candidates; that raw failure and initial hashes remain.
-- Exact native KEEP15, paired10, NULL3, duplicate OR15 (not30), intentionally
-  unfiltered15/20 and actual underlying rows pass. Valid defaults, byte-exact
-  original backups, first accepted receipt/history, reopen and duplicate do not
-  replay source work. Failed load/open/save retains metadata/candidates/source.
-- Final x86/default dual-ABI debug/test builds pass; JVM75/75, lint0 errors/6
-  retained warnings; both default ABIs present. Tokens current; contrast40/40.
-- Runtime APKa1f0a0405ccede0c8d68a01b4865669b29e30b6863807d9deedfba50a13791e5;
-  test APKec2c9287f89822f3f036b5a8c88d3ddf0ace0bec01db8af43fd4faad6537b2a7.
-- Independent source/test review has no material blocker; generic parser bound
-  enforced in source, positive2001-term SQL capacity not claimed. Error/repair
-  pixels, TalkBack and hardware input remain unqualified. Old death/input cases
-  retain their actual own boundaries; no new kill or physical device claim.
-- Evidence: qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md; raw
-  logs/baseline failure and123 source/fixture hashes in matching result/artifact
-  paths. Physical hold,16KiB,Tableau,Room,source history and C0 gates unchanged.
+- Existing API36 emulator-5580 combined 119/119, no skips, 58.029s: new secondary
+  refusal 3 + migration 3 and prior 113. First post-fix focused 6/6 in 1.274s.
+  Unchanged-production baseline first failed both legacy versions on AVGG→SUM 200
+  and deleted candidates, despite validAVG 100 control; raw failure/hashes retained.
+- Exact native January 150/100.0 AVG versus200 SUM, February 120/20 and March 80/60,
+  January's two original rows, migration backups/history/receipts/reopen/duplicate
+  no-replay pass. Malformed active/inactive values and rehashed v3 head/history
+  refuse while preserving canonical/candidates/source/Parquet. All 7 enum strings
+  have syntax-only acceptance; actual source stays 4 rows / sales 350 / cost 280.
+- Final x86/default dual-ABI debug/test builds pass; JVM 75/75, lint 0 errors/6
+  retained warnings; both default ABIs present. Tokens current; contrast 40/40.
+- Runtime APK `db3a2b185d114c4b8fb3e9542d0e485b8b3a73f2b3dd1864e9d1436535c7ded9`;
+  test APK `52da37b278982486ca750c1c2f2c8201c9a2f60446accc38f30c0030b7da3614`.
+- Independent source/test review has no material blocker. No complete aggregation
+  conformance, formatVersion admission, backup-failure, new render/input, new kill
+  or physical acceptance follows. Existing old gate results keep their own bounds.
+- Evidence: qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md;
+  raw logs/baseline failure and 125 source/fixture hashes in matching paths.
+  Physical hold,16KiB,Tableau,Room,source history and C0 remain unchanged.
 
 ## Next exact task
 
-**S03.4 strict secondary aggregation decoding.**
+**S03.4 strict workbook format-version admission.**
 
-- IDs:F01/F17/F36/F64; Q33/Q34 migration/history, with exact native dual-axis
-  numerical controls. Prerequisites: current strict filter/reference/checkpoint
-  authority and existing real dual-axis query plus migration tests.
-- Paths:model/Workbook.kt, disjoint native legacy aggregation/refusal tests,
-  evidence/state. Keep parser policy absent/default distinct from malformed
-  present data; no renderer, engine operation or Store normalization rewrite.
-- Action: absent secondaryAggregation legitimately defaults to SUM. A present
-  value must be a supported Aggregation string; unknown, blank, wrong-type or
-  explicitnull must not silently become SUM. Preserve all existing enum choices
-  and valid defaults; unsupported aggregation/mark combinations remain separate.
-- Independent oracle: actual dual_axis.csv January salesSUM150, costAVG100,
-  costSUM200. Valid AVG before/after migration/reopen remains100; explicit/absent
-  SUM remains200. Bad present value refuses without touching canonical/backups/
-  candidates/source. View Data keeps January's two exact source rows. Rehashed
-  malformed v3 head/history cannot bypass existing content guards.
-- Evidence level: remaining secondaryAggregation fallback and coercing
-  formatVersion parsing are source findings, not new native passes. Harden
-  version admission separately; no blanket legacy whole-document roundtrip that
-  rejects legitimate defaults. Full schema/types/package validation and Room,
-  source versions and complete commands remain open. S11.C0 partial;
-  S13.C0/S15.C0 absent and mandatory when worker-backed dependencies apply.
+- IDs: F01/F64; Q33/Q34 migration/history. Prerequisites: committed strict legacy
+  filters/aggregation plus existing v3 checkpoint/migration/source preservation.
+- Paths: model/Workbook.kt and data/WorkbookCheckpoint.kt for one shared version
+  decoder, disjoint native version/migration tests and evidence/state.
+- Action: replace coercing getInt at the workbook-version decision with explicit
+  numeric, finite, integral, supported-range validation before legacy/current
+  branch selection. Do not accept a string, truncate a fraction or wrap a large
+  Long into version 2. Preserve legitimate numeric 1/2 migration and current 3
+  reopen, exact originals and the existing v3 raw/hash guard; no broad Store rule.
+- First independent native probe: metadata versions 2.9, string"2" and
+  Long 4294967298 are expected to reach legacy2 from the inspected Android org.json conversion.
+  Require explicit refusal without canonical/backups/candidates/source changes,
+  with valid integer1/2/3 controls. Integral numeric 2.0 can retain its existing
+  equivalent legacy meaning if handled consistently and byte-preserved on save.
+- Evidence level: current coercion is a source finding confirmed in the installed
+  Android36 JSONObject/JSON implementation; no new native version probe yet.
+  Full package/schema/types/aggregation applicability, Room and source versions
+  remain open. S11.C0 partial; S13.C0/S15.C0 absent and mandatory when applicable.
 
 ## Protected context
 

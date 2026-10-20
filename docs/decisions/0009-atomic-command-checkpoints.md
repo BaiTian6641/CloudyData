@@ -82,6 +82,10 @@ No journal file competes with the workbook as a second source of truth.
   Repeated OR terms and empty/whitespace domain strings are preserved exactly;
   duplicates do not multiply source rows. Unrelated legacy extensions remain in
   the original backup rather than forcing a blanket raw-roundtrip migration.
+  Secondary aggregation defaults to SUM only for an absent key; any present
+  value must be an exact supported enum string, even on an inactive channel.
+  Malformed/null data cannot turn persisted intent into a different aggregation.
+  Recognized enum syntax does not qualify unsupported query combinations.
   Before their first accepted save, preserve exact original bytes under
   `migration/workbook-v<version>-original.json` through temp+fsync+atomic move.
   The v3 version prevents old builds from saving away durable history.

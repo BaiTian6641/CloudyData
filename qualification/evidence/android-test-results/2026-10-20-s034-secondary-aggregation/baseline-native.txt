@@ -1,0 +1,37 @@
+
+io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest:
+Error in malformedSecondaryAggregationCannotBecomeSum(io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest):
+java.lang.AssertionError: Malformed present secondary aggregation must refuse both legacy files; AVG January100 must never become SUM200. Unexpected acceptance: v1 decoded=SUM, nativeJanuary=[2026-01-01, 150, 200], recoveryCandidatesRetained=false; v2 decoded=SUM, nativeJanuary=[2026-01-01, 150, 200], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest$malformedSecondaryAggregationCannotBecomeSum$1.invokeSuspend(LegacySecondaryAggregationRefusalTest.kt:98)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest.malformedSecondaryAggregationCannotBecomeSum(LegacySecondaryAggregationRefusalTest.kt:79)
+
+
+Time: 0.175
+There was 1 failure:
+1) malformedSecondaryAggregationCannotBecomeSum(io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest)
+java.lang.AssertionError: Malformed present secondary aggregation must refuse both legacy files; AVG January100 must never become SUM200. Unexpected acceptance: v1 decoded=SUM, nativeJanuary=[2026-01-01, 150, 200], recoveryCandidatesRetained=false; v2 decoded=SUM, nativeJanuary=[2026-01-01, 150, 200], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest$malformedSecondaryAggregationCannotBecomeSum$1.invokeSuspend(LegacySecondaryAggregationRefusalTest.kt:98)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.LegacySecondaryAggregationRefusalTest.malformedSecondaryAggregationCannotBecomeSum(LegacySecondaryAggregationRefusalTest.kt:79)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1

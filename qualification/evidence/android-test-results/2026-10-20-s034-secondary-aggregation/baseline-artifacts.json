@@ -1,0 +1,20 @@
+{
+  "source_commit": "b752e46161b3d876edc48a77c5f5f55e09593c0f",
+  "scope": "Unchanged production; native malformed secondary-aggregation baseline",
+  "artifacts": [
+    {
+      "name": "baseline_runtime_x86_64",
+      "bytes": 116020757,
+      "sha256": "e9d9648cf261b85c72aa72ad079b3778a4683b2e8c6d451bc684f2824214113f"
+    },
+    {
+      "name": "baseline_test",
+      "bytes": 3005391,
+      "sha256": "4114023ce97477c0a4d71a7ac596fcdf938822fd3f8bb692ebe03048cbfd0913"
+    }
+  ],
+  "test_sources": {
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/LegacySecondaryAggregationRefusalTest.kt": "53f9230f3285a41355f5c453c1f9006fc8b68176062936da4c1e72fac9a943c5",
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/LegacySecondaryAggregationMigrationTest.kt": "b34db9ed3be8988f44a105df1242d9e9ae9690c0d95a72774ec590cfa7917619"
+  }
+}

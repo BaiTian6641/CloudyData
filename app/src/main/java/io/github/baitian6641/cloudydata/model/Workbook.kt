@@ -551,11 +551,11 @@ data class WorksheetDef(
                 sortDescending = json.getBoolean("sortDescending"),
                 seriesFieldId = nullableFieldId(json, "seriesFieldId"),
                 secondaryMeasureFieldId = nullableFieldId(json, "secondaryMeasureFieldId"),
-                secondaryAggregation = runCatching {
-                    Aggregation.valueOf(
-                        json.optString("secondaryAggregation", Aggregation.SUM.name),
-                    )
-                }.getOrDefault(Aggregation.SUM),
+                secondaryAggregation = if (!json.has("secondaryAggregation")) Aggregation.SUM else {
+                    val aggregation = json.get("secondaryAggregation")
+                    require(aggregation is String) { "Invalid saved secondary aggregation." }
+                    Aggregation.valueOf(aggregation)
+                },
                 // Log/legend line settings must not make a bar document unrenderable.
                 chart = if (markType == MarkType.LINE) parsedChart else parsedChart.copy(logScale = false),
                 filter = if (!json.has("filter") || json.isNull("filter")) null else {

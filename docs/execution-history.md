@@ -1161,3 +1161,28 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   capacity, error/repair pixels, hardware or new death claim; C0/Room/source-version
   and physicalhold/16KiB/Tableau gates unchanged. Next exact action: strict present
   secondaryAggregation decoding with native AVG100 versus SUM200 migration oracle.
+
+## 2026-10-20 — S03.4 explicit secondary aggregation decoding
+
+- Continued clean/pushed/live-matching b752e46 after strict-filter source binding;
+  all123 baseline source hashes fresh, plans/authority unchanged. Selected
+  F01/F17/F36/F64,Q33/Q34 numerical migration slice.
+- Pre-edit native probe proved both v1/v2 malformed AVGG becameSUM and executed
+  January150/200 versus validAVG100; canonical cleanup removed candidates.
+  Expected failure and original APK/test-source hashes remain inspectable.
+- WorksheetDef now defaults SUM only when secondaryAggregation is absent;
+  present exact enumstrings remain supported, null/wrongtype/unknown reject,
+  including inactive channels. No renderer/Store rule or applicability expansion.
+- Disjoint workers added refusal3/migration3. Focused6/6 in1.274s, then combined
+  119/119,no skips,58.029s pass. Actual AVG100 versus SUM200, exactJan2 source rows,
+  original backups/history/receipts/reopen/duplicate no-replay, active/inactive
+  byte-preserving refusal and rehashedv3head/history have independent oracles.
+  All7enumtags are syntax-only, with separate4row/sales350/cost280 source control.
+- Final x86/default build, JVM75/75, lint0/6 retained, both default ABIs, tokens
+  current and contrast40/40 pass. Independent source/oracle review found no
+  material issue. Evidence+125 hashes:
+  qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md.
+- Hardware/reference/C0/Room/source-version and broad applicability/UI gates stay
+  unchanged. Next exact action: strict shared workbook-version admission; installed
+  Android JSON source coerces fractions/strings/wrappedLongs into legacy2, still
+  requiring a discriminating native version probe and byte-preservation controls.

@@ -159,9 +159,9 @@ features:
     owning_stages: "S05, S08"
     reference_release: pending
     status: partial
-    tests: []
-    evidence: []
-    note: "SUM is verified on exact decimals; AVG/MIN/MAX/COUNT/COUNTD exist in the query builder but lack dedicated conformance evidence. Median/percentiles/variance are absent."
+    tests: [LegacySecondaryAggregationRefusalTest, LegacySecondaryAggregationMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md]
+    note: "SUM is verified on exact decimals; Secondary AVG100 versus SUM200 has exact native legacy migration/reopen evidence; missing defaults are distinct from malformed present enums. General AVG/MIN/MAX/COUNT/COUNTD and NULL/empty/catalog conformance remain partial. Median/percentiles/variance are absent."
   - id: F18
     family: "Calculated fields"
     outcome: "Typed formula editor with autocomplete, syntax locations, dependency cycles, error explanations, references by ID, and explicit Apply."
@@ -330,9 +330,9 @@ features:
     owning_stages: "S11"
     reference_release: pending
     status: partial
-    tests: []
-    evidence: []
-    note: "Bar/line Y range, zero baseline, log (validated positive), reverse and X/Y titles are implemented. Tick counts, temporal axes, dual axes and synchronization remain pending."
+    tests: [LegacySecondaryAggregationRefusalTest, LegacySecondaryAggregationMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md]
+    note: "Bar/line Y range, zero baseline, log (validated positive), reverse and X/Y titles are implemented. A bounded secondary Bar+Line channel has independent aggregation and native AVG/SUM migration/query evidence; full tick/temporal/arbitrary-axis, synchronization and visual qualification remain pending."
   - id: F37
     family: "Sorting"
     outcome: "Manual, field, aggregate, nested and tie-breaking rules; header sort and table-calculation sort remain explicit."
@@ -582,9 +582,9 @@ features:
     owning_stages: "S03, all authoring stages"
     reference_release: pending
     status: partial
-    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest, WorksheetReferenceTest, SourceReferenceRepairTest, LegacyFilterRefusalTest, LegacyFilterMigrationTest]
-    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md, qualification/evidence/2026-10-20-s03-reference-admission.md, qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md]
-    note: "Malformed/future legacy filters refuse before cleanup/save; valid filters and exact original backups survive migration. Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Decoded references and runtime result ownership are validated before SQL; source replacement remains repairable until explicit rebind. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
+    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest, WorksheetReferenceTest, SourceReferenceRepairTest, LegacyFilterRefusalTest, LegacyFilterMigrationTest, LegacySecondaryAggregationRefusalTest, LegacySecondaryAggregationMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md, qualification/evidence/2026-10-20-s03-reference-admission.md, qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md, qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md]
+    note: "Malformed secondary aggregations refuse instead of silently becoming SUM; exact migration history/source identity is native-tested. Malformed/future legacy filters refuse before cleanup/save; valid filters and exact original backups survive migration. Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Decoded references and runtime result ownership are validated before SQL; source replacement remains repairable until explicit rebind. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
   - id: F65
     family: "Publishing"
     outcome: "Publish workbook/data-source revisions to the Cloudy service, with preview, destination, version, permissions and rollback."
