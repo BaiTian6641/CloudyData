@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 decoded-reference implementation through `48d4f8f4bc40d73d8ed9679df48d451e7334dced`;
-all121 committed source/fixture hashes match the artifact manifest in
-`qualification/evidence/2026-10-20-s03-reference-admission.md`.
+**Source:** S03.4 legacy filter decoding on source base
+`e69bb7c2adff4ae1ff04929aa75f48499dd1a0a3`;123 source/fixture hashes bind the
+combined revision in `qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -81,7 +81,13 @@ unless stated otherwise.
   grain/counts, then explicit rebind/reopen yields East 7 / West 11 and exact source
   row 7. Undo/redo repairs only metadata against the same new snapshot. Native 9/9
   new cases plus final 101/101 combined pass. Full package/type/schema checks and
-  legacy decoder fallback remain open.
+  other legacy numerical/presentation decoder fallbacks remain open.
+- S03.4 filter decoding refuses future/malformed legacy filters before they can
+  be dropped or cleanup can remove recovery candidates. Exact valid v1/v2 filters,
+  missing optional defaults, explicit NULLs and duplicate/empty/whitespace mark
+  values survive migration/v3 reopen with exact original backups. Native12/12
+  new cases and combined113/113 pass; malformed load/open/save preserves metadata,
+  both candidates and accepted source/Parquet bytes. v3 content/hash guards remain.
 - Home recents/favorites/all filters and typed desired-value SetFavorite are
   verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
   retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
@@ -137,6 +143,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`
 - `qualification/evidence/2026-10-20-s03-reference-admission.md`
 - `qualification/evidence/2026-10-20-s03-set-favorite.md`
 - `qualification/evidence/2026-10-20-s03-durable-command-journal.md`
@@ -470,49 +477,51 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 emulator-5580 combined native 101/101, no skips, 50.672s: new
-  reference 7 / replacement 2, previous 89 and additional Bar 1 / Line+Area 2 query cases.
-  First focused 9/9 in 0.866s. No new failed probe, mocks or weakened assertion.
-- Exact East 15 / West 20, series 10/5/20, secondary AVG 3/8 and filtered source rows
-  pass. Missing mappings/filter anchors, duplicate/blank IDs and stale query
-  ownership fail before unavailable-path SQL. Refusal preserves canonical bytes,
-  checkpoint history/receipts, accepted source and Parquet. Real replacement and
-  explicit rebind/reopen/undo/redo yield exact new 7/11 source values.
-- Final x86/default dual-ABI debug/test builds pass; JVM 75/75, lint 0 errors/6
-  retained warnings; both default ABIs present. Tokens current; contrast 40/40.
-- Runtime APK `4233cbee2c148bbade431c13ea212c5c6bb956b3a9eddcdaf009432a2cb54e22`;
-  test APK `a3774e22113cbbf8825b2bef18228db7b46322bc3e6cf0514d30ea670d5930af`.
-- Independent source/test review accepts the selected semantic boundary. Error/
-  rebind pixels and the new stale ViewModel branch are not separately exercised.
-  Existing Home native case reran successfully; earlier wide light Home captures
-  remain bounded to their unchanged source surface and own evidence.
-- Evidence: qualification/evidence/2026-10-20-s03-reference-admission.md; raw logs
-  and 121 source/fixture hashes in matching android-test-results/artifacts paths.
-  Physical owner hold,16KiB,Tableau,Room,source history and C0 gates unchanged.
+- Existing API36 emulator-5580 combined113/113, no skips,56.062s: new refusal7 +
+  migration5 and previous101. First post-fix focused12/12 in2.565s. The unchanged
+  baseline method first failed on actual v1/v2 filter=null, unfiltered15/20 and
+  deleted recovery candidates; that raw failure and initial hashes remain.
+- Exact native KEEP15, paired10, NULL3, duplicate OR15 (not30), intentionally
+  unfiltered15/20 and actual underlying rows pass. Valid defaults, byte-exact
+  original backups, first accepted receipt/history, reopen and duplicate do not
+  replay source work. Failed load/open/save retains metadata/candidates/source.
+- Final x86/default dual-ABI debug/test builds pass; JVM75/75, lint0 errors/6
+  retained warnings; both default ABIs present. Tokens current; contrast40/40.
+- Runtime APKa1f0a0405ccede0c8d68a01b4865669b29e30b6863807d9deedfba50a13791e5;
+  test APKec2c9287f89822f3f036b5a8c88d3ddf0ace0bec01db8af43fd4faad6537b2a7.
+- Independent source/test review has no material blocker; generic parser bound
+  enforced in source, positive2001-term SQL capacity not claimed. Error/repair
+  pixels, TalkBack and hardware input remain unqualified. Old death/input cases
+  retain their actual own boundaries; no new kill or physical device claim.
+- Evidence: qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md; raw
+  logs/baseline failure and123 source/fixture hashes in matching result/artifact
+  paths. Physical hold,16KiB,Tableau,Room,source history and C0 gates unchanged.
 
 ## Next exact task
 
-**S03.4 fail-closed legacy filter/package decoding.**
+**S03.4 strict secondary aggregation decoding.**
 
-- IDs: F01/F05/F14/F64; Q16/Q17/Q34. Prerequisites: committed strict v3 checkpoint,
-  source-bound reference admission and exact native replacement/repair evidence.
-- Paths: model/Workbook.kt and MarkFilter.kt plus narrowly required checkpoint
-  load validation, disjoint native legacy/migration tests, evidence/state.
-- Action: discriminate valid legacy defaults/migrations from malformed or future
-  filter records before WorksheetDef's runCatching can erase them. Preserve
-  original package bytes and recovery candidates; opening must not silently drop
-  a filter or normalize a nonnull invalid ID into an executable unfiltered query.
-- Independent oracle: valid v1/v2 filtered fixtures preserve exact constrained
-  rows across migration/reopen and keep original bytes; future filter version,
-  malformed mode/mark/anchor or empty nonnull reference must refuse without
-  rewriting metadata/history/backups. Recomputed valid v3 envelope hashes must
-  not bypass its existing raw-content guard. No blanket legacy roundtrip rule
-  that rejects legitimate older defaults.
-- Evidence level: decoder fallback is currently a source finding, specifically
-  legacy v1/v2 early return; v3 already compares raw content against decoded form.
-  Full package/schema validation, source versions, Room and complete typed
-  commands remain open. S11.C0 partial; S13.C0/S15.C0 absent and mandatory when
-  worker-backed dependencies apply.
+- IDs:F01/F17/F36/F64; Q33/Q34 migration/history, with exact native dual-axis
+  numerical controls. Prerequisites: current strict filter/reference/checkpoint
+  authority and existing real dual-axis query plus migration tests.
+- Paths:model/Workbook.kt, disjoint native legacy aggregation/refusal tests,
+  evidence/state. Keep parser policy absent/default distinct from malformed
+  present data; no renderer, engine operation or Store normalization rewrite.
+- Action: absent secondaryAggregation legitimately defaults to SUM. A present
+  value must be a supported Aggregation string; unknown, blank, wrong-type or
+  explicitnull must not silently become SUM. Preserve all existing enum choices
+  and valid defaults; unsupported aggregation/mark combinations remain separate.
+- Independent oracle: actual dual_axis.csv January salesSUM150, costAVG100,
+  costSUM200. Valid AVG before/after migration/reopen remains100; explicit/absent
+  SUM remains200. Bad present value refuses without touching canonical/backups/
+  candidates/source. View Data keeps January's two exact source rows. Rehashed
+  malformed v3 head/history cannot bypass existing content guards.
+- Evidence level: remaining secondaryAggregation fallback and coercing
+  formatVersion parsing are source findings, not new native passes. Harden
+  version admission separately; no blanket legacy whole-document roundtrip that
+  rejects legitimate defaults. Full schema/types/package validation and Room,
+  source versions and complete commands remain open. S11.C0 partial;
+  S13.C0/S15.C0 absent and mandatory when worker-backed dependencies apply.
 
 ## Protected context
 

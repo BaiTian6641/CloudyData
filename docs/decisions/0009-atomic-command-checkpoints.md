@@ -73,6 +73,15 @@ No journal file competes with the workbook as a second source of truth.
   Canonical round-trip checks prevent permissive model parsers from silently
   changing the meaning of stored journal records.
 - v1/v2 documents without a journal load through the existing model migration.
+  Present filter records must decode completely: supported typed version/mode,
+  known fields, nonblank string anchors,1–2001 complete text/NULL marks and
+  consistent series presence. Invalid records propagate failure before canonical
+  cleanup or save; they cannot disappear into an unfiltered query. Missing/null
+  filters and absent optional mapping defaults remain valid; nonnull wrong-type/
+  blank IDs refuse, while unresolved nonempty IDs remain available for repair.
+  Repeated OR terms and empty/whitespace domain strings are preserved exactly;
+  duplicates do not multiply source rows. Unrelated legacy extensions remain in
+  the original backup rather than forcing a blanket raw-roundtrip migration.
   Before their first accepted save, preserve exact original bytes under
   `migration/workbook-v<version>-original.json` through temp+fsync+atomic move.
   The v3 version prevents old builds from saving away durable history.

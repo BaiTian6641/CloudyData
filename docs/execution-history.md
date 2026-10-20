@@ -1136,3 +1136,28 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   16KiB/Tableau, full semantic/package/Room/source-history boundaries unchanged.
   Next exact action: fail-closed malformed/future legacy filter decoding, retaining
   valid v1/v2 defaults/migration originals and v3's existing strict raw guard.
+
+## 2026-10-20 — S03.4 strict legacy filter decoding
+
+- Reconciled clean main/upstream/live origin e69bb7c and all121 previous hashes;
+  plans already read/unchanged, scoped original assets still bccb328. Selected
+  filter decode gate F01/F05/F14/F64; primary Q33/Q34, bounded Q16/Q17 regression
+  prerequisites. No document/renderer/token authority replaced.
+- Before edits, native future-filter test on unchanged production reproduced both
+  v1/v2 losing KEEP East and returning unfiltered15/20; canonical cleanup deleted
+  recovery candidates. The expected failure and initial APK/test hashes remain.
+- MarkFilter now requires complete supported typed records, bounded full marks,
+  explicit text/NULL values and consistent series; WorksheetDef propagates failure.
+  Optional absent/null mapping defaults stay valid; nonnull bad/blank IDs refuse.
+  Duplicate OR terms and empty/whitespace values preserve exact entries. v3 raw
+  checks remain; unrelated legacy extensions stay in exact migration originals.
+- Disjoint workers added refusal7/migration5; first focused12/12 in2.565s and
+  combined113/113,no skips,56.062s pass. Exact15/10/NULL3 and duplicate15 plus actual
+  source rows, backup/reopen/receipt/history/no-replay and byte-preserving refused
+  load/open/save have independent native oracles. Default/x86 build, JVM75/75,
+  lint0/6 retained, both default ABIs, current tokens and contrast40/40 pass.
+- Independent source/oracle review has no material finding. Evidence and123 hashes:
+  qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md. No full parser
+  capacity, error/repair pixels, hardware or new death claim; C0/Room/source-version
+  and physicalhold/16KiB/Tableau gates unchanged. Next exact action: strict present
+  secondaryAggregation decoding with native AVG100 versus SUM200 migration oracle.

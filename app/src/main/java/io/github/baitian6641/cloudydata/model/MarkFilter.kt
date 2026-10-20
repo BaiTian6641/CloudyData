@@ -46,27 +46,62 @@ data class MarkFilter(
         const val MAX_MARKS = 2001
 
         fun fromJson(json: JSONObject): MarkFilter {
-            require(json.optInt("version", VERSION) in 1..VERSION) {
+            requireKnownKeys(json, setOf("version", "mode", "rowFieldId", "seriesFieldId", "marks"))
+            val version = if (json.has("version")) json.get("version") else VERSION
+            require(version is Number && version.toDouble() == VERSION.toDouble()) {
                 "Unsupported mark filter version."
             }
-            val marksJson = json.optJSONArray("marks") ?: JSONArray()
+            val mode = json.get("mode")
+            require(mode is String) { "Invalid saved filter mode." }
+            val rowFieldId = fieldId(json, "rowFieldId", required = true)!!
+            val seriesFieldId = fieldId(json, "seriesFieldId", required = false)
+            val marksJson = json.get("marks")
+            require(marksJson is JSONArray && marksJson.length() in 1..MAX_MARKS) {
+                "Saved filters must contain 1–$MAX_MARKS marks."
+            }
             val marks = buildList {
-                for (index in 0 until marksJson.length().coerceAtMost(MAX_MARKS)) {
-                    val mark = marksJson.optJSONObject(index) ?: continue
-                    add(
-                        FilterMark(
-                            row = if (mark.isNull("row")) null else mark.optString("row"),
-                            series = if (mark.isNull("series")) null else mark.optString("series"),
-                        ),
-                    )
+                for (index in 0 until marksJson.length()) {
+                    val mark = marksJson.get(index)
+                    require(mark is JSONObject) { "Invalid saved filter mark." }
+                    requireKnownKeys(mark, setOf("row", "series"))
+                    val row = markValue(mark, "row", required = true)
+                    val series = markValue(mark, "series", required = seriesFieldId != null)
+                    require(seriesFieldId != null || series == null) {
+                        "A saved series value requires a series field reference."
+                    }
+                    add(FilterMark(row, series))
                 }
             }
             return MarkFilter(
-                mode = FilterMode.valueOf(json.getString("mode")),
-                rowFieldId = json.getString("rowFieldId"),
-                seriesFieldId = if (json.isNull("seriesFieldId")) null else json.optString("seriesFieldId").takeIf { it.isNotEmpty() },
-                marks = marks.distinct(),
+                mode = FilterMode.valueOf(mode),
+                rowFieldId = rowFieldId,
+                seriesFieldId = seriesFieldId,
+                // Repeated OR terms are valid and do not multiply source rows.
+                // Preserve the stored entries rather than silently normalizing them.
+                marks = marks,
             )
+        }
+
+        private fun requireKnownKeys(json: JSONObject, allowed: Set<String>) {
+            require(json.keys().asSequence().all { it in allowed }) { "Unsupported saved filter fields." }
+        }
+
+        private fun fieldId(json: JSONObject, key: String, required: Boolean): String? {
+            if (!json.has(key) || json.isNull(key)) {
+                require(!required) { "A saved filter requires its row field reference." }
+                return null
+            }
+            val id = json.get(key)
+            require(id is String && id.isNotBlank()) { "Invalid saved filter field reference." }
+            return id
+        }
+
+        private fun markValue(json: JSONObject, key: String, required: Boolean): String? {
+            require(!required || json.has(key)) { "A saved filter mark is missing its $key value." }
+            if (!json.has(key) || json.isNull(key)) return null
+            val value = json.get(key)
+            require(value is String) { "Saved filter values must be text or explicit NULL." }
+            return value
         }
     }
 }

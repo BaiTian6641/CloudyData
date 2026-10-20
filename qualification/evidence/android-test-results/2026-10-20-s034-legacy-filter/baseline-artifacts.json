@@ -1,0 +1,20 @@
+{
+  "source_commit": "e69bb7c2adff4ae1ff04929aa75f48499dd1a0a3",
+  "scope": "Unchanged production source; focused future-filter regression before implementation",
+  "artifacts": [
+    {
+      "name": "baseline_runtime_x86_64",
+      "bytes": 116020757,
+      "sha256": "4233cbee2c148bbade431c13ea212c5c6bb956b3a9eddcdaf009432a2cb54e22"
+    },
+    {
+      "name": "baseline_test",
+      "bytes": 2899411,
+      "sha256": "4494131716dc3a0e711be784b6733633e6e425909d0e0c9d9efb4553175b6b4e"
+    }
+  ],
+  "test_sources": {
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/LegacyFilterMigrationTest.kt": "fff22a7969e3b99be6b0238ff0dba2d617efb812946e96a06977d5709daf8f40",
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/LegacyFilterRefusalTest.kt": "caf02091a5793810c2877acc219abac53e0b8c31840cf01a86016abcd35588e5"
+  }
+}

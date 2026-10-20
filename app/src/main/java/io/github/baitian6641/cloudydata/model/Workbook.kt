@@ -543,18 +543,14 @@ data class WorksheetDef(
                 )
             return WorksheetDef(
                 id = json.getString("id"),
-            name = json.getString("name"),
-            rowFieldId = if (json.isNull("rowFieldId")) null else json.getString("rowFieldId"),
-            measureFieldId = if (json.isNull("measureFieldId")) null else json.getString("measureFieldId"),
-            aggregation = Aggregation.valueOf(json.getString("aggregation")),
+                name = json.getString("name"),
+                rowFieldId = nullableFieldId(json, "rowFieldId"),
+                measureFieldId = nullableFieldId(json, "measureFieldId"),
+                aggregation = Aggregation.valueOf(json.getString("aggregation")),
                 markType = markType,
                 sortDescending = json.getBoolean("sortDescending"),
-                seriesFieldId = if (json.isNull("seriesFieldId")) null else json.optString("seriesFieldId").takeIf { it.isNotEmpty() },
-                secondaryMeasureFieldId = if (json.isNull("secondaryMeasureFieldId")) {
-                    null
-                } else {
-                    json.optString("secondaryMeasureFieldId").takeIf { it.isNotEmpty() }
-                },
+                seriesFieldId = nullableFieldId(json, "seriesFieldId"),
+                secondaryMeasureFieldId = nullableFieldId(json, "secondaryMeasureFieldId"),
                 secondaryAggregation = runCatching {
                     Aggregation.valueOf(
                         json.optString("secondaryAggregation", Aggregation.SUM.name),
@@ -562,10 +558,19 @@ data class WorksheetDef(
                 }.getOrDefault(Aggregation.SUM),
                 // Log/legend line settings must not make a bar document unrenderable.
                 chart = if (markType == MarkType.LINE) parsedChart else parsedChart.copy(logScale = false),
-                filter = runCatching {
-                    json.optJSONObject("filter")?.let { MarkFilter.fromJson(it) }
-                }.getOrNull()?.takeIf { it.marks.isNotEmpty() },
+                filter = if (!json.has("filter") || json.isNull("filter")) null else {
+                    val filter = json.get("filter")
+                    require(filter is JSONObject) { "Invalid saved worksheet filter." }
+                    MarkFilter.fromJson(filter)
+                },
             )
+        }
+
+        private fun nullableFieldId(json: JSONObject, key: String): String? {
+            if (!json.has(key) || json.isNull(key)) return null
+            val id = json.get(key)
+            require(id is String && id.isNotBlank()) { "Invalid saved worksheet field reference ($key)." }
+            return id
         }
     }
 }

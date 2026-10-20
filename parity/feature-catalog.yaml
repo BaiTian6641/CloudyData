@@ -51,9 +51,9 @@ features:
     owning_stages: "S04, S05, S14"
     reference_release: pending
     status: partial
-    tests: [WorksheetReferenceTest, SourceReferenceRepairTest]
-    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md]
-    note: "Imported row count, field names/types and source provenance are visible. Decoded nonnull references resolve uniquely before SQL; duplicate/blank field identities are refused. Profiling, distributions, aliases, descriptions, schema drift and full/sample distinction are pending."
+    tests: [WorksheetReferenceTest, SourceReferenceRepairTest, LegacyFilterRefusalTest, LegacyFilterMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md, qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md]
+    note: "Malformed/future legacy filters refuse before cleanup/save; valid filters and exact original backups survive migration. Imported row count, field names/types and source provenance are visible. Decoded nonnull references resolve uniquely before SQL; duplicate/blank field identities are refused. Profiling, distributions, aliases, descriptions, schema drift and full/sample distinction are pending."
   - id: F06
     family: "Live and extract operation"
     outcome: "Choose an eligible source mode; show snapshot time, cache/staleness, source identity and pushdown limits; offline cached work remains truthful."
@@ -132,9 +132,9 @@ features:
     owning_stages: "S14"
     reference_release: pending
     status: partial
-    tests: [WorksheetReferenceTest, SourceReferenceRepairTest]
-    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md]
-    note: "Real same-header CSV replacement issues new field IDs while preserving old mappings as repairable state. Query/View Data refuse unresolved references; explicit rebind/reopen produces exact new values, and mapping undo/redo stays within the accepted replacement snapshot. Impact preview, schema reconciliation, prior source-version recovery and repair UI acceptance remain pending."
+    tests: [WorksheetReferenceTest, SourceReferenceRepairTest, LegacyFilterRefusalTest, LegacyFilterMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-reference-admission.md, qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md]
+    note: "Malformed/future legacy filters refuse before cleanup/save; valid filters and exact original backups survive migration. Real same-header CSV replacement issues new field IDs while preserving old mappings as repairable state. Query/View Data refuse unresolved references; explicit rebind/reopen produces exact new values, and mapping undo/redo stays within the accepted replacement snapshot. Impact preview, schema reconciliation, prior source-version recovery and repair UI acceptance remain pending."
   - id: F15
     family: "Data pane and organization"
     outcome: "Search, folders, aliases, hidden fields, hierarchies, default properties and dependency discovery."
@@ -582,9 +582,9 @@ features:
     owning_stages: "S03, all authoring stages"
     reference_release: pending
     status: partial
-    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest, WorksheetReferenceTest, SourceReferenceRepairTest]
-    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md, qualification/evidence/2026-10-20-s03-reference-admission.md]
-    note: "Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Decoded references and runtime result ownership are validated before SQL; source replacement remains repairable until explicit rebind. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
+    tests: [WorkbookJournalTest, WorkbookJournalCrashTest, WorkbookMetadataRecoveryTest, WorkbookCoordinatorTest, AddWorksheetCommandTest, AddWorksheetCrashTest, SetFavoriteCommandTest, HomeFavoriteUiTest, WorksheetReferenceTest, SourceReferenceRepairTest, LegacyFilterRefusalTest, LegacyFilterMigrationTest]
+    evidence: [qualification/evidence/2026-10-20-s03-durable-command-journal.md, qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md, qualification/evidence/2026-10-20-s03-add-worksheet.md, qualification/evidence/2026-10-20-s03-set-favorite.md, qualification/evidence/2026-10-20-s03-reference-admission.md, qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md]
+    note: "Malformed/future legacy filters refuse before cleanup/save; valid filters and exact original backups survive migration. Atomic metadata saves, in-process shared revision conflicts and bounded durable undo/redo are verified on the API36 emulator. Typed rename/chart/add receipts survive actual single-writer process death at two atomic-write boundaries. Desired-value favorite receipts are idempotent over the same checkpoint authority; no favorite-specific kill is claimed. Add preserves stored defaults and view-local tabs; failure admission refuses later edits/imports until exact retry, while invalid requests remain correctable. Home desired-value retry, disabled-star pointer containment, Favorites and Tab/Enter are verified in a wide light native window. Validated recovery removes abandoned direct metadata temps while protecting live same-process writers, symlinks and missing/corrupt recovery candidates. Decoded references and runtime result ownership are validated before SQL; source replacement remains repairable until explicit rebind. Room, the complete typed command catalog, conflict resolution, whole-product lifecycle and physical desktop acceptance remain pending."
   - id: F65
     family: "Publishing"
     outcome: "Publish workbook/data-source revisions to the Cloudy service, with preview, destination, version, permissions and rollback."
