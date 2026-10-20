@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 present workbook-favorite admission on source base
-`14b6a6a1b00abed86823f24ad3935d3f8fd0c2f6`, bound by all 133 source/fixture
+**Source:** S03.4 present workbook-favorite admission through implementation
+`ac4962835763a21ac5ac7500ae7eec677b38b192`, bound by all 133 committed source/fixture
 hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-favorite/`;
 see `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.
