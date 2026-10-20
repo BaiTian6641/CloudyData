@@ -1,0 +1,201 @@
+{
+  "source_base_commit": "3dc4c0528eeb6195561bbb59701783b541c1c131",
+  "source_file_count": 135,
+  "source_manifest_sha256": "97cc4bf76d36c69e6bb98c22e299bbd512f218b4c03636c42d60345ca1133e92",
+  "artifacts": [
+    {
+      "name": "runtime_x86_64_apk",
+      "bytes": 117484637,
+      "sha256": "388a7e275c5ea8677c63e270becf964796950bf8f5ad241770e15a4a1352e912",
+      "abis": [
+        "x86_64"
+      ]
+    },
+    {
+      "name": "runtime_test_apk",
+      "bytes": 5223496,
+      "sha256": "4b88053d3b82d05e18958682d963e284a8a5ba4fd58d914821eca841c036c348",
+      "abis": []
+    },
+    {
+      "name": "default_dual_abi_apk",
+      "bytes": 164075267,
+      "sha256": "995f04c0568596d89d98cdb6c7421236425c81c7c0b6bc1af6977951e84360fb",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ]
+    }
+  ],
+  "native": {
+    "tests": 156,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 77.362,
+    "serial": "emulator-5580",
+    "api": 36,
+    "runtime_abi": "x86_64"
+  },
+  "captures": [
+    {
+      "phase": "baseline-ui/east-selected",
+      "files": [
+        {
+          "path": "baseline-ui/east-selected.json",
+          "bytes": 1180,
+          "sha256": "9777ae6af34ec993dda1fcf75537d1bd0c2d41a5a56515c90e8960b9b317d662"
+        },
+        {
+          "path": "baseline-ui/east-selected.png",
+          "bytes": 111812,
+          "sha256": "5255b8f07ffce2e50b48a68c65aae56700fff4b304b35c995f1e64dcaf337c33"
+        },
+        {
+          "path": "baseline-ui/east-selected.xml",
+          "bytes": 59043,
+          "sha256": "7854d1794b08fd2ba5819b8b63a7a2fc037c958111c39a6b113f1cd9b6c245ba"
+        }
+      ]
+    },
+    {
+      "phase": "baseline-ui/initial",
+      "files": [
+        {
+          "path": "baseline-ui/initial.json",
+          "bytes": 1144,
+          "sha256": "d78c697ec883bf7134791083d956b1905f4f46a768a8f842527e1531ef226b5d"
+        },
+        {
+          "path": "baseline-ui/initial.png",
+          "bytes": 80614,
+          "sha256": "7d928e64bb3a21f7071c228b3760cdf46c183a98f0ecd28b5da46ef3707087b3"
+        },
+        {
+          "path": "baseline-ui/initial.xml",
+          "bytes": 39497,
+          "sha256": "4a46e0cc533aa9d827a66c3f7b586e06fb64c62c3901b58a624b986daa9e95c9"
+        }
+      ]
+    },
+    {
+      "phase": "baseline-ui/west-selected",
+      "files": [
+        {
+          "path": "baseline-ui/west-selected.json",
+          "bytes": 1180,
+          "sha256": "b71520472231b1d7f0dc29aaeb0a50fc02b6d7e30cae929dd2694ecee0ce94b8"
+        },
+        {
+          "path": "baseline-ui/west-selected.png",
+          "bytes": 112085,
+          "sha256": "a2469bf31b753a55b450d7b992bbda34cc3d389324c75924a96467d412b7be01"
+        },
+        {
+          "path": "baseline-ui/west-selected.xml",
+          "bytes": 59043,
+          "sha256": "137298987c5aff25cc163660bca774692aa38175e49aa5e8aba93507c67acc4a"
+        }
+      ]
+    },
+    {
+      "phase": "final-ui/data-source",
+      "files": [
+        {
+          "path": "final-ui/data-source.json",
+          "bytes": 1212,
+          "sha256": "161936e28181c251bb14ceff1c933b1ab30564a6014dda8b28792aa99a644605"
+        },
+        {
+          "path": "final-ui/data-source.png",
+          "bytes": 110829,
+          "sha256": "277459258ecab1b811367bfce693c32c0ae63d94502295cf68d65a6bfb08ca37"
+        },
+        {
+          "path": "final-ui/data-source.xml",
+          "bytes": 43275,
+          "sha256": "37d7dcd91bc6329d0df0c9a8856798c6fbae543197472061f7e5e5122f32875e"
+        }
+      ]
+    },
+    {
+      "phase": "final-ui/east-selected",
+      "files": [
+        {
+          "path": "final-ui/east-selected.json",
+          "bytes": 1217,
+          "sha256": "d3795b0aa808018151e3db14bc45492787aa5ea41691410f8ea1779db9891e24"
+        },
+        {
+          "path": "final-ui/east-selected.png",
+          "bytes": 110543,
+          "sha256": "beca8ceb108914836c16a4f1235eaa8b74ba5a5b1ccd96b8075770a27bc09873"
+        },
+        {
+          "path": "final-ui/east-selected.xml",
+          "bytes": 59044,
+          "sha256": "cb74d6112414246bcfe4428109189c853199cfd033ebd08bbca07caaae4ca16c"
+        }
+      ]
+    },
+    {
+      "phase": "final-ui/initial",
+      "files": [
+        {
+          "path": "final-ui/initial.json",
+          "bytes": 1205,
+          "sha256": "fd4218dcce953d830abd8d8bef032b24e00d9954c65919e375535473df38ff78"
+        },
+        {
+          "path": "final-ui/initial.png",
+          "bytes": 110531,
+          "sha256": "97f236601f0c1880b5576024faef0f6add692edcfd01f3deee8c364157bdf825"
+        },
+        {
+          "path": "final-ui/initial.xml",
+          "bytes": 59044,
+          "sha256": "cb74d6112414246bcfe4428109189c853199cfd033ebd08bbca07caaae4ca16c"
+        }
+      ]
+    },
+    {
+      "phase": "final-ui/west-after-data",
+      "files": [
+        {
+          "path": "final-ui/west-after-data.json",
+          "bytes": 1221,
+          "sha256": "bce9d252e37a3e0d9439191e7e39c08e69d6ceb6c74c4afc5f53471d6161bd86"
+        },
+        {
+          "path": "final-ui/west-after-data.png",
+          "bytes": 112002,
+          "sha256": "48a06eb630f80475e97e95d712ca6c50890b060c90bce8153b1d5e4783248392"
+        },
+        {
+          "path": "final-ui/west-after-data.xml",
+          "bytes": 59044,
+          "sha256": "bd5fedd5bb6c1c8537f791b596b32c6d2a9b8f0e62ec613e6eb51104f65d0ed8"
+        }
+      ]
+    },
+    {
+      "phase": "final-ui/west-selected",
+      "files": [
+        {
+          "path": "final-ui/west-selected.json",
+          "bytes": 1217,
+          "sha256": "fa917f0c5df867db3e85c3730542c1e37c612960bec6e81a3d503fddb2104a12"
+        },
+        {
+          "path": "final-ui/west-selected.png",
+          "bytes": 111161,
+          "sha256": "84e8e19d8ca055251fce862239f9ffe26192815dbdc5e6fc966f1b1376d2254a"
+        },
+        {
+          "path": "final-ui/west-selected.xml",
+          "bytes": 59044,
+          "sha256": "bd5fedd5bb6c1c8537f791b596b32c6d2a9b8f0e62ec613e6eb51104f65d0ed8"
+        }
+      ]
+    }
+  ]
+}

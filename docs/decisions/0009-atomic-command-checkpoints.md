@@ -40,6 +40,13 @@ No journal file competes with the workbook as a second source of truth.
   the sheet. Only the requesting view activates a still-present sheet after proven
   acceptance; other views keep their local selection. The first unused default
   Sheet N label is selected once from canonical state at first dispatch.
+- Local worksheet selection resolves an existing local ID, then the stored
+  default's resolved worksheet (valid saved ID or first sheet), otherwise null.
+  The visible document projects that actual ID for tab/query/View Data agreement;
+  this fallback never repairs or persists the canonical reopen hint. Generic
+  sheet edits capture the local target and recheck its existence inside the
+  admitted shared edit before transforming content. An earlier queued Undo that
+  removes the target causes an explicit not-applied result, never retargeting.
 - The additive command kind keeps the v3/journal-v1 envelope. Readers that do not
   recognize it fail closed on the unknown command kind without rewriting the
   file, rather than silently dropping receipts. Existing Rename/SetChart records

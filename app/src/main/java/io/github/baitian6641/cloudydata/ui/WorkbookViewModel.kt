@@ -531,12 +531,18 @@ class WorkbookViewModel(
 
     private fun mutateDocument(transform: (WorkbookDocument) -> WorkbookDocument) {
         val visible = _state.value.document ?: return
+        val worksheetId = visible.activeWorksheetId ?: return
         val shared = coordinator ?: return
         runEdit(
             expectedRevision = visible.revision,
             operation = { revision ->
                 shared.edit(revision) { current ->
-                    val next = transform(current.copy(activeWorksheetId = visible.activeWorksheetId))
+                    // An earlier queued Undo may have removed the captured target.
+                    // Local fallback must never redirect this edit to another sheet.
+                    require(current.worksheets.any { it.id == worksheetId }) {
+                        "The selected worksheet no longer exists. The change was not applied."
+                    }
+                    val next = transform(current.copy(activeWorksheetId = worksheetId))
                     // Active sheet/focus are local to this view. Keep the document's reopen default.
                     next.copy(activeWorksheetId = current.activeWorksheetId)
                 }
@@ -631,7 +637,9 @@ class WorkbookViewModel(
         val previous = _state.value.document
         val canonical = shared.document
         val active = activeWorksheetId?.takeIf { id -> canonical.worksheets.any { it.id == id } }
-            ?: canonical.activeWorksheetId
+            // Resolve the reopen hint once for this view, keeping tabs, queries
+            // and edits on the same actual sheet without rewriting the hint.
+            ?: canonical.activeWorksheet?.id
         activeWorksheetId = active
         val visible = canonical.copy(activeWorksheetId = active)
         _state.update {

@@ -1278,3 +1278,33 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   with distinct East 15 / West 20 sheets; preserve canonical bytes and intentional
   missing/null/empty defaults. This remains a source finding. Full package/Room/
   source history, physical hold/16 KiB/Tableau and C0 gates stay unchanged.
+
+## 2026-10-20 — S03.2/S03.4 view-local worksheet selection consistency
+
+- Continued clean main/upstream/live origin 3dc4c05; all 133 previous hashes fresh.
+  Already-read three plans/master, original Cloudy assets and accepted authority
+  remain unchanged. Selected F01/F64, Q16/Q19/Q33/Q34; disjoint native test workers,
+  root-only ViewModel/docs ownership and independent source/oracle/visual review.
+- Unchanged-production baseline four had three expected failures in 9.435 s:
+  missing visible ID queried East 15 with View Data Idle and actual missing-sheet
+  pixels; queued Undo then AVG changed unrelated East to 7.5 at revision 7.
+  Valid West 20 control passed. Raw failures, APK/test hashes and captures retained.
+- ViewModel projects the actual resolved local ID without changing the saved
+  reopen hint. Generic sheet edits check their captured target inside shared.edit;
+  a removed target reports not applied instead of using the first-sheet fallback.
+  No Screen/Store/decoder/coordinator/renderer/token changes.
+- Native focused six pass in 6.815 s; combined 156/156, no skips, 77.362 s. Real
+  East 15 / West 20 / source 10/5/20, legacy/null/empty defaults, independent views,
+  pending View Data invalidation and shared targeted edits remain correct. Queued
+  missing target leaves only Undo revision 6, receipts and other sheets intact.
+- Real Activity pointer East/West/East/Data source/West path and exact bytes pass.
+  Root/reviewer inspect five native PNG/XML/JSON captures at 2880×1800, 240 dpi,
+  light/Comfortable/fontScale1. Source mode keeps the hidden previous query while
+  presenting schema/provenance. No material source/oracle/visual issue remains.
+- Default/x86 builds, JVM75/75, lint0 errors/6 retained warnings, both default ABIs,
+  tokens current and contrast40/40 pass. Evidence and 135 source/fixture hashes:
+  qualification/evidence/2026-10-20-s03-selection-consistency.md.
+- Next exact action: parent-aware native Tab/Shift+Tab/Enter worksheet traversal
+  probe, then qualify/fix selected tab semantics and Cloudy focus-ring behavior.
+  Nonfocusable text children alone are not a traversal failure. Physical hold,
+  16 KiB/Tableau, Room/source history/full lifecycle and C0 gates remain open.

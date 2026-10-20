@@ -2,10 +2,10 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 present workbook-favorite admission through implementation
-`ac4962835763a21ac5ac7500ae7eec677b38b192`, bound by all 133 committed source/fixture
-hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-favorite/`;
-see `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`.
+**Source:** S03.2/S03.4 view-local worksheet selection consistency, based on
+`3dc4c0528eeb6195561bbb59701783b541c1c131`, bound by all 135 source/fixture hashes
+in `qualification/evidence/artifacts/2026-10-20-s032-selection/`;
+see `qualification/evidence/2026-10-20-s03-selection-consistency.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -41,6 +41,15 @@ unless stated otherwise.
   after the other closes. Actual title text assertions and an independently
   inspected native capture pass. Both observed bounds are 2880×1800; side-by-side
   placement, physical input and full Q19/S03 acceptance remain unverified.
+- S03.2/S03.4 local selection resolves a valid local sheet, then a valid saved
+  default, then the first sheet (or null for empty documents). Tabs, query identity,
+  View Data and generic edits agree without rewriting the canonical reopen hint.
+  If queued Undo removes an edit's captured target, that edit refuses instead of
+  falling through to another sheet. New native 6/6 and combined 156/156 pass,
+  including exact East 15 / West 20, source rows 10/5/20, stale View Data rejection,
+  independent views, legacy/null/empty defaults and real Activity pointer controls.
+  Five native captures qualify this wide light window only; keyboard/tab semantics,
+  frame-level atomic rendering and complete Q19 remain open.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -182,6 +191,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-selection-consistency.md`
 - `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`
 - `qualification/evidence/2026-10-20-s03-workbook-revision-admission.md`
 - `qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md`
@@ -195,8 +205,8 @@ unless stated otherwise.
 - `qualification/evidence/2026-10-20-s03-workbook-coordinator.md`
 - `qualification/evidence/2026-10-20-s00-original-assets.md`
 - Current source/APK/capture manifests and raw logs:
-  `qualification/evidence/artifacts/2026-10-20-s03-coordinator/` and
-  `qualification/evidence/android-test-results/2026-10-20/`
+  `qualification/evidence/artifacts/2026-10-20-s032-selection/` and
+  `qualification/evidence/android-test-results/2026-10-20-s032-selection/`
 - `qualification/evidence/2026-10-18-s00-toolchain.md`
 - `qualification/evidence/2026-10-18-s01-native-engine.md`
 - `qualification/evidence/2026-10-18-s01-import-and-worksheet.md`
@@ -521,53 +531,55 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 emulator-5580 combined **150/150**, no skips, **74.717 s**: favorite
-  refusal four + compatibility three join all 143 prior. Focused 7/7 in 4.183 s.
-- Unchanged-production compatibility three passed. Ten v1/v2 malformed favorites
-  became library Booleans and Rename persisted the guessed value at revision 5
-  with receipt/undo and removed candidates. Raw expected failure/hashes retained.
-- Post-fix present malformed data refuses load/open/save with zero atomic phases;
-  existing list() omits it and exact metadata/candidates/backups/CSV/Parquet remain.
-  Rehashed v3 head/undo/redo faults and missing members retain refusal beyond hashes.
-- Valid absent/false/true legacy projections, exact originals, explicit desired
-  values in both directions, no-op receipts and undo/reopen/redo/duplicate preserve
-  meaning. Real native East 15 / West 20 and underlying East 10 / East 5 remain exact.
-- Default/x86 debug/test builds pass; JVM 75/75; lint zero errors/six retained
-  warnings; both default ABIs; tokens current and contrast 40/40.
-- Runtime APK 2115b14641922dba5495d4d52fa15e4f3f80cf0105782e5d49ebb6bdb9839d2d;
-  test APK fe41e9a931543f2bf5974d8d92a64d852c5d0225c8b44d7454e0263dbebcf25f.
-- Independent actual combined source/oracle review has no material issue. Evidence:
-  qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md, matching raw
-  logs and 133 source/fixture hashes. No new UI/death/physical acceptance follows.
-  Physical hold, 16 KiB, Tableau, Room, source history and C0 stay unchanged.
+- Existing API36 x86_64 emulator-5580 combined **156/156**, no skips, **77.362 s**.
+  Focused new six pass in 6.815 s. Default/x86 debug/test builds pass; JVM 75/75;
+  lint zero errors/six retained warnings; default arm64-v8a and x86_64 packaged;
+  generated tokens current and contrast 40/40.
+- Unchanged-production baseline four produced three expected failures: dangling
+  selection queried East 15 while the Activity said missing sheet; View Data was
+  Idle; queued AVG after Undo changed unrelated East to 7.5 at revision 7. The
+  valid West 20 control passed. Baseline logs/APK hashes/three captures retained.
+- Final native fallback, legacy/null/empty and independent-view controls preserve
+  stored defaults and exact files. Queued removed-target edit refuses, leaving
+  only Undo revision 6 and exact East 15 / West 20. Pending old View Data cannot
+  return after selecting another sheet. Shared rename/count edits remain targeted.
+- Actual Activity pointer path East 15 → West 20 → East 15 → Data source → West 20
+  passes with unchanged canonical/source/Parquet bytes. Root and independent
+  reviewer inspected five native captures plus metadata: 2880×1800, 240 dpi,
+  fontScale 1, System→Light, Comfortable, configured IBM Plex Sans/Mono. The Data
+  source surface preserves the hidden last-sheet query while showing schema.
+- Runtime APK 388a7e275c5ea8677c63e270becf964796950bf8f5ad241770e15a4a1352e912;
+  test APK 4b88053d3b82d05e18958682d963e284a8a5ba4fd58d914821eca841c036c348.
+  The manifest binds both APKs, default dual-ABI APK, 135 sources/fixtures and all
+  eight baseline/final capture sets. Evidence:
+  qualification/evidence/2026-10-20-s03-selection-consistency.md.
+- Independent actual combined source/oracle/visual review has no material issue.
+  Physical hold, 16 KiB, Tableau, Room, source history and C0 remain unchanged.
 
 ## Next exact task
 
-**S03.2/S03.4 view-local worksheet selection consistency.**
+**S02.2/S02.4 native worksheet-tab keyboard and semantics qualification.**
 
-- IDs F01/F64; Q16/Q19/Q33/Q34. Prerequisites: unique sheets, typed checkpoint
-  authority, view-local tabs, result identity/View Data and current migration
-  guards, qualified by final affected native 150/150. The mismatch below is a
-  source finding awaiting its own discriminating native probe.
-- WorkbookDocument.activeWorksheet falls back to the first sheet for a dangling
-  nonnull saved activeWorksheetId. ViewModel accepts the missing visible ID but
-  refreshQuery uses the fallback. Screen resolves the missing tab and reports
-  that it no longer exists; View Data refuses the queried first-sheet ID mismatch.
-  Existing v3 raw guards preserve that string and do not reconcile this disagreement.
-- First exact action: import real data into two unique sheets (KEEP East 15 with
-  source rows 10/5, KEEP West 20 with source row 20), persist a missing active ID,
-  then reopen through a native ViewModel and actual Activity. Record visible ID,
-  query identity/result and missing-sheet text; select West and require selection,
-  query and View Data to agree on 20 while canonical metadata stays byte-exact.
-- Expected invariant: an unresolved visible selection cannot silently authorize
-  a first-sheet query or edit. Choose coherent local fallback or a repairable
-  selection error after the probe; preserve null/missing defaults and empty sheets.
-  Do not infer a stricter persisted-package policy from this runtime mismatch.
-- Root writable: narrow WorkbookViewModel selection and WorkbookScreen resolution
-  if required, docs/evidence. Separate native workers own disjoint tests; actual
-  combined source/oracle/runtime review is required. Use existing emulator only.
-- S11.C0 partial, S13.C0/S15.C0 absent remain mandatory when applicable. Full
-  package/Room/source-version/hardware/reference gates remain open.
+- IDs F01/F64; Q21, retaining Q19 selection invariants. Prerequisites: unique
+  sheets, shared checkpoint authority, coherent local selection/query ownership
+  and actual pointer/native source-data transitions, qualified by final 156/156.
+- Read-only source/XML audit: WorkbookScreen's local WorkbookTab uses a clickable,
+  focusable parent around a nonfocusable text child. The child's focus flag does
+  not establish a keyboard failure. Explicit tab role, selected semantics and
+  Cloudy focus-ring state are absent; native parents report selected=false.
+- First exact action: a fresh real two-sheet Activity, no pointer selection, at
+  most 24 Tab presses, retaining parent-aware focused-node XML after each press.
+  Focus West must leave East 15 and its query owner unchanged until Enter; then
+  require West 20. Shift+Tab/Enter returns East 15, then Data source; Tab/Enter
+  returns East 15. Preserve metadata/revision/receipts/source bytes and capture
+  focused-before-activation and selected-after-activation states with metadata.
+- Root owns a new WorkbookTabKeyboardTest and narrow local WorkbookTab/strip fixes
+  only after the probe, plus docs/evidence. A disjoint worker may own the test;
+  independent actual combined source/oracle/native focus-pixel review is required.
+  Use existing emulator only; no hardware hold or window/preference mutation.
+- Do not infer physical keyboard/TalkBack, roving-arrow behavior or complete native
+  visual matrix acceptance. S11.C0 partial, S13.C0/S15.C0 absent stay mandatory when
+  applicable; full package/Room/source-version/hardware/reference gates stay open.
 
 ## Protected context
 
