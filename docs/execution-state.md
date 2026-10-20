@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 metadata-temp recovery combined over `99e770d`; 113 source/fixture
-hashes and runtime artifact hashes are recorded in
+**Source:** S03.3 implementation through `07883301e0f251c6e9d3a4dea5f0b61c0182c4c5`;
+all 113 committed source/fixture hashes match the artifact manifest in
 `qualification/evidence/2026-10-20-s03-metadata-temp-recovery.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1

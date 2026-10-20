@@ -6,6 +6,8 @@
 process-death recovery slice. Full S03 and the protected worker contracts remain
 partial.
 **Source base:** `99e770d205641f1c8a53fdb720e06e1815102919`.
+**Implementation commit:** `07883301e0f251c6e9d3a4dea5f0b61c0182c4c5`; all 113 source/fixture hashes
+match the committed Git objects. Final source binding is documentation only.
 **Platform:** existing `emulator-5580`, Android 16/API36, x86_64. The physical
 Googlebook remains on owner hold. No licensed Tableau reference is available.
 
