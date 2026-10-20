@@ -1,0 +1,21 @@
+{
+  "source_commit": "271bee898a17da346d2425e782273d6d5ac419da",
+  "artifacts": {
+    "app/build/outputs/apk/debug/app-debug.apk": {
+      "sha256": "ed310f65e0f9db7da215c508d16edafdfe4ec4f2c0971ec732b37ce8bba82a36",
+      "bytes": 116037141
+    },
+    "app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk": {
+      "sha256": "aedcf61db7a7fb76b89ed304b5eb4141ac9f186c359a4304229b9ab534eab87d",
+      "bytes": 3147527
+    },
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorksheetIdentityRefusalTest.kt": {
+      "sha256": "48dcf7c9dae6638ab62f21228847a58ae942df72459719040e7c5a5e4d730c07",
+      "bytes": 7491
+    },
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorksheetIdentityMigrationTest.kt": {
+      "sha256": "aec68630871ff943d265bc4d747ca41a57704c30f64f923d8cf32fd6d5de02a3",
+      "bytes": 17222
+    }
+  }
+}

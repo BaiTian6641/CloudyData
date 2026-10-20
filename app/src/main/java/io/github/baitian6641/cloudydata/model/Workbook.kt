@@ -591,6 +591,12 @@ data class WorkbookDocument(
     val activeWorksheet: WorksheetDef?
         get() = worksheets.firstOrNull { it.id == activeWorksheetId } ?: worksheets.firstOrNull()
 
+    internal fun validateWorksheetIdentities() {
+        require(worksheets.map { it.id }.distinct().size == worksheets.size) {
+            "Workbook contains duplicate worksheet identities."
+        }
+    }
+
     fun toJson(): JSONObject = JSONObject()
         .put("formatVersion", formatVersion)
         .put("id", id)
@@ -644,7 +650,7 @@ data class WorkbookDocument(
                     val tagsJson = json.optJSONArray("tags") ?: JSONArray()
                     for (index in 0 until tagsJson.length()) add(tagsJson.getString(index))
                 },
-            )
+            ).also { it.validateWorksheetIdentities() }
         }
     }
 }

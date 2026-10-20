@@ -68,6 +68,14 @@ No journal file competes with the workbook as a second source of truth.
   receipt tombstones. Every history snapshot must belong to the current workbook
   and exact current data snapshot. Source-side operations never replay through
   undo, redo, reopening or typed-command retries.
+- Each head and undo/redo document requires unique decoded worksheet IDs by exact
+  equality. A targeted chart command cannot be admitted against two definitions
+  sharing one ID. IDs reused across different revisions are normal; case/padding
+  are preserved, with no new blank/type/active-reference policy. Document decoding
+  rejects malformed stored packages before cleanup, and checkpoint validation
+  rejects constructed duplicate head/history before serialization/publication.
+  A valid canonical read may still clean abandoned temps before a later invalid
+  constructed candidate is rejected under the existing Store ordering.
 - Unknown, missing or malformed v3 journals, checksum failure, foreign snapshot
   history and future versions fail closed without rewriting the source file.
   Canonical round-trip checks prevent permissive model parsers from silently

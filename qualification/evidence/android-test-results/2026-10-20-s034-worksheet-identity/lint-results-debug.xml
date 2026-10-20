@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.4.1">
+
+    <issue
+        id="RequiresFeature"
+        severity="Warning"
+        message="`addWebMessageListener` should only be called if the feature `WEB_MESSAGE_LISTENER` is present; to check call `androidx.webkit.WebViewFeature#isFeatureSupported`"
+        category="Correctness"
+        priority="6"
+        summary="Requires Feature"
+        explanation="Some APIs require optional features to be present. This check makes sure that calls to these APIs are surrounded by a check which enforces this."
+        errorLine1="        WebViewCompat.addWebMessageListener("
+        errorLine2="        ^">
+        <location
+            file="/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt"
+            line="167"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingOnRenderProcessGone"
+        severity="Warning"
+        message="WebViewClient should implement `onRenderProcessGone` to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down."
+        category="Correctness"
+        priority="5"
+        summary="WebViewClient does not implement onRenderProcessGone"
+        explanation="If a WebView&apos;s render process is shut down, the app will crash unless the WebViewClient implements `onRenderProcessGone` and returns `true`. It is highly recommended to handle this callback."
+        url="https://developer.android.com/develop/ui/views/layout/webapps/handle-termination"
+        urls="https://developer.android.com/develop/ui/views/layout/webapps/handle-termination"
+        errorLine1="        view.webViewClient = object : WebViewClientCompat() {"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt"
+            line="135"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="MissingOnRenderProcessGone"
+        severity="Warning"
+        message="WebViewClient should implement `onRenderProcessGone` to handle render process crashes or out-of-memory errors. Otherwise, the app will crash when the render process is shut down."
+        category="Correctness"
+        priority="5"
+        summary="WebViewClient does not implement onRenderProcessGone"
+        explanation="If a WebView&apos;s render process is shut down, the app will crash unless the WebViewClient implements `onRenderProcessGone` and returns `true`. It is highly recommended to handle this callback."
+        url="https://developer.android.com/develop/ui/views/layout/webapps/handle-termination"
+        urls="https://developer.android.com/develop/ui/views/layout/webapps/handle-termination"
+        errorLine1="        view.webViewClient = object : WebViewClientCompat() {"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/home/polar/CloudyData/app/src/main/java/io/github/baitian6641/cloudydata/renderer/VegaRendererHost.kt"
+            line="135"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        severity="Warning"
+        message="A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.10 is available: 2.4.21"
+        category="Correctness"
+        priority="4"
+        summary="Newer Library Versions Available"
+        explanation="This detector checks with a central repository to see if there are newer versions available for the dependencies used by this project. This is similar to the `GradleDependency` check, which checks for newer versions available in the Android SDK tools and libraries, but this works with any MavenCentral dependency, and connects to the library every time, which makes it more flexible but also **much** slower."
+        errorLine1="kotlin = &quot;2.2.10&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="/home/polar/CloudyData/gradle/libs.versions.toml"
+            line="3"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ChromeOsAbiSupport"
+        severity="Warning"
+        message="Missing x86_64 ABI support for ChromeOS"
+        category="Correctness:Chrome OS"
+        priority="4"
+        summary="Missing ABI Support for ChromeOS"
+        explanation="To properly support ChromeOS, your Android application should have an x86 and/or x86_64 binary as part of the build configuration. To fix the issue, ensure your files are properly optimized for ARM; the binary translator will then ensure compatibility with x86. Alternatively, add an `abiSplit` for x86 within your `build.gradle` file and create the required x86 dependencies."
+        url="https://developer.android.com/ndk/guides/abis"
+        urls="https://developer.android.com/ndk/guides/abis"
+        errorLine1="            abiFilters += qualificationAbis"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~">
+        <location
+            file="/home/polar/CloudyData/app/build.gradle.kts"
+            line="29"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        severity="Warning"
+        message="This folder configuration (`v26`) is unnecessary; `minSdkVersion` is 35. Merge all the resources in this folder into `mipmap-anydpi`."
+        category="Performance"
+        priority="6"
+        summary="Obsolete SDK_INT Version Check"
+        explanation="This check flags version checks that are not necessary, because the `minSdkVersion` (or surrounding known API level) is already at least as high as the version checked for.&#xA;&#xA;Similarly, it also looks for resources in `-vNN` folders, such as `values-v14` where the version qualifier is less than or equal to the `minSdkVersion`, where the contents should be merged into the best folder.">
+        <location
+            file="/home/polar/CloudyData/app/src/main/res/mipmap-anydpi-v26"/>
+    </issue>
+
+</issues>

@@ -1208,3 +1208,26 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Next exact action: discriminating native duplicate-sheet-ID multiwrite probe,
   then unique-per-document head/history admission with byte-preserving refusal;
   retain intentional missing/null active/default and empty-sheet compatibility.
+
+## 2026-10-20 — S03.4 unique worksheet identities per document
+
+- Continued clean/pushed/live-matching271bee8 after shared-version binding; all127
+  previous hashes committed/fresh, plans/master/design/token authority unchanged.
+  SelectedF01/F64,Q33/Q34 with root sharedsource/docs and disjoint test/review work.
+- Native unchanged-production control with uniqueIDs passed; duplicate legacy2
+  accepted one SetChart that changed2titles withreceipt1/revision5, queried15/20
+  and removed candidates. Expected baseline failure/artifact hashes retained.
+- One exact-equality helper checks each decoded document and constructed checkpoint
+  head/undo/redo separately. No Storeordering, trim/casefold, active/default/type
+  or cross-revision policy changed. Existing valid-read/tempcleanup limit retained.
+- Focused refusal4/compatibility5 passes9/9 in2.081s; actualcombined135/135,no skips,
+  61.609s. Legacy adjacent/nonadjacent and rehashedv3head/undo/redo preserve rejected
+  files/candidates/backups/source; constructedbadcheckpoints reachzero atomicphases.
+  Targeted one-sheet edits/history/reopen/duplicate, exactoriginals, case/padding,
+  cross-revision IDs,null/missingactive andemptylists retain realnative15/20/10/5.
+- Default/x86 build,JVM75/75,lint0/6 retained,bothdefaultABIs,tokenscurrent and
+  contrast40/40 pass. Independent source/test/oracle review has no material issue.
+  Evidence+129hashes:qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md.
+- Next exact action: native fractional/string legacy revision CAS-admission probe;
+  fix only afterproof and preserve exactLong>2^53 controls. Fullpackage/type/Room/
+  sourcehistory/hardware/reference/C0 gates unchanged; families remainpartial.

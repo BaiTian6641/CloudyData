@@ -31,10 +31,12 @@ data class WorkbookCheckpoint(
     }
 
     fun validate() {
+        document.validateWorksheetIdentities()
         require(undo.size + redo.size <= HISTORY_LIMIT) { "Workbook history exceeds its limit." }
         require(receipts.size <= RECEIPT_LIMIT) { "Workbook command receipt limit reached." }
         require(document.revision in 1 until Long.MAX_VALUE) { "Invalid workbook revision." }
         for (entry in undo + redo) {
+            entry.validateWorksheetIdentities()
             require(entry.id == document.id && entry.snapshot == document.snapshot && entry.revision in 1..document.revision) {
                 "Workbook history has a foreign workbook, snapshot or revision."
             }

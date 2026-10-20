@@ -2,10 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 workbook-version implementation through `29780fa7d0d3fe5bef7072b2641d3285f61a5439`,
-bound by all127 source/fixture
-hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-version/`;
-see `qualification/evidence/2026-10-20-s03-workbook-version-admission.md`.
+**Source:** S03.4 worksheet-identity implementation, bound by all129 source/fixture
+hashes in `qualification/evidence/artifacts/2026-10-20-s034-worksheet-identity/`;
+see `qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -104,6 +103,14 @@ unless stated otherwise.
   v1/v2 migrations keep exact originals and versioned backup names; equivalent v3
   retains journal/history/receipt bytes. Native new7/7 and combined126/126 pass.
   Raw JSON lexical/precision checks and full package/schema/identity remain open.
+- S03.4 per-document worksheet identity admission refuses duplicate IDs in legacy/
+  current heads and either history direction before stored cleanup/save. Constructed
+  duplicate checkpoints cannot serialize/publish. Exact comparisons preserve case/
+  padding and IDs reused across revisions. Valid targeted edits, undo/reopen/redo,
+  duplicate receipts, exact legacy originals, null/missing active-ID defaults and
+  empty sheets pass. New native9/9 and combined135/135 pass; full identity/type/
+  active-reference policies remain open. Valid canonical reads may still clean
+  abandoned temps before an invalid constructed candidate is refused.
 - Home recents/favorites/all filters and typed desired-value SetFavorite are
   verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
   retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
@@ -159,6 +166,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md`
 - `qualification/evidence/2026-10-20-s03-workbook-version-admission.md`
 - `qualification/evidence/2026-10-20-s03-secondary-aggregation-decoding.md`
 - `qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`
@@ -495,48 +503,53 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 emulator-5580 combined126/126,no skips,59.938s: version refusal4+
-  migration3 and all119 prior. First post-fix focused7/7 in1.729s. Pre-edit baseline
-  accepted2.9,string"2",Long4294967298, queriedEast15/West20 and removed candidates;
-  expected failure and original runtime/test/source hashes remain inspectable.
-- Malformed stored load/open/save preserves exact metadata, both candidates and
-  CSV/Parquet. Direct real NaN/±Infinity and rehashed malformed v3head/history
-  refuse. Literal numeric1/1.0/1e0,2/2.0/2E+0 keep correct original backups;
-  3/3.0/3e0 keeps current journal bytes. Native KEEP East15, allWest20/East15 and
-  exact underlyingEast10/East5 survive migration/history/receipts/reopen/no replay.
+- Existing API36 emulator-5580 combined135/135,no skips,61.609s: identity refusal4+
+  compatibility5 plus all126 prior. First focused9/9 in2.081s. Pre-edit unique-ID
+  control passed; duplicate-ID SetChart changed2titles underreceipt1/revision5,
+  queriedEast15/West20 and removed candidates. Raw failure/artifact bindings retained.
+- Malformed stored legacy and rehashedv3head/undo/redo preserve exact metadata,
+  candidates, existing backup and CSV/Parquet on load/open/save refusal. Constructed
+  invalid checkpoints reachzero atomic-write phases; valid canonical stays exact.
+  Existing valid-read/temp-cleanup ordering remains explicit.
+- Native targeted one-sheet edit/undo/reopen/redo/duplicate retains independent
+  definitions, history/receipts and exact original backups. Case/padding IDs,
+  cross-revision reuse, null/missing active fallback and empty lists pass. Native
+  KEEP East15, allWest20/East15 and sourceEast10/East5 remain independently exact.
 - Final x86/default dual-ABI debug/test builds pass; JVM75/75,lint0 errors/6 retained
   warnings; both default ABIs present. Tokens current; contrast40/40.
-- Runtime APK f2ab47d090a1e654efc810c6b5a62285360fb8c23e76e412e17945ece05db3b1;
-  test APK a7c12f3bb51840fff7246c59722a989951cd1167f49ece0623e9de14ae43087d.
-- Independent combined source/oracle review has no material blocker. No strict
-  raw JSON grammar/precision, full package/identity, new render/input/death or
-  physical acceptance follows. Existing prior gates retain their own bounds.
-- Evidence: qualification/evidence/2026-10-20-s03-workbook-version-admission.md;
-  raw before/after logs and127 source/fixture hashes in matching paths.
+- Runtime APK6aac653c0081a45343a29476cd66e89c5376f27464cd75427a50148c227b602d;
+  test APK32d0248995c47b2906282029b38340d0a299d56314bf917a8aab14338aea89ec.
+- Independent combined source/oracle review has no material blocker. No complete
+  identity/type/schema package policy, new UI/input/death or physical acceptance
+  follows. Other existing gates retain their bounded evidence.
+- Evidence:qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md;
+  raw before/after logs and129 source/fixture hashes in matching paths.
   Physicalhold,16KiB,Tableau,Room,source history and C0 stay unchanged.
 
 ## Next exact task
 
-**S03.4 duplicate worksheet identity admission.**
+**S03.4 strict legacy revision admission.**
 
-- IDs F01/F64;Q33/Q34. Verified prerequisites: current shared version reader,
-  checkpoint/history/hash guards and real source-preserving migration substrate.
-- Independent source finding: two worksheets sharing an ID are admitted; a single
-  SetChart targets every matching ID, while displayed selection uses the first.
-  Native proof is still required. This gate precedes later schema/type policies.
-- Expected: require unique worksheet IDs within each head/undo/redo document;
-  reject ambiguous packages before cleanup/save and preserve exact originals,
-  candidates and source. IDs reused across distinct revisions remain normal.
-  Preserve missing/null active-ID fallback, empty sheet lists and valid unique-ID
-  migrations; do not incidentally redefine blank/type/dangling-active policy.
-- Writable: model/Workbook.kt, checkpoint validation only as needed, separate
-  native refusal/compatibility files, state/history/ADR/parity/evidence. Root owns
-  shared source; disjoint workers own tests; independent actual combined review.
-- First native probe: two differently named/charted sheets sharing one ID, one
-  SetChart; report both changed titles if wrongly admitted. Unique-ID control
-  must change only its intended sheet. Verify exact bytes, history/reopen/duplicate
-  semantics and real query values. S11.C0 partial;S13.C0/S15.C0 absent stay mandatory
-  when worker-backed dependencies apply; Room/full package/type gates stay open.
+- IDs F01/F64;Q33/Q34. Prerequisites: committed shared workbook-version reader,
+  per-document uniqueness, checkpoint/history/raw guards and native migration/CAS
+  substrate verified by final135/135. Legacy revision coercion remains separate.
+- Source finding: WorkbookDocument.fromJson getLong can turn bare legacy fractional
+  revisionr+0.75 or string"r" into r; a Rename(expectedRevision=r) may then publish
+  r+1/history/receipt against malformed persisted identity. Current v3 raw guards
+  already refuse that normalization. No native legacy-revision proof yet.
+- First exact action: real imported/mapped v1/v2 workbook at r, rewrite revision
+  to r+0.75 and string"r", seed candidates, then attempt load/open and one Rename.
+  Preserve raw expected failure and command effect; require fixed admission to
+  refuse before cleanup/write with exact metadata/candidates/backups/source kept.
+- Expected compatibility: integer r/integral numericr.0 migration, exact originals,
+  history/receipt/reopen/nativevalues. Preserve exact valid Long9007199254740993
+  above2^53; do not funnel every Long through Double. Keep existing supported
+  revision bounds and Math.addExact; raw lexical precision remains separate.
+- Root writable: narrow model decoder and checkpoint call sites if required,
+  docs/evidence; disjoint native refusal/compatibility files owned by workers.
+  Independent actual combined source/oracle/evidence review required.
+  S11.C0 partial,S13.C0/S15.C0 absent remain mandatory when applicable; Room/full
+  package/types/source-version/hardware/reference gates remain open.
 
 ## Protected context
 
