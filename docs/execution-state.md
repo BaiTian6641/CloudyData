@@ -2,10 +2,10 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 decoded workbook-revision admission through implementation
-`eb930b72b763accf03efe60a5ca836a03d40edf1`, bound by all 131 committed source/fixture
-hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-revision/`;
-see `qualification/evidence/2026-10-20-s03-workbook-revision-admission.md`.
+**Source:** S03.4 present workbook-favorite admission on source base
+`14b6a6a1b00abed86823f24ad3935d3f8fd0c2f6`, bound by all 133 source/fixture
+hashes in `qualification/evidence/artifacts/2026-10-20-s034-workbook-favorite/`;
+see `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -119,6 +119,14 @@ unless stated otherwise.
   forms, exact migration originals, history/receipts and terminal revision behavior
   pass. New native 8/8 and combined 143/143 pass. Raw JSON precision/lexical checks,
   receipt/timestamp parsing and broader package admission remain separate.
+- S03.4 document favorite admission preserves the absent legacy false default
+  and requires every present value to be an actual Boolean. Malformed stored
+  values refuse load/open/save before atomic writes and remain omitted by the
+  existing library listing, with metadata/candidates/backups/CSV/Parquet intact.
+  Exact legacy originals, true/false projection, desired-value commands, no-op
+  receipts and undo/reopen/redo/duplicate behavior remain native-tested. New 7/7
+  and combined 150/150 pass. Current v3 raw-content guards and the separate library
+  repair/error UI gate remain.
 - Home recents/favorites/all filters and typed desired-value SetFavorite are
   verified in bounded native cases. Frozen ID/window/expected-revision/Boolean
   retries cannot reverse or replay accepted work after rename/undo/reopen. No-op
@@ -174,6 +182,7 @@ unless stated otherwise.
 
 ### Evidence
 
+- `qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md`
 - `qualification/evidence/2026-10-20-s03-workbook-revision-admission.md`
 - `qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md`
 - `qualification/evidence/2026-10-20-s03-workbook-version-admission.md`
@@ -512,48 +521,53 @@ unless stated otherwise.
 
 ## Last verification (2026-10-20)
 
-- Existing API36 emulator-5580 combined **143/143**, no skips, **69.87 s**: revision
-  refusal four + compatibility four join all 135 prior. Focused 8/8 in 3.688 s.
-- Pre-edit compatibility controls passed. Four legacy fraction/string cases loaded
-  revision 4, accepted Rename to 5, created receipt/undo and removed candidates.
-  Raw expected failure and baseline APK/test-source hashes are retained.
-- Malformed stored revisions now refuse load/open/save, preserving exact metadata,
-  candidates, existing backups and CSV/Parquet. Rehashed v3 head/undo/redo refuses
-  beyond checksum checks. Exact Long 9007199254740993, largest Double below 2^63,
-  integral literals, history/reopen/duplicate and terminal no-extra-write controls
-  pass, with independent native East 15 / West 20 and source East 10 / East 5.
-- Default and x86 debug/test builds pass; JVM 75/75; lint zero errors/six retained
-  warnings; default APK includes both ABIs; tokens current and contrast 40/40.
-- Runtime APK 858595d3714c77630156559eca32c7a612bfcc987a95729854774c10503ea54d;
-  test APK 7c86b19bd5b3cbcf45056e9cdd0180f92d92dda553d18346e8ac65b7e8824259.
-- Independent combined source/oracle review has no material issue. Evidence:
-  qualification/evidence/2026-10-20-s03-workbook-revision-admission.md, matching raw
-  logs and 131 source/fixture hashes. No new UI/input/death/hardware claim.
+- Existing API36 emulator-5580 combined **150/150**, no skips, **74.717 s**: favorite
+  refusal four + compatibility three join all 143 prior. Focused 7/7 in 4.183 s.
+- Unchanged-production compatibility three passed. Ten v1/v2 malformed favorites
+  became library Booleans and Rename persisted the guessed value at revision 5
+  with receipt/undo and removed candidates. Raw expected failure/hashes retained.
+- Post-fix present malformed data refuses load/open/save with zero atomic phases;
+  existing list() omits it and exact metadata/candidates/backups/CSV/Parquet remain.
+  Rehashed v3 head/undo/redo faults and missing members retain refusal beyond hashes.
+- Valid absent/false/true legacy projections, exact originals, explicit desired
+  values in both directions, no-op receipts and undo/reopen/redo/duplicate preserve
+  meaning. Real native East 15 / West 20 and underlying East 10 / East 5 remain exact.
+- Default/x86 debug/test builds pass; JVM 75/75; lint zero errors/six retained
+  warnings; both default ABIs; tokens current and contrast 40/40.
+- Runtime APK 2115b14641922dba5495d4d52fa15e4f3f80cf0105782e5d49ebb6bdb9839d2d;
+  test APK fe41e9a931543f2bf5974d8d92a64d852c5d0225c8b44d7454e0263dbebcf25f.
+- Independent actual combined source/oracle review has no material issue. Evidence:
+  qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md, matching raw
+  logs and 133 source/fixture hashes. No new UI/death/physical acceptance follows.
   Physical hold, 16 KiB, Tableau, Room, source history and C0 stay unchanged.
 
 ## Next exact task
 
-**S03.4 strict present workbook-favorite decoding.**
+**S03.2/S03.4 view-local worksheet selection consistency.**
 
-- IDs F01/F64; Q33/Q34. Prerequisites: strict version/revision/worksheet identity,
-  checkpoint/history/raw guards, typed SetFavorite and migration/CAS substrate,
-  qualified by final native 143/143. Source-only favorite coercion remains open.
-- Source finding: optBoolean("favorite", false) turns legacy strings into Booleans
-  or defaults malformed present values to false; library summaries and a later
-  unrelated Rename can legitimize that guessed state. Current v3 raw guards refuse
-  normalization. Missing favorite is an intentional legacy false default.
-- First exact action: native imported/mapped v1/v2 packages with malformed present
-  favorite values; record normalized library state and one Rename's persisted
-  Boolean, while preserving the original failure/candidate/source evidence.
-- Expected result: absent false and actual true/false remain compatible; malformed
-  present values refuse before cleanup/write with exact metadata, backups,
-  candidates and source preserved. Keep exact migration originals, explicit
-  SetFavorite desired state, history/reopen/duplicate and native 15/20/source 10/5.
-- Root writable: narrow WorkbookDocument reader, docs/evidence. Disjoint refusal
-  and compatibility tests have separate owners. Independent actual combined
-  source/oracle/evidence review is required; no Home/Store/renderer change expected.
-- S11.C0 partial, S13.C0/S15.C0 absent remain mandatory when applicable. Room/full
-  package/type/source-version/hardware/reference gates remain open.
+- IDs F01/F64; Q16/Q19/Q33/Q34. Prerequisites: unique sheets, typed checkpoint
+  authority, view-local tabs, result identity/View Data and current migration
+  guards, qualified by final affected native 150/150. The mismatch below is a
+  source finding awaiting its own discriminating native probe.
+- WorkbookDocument.activeWorksheet falls back to the first sheet for a dangling
+  nonnull saved activeWorksheetId. ViewModel accepts the missing visible ID but
+  refreshQuery uses the fallback. Screen resolves the missing tab and reports
+  that it no longer exists; View Data refuses the queried first-sheet ID mismatch.
+  Existing v3 raw guards preserve that string and do not reconcile this disagreement.
+- First exact action: import real data into two unique sheets (KEEP East 15 with
+  source rows 10/5, KEEP West 20 with source row 20), persist a missing active ID,
+  then reopen through a native ViewModel and actual Activity. Record visible ID,
+  query identity/result and missing-sheet text; select West and require selection,
+  query and View Data to agree on 20 while canonical metadata stays byte-exact.
+- Expected invariant: an unresolved visible selection cannot silently authorize
+  a first-sheet query or edit. Choose coherent local fallback or a repairable
+  selection error after the probe; preserve null/missing defaults and empty sheets.
+  Do not infer a stricter persisted-package policy from this runtime mismatch.
+- Root writable: narrow WorkbookViewModel selection and WorkbookScreen resolution
+  if required, docs/evidence. Separate native workers own disjoint tests; actual
+  combined source/oracle/runtime review is required. Use existing emulator only.
+- S11.C0 partial, S13.C0/S15.C0 absent remain mandatory when applicable. Full
+  package/Room/source-version/hardware/reference gates remain open.
 
 ## Protected context
 

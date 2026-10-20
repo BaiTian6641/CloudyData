@@ -91,6 +91,12 @@ No journal file competes with the workbook as a second source of truth.
   command through coercion. Equivalent integral decimal/exponent forms remain
   supported; raw lexical/precision validation is separate. Existing terminal
   revision, CAS, receipt, Math.addExact and history rules remain unchanged.
+- Workbook favorite defaults to false only when absent. Every present decoded
+  value must be an actual Boolean; strings, numbers, null and containers cannot
+  become a library Boolean or be legitimized by an unrelated command. The legacy
+  missing-field default stays compatible. Current v3 raw-content checks still
+  require the canonical member. Existing library listing omits failed loads;
+  a repair/error presentation remains separate from this admission rule.
 - v1/v2 documents without a journal load through the existing model migration.
   Present filter records must decode completely: supported typed version/mode,
   known fields, nonblank string anchors,1–2001 complete text/NULL marks and

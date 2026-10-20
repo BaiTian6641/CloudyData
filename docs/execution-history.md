@@ -1253,3 +1253,28 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Next exact action: native malformed-present favorite decoding probe; preserve
   intentional absent=false and actual Boolean migration/history/receipt controls.
   Raw lexical/full package/Room/source history/hardware/reference/C0 gates unchanged.
+
+## 2026-10-20 — S03.4 strict present workbook favorite admission
+
+- Continued clean main/upstream/live origin 14b6a6a after revision implementation
+  eb930b7 and binding; all 131 preceding committed hashes fresh. Plans/master/
+  scoped design and accepted ADR authority unchanged. Selected F01/F64, Q33/Q34
+  with root source/docs, disjoint native workers and independent combined review.
+- Native baseline compatibility three passed. Ten v1/v2 malformed present favorites
+  became library Booleans and an unrelated Rename persisted them at revision 5
+  with receipt/undo and removed candidates. Expected failure/hashes retained.
+- Narrow reader preserves absent=false and requires actual Boolean for present
+  values. Current v3 raw guards and Store/command/Home/renderer behavior unchanged.
+- Focused 7/7 in 4.183 s; combined 150/150, no skips, 74.717 s. Twenty-three faults,
+  direct nonfinite objects, rehashed v3 head/undo/redo and missing v3 members refuse;
+  malformed stored load/open/list/save retains exact bytes and zero atomic phases.
+  Valid defaults/projections/originals, explicit desired states/no-op/duplicate/
+  undo/reopen/redo and native 15/20/source 10/5 remain independently correct.
+- Default/x86 builds, JVM 75/75, lint zero errors/six retained warnings, both default
+  ABIs, current tokens and contrast 40/40 pass. Independent combined source/oracle
+  review found no material issue. Evidence and 133 hashes:
+  qualification/evidence/2026-10-20-s03-workbook-favorite-admission.md.
+- Next exact action: native dangling active-worksheet-ID selection/query/UI probe
+  with distinct East 15 / West 20 sheets; preserve canonical bytes and intentional
+  missing/null/empty defaults. This remains a source finding. Full package/Room/
+  source history, physical hold/16 KiB/Tableau and C0 gates stay unchanged.

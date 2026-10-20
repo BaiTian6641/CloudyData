@@ -648,6 +648,13 @@ data class WorkbookDocument(
             return revision
         }
 
+        private fun readFavorite(json: JSONObject): Boolean {
+            if (!json.has("favorite")) return false
+            val value = json.get("favorite")
+            require(value is Boolean) { "Workbook favorite must be a Boolean." }
+            return value
+        }
+
         fun fromJson(json: JSONObject): WorkbookDocument {
             readFormatVersion(json)
             val sheetsJson = json.getJSONArray("worksheets")
@@ -667,7 +674,7 @@ data class WorkbookDocument(
                     }
                 },
                 activeWorksheetId = if (json.isNull("activeWorksheetId")) null else json.getString("activeWorksheetId"),
-                favorite = json.optBoolean("favorite", false),
+                favorite = readFavorite(json),
                 tags = buildList {
                     val tagsJson = json.optJSONArray("tags") ?: JSONArray()
                     for (index in 0 until tagsJson.length()) add(tagsJson.getString(index))

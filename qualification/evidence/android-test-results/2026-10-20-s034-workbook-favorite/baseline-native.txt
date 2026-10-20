@@ -1,0 +1,120 @@
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest:
+INSTRUMENTATION_STATUS: test=absentAndExplicitLegacyBooleansKeepTheirProjectionAndVerbatimOriginal
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=absentAndExplicitLegacyBooleansKeepTheirProjectionAndVerbatimOriginal
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=explicitOppositeDesiredValueNoOpAndHistoryNeverReplayAToggle
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=explicitOppositeDesiredValueNoOpAndHistoryNeverReplayAToggle
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=currentExactBooleansAndExistingHistoryReopenWithoutChangingTheirAuthority
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteMigrationTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=currentExactBooleansAndExistingHistoryReopenWithoutChangingTheirAuthority
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest:
+INSTRUMENTATION_STATUS: test=malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: A present malformed favorite must refuse before library projection or a rename can persist a substituted Boolean. Unexpected acceptance: legacy1 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest$malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState$1.invokeSuspend(WorkbookFavoriteRefusalTest.kt:105)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest.malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState(WorkbookFavoriteRefusalTest.kt:50)
+
+INSTRUMENTATION_STATUS: stream=
+Error in malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState(io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest):
+java.lang.AssertionError: A present malformed favorite must refuse before library projection or a rename can persist a substituted Boolean. Unexpected acceptance: legacy1 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest$malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState$1.invokeSuspend(WorkbookFavoriteRefusalTest.kt:105)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest.malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState(WorkbookFavoriteRefusalTest.kt:50)
+
+INSTRUMENTATION_STATUS: test=malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 2.688
+There was 1 failure:
+1) malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState(io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest)
+java.lang.AssertionError: A present malformed favorite must refuse before library projection or a rename can persist a substituted Boolean. Unexpected acceptance: legacy1 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string true raw=true, decodedFavorite=true, libraryFavorite=true, libraryRevision=4, savedFavorite=true, persistedValue=true, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 string false raw=false, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 unknown string raw=not-a-boolean, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 number raw=1, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 explicit null raw=null, decodedFavorite=false, libraryFavorite=false, libraryRevision=4, savedFavorite=false, persistedValue=false, persistedType=Boolean, acceptedRevision=5, receipts=1, undo=1, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest$malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState$1.invokeSuspend(WorkbookFavoriteRefusalTest.kt:105)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.WorkbookFavoriteRefusalTest.malformedLegacyFavoritesCannotBecomeLibraryOrSavedBooleanState(WorkbookFavoriteRefusalTest.kt:50)
+
+FAILURES!!!
+Tests run: 4,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1
