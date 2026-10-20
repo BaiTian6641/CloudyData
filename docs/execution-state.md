@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 legacy filter decoding on source base
-`e69bb7c2adff4ae1ff04929aa75f48499dd1a0a3`;123 source/fixture hashes bind the
-combined revision in `qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`.
+**Source:** S03.4 strict legacy filter implementation through `7c78e8dff3062948ca9fd36d913c94e40e564b28`;
+all123 committed source/fixture hashes match the artifact manifest in
+`qualification/evidence/2026-10-20-s03-legacy-filter-decoding.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

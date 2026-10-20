@@ -5,7 +5,8 @@
 Q16/Q17 regression prerequisites retain their own bounded evidence.
 **Status:** verified for the bounded decoder/migration cases below; full S03
 and parity families remain partial.
-**Source base:** `e69bb7c2adff4ae1ff04929aa75f48499dd1a0a3`.
+**Implementation commit:** `7c78e8dff3062948ca9fd36d913c94e40e564b28`; all123 source/fixture hashes verified
+against committed blobs. Source base: `e69bb7c2adff4ae1ff04929aa75f48499dd1a0a3`.
 
 ## Authority, freshness and ownership
 
@@ -85,8 +86,8 @@ native summary are in artifacts/2026-10-20-s034-legacy-filter/. Raw logs, baseli
 APK/test hashes, JVM/lint/token results are in android-test-results/2026-10-20-s034-legacy-filter/.
 Only redundant terminal blank lines at end of text logs are removed.
 
-Independent read-only source/oracle review found no material blocker. Final123
-hashes and raw results receive a final evidence review before commit. No new
+Independent read-only source/oracle review found no material blocker. The reviewer independently verified all123
+hashes and final raw results; no material evidence gap remains. No new
 layout, repair UI, TalkBack or physical input acceptance is inferred.
 
 ## Limits and preserved gates
