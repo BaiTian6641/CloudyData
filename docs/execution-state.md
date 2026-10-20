@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S02.2/S02.4 native worksheet-tab selected semantics and focus, based on
-`b68abb1df1e0f26b79661dbd3fa336321d585e0c`, bound by all 136 source/fixture hashes
+**Source:** S02.2/S02.4 native worksheet-tab selected semantics and focus, implemented in
+`462745c1a0e3588df6390623573293d5bba6592d`, bound by all 136 source/fixture hashes
 in `qualification/evidence/artifacts/2026-10-20-s022-tab-keyboard/`;
 see `qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md`.
 `main` tracks `origin/main`; no release/distribution was created.

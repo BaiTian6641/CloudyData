@@ -4,6 +4,9 @@
 **IDs:** S02.2/S02.4; F01/F64; Q21 with Q19 local-selection invariants.
 **Status:** verified bounded native input/selection/visual slice; full S02/Q21 remain partial.
 **Source base:** `b68abb1df1e0f26b79661dbd3fa336321d585e0c`.
+**Implementation commit:** `462745c1a0e3588df6390623573293d5bba6592d`; all 136 source/fixture hashes match both
+committed blobs and the verified working-tree inputs. The following binding commit
+changes only this record, execution-state and the artifact manifest.
 
 ## Readiness and ownership
 
