@@ -1231,3 +1231,25 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
 - Next exact action: native fractional/string legacy revision CAS-admission probe;
   fix only afterproof and preserve exactLong>2^53 controls. Fullpackage/type/Room/
   sourcehistory/hardware/reference/C0 gates unchanged; families remainpartial.
+
+## 2026-10-20 — S03.4 strict decoded workbook revision admission
+
+- Continued clean main/upstream/live origin 2242d29; all 129 preceding hashes were
+  fresh, plans/master/scoped original assets and ADR authority unchanged. Selected
+  F01/F64, Q33/Q34 with root source/docs, disjoint test workers and independent review.
+- Unchanged-production native compatibility four passed. Four v1/v2 fraction/string
+  cases coerced to revision 4 and accepted Rename to 5 with receipt/undo, native
+  15/20 and deleted recovery candidates. Expected failure/artifact hashes retained.
+- One private reader now preserves exact integer classes and checks Float/Double
+  finite/whole/range before conversion. No Store/renderer/receipt/timestamp change.
+- Focused 8/8 in 3.688 s; combined 143/143, no skips, 69.87 s. Malformed direct/stored
+  revisions and rehashed v3 head/undo/redo preserve refused evidence. Exact Long
+  above 2^53, largest Double below 2^63, literal integral forms, terminal revision,
+  exact originals/history/receipts/reopen/duplicate and real 15/20/10/5 oracles pass.
+- Default/x86 builds, JVM 75/75, lint zero errors/six retained warnings, both default
+  ABIs, current tokens and contrast 40/40 pass. Independent combined source/oracle
+  review found no material issue. Evidence and 131 hashes:
+  qualification/evidence/2026-10-20-s03-workbook-revision-admission.md.
+- Next exact action: native malformed-present favorite decoding probe; preserve
+  intentional absent=false and actual Boolean migration/history/receipt controls.
+  Raw lexical/full package/Room/source history/hardware/reference/C0 gates unchanged.

@@ -1,0 +1,44 @@
+
+io.github.baitian6641.cloudydata.WorkbookRevisionMigrationTest:....
+io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest:
+Error in coercibleLegacyRevisionsCannotAuthorizeCommands(io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest):
+java.lang.AssertionError: Malformed revisions must refuse load/open before coercion can authorize a command. Unexpected acceptance: legacy1 fraction raw=4.75, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 numeric string raw=4, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 fraction raw=4.75, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 numeric string raw=4, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest$coercibleLegacyRevisionsCannotAuthorizeCommands$1.invokeSuspend(WorkbookRevisionRefusalTest.kt:88)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest.coercibleLegacyRevisionsCannotAuthorizeCommands(WorkbookRevisionRefusalTest.kt:49)
+
+
+Time: 2.827
+There was 1 failure:
+1) coercibleLegacyRevisionsCannotAuthorizeCommands(io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest)
+java.lang.AssertionError: Malformed revisions must refuse load/open before coercion can authorize a command. Unexpected acceptance: legacy1 fraction raw=4.75, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy1 numeric string raw=4, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 fraction raw=4.75, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false; legacy2 numeric string raw=4, normalizedRevision=4, commandRevision=4->5, receipts=1, undo=1, redo=0, nativeValues=[[East, 15], [West, 20]], recoveryCandidatesRetained=false
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest$coercibleLegacyRevisionsCannotAuthorizeCommands$1.invokeSuspend(WorkbookRevisionRefusalTest.kt:88)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:100)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at io.github.baitian6641.cloudydata.WorkbookRevisionRefusalTest.coercibleLegacyRevisionsCannotAuthorizeCommands(WorkbookRevisionRefusalTest.kt:49)
+
+FAILURES!!!
+Tests run: 5,  Failures: 1

@@ -85,6 +85,12 @@ No journal file competes with the workbook as a second source of truth.
   range validation before Int conversion. Strings, fractions and wrapped large
   integers cannot select a legacy branch. Equivalent supported decimal/exponent
   numeric forms retain their meaning; raw JSON lexical validation is separate.
+- Each decoded workbook revision must be a supported finite whole numeric value
+  in 1..Long.MAX_VALUE-1. Byte/Short/Int/Long stay exact; Float/Double validate
+  before conversion, excluding 2^63. Strings and fractions cannot authorize a
+  command through coercion. Equivalent integral decimal/exponent forms remain
+  supported; raw lexical/precision validation is separate. Existing terminal
+  revision, CAS, receipt, Math.addExact and history rules remain unchanged.
 - v1/v2 documents without a journal load through the existing model migration.
   Present filter records must decode completely: supported typed version/mode,
   known fields, nonblank string anchors,1–2001 complete text/NULL marks and

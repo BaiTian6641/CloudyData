@@ -1,0 +1,39 @@
+{
+  "source_base_commit": "2242d29648cce50b8cbf21e657dd81e1ba3e5acf",
+  "source_file_count": 131,
+  "source_manifest_sha256": "9d1cb70fcdb3c269a7b8ed6ab27f53f0672391d404aa438e924be1699b604222",
+  "artifacts": [
+    {
+      "name": "runtime_x86_64_apk",
+      "bytes": 116180633,
+      "sha256": "858595d3714c77630156559eca32c7a612bfcc987a95729854774c10503ea54d",
+      "abis": [
+        "x86_64"
+      ]
+    },
+    {
+      "name": "runtime_test_apk",
+      "bytes": 4820608,
+      "sha256": "7c86b19bd5b3cbcf45056e9cdd0180f92d92dda553d18346e8ac65b7e8824259",
+      "abis": []
+    },
+    {
+      "name": "default_dual_abi_apk",
+      "bytes": 164075267,
+      "sha256": "68deae8e5abb72a51ee03f851d5be8ec1dbd3c6236740b24dec794cf9a18352b",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ]
+    }
+  ],
+  "native": {
+    "tests": 143,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 69.87,
+    "serial": "emulator-5580",
+    "api": 36,
+    "runtime_abi": "x86_64"
+  }
+}

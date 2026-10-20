@@ -626,6 +626,28 @@ data class WorkbookDocument(
             return version.toInt()
         }
 
+        private fun readRevision(json: JSONObject): Long {
+            val raw = json.get("revision")
+            require(raw is Number) { "Workbook revision must be a supported whole number." }
+            val revision = when (raw) {
+                // Keep integer identity exact, including values above Double's precision.
+                is Byte, is Short, is Int, is Long -> raw.toLong()
+                is Float, is Double -> {
+                    val number = raw.toDouble()
+                    // Long.MAX_VALUE rounds to 2^63 as a Double. Exclude that value
+                    // before toLong can saturate it to a seemingly valid integer.
+                    require(number.isFinite() && number % 1.0 == 0.0 &&
+                        number >= 1.0 && number < Long.MAX_VALUE.toDouble()) {
+                        "Workbook revision must be a supported whole number."
+                    }
+                    number.toLong()
+                }
+                else -> throw IllegalArgumentException("Unsupported workbook revision number type.")
+            }
+            require(revision in 1 until Long.MAX_VALUE) { "Invalid workbook revision." }
+            return revision
+        }
+
         fun fromJson(json: JSONObject): WorkbookDocument {
             readFormatVersion(json)
             val sheetsJson = json.getJSONArray("worksheets")
@@ -635,7 +657,7 @@ data class WorkbookDocument(
                 formatVersion = CURRENT_FORMAT_VERSION,
                 id = json.getString("id"),
                 name = json.getString("name"),
-                revision = json.getLong("revision"),
+                revision = readRevision(json),
                 createdAtEpochMs = json.getLong("createdAtEpochMs"),
                 updatedAtEpochMs = json.getLong("updatedAtEpochMs"),
                 snapshot = if (json.isNull("snapshot")) null else DataSnapshot.fromJson(json.getJSONObject("snapshot")),
