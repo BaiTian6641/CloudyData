@@ -2,7 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.4 worksheet-identity implementation, bound by all129 source/fixture
+**Source:** S03.4 worksheet-identity implementation through `8203fc3fe1ba2f5c484a1bb73455d33642e5e2e0`,
+bound by all129 source/fixture
 hashes in `qualification/evidence/artifacts/2026-10-20-s034-worksheet-identity/`;
 see `qualification/evidence/2026-10-20-s03-worksheet-identity-admission.md`.
 `main` tracks `origin/main`; no release/distribution was created.

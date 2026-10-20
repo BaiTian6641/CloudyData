@@ -3,6 +3,7 @@
 **Date:** 2026-10-20 (America/Chicago)
 **IDs:** S03.4; F01/F64; Q33/Q34.
 **Status:** verified for the bounded per-document uniqueness and compatibility cases below; full S03/package/identity validation remains partial.
+**Implementation commit:** `8203fc3fe1ba2f5c484a1bb73455d33642e5e2e0`; all129 hashes verified against committed blobs.
 **Source base:** `271bee898a17da346d2425e782273d6d5ac419da`.
 
 ## Readiness, ownership and contract
@@ -75,7 +76,7 @@ combined source/test/oracle review found no material issue. The final independen
 audit verifies all129 current source hashes, source-manifest SHA-256
 3817154e8f4e9604d38cdc05206830afc3c77e1c582775b8310c9b02bfad55cd, actual
 runtime/test/default APK bindings and raw native/JVM/lint/build/token results.
-No material evidence discrepancy remains; committed-source binding follows.
+No material evidence discrepancy remains. All129 hashes also match committed source.
 
 Rejected malformed stored packages must preserve canonical files, candidates, existing
 backups, original source and Parquet through load/open/save. Valid unique sheets
