@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 typed AddWorksheet/admission combined over `6599320`; 115
-source/fixture hashes and exact runtime artifacts are recorded in
+**Source:** S03.3 implementation through `eac7f6087fbbb94fadb0acf7b0f4b66a8b7c9e3c`;
+all 115 committed source/fixture hashes match the artifact manifest in
 `qualification/evidence/2026-10-20-s03-add-worksheet.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1

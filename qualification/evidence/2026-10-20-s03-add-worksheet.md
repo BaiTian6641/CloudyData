@@ -6,6 +6,8 @@
 and single-writer process-death slice. Full S03, Room and the complete typed command
 catalog remain open. New failure-banner pixels/input are implemented_unverified.
 **Source base:** `659932093475e2d767e6c5270102202687714890`.
+**Implementation commit:** `eac7f6087fbbb94fadb0acf7b0f4b66a8b7c9e3c`; all 115 source/fixture
+hashes match committed Git objects. This final binding changes documentation only.
 **Platform:** existing API36 x86_64 `emulator-5580`; the physical Googlebook remains
 on owner hold. No licensed Tableau reference or 16 KiB runtime is available.
 
