@@ -61,5 +61,6 @@
     "serial": "emulator-5580",
     "runtime_abi": "x86_64",
     "api": 36
-  }
+  },
+  "implementation_commit": "e27d204663d308b4e9f6d843273c8103049d0ccf"
 }

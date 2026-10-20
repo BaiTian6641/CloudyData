@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-20
 **Branch:** `main`
-**Source:** S03.3 desired-value favorite implementation on base
-`77185fdd8396fd221efb205976f2ee5a779a317a`; 118 source/fixture hashes bind the
-combined revision in `qualification/evidence/2026-10-20-s03-set-favorite.md`.
+**Source:** S03.3 desired-value favorite implementation through `e27d204663d308b4e9f6d843273c8103049d0ccf`;
+all118 committed source/fixture hashes match the artifact manifest in
+`qualification/evidence/2026-10-20-s03-set-favorite.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in

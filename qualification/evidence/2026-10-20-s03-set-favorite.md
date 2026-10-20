@@ -5,7 +5,8 @@
 **Status:** verified for the bounded command/controller/native Home cases below;
 S03/F64 and full Q19/Q21 remain partial. Initial failures and their
 discriminating evidence are retained below.
-**Source base:** `77185fdd8396fd221efb205976f2ee5a779a317a`.
+**Implementation commit:** `e27d204663d308b4e9f6d843273c8103049d0ccf`; all118 source/fixture hashes verified
+against committed blobs. Source base: `77185fdd8396fd221efb205976f2ee5a779a317a`.
 **Platform:** existing API36 x86_64 `emulator-5580`; no physical Googlebook
 interaction. The established Android16/4KiB/2880×1800 profile is reused without
 boot, resize, density or preference changes. Licensed Tableau and16KiB runtime
