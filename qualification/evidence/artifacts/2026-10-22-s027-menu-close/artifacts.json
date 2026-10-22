@@ -1,0 +1,28 @@
+{
+  "stage": "S02.7 overflow menu and close focus transfer",
+  "date": "2026-10-22",
+  "sources": {
+    "app/src/main/java/io/github/baitian6641/cloudydata/model/WorkbookCommand.kt": "fc139b75ab8cf4568a228e09ebcdfe45edb000283702d46916e14dba6f5190ec",
+    "app/src/main/java/io/github/baitian6641/cloudydata/data/WorkbookCoordinator.kt": "68a97ed2b825c0fb7e1f186c1dd9ffc1f30b7b43930d1c55283f8e0d65fdc121",
+    "app/src/main/java/io/github/baitian6641/cloudydata/ui/WorkbookViewModel.kt": "982c78206fc63327a84b206278af88bd067b0b30cdd93b1e96c5e64310c12afb",
+    "app/src/main/java/io/github/baitian6641/cloudydata/ui/WorkbookScreen.kt": "e5a3b1561b6f648ca4a95d69f4ffeedfe0a9b0e909383d181c3966b89ea3243b",
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorkbookTabRovingFocusTest.kt": "9cd82298fba039cdd7f951903f4daa44251f4740face2c5a075137c161bc1c7b",
+    "app/src/androidTest/java/io/github/baitian6641/cloudydata/RemoveWorksheetCommandTest.kt": "8935f08cd52f0423763c1dbd6d1bf29a38da8db582bd98a1c30b32eb476cd046"
+  },
+  "apkDebug": "36dad4d1bd3cadd3ec0052d083480fc2004953b8364ab36b3029e88428d2b632",
+  "apkAndroidTest": "5a0494264e9e7492816bb201e51e0264ab60c12154993f83ef64a4d996a4a845",
+  "results": {
+    "emulatorFullSuite": {
+      "tests": 247,
+      "failures": 0
+    },
+    "emulatorTargeted": "WorkbookTabRovingFocusTest 4/4 + RemoveWorksheetCommandTest 6/6 (5x solo menu OK)",
+    "physicalTargeted": "3x (WorkbookTabRovingFocusTest+RemoveWorksheetCommandTest 10/10), AddWorksheetCommandTest 14/14",
+    "jvm": "75/75",
+    "lint": "0 errors / 7 warnings"
+  },
+  "knownEnvironmentalFailuresOnPhysicalFullSuite": [
+    "WorkbookCoordinatorTest.twoRealActivitiesShareSavedCommandsAndClosingOneRetainsOtherWindow (also fails on unmodified 26c97dc baseline in current desktop environment)",
+    "VegaRendererProbeTest.exportsCurrentChartPngWithBoundedDimensionsAndEvidenceFile (803 vs 804 px rounding)"
+  ]
+}

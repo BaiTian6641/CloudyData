@@ -30,6 +30,7 @@ import io.github.baitian6641.cloudydata.model.FilterMark
 import io.github.baitian6641.cloudydata.model.FilterMode
 import io.github.baitian6641.cloudydata.model.MarkFilter
 import io.github.baitian6641.cloudydata.model.MarkType
+import io.github.baitian6641.cloudydata.model.WorkbookCommand
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorksheetDef
 import io.github.baitian6641.cloudydata.ui.SaveState
@@ -48,6 +49,7 @@ import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -90,6 +92,11 @@ class WorkbookTabRovingFocusTest {
         app = context.applicationContext as CloudyDataApp
         store = app.workbookStore
         device = UiDevice.getInstance(instrumentation)
+        // Start from the launcher: leftover desktop windows and promo overlays
+        // can retain window focus and swallow the real input events under test.
+        device.pressHome()
+        instrumentation.waitForIdleSync()
+        dismissSystemOverlay()
         val runId = UUID.randomUUID().toString()
         evidence = File(checkNotNull(context.getExternalFilesDir(null)), "qualification/workbook-tab-roving-focus-$runId")
             .apply { check(mkdirs()) }
@@ -144,6 +151,7 @@ class WorkbookTabRovingFocusTest {
             model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
                 .get(document.id, WorkbookViewModel::class.java)
         }
+        dismissSystemOverlay()
         val initial = requireSheet(east.id, "East", "15")
         recordCapture("initial", initial, east.name)
 
@@ -179,9 +187,16 @@ class WorkbookTabRovingFocusTest {
         assertTrue("Native Tab must be delivered from the selected East15 tab",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB))
         instrumentation.waitForIdleSync()
+        val overflowPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "tab-overflow-menu")
+        recordFocusStep("tab-overflow-menu", overflowPoll)
+        assertTrue("One Tab after the selected East15 tab must focus the pinned overflow menu control",
+            overflowPoll.matched)
+        assertTrue("Native Tab must be delivered from the pinned overflow menu control",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
         val newWorksheetPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "tab-new-worksheet")
         recordFocusStep("tab-new-worksheet", newWorksheetPoll)
-        assertTrue("One Tab after the selected East15 tab must focus the New worksheet control",
+        assertTrue("A second Tab after the overflow menu control must focus the New worksheet control",
             newWorksheetPoll.matched)
         val eastStillSelected = requireSheet(east.id, "East", "15")
         recordCapture("new-worksheet-focused", eastStillSelected, east.name)
@@ -195,13 +210,20 @@ class WorkbookTabRovingFocusTest {
             "newWorksheet=$newWorksheetBounds eastTab=$eastTabBounds",
             newWorksheetBounds.top < eastTabBounds.bottom && newWorksheetBounds.bottom > eastTabBounds.top)
 
-        // Shift+Tab reenters the group at the selected East15 tab; no extra Enter.
+        // Shift+Tab reenters through the pinned overflow menu control; a second
+        // Shift+Tab restores the selected East15 tab with no extra Enter.
         assertTrue("Native Shift+Tab must be delivered from the New worksheet control",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
         instrumentation.waitForIdleSync()
-        val reenteredPoll = pollFreshFocus({ focusedTabLabel(it) == east.name }, UI_TIMEOUT_MS, "shift-tab-east")
+        val overflowReturnPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "shift-tab-overflow")
+        recordFocusStep("shift-tab-overflow", overflowReturnPoll)
+        assertTrue("One Shift+Tab must focus the pinned overflow menu control", overflowReturnPoll.matched)
+        assertTrue("Native Shift+Tab must be delivered from the pinned overflow menu control",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
+        instrumentation.waitForIdleSync()
+        val reenteredPoll = pollFreshFocus(::isEastTabFocus, UI_TIMEOUT_MS, "shift-tab-east")
         recordFocusStep("shift-tab-east", reenteredPoll)
-        assertTrue("One Shift+Tab must reenter the selected East15 tab", reenteredPoll.matched)
+        assertTrue("A second Shift+Tab must reenter the selected East15 tab", reenteredPoll.matched)
         val eastReentered = requireSheet(east.id, "East", "15")
         recordCapture("east-reentered", eastReentered, east.name)
         assertTrue("Focus reentry alone must leave exactly East15 selected; no extra Enter may be required",
@@ -221,9 +243,16 @@ class WorkbookTabRovingFocusTest {
         assertTrue("Native Tab must leave from the pointer-selected West20 tab",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB))
         instrumentation.waitForIdleSync()
+        val pointerOverflowPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "pointer-tab-overflow-menu")
+        recordFocusStep("pointer-tab-overflow-menu", pointerOverflowPoll)
+        assertTrue("One Tab after a pointer-selected tab must focus the overflow menu control",
+            pointerOverflowPoll.matched)
+        assertTrue("Native Tab must leave the overflow menu control",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
         val pointerNewPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pointer-tab-new-worksheet")
         recordFocusStep("pointer-tab-new-worksheet", pointerNewPoll)
-        assertTrue("One Tab after a pointer-selected tab must focus New worksheet", pointerNewPoll.matched)
+        assertTrue("A second Tab after a pointer-selected tab must focus New worksheet", pointerNewPoll.matched)
         assertTrue("Native Left must reenter the pointer-selected West20 tab from the pinned control",
             device.pressKeyCode(KeyEvent.KEYCODE_DPAD_LEFT))
         instrumentation.waitForIdleSync()
@@ -232,18 +261,30 @@ class WorkbookTabRovingFocusTest {
         assertTrue("One Left arrow from the pinned New worksheet control must focus West20", arrowWestPoll.matched)
         val westArrowReentered = requireSheet(west.id, "West", "20")
         recordCapture("west-arrow-reentered", westArrowReentered, west.name)
-        assertTrue("Native Tab must leave the arrow-reentered West20 tab for New worksheet",
+        assertTrue("Native Tab must leave the arrow-reentered West20 tab for the overflow menu control",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val arrowOverflowPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "pointer-arrow-tab-overflow-menu")
+        recordFocusStep("pointer-arrow-tab-overflow-menu", arrowOverflowPoll)
+        assertTrue("Tab must focus the overflow menu control after arrow reentry", arrowOverflowPoll.matched)
+        assertTrue("Native Tab must leave the overflow menu control for New worksheet",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB))
         instrumentation.waitForIdleSync()
         val arrowNewPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pointer-arrow-tab-new-worksheet")
         recordFocusStep("pointer-arrow-tab-new-worksheet", arrowNewPoll)
         assertTrue("Tab must focus New worksheet after arrow reentry", arrowNewPoll.matched)
+        assertTrue("Native Shift+Tab must return to the pinned overflow menu control",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
+        instrumentation.waitForIdleSync()
+        val arrowOverflowReturnPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "pointer-shift-tab-overflow")
+        recordFocusStep("pointer-shift-tab-overflow", arrowOverflowReturnPoll)
+        assertTrue("One Shift+Tab must focus the pinned overflow menu control", arrowOverflowReturnPoll.matched)
         assertTrue("Native Shift+Tab must return to the pointer-selected West20 tab",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
         instrumentation.waitForIdleSync()
         val westReturnPoll = pollFreshFocus(::isWestTabFocus, UI_TIMEOUT_MS, "pointer-shift-tab-west")
         recordFocusStep("pointer-shift-tab-west", westReturnPoll)
-        assertTrue("One Shift+Tab must reenter the pointer-selected West20 tab", westReturnPoll.matched)
+        assertTrue("A second Shift+Tab must reenter the pointer-selected West20 tab", westReturnPoll.matched)
         val westReentered = requireSheet(west.id, "West", "20")
         recordCapture("west-reentered-after-pointer", westReentered, west.name)
 
@@ -309,10 +350,17 @@ class WorkbookTabRovingFocusTest {
             model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
                 .get(document.id, WorkbookViewModel::class.java)
         }
+        dismissSystemOverlay()
         val initial = requireSheet(east.id, "East", "15")
         recordCapture("pinned-enter-initial", initial, east.name)
         focusEastWithAtMost24Tabs()
-        assertTrue("Native Tab must move from the selected East15 tab to the pinned New worksheet action",
+        assertTrue("Native Tab must move from the selected East15 tab to the pinned overflow menu action",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val overflowPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "pinned-overflow-focused")
+        recordFocusStep("pinned-overflow-focused", overflowPoll)
+        assertTrue("The pinned overflow menu action must be focused", overflowPoll.matched)
+        assertTrue("Native Tab must move from the overflow menu action to the pinned New worksheet action",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB))
         instrumentation.waitForIdleSync()
         val pinnedPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pinned-enter-focused")
@@ -361,10 +409,11 @@ class WorkbookTabRovingFocusTest {
             model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
                 .get(document.id, WorkbookViewModel::class.java)
         }
+        dismissSystemOverlay()
         val opened = requireSheet(far.id, "East", "15")
         recordCapture("overflow-opens-selected-tab", opened, far.name)
         val bounds = tabOwner(far.name).visibleBounds
-        val viewportRight = device.findObjects(By.desc(NEW_WORKSHEET_LABEL))
+        val viewportRight = device.findObjects(By.desc(OVERFLOW_MENU_LABEL))
             .map { it.visibleBounds }
             .filter { it.top < bounds.bottom && it.bottom > bounds.top }
             .minOfOrNull { it.left } ?: device.displayWidth
@@ -377,6 +426,248 @@ class WorkbookTabRovingFocusTest {
         assertEquals(far.id, reopened.document.activeWorksheetId)
         assertArrayEquals(canonical, File(store.workbookDir(document.id), "workbook.json").readBytes())
     }
+
+    @Test
+    fun overflowMenuSelectsClippedTabAndCloseReturnsFocusToNeighbor() {
+        val checkpoint = store.loadCheckpoint(document.id)
+        val canonical = File(store.workbookDir(document.id), "workbook.json").readBytes()
+        val overflow20 = document.worksheets.single { it.name == "Overflow 20" }
+        val overflow19 = document.worksheets.single { it.name == "Overflow 19" }
+        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)
+            .putExtra(MainActivity.EXTRA_WORKBOOK_ID, document.id))
+        scenario!!.onActivity { activity ->
+            model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
+                .get(document.id, WorkbookViewModel::class.java)
+        }
+        dismissSystemOverlay()
+        val initial = requireSheet(east.id, "East", "15")
+        recordCapture("menu-initial", initial, east.name)
+        dismissSystemOverlay()
+
+        // Keyboard route: Tab reaches the pinned overflow action, Enter opens the
+        // menu, and Escape dismisses it without changing the persisted workbook.
+        focusEastWithAtMost24Tabs()
+        assertTrue("Native Tab must reach the pinned worksheet overflow menu action",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val overflowPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "menu-tab-overflow")
+        recordFocusStep("menu-tab-overflow", overflowPoll)
+        assertTrue("The pinned worksheet overflow menu action must be focused", overflowPoll.matched)
+        assertTrue("Native Enter must open the worksheet overflow menu",
+            device.pressKeyCode(KeyEvent.KEYCODE_ENTER))
+        val opened = device.wait(
+            Until.hasObject(menuOpenSelector()),
+            UI_TIMEOUT_MS,
+        )
+        recordFocusStep("menu-opened-keyboard")
+        assertTrue("Enter on the pinned action must open the worksheet overflow menu", opened)
+        // Keyboard: arrows move through the open menu entry by entry; Enter
+        // activates the focused West20 row and focus returns to its tab. Wait
+        // for the popup to hold key focus before sending arrows.
+        val menuRowFocus = By.focused(true).clickable(true).hasDescendant(By.text("Close"))
+        if (!device.wait(Until.hasObject(menuRowFocus), 3_000)) {
+            assertTrue("Native Down must seed focus inside the open overflow menu",
+                device.pressKeyCode(KeyEvent.KEYCODE_DPAD_DOWN))
+            SystemClock.sleep(200)
+            instrumentation.waitForIdleSync()
+        }
+        val westRowSelector = By.clickable(true).focused(true).hasDescendant(By.text(west.name))
+        instrumentation.uiAutomation.clearCache()
+        var westRowFocused = device.hasObject(westRowSelector)
+        var downSteps = 0
+        while (!westRowFocused && downSteps++ < 8) {
+            assertTrue("Native Down must be delivered inside the open overflow menu",
+                device.pressKeyCode(KeyEvent.KEYCODE_DPAD_DOWN))
+            SystemClock.sleep(250)
+            instrumentation.waitForIdleSync()
+            instrumentation.uiAutomation.clearCache()
+            westRowFocused = device.hasObject(westRowSelector)
+        }
+        assertTrue("Arrow keys must reach the West20 overflow menu entry", westRowFocused)
+        assertTrue("Native Enter must activate the focused West20 overflow menu entry",
+            device.pressKeyCode(KeyEvent.KEYCODE_ENTER))
+        val keyboardSelected = requireSheet(west.id, "West", "20")
+        recordCapture("menu-keyboard-selected-west", keyboardSelected, west.name)
+        val keyboardSelectedFocus = pollFreshFocus(::isWestTabFocus, UI_TIMEOUT_MS, "menu-keyboard-selected-focus")
+        recordFocusStep("menu-keyboard-selected-focus", keyboardSelectedFocus)
+        assertTrue("Enter selection in the overflow menu must return focus to the West20 tab",
+            keyboardSelectedFocus.matched)
+        // Back on the strip: Tab reaches the pinned action again, Enter reopens,
+        // and Escape dismisses the menu without changing the persisted workbook.
+        assertTrue("Native Tab must reach the pinned worksheet overflow menu action again",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val reopenPoll = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "menu-tab-overflow-again")
+        recordFocusStep("menu-tab-overflow-again", reopenPoll)
+        assertTrue("The pinned worksheet overflow menu action must be focused again", reopenPoll.matched)
+        assertTrue("Native Enter must reopen the worksheet overflow menu",
+            device.pressKeyCode(KeyEvent.KEYCODE_ENTER))
+        assertTrue("Enter on the pinned action must reopen the worksheet overflow menu",
+            device.wait(Until.hasObject(menuOpenSelector()), UI_TIMEOUT_MS))
+        assertTrue("Native Escape must dismiss the worksheet overflow menu",
+            device.pressKeyCode(KeyEvent.KEYCODE_ESCAPE))
+        assertTrue("Escape must close the worksheet overflow menu",
+            device.wait(Until.gone(menuOpenSelector()), UI_TIMEOUT_MS))
+        assertEquals("Menu keyboard interaction must not persist anything",
+            checkpoint, store.loadCheckpoint(document.id))
+
+        // Pointer route: activate the clipped Overflow 20 entry from the menu;
+        // selection changes and focus returns to the newly visible tab.
+        openOverflowMenu()
+        clickMenuEntry(overflow20.name)
+        val selected = requireSheet(overflow20.id, "East", "15")
+        recordCapture("menu-selected-overflow-20", selected, overflow20.name)
+        val selectedFocus = pollFreshFocus({ focusedTabLabel(it) == overflow20.name },
+            UI_TIMEOUT_MS, "menu-selected-focus")
+        recordFocusStep("menu-selected-focus", selectedFocus)
+        assertTrue("Selecting a clipped tab from the overflow menu must return focus to that tab",
+            selectedFocus.matched)
+
+        // Closing the unselected East15 keeps the Overflow 20 selection and focus.
+        openOverflowMenu()
+        clickMenuEntryClose(east.name)
+        val afterEastRemoval = awaitSavedDocument(checkpoint.document.revision + 1) { doc ->
+            doc.worksheets.none { it.id == east.id }
+        }
+        assertEquals(document.worksheets.filterNot { it.id == east.id }, afterEastRemoval.worksheets)
+        assertEquals(overflow20.id, afterEastRemoval.activeWorksheetId)
+        val keptFocus = pollFreshFocus({ focusedTabLabel(it) == overflow20.name },
+            UI_TIMEOUT_MS, "menu-close-unselected-focus")
+        recordFocusStep("menu-close-unselected-focus", keptFocus)
+        assertTrue("Closing an unselected worksheet must return focus to the selected tab",
+            keptFocus.matched)
+
+        // Closing the selected Overflow 20 moves selection and focus to the
+        // Overflow 19 neighbor.
+        openOverflowMenu()
+        clickMenuEntryClose(overflow20.name)
+        val afterSelectedRemoval = awaitSavedDocument(afterEastRemoval.revision + 1) { doc ->
+            doc.worksheets.none { it.id == overflow20.id }
+        }
+        assertEquals(afterEastRemoval.worksheets.filterNot { it.id == overflow20.id },
+            afterSelectedRemoval.worksheets)
+        assertEquals(overflow19.id, afterSelectedRemoval.activeWorksheetId)
+        val neighbor = requireSheet(overflow19.id, "East", "15")
+        recordCapture("menu-close-selected-focus-neighbor", neighbor, overflow19.name)
+        val neighborFocus = pollFreshFocus({ focusedTabLabel(it) == overflow19.name },
+            UI_TIMEOUT_MS, "menu-close-selected-focus")
+        recordFocusStep("menu-close-selected-focus", neighborFocus)
+        assertTrue("Closing the selected worksheet must return focus to the newly selected neighbor",
+            neighborFocus.matched)
+
+        // Durable receipts, undo history, and the canonical byte oracle.
+        val reopened = store.loadCheckpoint(document.id)
+        // The persisted activeWorksheetId is the canonical reopen hint: East's
+        // removal moved it to West; the view-local Overflow selections are not persisted.
+        assertEquals(west.id, reopened.document.activeWorksheetId)
+        assertEquals(afterSelectedRemoval.copy(activeWorksheetId = west.id), reopened.document)
+        assertEquals(checkpoint.receipts.size + 2, reopened.receipts.size)
+        val removes = reopened.receipts.takeLast(2).map { it.command }
+        assertEquals(listOf(east.id, overflow20.id),
+            removes.map { (it as WorkbookCommand.RemoveWorksheet).worksheetId })
+        assertEquals(listOf(checkpoint.document.revision, checkpoint.document.revision + 1),
+            removes.map { it.expectedRevision })
+        assertEquals("Each removal must snapshot its predecessor for undo",
+            listOf(checkpoint.document, afterEastRemoval.copy(activeWorksheetId = west.id)),
+            reopened.undo.takeLast(2))
+        val bytes = File(store.workbookDir(document.id), "workbook.json").readBytes()
+        assertFalse("The removals must publish new canonical bytes", canonical.contentEquals(bytes))
+        assertEquals(reopened.document, WorkbookDocument.fromJson(JSONObject(bytes.toString(Charsets.UTF_8))))
+    }
+
+    private fun dismissSystemOverlay() {
+        // Transient system promo overlays steal window focus and would
+        // otherwise swallow the real key/pointer events under test.
+        var guard = 0
+        while (guard++ < 5) {
+            val dismiss = device.findObject(By.textContains("Dismiss overlay")) ?: break
+            dismiss.click()
+            instrumentation.waitForIdleSync()
+        }
+    }
+
+    private fun closeTextSelector(): BySelector = By.pkg(context.packageName).text("Close")
+
+    private fun menuOpenSelector(): BySelector = closeTextSelector()
+
+    private fun openOverflowMenu() {
+        val button = device.wait(Until.findObject(By.desc(OVERFLOW_MENU_LABEL)), UI_TIMEOUT_MS)
+        assertNotNull("The pinned worksheet overflow menu action must exist", button)
+        button!!.click()
+        var opened = device.wait(Until.hasObject(menuOpenSelector()), 1_500)
+        if (!opened) {
+            // A pointer tap can be absorbed while a previous popup settles;
+            // retry once against a fresh node before failing.
+            device.findObject(By.desc(OVERFLOW_MENU_LABEL))?.click()
+            opened = device.wait(Until.hasObject(menuOpenSelector()), UI_TIMEOUT_MS)
+        }
+        assertTrue("The overflow menu must list worksheets with close controls", opened)
+    }
+
+    /** Menu entry labels sit left of a Close control on the same popup row. */
+    private fun findMenuLabel(label: String): UiObject2? {
+        val closes = device.findObjects(closeTextSelector())
+        if (closes.isEmpty()) return null
+        return device.findObjects(By.pkg(context.packageName).text(label)).firstOrNull { node ->
+            closes.any { close ->
+                kotlin.math.abs(close.visibleBounds.centerY() - node.visibleBounds.centerY()) < 30 &&
+                    close.visibleBounds.left - node.visibleBounds.right in -20..300
+            }
+        }
+    }
+
+    /** Find a menu entry label, swiping inside the popup bounds until it renders. */
+    private fun scrollMenuIntoView(label: String): UiObject2? {
+        findMenuLabel(label)?.let { return it }
+        // The menu list is only scrollable when entries overflow the popup height.
+        fun swipe(down: Boolean) {
+            val list = device.findObject(By.scrollable(true).hasDescendant(closeTextSelector())) ?: return
+            val bounds = list.visibleBounds
+            if (down) {
+                device.swipe(bounds.centerX(), bounds.centerY() - 300, bounds.centerX(), bounds.centerY() + 300, 15)
+            } else {
+                device.swipe(bounds.centerX(), bounds.centerY() + 300, bounds.centerX(), bounds.centerY() - 300, 15)
+            }
+            instrumentation.waitForIdleSync()
+        }
+        var guard = 0
+        while (guard++ < 20) {
+            swipe(down = false)
+            findMenuLabel(label)?.let { return it }
+        }
+        guard = 0
+        while (guard++ < 20) {
+            swipe(down = true)
+            findMenuLabel(label)?.let { return it }
+        }
+        return null
+    }
+
+    private fun clickMenuEntry(label: String) {
+        val item = scrollMenuIntoView(label)
+        assertNotNull("The overflow menu must expose the clipped $label worksheet", item)
+        item!!.click()
+    }
+
+    private fun clickMenuEntryClose(label: String) {
+        val labelNode = scrollMenuIntoView(label)
+        assertNotNull("The overflow menu must expose the $label close control", labelNode)
+        val rowCenterY = labelNode!!.visibleBounds.centerY()
+        val close = device.findObjects(closeTextSelector())
+            .firstOrNull { kotlin.math.abs(it.visibleBounds.centerY() - rowCenterY) < 30 }
+        assertNotNull("The $label overflow entry must expose its close control", close)
+        close!!.click()
+    }
+
+    private fun awaitSavedDocument(revision: Long, predicate: (WorkbookDocument) -> Boolean): WorkbookDocument =
+        runBlocking {
+            withTimeout(20_000) {
+                model.state.first { state ->
+                    val doc = state.document
+                    state.save is SaveState.Saved && doc != null && doc.revision == revision && predicate(doc)
+                }.document!!
+            }
+        }
 
     private fun requireSheet(sheetId: String, category: String, value: String): WorkbookUiState {
         val state = awaitReady(sheetId)
@@ -417,13 +708,27 @@ class WorkbookTabRovingFocusTest {
             ) {
                 // Chrome traversal can overshoot to the New worksheet exit while
                 // accessibility focus publication is racing. Use the group's own
-                // Shift+Tab route back to the selected East stop within the same
-                // bounded key budget; this does not direct-focus any control.
+                // Shift+Tab route back through the overflow menu stop to the
+                // selected East tab within the same bounded key budget; this does
+                // not direct-focus any control.
                 assertTrue("Native Shift+Tab must be available after an overshoot to New worksheet",
+                    device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
+                instrumentation.waitForIdleSync()
+                pollFreshFocus(::isOverflowMenuFocus, FOCUS_TIMEOUT_MS, "$phase-shift-tab-overflow")
+                assertTrue("Native Shift+Tab must be available from the overflow menu control",
                     device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
                 instrumentation.waitForIdleSync()
                 val recoveryPoll = pollFreshFocus(::isEastTabFocus, FOCUS_TIMEOUT_MS, "$phase-shift-tab-east")
                 recordFocusStep("$phase-shift-tab-east-eastFocused-${recoveryPoll.matched}", recoveryPoll)
+                if (recoveryPoll.matched) return
+            } else if (sampleFreshFocus(::isOverflowMenuFocus).matchesTarget &&
+                device.findObject(tabOwnerSelector(east.name))?.isSelected == true
+            ) {
+                assertTrue("Native Shift+Tab must be available after an overshoot to the overflow menu control",
+                    device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
+                instrumentation.waitForIdleSync()
+                val recoveryPoll = pollFreshFocus(::isEastTabFocus, FOCUS_TIMEOUT_MS, "$phase-overflow-shift-tab-east")
+                recordFocusStep("$phase-overflow-shift-tab-east-eastFocused-${recoveryPoll.matched}", recoveryPoll)
                 if (recoveryPoll.matched) return
             }
         }
@@ -446,7 +751,7 @@ class WorkbookTabRovingFocusTest {
         val bounds = poll.lastFresh.bounds
         assertNotNull("Focused $label must expose native bounds at $phase", bounds)
         val actual = bounds!!
-        val viewportRight = device.findObjects(By.desc(NEW_WORKSHEET_LABEL))
+        val viewportRight = device.findObjects(By.desc(OVERFLOW_MENU_LABEL))
             .map { it.visibleBounds }
             .filter { it.top >= stripTopPx && it.bottom <= stripBottomPx }
             .minOfOrNull { it.left } ?: device.displayWidth
@@ -522,6 +827,16 @@ class WorkbookTabRovingFocusTest {
         var depth = 0
         while (current != null && depth++ < 12) {
             if (current.contentDescription?.toString() == NEW_WORKSHEET_LABEL && current.isClickable) return true
+            current = current.parent
+        }
+        return false
+    }
+
+    private fun isOverflowMenuFocus(node: AccessibilityNodeInfo): Boolean {
+        var current: AccessibilityNodeInfo? = node
+        var depth = 0
+        while (current != null && depth++ < 12) {
+            if (current.contentDescription?.toString() == OVERFLOW_MENU_LABEL && current.isClickable) return true
             current = current.parent
         }
         return false
@@ -759,5 +1074,6 @@ class WorkbookTabRovingFocusTest {
         private const val DATA_SOURCE_SUMMARY = "Local snapshot and field schema"
         private const val MISSING_SHEET_TEXT = "This worksheet no longer exists."
         private const val NEW_WORKSHEET_LABEL = "New worksheet"
+        private const val OVERFLOW_MENU_LABEL = "Worksheet overflow menu"
     }
 }

@@ -33,12 +33,15 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.filled.Redo
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -256,6 +259,7 @@ fun WorkbookScreen(
                     if (tab != DATA_TAB) viewModel.selectWorksheet(tab)
                 },
                 onAddSheet = viewModel::addWorksheet,
+                onRemoveWorksheet = viewModel::removeWorksheet,
             )
             CloudyDivider()
             if (state.save is SaveState.Failed) {
@@ -619,6 +623,7 @@ private fun WorkbookTabStrip(
     activeTab: String,
     onSelect: (String) -> Unit,
     onAddSheet: () -> Unit,
+    onRemoveWorksheet: (String) -> Unit,
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
@@ -633,6 +638,8 @@ private fun WorkbookTabStrip(
     var pendingFocusIndex by remember { mutableStateOf<Int?>(null) }
     var stripHasFocus by remember { mutableStateOf(false) }
     var focusedTabIndex by remember { mutableStateOf<Int?>(null) }
+    var overflowExpanded by remember { mutableStateOf(false) }
+    var closeFocus by remember { mutableStateOf<Pair<String, String>?>(null) }
     LaunchedEffect(selectedIndex) {
         rovingIndex = selectedIndex
         if (stripHasFocus) {
@@ -661,10 +668,48 @@ private fun WorkbookTabStrip(
             pendingFocusIndex = null
         }
     }
+    LaunchedEffect(closeFocus, tabs) {
+        val (removedId, focusId) = closeFocus ?: return@LaunchedEffect
+        if (tabs.any { it.id == removedId }) return@LaunchedEffect
+        val index = tabs.indexOfFirst { it.id == focusId }
+        if (index >= 0) {
+            rovingIndex = index
+            focusableIndex = index
+            focusTransitionIndex = index
+            pendingFocusIndex = index
+        }
+        closeFocus = null
+    }
     LaunchedEffect(rovingIndex, tabs.size) {
         tabs.getOrNull(rovingIndex)?.let { tab ->
             bringIntoViewRequesters[tab.id]?.bringIntoView()
         }
+    }
+    fun focusTab(tabId: String) {
+        val index = tabs.indexOfFirst { it.id == tabId }
+        if (index < 0) return
+        rovingIndex = index
+        focusableIndex = index
+        focusTransitionIndex = index
+        pendingFocusIndex = index
+    }
+    fun closeTab(tabId: String) {
+        overflowExpanded = false
+        val index = tabs.indexOfFirst { it.id == tabId }
+        if (index <= 0) return
+        val focusId = when {
+            tabId == activeTab -> {
+                // Mirror the coordinator's selected-tab fallback so focus follows
+                // the neighbor that becomes selected after the removal.
+                val worksheetIndex = index - 1
+                val sheets = document.worksheets
+                (if (worksheetIndex > 0) sheets[worksheetIndex - 1] else sheets.getOrNull(worksheetIndex + 1))?.id
+                    ?: DATA_TAB
+            }
+            else -> activeTab
+        }
+        closeFocus = tabId to focusId
+        onRemoveWorksheet(tabId)
     }
     Row(
         modifier = Modifier
@@ -738,6 +783,40 @@ private fun WorkbookTabStrip(
                             onSelect(tab.id)
                         },
                         leadingIcon = Icons.Default.List,
+                    )
+                }
+            }
+        }
+        Box {
+            CloudyIconButton(
+                Icons.Default.MoreVert,
+                "Worksheet overflow menu",
+                { overflowExpanded = true },
+            )
+            DropdownMenu(
+                expanded = overflowExpanded,
+                onDismissRequest = { overflowExpanded = false },
+            ) {
+                tabs.drop(1).forEach { tab ->
+                    DropdownMenuItem(
+                        text = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    tab.label,
+                                    modifier = Modifier.weight(1f),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 1,
+                                )
+                                TextButton(onClick = { closeTab(tab.id) }) {
+                                    Text("Close")
+                                }
+                            }
+                        },
+                        onClick = {
+                            overflowExpanded = false
+                            focusTab(tab.id)
+                            onSelect(tab.id)
+                        },
                     )
                 }
             }

@@ -117,6 +117,18 @@ class WorkbookCoordinator internal constructor(
                     sortDescending = true,
                 ))
             }
+            is WorkbookCommand.RemoveWorksheet -> {
+                val index = current.worksheets.indexOfFirst { it.id == request.worksheetId }
+                require(index >= 0) { "Command worksheet is missing." }
+                require(current.worksheets.size > 1) { "Cannot remove the last worksheet." }
+                val remaining = current.worksheets.filterNot { it.id == request.worksheetId }
+                val fallbackActive = if (current.activeWorksheetId == request.worksheetId) {
+                    remaining.getOrNull(index - 1)?.id ?: remaining.first().id
+                } else {
+                    current.activeWorksheetId
+                }
+                current.copy(worksheets = remaining, activeWorksheetId = fallbackActive)
+            }
         }
         require(WorkbookDocument.fromJson(candidate.toJson()) == candidate) { "The command contains invalid or unsupported metadata." }
         val receipt = CommandReceipt(request, Math.addExact(current.revision, 1))

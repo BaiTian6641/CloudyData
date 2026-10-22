@@ -492,6 +492,26 @@ class WorkbookViewModel(
         }
     }
 
+    fun removeWorksheet(sheetId: String) {
+        val document = _state.value.document ?: return
+        if (document.worksheets.none { it.id == sheetId }) return
+        if (document.worksheets.size <= 1) return
+        // The persisted activeWorksheetId is only a reopen hint; this view's
+        // selection is local. Mirror the coordinator's neighbor fallback for
+        // the view when its own selected sheet is removed.
+        val fallback = if (activeWorksheetId == sheetId) {
+            val index = document.worksheets.indexOfFirst { it.id == sheetId }
+            (if (index > 0) document.worksheets[index - 1] else document.worksheets.getOrNull(index + 1))?.id
+        } else {
+            null
+        }
+        submitTyped(afterAccepted = {
+            if (fallback != null) activeWorksheetId = fallback
+        }) { id, revision ->
+            WorkbookCommand.RemoveWorksheet(id, workbookId, originWindowId, revision, sheetId)
+        }
+    }
+
     fun selectWorksheet(id: String) {
         val document = _state.value.document ?: return
         if (document.activeWorksheetId == id) return
