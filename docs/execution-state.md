@@ -2,9 +2,9 @@
 
 **Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** commits through `dfea76fe560915e829afd119270dbb50e2e1d943`. The
-S02.2/S02.4 roving worksheet-tab change is in the next local commit; final source
-and result binding is in `qualification/evidence/2026-10-22-s02-roving-worksheet-tab-focus.md`.
+**Source:** commits through `4c255fe`; `main` tracks `origin/main` after the
+S02.2/S02.4 roving worksheet-tab slice. Final source and result binding is in
+`qualification/evidence/2026-10-22-s02-roving-worksheet-tab-focus.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
