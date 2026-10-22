@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** commits through `f84c88c`; `main` tracks `origin/main` after S02.2
-roving tab focus and S02.5 idle-save closure.
+**Source:** commits through `e8861d1`; `main` tracks `origin/main` after S02.6
+overflow roving scroll.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
