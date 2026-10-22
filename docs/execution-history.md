@@ -1375,3 +1375,18 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   test-only correction was accepted.
 - Validation: ShortcutIntentTest 2/2; JVM 75/75; lint 0 errors/7 warnings; full
   emulator native suite **238/238**.
+
+## 2026-10-22 — S02.6 overflow roving scroll
+
+- Added per-tab BringIntoView requests driven by the roving owner; overflowed
+  worksheets scroll into view without selection changes. The New worksheet action
+  is pinned outside the scrollable list, and arrows from it reenter the roving tab
+  while Enter/Space/forward Tab remain with the button. The open phase starts on
+  a far selected tab; the traversal uses 20 Right and 21 Left presses to the far
+  end and back without endpoint wrap claims.
+- Review-driven fixes covered initial selected-tab scrolling, pinned-viewport
+  bounds, arrow reentry from the pinned action, and a key-dispatch trap. Evidence
+  includes 20 overflow tabs, pointer/Tab/Shift+Tab/Enter paths, and complete
+  checkpoint/revision/receipt/history/CSV/Parquet oracles.
+- Validation: WorkbookTabRovingFocusTest **3/3**; JVM **75/75**; lint **0 errors/
+  7 warnings**; full emulator native suite **240/240**.

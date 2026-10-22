@@ -1,0 +1,1 @@
+pinned-enter-initial expected=East15 actual=[East15]

@@ -48,15 +48,16 @@ unless stated otherwise.
   independent views, legacy/null/empty defaults and real Activity pointer controls.
   Five native captures qualify this wide light window only; the full tab contract,
   frame-level atomic rendering and complete Q19 remain open.
-- S02.2/S02.4 worksheet/Data source tabs are a manual-activation roving group.
-  Arrows move focus without selection, Enter activates the focused tab, the roving
-  owner snaps to selection, Tab leaves the selected tab for New worksheet and
-  Shift+Tab reenters the selected tab. Pointer activation from a focused strip
-  preserves focus, deferred requests clear on blur and worksheet removal clamps
-  the owner. The fresh East15/West20 native roving test passes with exact query,
-  selected-state, role/focus, checkpoint, revision, receipt, history, CSV and
-  Parquet oracles; full emulator suite is **238/238** after idle-save closure.
-  Physical keyboard/TalkBack, panel relationships, close/overflow and the full
+- S02.2/S02.4/S02.6 worksheet/Data source tabs are a manual-activation roving
+  group. Arrows move focus without selection and bring each roving owner fully
+  into the horizontal viewport; Enter activates, selection snaps the roving owner,
+  Tab leaves the selected tab for the pinned New worksheet action and Shift+Tab
+  reenters the selected tab. Pointer activation from a focused strip preserves
+  focus, deferred requests clear on blur, worksheet removal clamps the owner, and
+  the pinned action receives Enter normally. The overflow fixture opens on a far
+  selected tab and walks the far end with exact query/selection/bounds/byte
+  oracles. Full emulator suite is **240/240** after overflow/idle-save closure.
+  Physical keyboard/TalkBack, overflow menu, close focus transfer and the full
   visual matrix remain open.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
@@ -568,22 +569,19 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S02.6 overflow tab-strip roving scroll.**
+**S02.7 overflow menu and close focus transfer.**
 
-- IDs S02/F64; CD04/CD05/CD06; Q19/Q21 local-selection and keyboard invariants.
-  Prerequisites: full 238/238 native suite, committed roving focus and idle-save
-  closure, existing emulator and exact fixture/oracle infrastructure.
-- Files: `WorkbookScreen.kt` tab strip, `WorkbookTabRovingFocusTest.kt`, docs,
-  parity/evidence.
-- Action: make arrow-driven roving focus bring the focused worksheet tab into
-  the horizontal scroll viewport without changing selection. Preserve one
-  selected tab, Tab exit to New worksheet, Shift+Tab reentry, pointer activation
-  and all state/byte oracles.
-- Acceptance: a fresh workbook with enough worksheets to overflow starts at the
-  selected tab; repeated Right/Left arrows keep each roving owner visible,
-  selected state changes only on Enter, and native captures verify focus ring and
-  bounds. Endpoint wrap remains unclaimed; close/overflow menu and physical
-  keyboard/TalkBack remain separate.
+- IDs S02/F64; CD05/CD06; Q19/Q21. Prerequisites: full **240/240** native suite,
+  committed roving scroll/pinned action, evidence and review.
+- Files: `WorkbookScreen.kt` tab strip/model commands, tests, parity/docs.
+- Action: add an overflow menu for clipped worksheets and optional close controls
+  with focus transfer to a neighbor after removal. Do not invent close behavior
+  before the overflow menu; preserve manual activation, scroll-to-focus, pinned
+  New action, selection/query identity and byte/history oracles.
+- Acceptance: keyboard and pointer open the overflow menu, focus the clipped tab,
+  Enter selects it, close returns focus to the neighbor, removal leaves one valid
+  selected tab, and full native coverage remains green. Endpoint wrap remains
+  unclaimed; physical keyboard/TalkBack/full matrix remain separate.
 - Independent combined-source and native focus/bounds review is required.
 
 ## Protected context

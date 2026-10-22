@@ -68,6 +68,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
@@ -630,6 +632,7 @@ private fun WorkbookTabStrip(
     var focusTransitionIndex by remember { mutableStateOf<Int?>(null) }
     var pendingFocusIndex by remember { mutableStateOf<Int?>(null) }
     var stripHasFocus by remember { mutableStateOf(false) }
+    var focusedTabIndex by remember { mutableStateOf<Int?>(null) }
     LaunchedEffect(selectedIndex) {
         rovingIndex = selectedIndex
         if (stripHasFocus) {
@@ -649,6 +652,7 @@ private fun WorkbookTabStrip(
         if (pendingFocusIndex !in tabs.indices) pendingFocusIndex = null
     }
     val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
+    val bringIntoViewRequesters = remember { mutableMapOf<String, BringIntoViewRequester>() }
     LaunchedEffect(pendingFocusIndex, rovingIndex) {
         pendingFocusIndex?.let { index ->
             if (index == rovingIndex) {
@@ -657,67 +661,88 @@ private fun WorkbookTabStrip(
             pendingFocusIndex = null
         }
     }
+    LaunchedEffect(rovingIndex, tabs.size) {
+        tabs.getOrNull(rovingIndex)?.let { tab ->
+            bringIntoViewRequesters[tab.id]?.bringIntoView()
+        }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp)
             .background(colors.surfaceMuted)
-            .horizontalScroll(rememberScrollState())
-            .focusGroup()
-            .selectableGroup()
+            .padding(horizontal = density.spaceSmall)
             .onPreviewKeyEvent { event ->
                 if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
-                val nextIndex = when (event.key) {
-                    Key.DirectionRight -> (rovingIndex + 1).coerceAtMost(tabs.lastIndex)
-                    Key.DirectionLeft -> (rovingIndex - 1).coerceAtLeast(0)
+                val currentIndex = focusedTabIndex?.coerceIn(0, tabs.lastIndex) ?: rovingIndex.coerceIn(0, tabs.lastIndex)
+                val nextIndex = when {
+                    focusedTabIndex == null && event.key == Key.DirectionLeft -> currentIndex
+                    focusedTabIndex == null -> return@onPreviewKeyEvent false
+                    event.key == Key.DirectionRight -> (currentIndex + 1).coerceAtMost(tabs.lastIndex)
+                    event.key == Key.DirectionLeft -> (currentIndex - 1).coerceAtLeast(0)
                     else -> return@onPreviewKeyEvent false
                 }
-                if (nextIndex != rovingIndex) {
+                if (nextIndex != rovingIndex || focusedTabIndex == null) {
                     rovingIndex = nextIndex
                     focusTransitionIndex = nextIndex
                     pendingFocusIndex = nextIndex
                 }
                 true
-            }
-            .padding(horizontal = density.spaceSmall),
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        tabs.forEachIndexed { index, tab ->
-            key(tab.id) {
-                val requester = remember(tab.id) {
-                    focusRequesters.getOrPut(tab.id) { FocusRequester() }
-                }
-                WorkbookTab(
-                    label = tab.label,
-                    selected = activeTab == tab.id,
-                    canFocus = index == focusableIndex || index == focusTransitionIndex,
-                    focusRequester = requester,
-                    onFocused = { focused ->
-                        if (focused) {
-                            stripHasFocus = true
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .horizontalScroll(rememberScrollState())
+                .focusGroup()
+                .selectableGroup(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            tabs.forEachIndexed { index, tab ->
+                key(tab.id) {
+                    val requester = remember(tab.id) {
+                        focusRequesters.getOrPut(tab.id) { FocusRequester() }
+                    }
+                    val scrollRequester = remember(tab.id) {
+                        bringIntoViewRequesters.getOrPut(tab.id) { BringIntoViewRequester() }
+                    }
+                    WorkbookTab(
+                        label = tab.label,
+                        selected = activeTab == tab.id,
+                        canFocus = index == focusableIndex || index == focusTransitionIndex,
+                        focusRequester = requester,
+                        bringIntoViewRequester = scrollRequester,
+                        onFocused = { focused ->
+                            if (focused) {
+                                stripHasFocus = true
+                                focusedTabIndex = index
+                                rovingIndex = index
+                                focusableIndex = index
+                                focusTransitionIndex = null
+                            } else if (index == focusableIndex) {
+                                stripHasFocus = false
+                                focusedTabIndex = null
+                                pendingFocusIndex = null
+                                focusTransitionIndex = null
+                            }
+                        },
+                        onClick = {
                             rovingIndex = index
-                            focusableIndex = index
-                            focusTransitionIndex = null
-                        } else if (index == focusableIndex) {
-                            stripHasFocus = false
-                            pendingFocusIndex = null
-                            focusTransitionIndex = null
-                        }
-                    },
-                    onClick = {
-                        rovingIndex = index
-                        if (stripHasFocus) {
-                            focusTransitionIndex = index
-                            pendingFocusIndex = index
-                        } else {
-                            focusableIndex = index
-                        }
-                        onSelect(tab.id)
-                    },
-                    leadingIcon = Icons.Default.List,
-                )
+                            if (stripHasFocus) {
+                                focusTransitionIndex = index
+                                pendingFocusIndex = index
+                            } else {
+                                focusableIndex = index
+                            }
+                            onSelect(tab.id)
+                        },
+                        leadingIcon = Icons.Default.List,
+                    )
+                }
             }
         }
+        // The exit action stays visible and focusable while worksheets scroll.
         CloudyIconButton(Icons.Default.Add, "New worksheet", onAddSheet)
     }
 }
@@ -728,6 +753,7 @@ private fun WorkbookTab(
     selected: Boolean,
     canFocus: Boolean,
     focusRequester: FocusRequester,
+    bringIntoViewRequester: BringIntoViewRequester,
     onFocused: (Boolean) -> Unit,
     onClick: () -> Unit,
     leadingIcon: androidx.compose.ui.graphics.vector.ImageVector,
@@ -748,6 +774,7 @@ private fun WorkbookTab(
             )
             .focusProperties { this.canFocus = canFocus }
             .focusRequester(focusRequester)
+            .bringIntoViewRequester(bringIntoViewRequester)
             .onFocusChanged {
                 focused = it.isFocused
                 onFocused(it.isFocused)

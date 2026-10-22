@@ -32,6 +32,7 @@ import io.github.baitian6641.cloudydata.model.MarkFilter
 import io.github.baitian6641.cloudydata.model.MarkType
 import io.github.baitian6641.cloudydata.model.WorkbookDocument
 import io.github.baitian6641.cloudydata.model.WorksheetDef
+import io.github.baitian6641.cloudydata.ui.SaveState
 import io.github.baitian6641.cloudydata.ui.WorkbookUiState
 import io.github.baitian6641.cloudydata.ui.WorkbookViewModel
 import io.github.baitian6641.cloudydata.ui.WorkbookViewModelFactory
@@ -111,6 +112,14 @@ class WorkbookTabRovingFocusTest {
             chart = ChartOptions(title = "West20 exact values"),
             filter = MarkFilter(FilterMode.KEEP, category.id, marks = listOf(FilterMark("West"))))
         document = store.save(imported.copy(worksheets = listOf(east, west), activeWorksheetId = east.id))
+        val overflow = (1..20).map { index ->
+            east.copy(
+                id = UUID.randomUUID().toString(),
+                name = "Overflow %02d".format(index),
+                chart = ChartOptions(title = "Overflow %02d exact values".format(index)),
+            )
+        }
+        document = store.save(document.copy(worksheets = listOf(east, west) + overflow))
     }
 
     @After
@@ -139,6 +148,9 @@ class WorkbookTabRovingFocusTest {
         recordCapture("initial", initial, east.name)
 
         focusEastWithAtMost24Tabs()
+        val eastFocusedBounds = tabOwner(east.name).visibleBounds
+        stripTopPx = eastFocusedBounds.top
+        stripBottomPx = eastFocusedBounds.bottom
         val eastFocused = requireSheet(east.id, "East", "15")
         recordCapture("east-focused", eastFocused, east.name)
 
@@ -212,6 +224,20 @@ class WorkbookTabRovingFocusTest {
         val pointerNewPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pointer-tab-new-worksheet")
         recordFocusStep("pointer-tab-new-worksheet", pointerNewPoll)
         assertTrue("One Tab after a pointer-selected tab must focus New worksheet", pointerNewPoll.matched)
+        assertTrue("Native Left must reenter the pointer-selected West20 tab from the pinned control",
+            device.pressKeyCode(KeyEvent.KEYCODE_DPAD_LEFT))
+        instrumentation.waitForIdleSync()
+        val arrowWestPoll = pollFreshFocus(::isWestTabFocus, UI_TIMEOUT_MS, "pointer-arrow-west")
+        recordFocusStep("pointer-arrow-west", arrowWestPoll)
+        assertTrue("One Left arrow from the pinned New worksheet control must focus West20", arrowWestPoll.matched)
+        val westArrowReentered = requireSheet(west.id, "West", "20")
+        recordCapture("west-arrow-reentered", westArrowReentered, west.name)
+        assertTrue("Native Tab must leave the arrow-reentered West20 tab for New worksheet",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val arrowNewPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pointer-arrow-tab-new-worksheet")
+        recordFocusStep("pointer-arrow-tab-new-worksheet", arrowNewPoll)
+        assertTrue("Tab must focus New worksheet after arrow reentry", arrowNewPoll.matched)
         assertTrue("Native Shift+Tab must return to the pointer-selected West20 tab",
             device.pressKeyCode(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON))
         instrumentation.waitForIdleSync()
@@ -220,6 +246,37 @@ class WorkbookTabRovingFocusTest {
         assertTrue("One Shift+Tab must reenter the pointer-selected West20 tab", westReturnPoll.matched)
         val westReentered = requireSheet(west.id, "West", "20")
         recordCapture("west-reentered-after-pointer", westReentered, west.name)
+
+        // Overflow: walk to the far end of the strip so bringIntoView actually
+        // scrolls, without changing the selected West20 worksheet and without
+        // pressing an arrow at either endpoint.
+        var farFocused = westReentered
+        repeat(20) { index ->
+            val target = "Overflow %02d".format(index + 1)
+            val poll = pressArrowAndRequireFocus(
+                KeyEvent.KEYCODE_DPAD_RIGHT,
+                target,
+                "overflow-right-${index + 1}",
+            )
+            farFocused = requireSheet(west.id, "West", "20")
+            assertFocusedTabVisible(target, poll, "overflow-right-${index + 1}")
+        }
+        recordCapture("overflow-20-focused", farFocused, west.name)
+        repeat(21) { index ->
+            val target = when {
+                index <= 18 -> "Overflow %02d".format(19 - index)
+                index == 19 -> west.name
+                else -> east.name
+            }
+            val poll = pressArrowAndRequireFocus(
+                KeyEvent.KEYCODE_DPAD_LEFT,
+                target,
+                "overflow-left-${index + 1}",
+            )
+            farFocused = requireSheet(west.id, "West", "20")
+            assertFocusedTabVisible(target, poll, "overflow-left-${index + 1}")
+        }
+        recordCapture("overflow-east-focused", farFocused, west.name)
 
         val reopened = store.loadCheckpoint(document.id)
         assertEquals("The persisted checkpoint must not change", checkpoint, reopened)
@@ -240,6 +297,85 @@ class WorkbookTabRovingFocusTest {
             "selectedFailures=$selectedFailures evidence=${evidence.absolutePath}")
         assertTrue("Only the selected tab may report selected=true at every phase: " +
             selectedFailures.joinToString("; "), selectedFailures.isEmpty())
+    }
+
+    @Test
+    fun pinnedNewWorksheetActivatesWithEnterAfterRovingFocus() {
+        val checkpoint = store.loadCheckpoint(document.id)
+        val canonical = File(store.workbookDir(document.id), "workbook.json").readBytes()
+        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)
+            .putExtra(MainActivity.EXTRA_WORKBOOK_ID, document.id))
+        scenario!!.onActivity { activity ->
+            model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
+                .get(document.id, WorkbookViewModel::class.java)
+        }
+        val initial = requireSheet(east.id, "East", "15")
+        recordCapture("pinned-enter-initial", initial, east.name)
+        focusEastWithAtMost24Tabs()
+        assertTrue("Native Tab must move from the selected East15 tab to the pinned New worksheet action",
+            device.pressKeyCode(KeyEvent.KEYCODE_TAB))
+        instrumentation.waitForIdleSync()
+        val pinnedPoll = pollFreshFocus(::isNewWorksheetFocus, UI_TIMEOUT_MS, "pinned-enter-focused")
+        recordFocusStep("pinned-enter-focused", pinnedPoll)
+        assertTrue("The pinned New worksheet action must be focused", pinnedPoll.matched)
+        assertTrue("Native Enter must reach the pinned New worksheet action",
+            device.pressKeyCode(KeyEvent.KEYCODE_ENTER))
+        val added = runBlocking {
+            withTimeout(20_000) {
+                model.state.first {
+                    it.save is SaveState.Saved &&
+                        it.document?.worksheets?.size == checkpoint.document.worksheets.size + 1 &&
+                        it.document.revision == checkpoint.document.revision + 1
+                }
+            }
+        }
+        val addedSheet = added.document!!.worksheets.single {
+            it.id !in checkpoint.document.worksheets.map { sheet -> sheet.id }
+        }
+        assertEquals(addedSheet.id, added.document!!.activeWorksheetId)
+        assertTrue("The added worksheet tab must scroll into view",
+            device.wait(Until.hasObject(By.text(addedSheet.name)), UI_TIMEOUT_MS))
+        assertTrue("The added worksheet tab must be selected by the actual command",
+            device.wait(
+                Until.hasObject(tabOwnerSelector(addedSheet.name)),
+                UI_TIMEOUT_MS,
+            ))
+        val reopened = store.loadCheckpoint(document.id)
+        assertEquals(checkpoint.document.revision + 1, reopened.document.revision)
+        assertEquals(checkpoint.document.worksheets.size + 1, reopened.document.worksheets.size)
+        assertEquals(checkpoint.document.activeWorksheetId, reopened.document.activeWorksheetId)
+        assertEquals(checkpoint.receipts.size + 1, reopened.receipts.size)
+        assertTrue("The actual Add Worksheet command must publish canonical bytes",
+            !canonical.contentEquals(File(store.workbookDir(document.id), "workbook.json").readBytes()))
+    }
+
+    @Test
+    fun overflowStripOpensAtTheSelectedWorksheet() {
+        val far = document.worksheets.last()
+        document = store.save(document.copy(activeWorksheetId = far.id))
+        val checkpoint = store.loadCheckpoint(document.id)
+        val canonical = File(store.workbookDir(document.id), "workbook.json").readBytes()
+        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)
+            .putExtra(MainActivity.EXTRA_WORKBOOK_ID, document.id))
+        scenario!!.onActivity { activity ->
+            model = ViewModelProvider(activity, WorkbookViewModelFactory(app, store, document.id))
+                .get(document.id, WorkbookViewModel::class.java)
+        }
+        val opened = requireSheet(far.id, "East", "15")
+        recordCapture("overflow-opens-selected-tab", opened, far.name)
+        val bounds = tabOwner(far.name).visibleBounds
+        val viewportRight = device.findObjects(By.desc(NEW_WORKSHEET_LABEL))
+            .map { it.visibleBounds }
+            .filter { it.top < bounds.bottom && it.bottom > bounds.top }
+            .minOfOrNull { it.left } ?: device.displayWidth
+        assertTrue("The selected worksheet tab must be scrolled into view when the workbook opens: $bounds",
+            bounds.width() > 0 && bounds.height() > 0 && bounds.left >= 0 &&
+                bounds.right <= viewportRight)
+        assertTrue(device.findObject(tabOwnerSelector(far.name))?.isSelected == true)
+        val reopened = store.loadCheckpoint(document.id)
+        assertEquals(checkpoint, reopened)
+        assertEquals(far.id, reopened.document.activeWorksheetId)
+        assertArrayEquals(canonical, File(store.workbookDir(document.id), "workbook.json").readBytes())
     }
 
     private fun requireSheet(sheetId: String, category: String, value: String): WorkbookUiState {
@@ -303,7 +439,27 @@ class WorkbookTabRovingFocusTest {
 
     private fun isWestTabFocus(node: AccessibilityNodeInfo): Boolean = focusedTabLabel(node) == west.name
 
-    private fun pressArrowAndRequireFocus(keyCode: Int, label: String, phase: String) {
+    private var stripTopPx: Int = 0
+    private var stripBottomPx: Int = 0
+
+    private fun assertFocusedTabVisible(label: String, poll: FocusPoll, phase: String) {
+        val bounds = poll.lastFresh.bounds
+        assertNotNull("Focused $label must expose native bounds at $phase", bounds)
+        val actual = bounds!!
+        val viewportRight = device.findObjects(By.desc(NEW_WORKSHEET_LABEL))
+            .map { it.visibleBounds }
+            .filter { it.top >= stripTopPx && it.bottom <= stripBottomPx }
+            .minOfOrNull { it.left } ?: device.displayWidth
+        assertTrue("Focused $label must be fully inside the horizontal tab viewport at $phase: $actual",
+            actual.width() > 0 && actual.height() > 0 &&
+                actual.top >= stripTopPx && actual.bottom <= stripBottomPx &&
+                actual.left >= 0 && actual.right <= viewportRight)
+        val owner = tabOwner(label)
+        assertTrue("Focused $label must remain visible to the user at $phase",
+            owner.visibleBounds.width() > 0 && owner.visibleBounds.height() > 0)
+    }
+
+    private fun pressArrowAndRequireFocus(keyCode: Int, label: String, phase: String): FocusPoll {
         assertTrue("Native ${if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) "Right" else "Left"} must be delivered " +
             "to the tab strip", device.pressKeyCode(keyCode))
         instrumentation.waitForIdleSync()
@@ -312,6 +468,7 @@ class WorkbookTabRovingFocusTest {
         if (!poll.matched) recordCapture("$phase-focus-timeout", model.state.value,
             if (model.state.value.document?.activeWorksheetId == west.id) west.name else east.name)
         assertTrue("One arrow press must focus $label without activating it", poll.matched)
+        return poll
     }
 
     private data class FocusSample(
@@ -481,7 +638,15 @@ class WorkbookTabRovingFocusTest {
         val selected = mutableListOf<String>()
         for (label in tabLabels()) {
             instrumentation.uiAutomation.clearCache()
-            val owner = tabOwner(label)
+            val owner = device.findObject(tabOwnerSelector(label))
+            if (owner == null) {
+                // A horizontally overflowed tab is legitimately absent from the
+                // accessibility tree. The canonical one-selected and query
+                // oracles still guard selection; only visible owners can assert
+                // the native selected bit.
+                observations.put(JSONObject().put("label", label).put("missing", true))
+                continue
+            }
             assertTrue("The native $label tab owner must stay enabled", owner.isEnabled)
             if (!owner.isSelected) {
                 // Only the roving tab is required to be focusable; every unselected
@@ -496,7 +661,10 @@ class WorkbookTabRovingFocusTest {
                 .put("clickable", owner.isClickable).put("focusable", owner.isFocusable).put("enabled", owner.isEnabled)
                 .put("boundsPx", owner.visibleBounds.toShortString()))
         }
-        if (selected != listOf(expected)) selectedFailures += "$phase expected=$expected actual=$selected"
+        val expectedVisible = device.findObject(tabOwnerSelector(expected)) != null
+        if (selected != listOf(expected) && (selected.isNotEmpty() || expectedVisible)) {
+            selectedFailures += "$phase expected=$expected actual=$selected expectedVisible=$expectedVisible"
+        }
         File(evidence, "selected-trace.txt").appendText("$phase expected=$expected actual=$selected\n")
         return observations
     }
@@ -534,7 +702,7 @@ class WorkbookTabRovingFocusTest {
         return observations
     }
 
-    private fun tabLabels(): List<String> = listOf(DATA_TAB_LABEL, east.name, west.name)
+    private fun tabLabels(): List<String> = listOf(DATA_TAB_LABEL) + document.worksheets.map { it.name }
 
     private fun recordCapture(phase: String, state: WorkbookUiState, expectedSelected: String) {
         instrumentation.waitForIdleSync()

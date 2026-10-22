@@ -1,0 +1,1130 @@
+{
+  "date": "2026-10-22",
+  "stage": "S02.6 overflow tab-strip roving scroll",
+  "sourceBase": "77515bd9035ba4cc8262424e772a19dc8316d005",
+  "sourceBinding": "hash is computed from the working-tree bytes committed by this slice",
+  "verification": {
+    "jvm": "75/75",
+    "lint": "0 errors / 7 warnings",
+    "targeted": "WorkbookTabRovingFocusTest 3/3",
+    "fullNative": "240/240"
+  },
+  "files": [
+    {
+      "group": "source",
+      "path": "app/src/main/java/io/github/baitian6641/cloudydata/ui/WorkbookScreen.kt",
+      "bytes": 41386,
+      "sha256": "1e6d9580a61c5ca84906be564842fd9d2a59cde152bbdad25be0efb08ca8a12f"
+    },
+    {
+      "group": "source",
+      "path": "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorkbookTabRovingFocusTest.kt",
+      "bytes": 43425,
+      "sha256": "d92ad6e405405dee6689bc6fd589eff8d5735d54877cd35c6ab2f891119e6316"
+    },
+    {
+      "group": "source",
+      "path": "parity/feature-catalog.yaml",
+      "bytes": 36548,
+      "sha256": "1cad022cdd92a3f5286e37ab770f89caaf903963c6031ffdc3dae25a947a27cd"
+    },
+    {
+      "group": "source",
+      "path": "docs/execution-state.md",
+      "bytes": 41685,
+      "sha256": "f9c0db5d73c96005d66883858ce9fd66e4369dc944644c9b82c02d5486986d54"
+    },
+    {
+      "group": "source",
+      "path": "docs/execution-history.md",
+      "bytes": 87890,
+      "sha256": "aab58fc8459dd62117959d24476518dbd775a82f99db656249ca767a254c51a0"
+    },
+    {
+      "group": "source",
+      "path": "qualification/evidence/2026-10-22-s026-overflow-roving-scroll.md",
+      "bytes": 4632,
+      "sha256": "c6a60f8abe10e65112905c46cee20864e723b6f4d4707da6d0a637a4045c1aee"
+    },
+    {
+      "group": "result",
+      "path": "app/build/outputs/androidTest-results/s022-roving/WorkbookTabRovingFocusTest-overflow.txt",
+      "bytes": 2277,
+      "sha256": "45fd724650e906ed0d2d505592a35a072305889f89677a49ecc516651716b30c"
+    },
+    {
+      "group": "result",
+      "path": "app/build/outputs/androidTest-results/s022-roving/full-native-overflow-final4.txt",
+      "bytes": 174386,
+      "sha256": "397c1f30d045192be04cfdc205b756b82a889ad2a22e53dd78d31c6e8dffa5ac"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/opens-selected/overflow-opens-selected-tab.json",
+      "bytes": 13689,
+      "sha256": "b8746e505355542b91656b44b5a90fd14596137440b0b02d0c39bab762b30582"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/opens-selected/overflow-opens-selected-tab.png",
+      "bytes": 118515,
+      "sha256": "1b30fbdee7e80e11207028857b43d75b7494d3a774cc1ec0e2e86c22570a4e3c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/opens-selected/overflow-opens-selected-tab.xml",
+      "bytes": 76260,
+      "sha256": "3895cab42a0b36d78d7375cb83c50707a6b6892fc2b86532f6c196b541aed8b2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/opens-selected/selected-trace.txt",
+      "bytes": 70,
+      "sha256": "3a975b4128b03e80858fe36ccf64a6ff67e6785976a1fafc65f72cef6e78b2ba"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/before-first-tab.xml",
+      "bytes": 77550,
+      "sha256": "2ce9e7332f2e890f89c8136014e241d451819b28abcd6c48615d6e2fd21b8b83"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/focus-trace.txt",
+      "bytes": 11585,
+      "sha256": "ea76d65a346b95b5350a7d4d89b71080eaa12ecc446a652cb6172ddac88c3f90"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/pinned-enter-focused-cached.xml",
+      "bytes": 77550,
+      "sha256": "d01c1edbad19bfcc44da665367560d7b9ce271ae28ba0e00d2b71c044d8ced0f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/pinned-enter-focused.xml",
+      "bytes": 77549,
+      "sha256": "6c9134ba7f046891692f4ae5381ee5c04499b32c3a7bc0430f2423d92a339465"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/pinned-enter-initial.json",
+      "bytes": 14388,
+      "sha256": "8d8f36e805c7c78bfc6ce8d3d43a0878542ccb3cf6bd444eaa0ffbd4f0d2fb36"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/pinned-enter-initial.png",
+      "bytes": 119053,
+      "sha256": "855f11a0299396961e6cc849e9639d0c2199f70d5b6b808df18fb812af4a3778"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/pinned-enter-initial.xml",
+      "bytes": 77550,
+      "sha256": "2ce9e7332f2e890f89c8136014e241d451819b28abcd6c48615d6e2fd21b8b83"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/selected-trace.txt",
+      "bytes": 53,
+      "sha256": "e03a9c567c3fbabd99a0b285c6976ded3c73f2a9978b905753c299e11b4a50ba"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-1-cached.xml",
+      "bytes": 77550,
+      "sha256": "2ce9e7332f2e890f89c8136014e241d451819b28abcd6c48615d6e2fd21b8b83"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-1-eastFocused-false.xml",
+      "bytes": 77550,
+      "sha256": "99b239bcb2a87355d050c53a80a71a57aaf1f9f2424727989bf755bca83d55f4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-2-cached.xml",
+      "bytes": 77549,
+      "sha256": "5728a297c587c90f55019d979848e1650778e352f712928040951f5f826328f4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-2-eastFocused-false.xml",
+      "bytes": 77550,
+      "sha256": "bd14220e9bc6e0add7ad249bddb34be88d7190ac10858ab451eedb68dcd473df"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-3-cached.xml",
+      "bytes": 77549,
+      "sha256": "f904731e3cdad09ca8b6635331f6ffe0e332438cfb63f0b755f03eb07086ea1c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-3-eastFocused-false.xml",
+      "bytes": 77550,
+      "sha256": "0cbeff5f072b3f37be2de52f92c4ec2415e55d9dccc357b912f9d502972737f2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-4-cached.xml",
+      "bytes": 77549,
+      "sha256": "d96548b1b7c8fa54634a0a75cf5782c9c043fea1216bb4bb0a7b0e132540f38b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-4-eastFocused-false.xml",
+      "bytes": 77550,
+      "sha256": "5f3e100ce9b44ccf24842e30addf5fd0dde374b031a8d501255f75e35bf8187e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-5-cached.xml",
+      "bytes": 77549,
+      "sha256": "7a48ed4cd2eb133948f986b9381d43fad468ce672a2e11d82da24809e53649e7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-5-eastFocused-false.xml",
+      "bytes": 77550,
+      "sha256": "b0bb3020607d9775952110777f626e802a4e75b1009927e5680b1badd809713f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-6-cached.xml",
+      "bytes": 77549,
+      "sha256": "59408f35560fc4f6984e577b6f8f0ba2dc737e2ba8078716805d10ee9e2c98b4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/pinned-enter/tab-6-eastFocused-true.xml",
+      "bytes": 77550,
+      "sha256": "d01c1edbad19bfcc44da665367560d7b9ce271ae28ba0e00d2b71c044d8ced0f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/before-first-tab.xml",
+      "bytes": 77548,
+      "sha256": "f923010259d3c9f74029bc8cbc5c647c385b74c3e717e9b77ac364554f33a669"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused-after-left-cached.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused-after-left-targetFocused-true.xml",
+      "bytes": 77548,
+      "sha256": "f13641171e8adfce2758974e3f8096a37245bfbb33adbf218e5935bcaa576288"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused-after-left.json",
+      "bytes": 14392,
+      "sha256": "f3be9a2dca4f49ac5b98396bd27ee72b97960799cea7c958786f5d733a5ac88c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused-after-left.png",
+      "bytes": 119730,
+      "sha256": "9a314cdeef65f5d249f37be159b7d76b699aa5377de8ddeb0bc0ed37a2766abb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused-after-left.xml",
+      "bytes": 77548,
+      "sha256": "f13641171e8adfce2758974e3f8096a37245bfbb33adbf218e5935bcaa576288"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused.json",
+      "bytes": 14369,
+      "sha256": "5db812f31e299d7d405393e6ebcc6092c3a4dd129b8e25b9566351ba6c6d9666"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused.png",
+      "bytes": 117317,
+      "sha256": "fb8674f7495e3ea370195213e0f752367125ba98ab17c5c7ced7269117390190"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-focused.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-reentered.json",
+      "bytes": 14374,
+      "sha256": "efbf1b964c6eeb0059fbdc8e10b52f1e44b1d21b3768dabdc34550899f164f9c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-reentered.png",
+      "bytes": 117317,
+      "sha256": "fb8674f7495e3ea370195213e0f752367125ba98ab17c5c7ced7269117390190"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-reentered.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-selected.json",
+      "bytes": 14372,
+      "sha256": "a87506d0853baa42385b4d920fef302a3a6b11ed1aa5962a79edb322e9240b82"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-selected.png",
+      "bytes": 117317,
+      "sha256": "fb8674f7495e3ea370195213e0f752367125ba98ab17c5c7ced7269117390190"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/east-selected.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/focus-trace.txt",
+      "bytes": 89701,
+      "sha256": "ba61279ea6ff7714078ac3ce7166f0c3cb12ba39ba7428a52c1a17d951e96df8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/initial.json",
+      "bytes": 14362,
+      "sha256": "b4ccb14f513f4cafa5686daf99d9e9e562bb8685dd1c367a5a8356b1d838d02c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/initial.png",
+      "bytes": 116918,
+      "sha256": "d684a0750c4003a2abcaa424f33b6954c1d493346224657ec919dba123dac9b6"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/initial.xml",
+      "bytes": 77548,
+      "sha256": "f923010259d3c9f74029bc8cbc5c647c385b74c3e717e9b77ac364554f33a669"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/new-worksheet-focused.json",
+      "bytes": 14391,
+      "sha256": "987e163613934326db5befb29f9d7db39a7cc4eede4694265a1c5f4717d07486"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/new-worksheet-focused.png",
+      "bytes": 117667,
+      "sha256": "c5ad914b9a6b7b49435689340191423296e15aafe2eb92ac3a547a1b00e257b5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/new-worksheet-focused.xml",
+      "bytes": 77548,
+      "sha256": "fe43e628d456c7358c739344ed06e60ed1d03fcf4cabc95ce5873c5782dea908"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-20-focused.json",
+      "bytes": 13667,
+      "sha256": "1e228352080bd77c1fcc327ccb9438e8a4a0a073e8d21cebe95564c2d4b5b1d1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-20-focused.png",
+      "bytes": 117576,
+      "sha256": "0304123ff7087b538c8e5564d9d3fe4c549dff98a56c1892249ca443ad346916"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-20-focused.xml",
+      "bytes": 76258,
+      "sha256": "53f40931b9b54d8b1a3c1d24916ee5226ce1e78692ca3fc7ade327a0d0ef14c1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-east-focused.json",
+      "bytes": 14870,
+      "sha256": "bf7ac1fb6ad7601a7b9992d3321dfe6375bc09f4b30ae766efd049fed61f53be"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-east-focused.png",
+      "bytes": 118691,
+      "sha256": "e2f80796306f333b5d1eb2cdd10e7c9a39e0b10d6c8f09b4d77a6f334d18be2e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-east-focused.xml",
+      "bytes": 77957,
+      "sha256": "1056ea97afd21890266430afda0a0059573fdc8b164ed7db660a4334546bc184"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-1-cached.xml",
+      "bytes": 76258,
+      "sha256": "53f40931b9b54d8b1a3c1d24916ee5226ce1e78692ca3fc7ade327a0d0ef14c1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-1-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "45ac177a7f75b46b23047701e3565908e6b668fd0f22c9f827cc435883708d4c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-10-cached.xml",
+      "bytes": 76257,
+      "sha256": "9ef83f62104fddda3bb9efbddc845a9a058f6db7fb2bbad4f0f1a647ef4f77dc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-10-targetFocused-true.xml",
+      "bytes": 76257,
+      "sha256": "e91b437968dcae9a826ee58b77374df40be95355bced47337b484599030aa85e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-11-cached.xml",
+      "bytes": 76257,
+      "sha256": "e91b437968dcae9a826ee58b77374df40be95355bced47337b484599030aa85e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-11-targetFocused-true.xml",
+      "bytes": 76257,
+      "sha256": "a81ad6e8c2e6338fe6dcaefda632a25a2ed45614dca4bbc24f2c7b82d0c96da0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-12-cached.xml",
+      "bytes": 76257,
+      "sha256": "a81ad6e8c2e6338fe6dcaefda632a25a2ed45614dca4bbc24f2c7b82d0c96da0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-12-targetFocused-true.xml",
+      "bytes": 76257,
+      "sha256": "d1e12db9c53005734403399e26a1373dc625f63100c0a458ec86fe0fd30f02ec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-13-cached.xml",
+      "bytes": 76257,
+      "sha256": "d1e12db9c53005734403399e26a1373dc625f63100c0a458ec86fe0fd30f02ec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-13-targetFocused-true.xml",
+      "bytes": 76257,
+      "sha256": "f255376bc28a77089f868fc3362e0850b9eb09a6ff43b91518e9b42ba6912159"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-14-cached.xml",
+      "bytes": 76257,
+      "sha256": "f255376bc28a77089f868fc3362e0850b9eb09a6ff43b91518e9b42ba6912159"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-14-targetFocused-true.xml",
+      "bytes": 76671,
+      "sha256": "a0b2f7bfcfb50861531d5f0849d3cf625a8d3087c52915591b43158007fbd71b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-15-cached.xml",
+      "bytes": 76671,
+      "sha256": "a0b2f7bfcfb50861531d5f0849d3cf625a8d3087c52915591b43158007fbd71b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-15-targetFocused-true.xml",
+      "bytes": 76259,
+      "sha256": "6ec012623d9daba2f3f13033ad9b563d1bee10e4a527c0cf320de8f1e590cd2c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-16-cached.xml",
+      "bytes": 76259,
+      "sha256": "6ec012623d9daba2f3f13033ad9b563d1bee10e4a527c0cf320de8f1e590cd2c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-16-targetFocused-true.xml",
+      "bytes": 76259,
+      "sha256": "cdfe561fc2a7aa591a1c7dd1fc2dd393549e46cfea4aed27a695f6afb4627330"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-17-cached.xml",
+      "bytes": 76259,
+      "sha256": "cdfe561fc2a7aa591a1c7dd1fc2dd393549e46cfea4aed27a695f6afb4627330"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-17-targetFocused-true.xml",
+      "bytes": 76259,
+      "sha256": "a0ded9f645ee19771b818815691431f31914758cdffede957b030ed4043dcace"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-18-cached.xml",
+      "bytes": 76259,
+      "sha256": "a0ded9f645ee19771b818815691431f31914758cdffede957b030ed4043dcace"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-18-targetFocused-true.xml",
+      "bytes": 76671,
+      "sha256": "bc71caf8f1b470a2bad374fa1587533d613f133238a96c80329afb955a69f2a2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-19-cached.xml",
+      "bytes": 76671,
+      "sha256": "bc71caf8f1b470a2bad374fa1587533d613f133238a96c80329afb955a69f2a2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-19-targetFocused-true.xml",
+      "bytes": 76259,
+      "sha256": "53eea913dd678eb820ee26e97cc7d6584479eda336124f1f5589b6a8210844e5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-2-cached.xml",
+      "bytes": 76258,
+      "sha256": "45ac177a7f75b46b23047701e3565908e6b668fd0f22c9f827cc435883708d4c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-2-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "01af1640fd349fc0be72d1127b5c15410b032a3f771246650e9c5a83e2bc9cd4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-20-cached.xml",
+      "bytes": 76259,
+      "sha256": "53eea913dd678eb820ee26e97cc7d6584479eda336124f1f5589b6a8210844e5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-20-targetFocused-true.xml",
+      "bytes": 77526,
+      "sha256": "a745cd1de196eb8f557d5c52a356adf1c445d1fc22658eb73bea92b3eadfe16b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-21-cached.xml",
+      "bytes": 77526,
+      "sha256": "a745cd1de196eb8f557d5c52a356adf1c445d1fc22658eb73bea92b3eadfe16b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-21-targetFocused-true.xml",
+      "bytes": 77544,
+      "sha256": "5070eb17cf44f8160f9efd4f9ee595fbbfc971cd69cc2318719b75cdb05d6bca"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-3-cached.xml",
+      "bytes": 76258,
+      "sha256": "01af1640fd349fc0be72d1127b5c15410b032a3f771246650e9c5a83e2bc9cd4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-3-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "9773d009c89544cc12457e59337b26658bdca0d56845f48bd9df7a91ac3c9d96"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-4-cached.xml",
+      "bytes": 76258,
+      "sha256": "9773d009c89544cc12457e59337b26658bdca0d56845f48bd9df7a91ac3c9d96"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-4-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "0463946524518e1a310f03bceb57291274524c76489010e3635c8fda03793edd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-5-cached.xml",
+      "bytes": 76258,
+      "sha256": "0463946524518e1a310f03bceb57291274524c76489010e3635c8fda03793edd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-5-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "eb8bdbdae6b311b13b7f1295b0b7b9b81e73f01d8ce1c81b9adaf40184190fab"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-6-cached.xml",
+      "bytes": 76258,
+      "sha256": "eb8bdbdae6b311b13b7f1295b0b7b9b81e73f01d8ce1c81b9adaf40184190fab"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-6-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "ce1547da95d46c5e819f8c6daf549ee53270f1c87ee17ee379f42ab01b616e8d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-7-cached.xml",
+      "bytes": 76258,
+      "sha256": "ce1547da95d46c5e819f8c6daf549ee53270f1c87ee17ee379f42ab01b616e8d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-7-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "d6660cbd887df2ba25f12ea81943c7107aa0f115e9922c9efe8f276195d3898f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-8-cached.xml",
+      "bytes": 76258,
+      "sha256": "d6660cbd887df2ba25f12ea81943c7107aa0f115e9922c9efe8f276195d3898f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-8-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "17b5dea25126d8d85d431cb0f37801eb08d0332a4641de8e04f708e74c187c8f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-9-cached.xml",
+      "bytes": 76258,
+      "sha256": "17b5dea25126d8d85d431cb0f37801eb08d0332a4641de8e04f708e74c187c8f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-left-9-targetFocused-true.xml",
+      "bytes": 76257,
+      "sha256": "9ef83f62104fddda3bb9efbddc845a9a058f6db7fb2bbad4f0f1a647ef4f77dc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-1-cached.xml",
+      "bytes": 77546,
+      "sha256": "44d7d3b33a635a32fac4d95ead5be6e7eee119a0e93959cd0cbe01cc11b86146"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-1-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "279a17eacf65fca6936718eceb8a2e05dbb8e6df74b9ff26a367cbfcf557efec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-10-cached.xml",
+      "bytes": 77546,
+      "sha256": "f3ef15faf8969f75551799477e389521e4097ca1a7a6e72ac113ab5e641a7317"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-10-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "a9fd7147c488e5b693b4f2c14fae59d32a2c0c090b7a0044fcb1c156e45b7d07"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-11-cached.xml",
+      "bytes": 77546,
+      "sha256": "a9fd7147c488e5b693b4f2c14fae59d32a2c0c090b7a0044fcb1c156e45b7d07"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-11-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "8bce0bd9e9bca66b1c225d54e50e9e0abe6bb50c4ef4ada523bba3a79c3a6fa0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-12-cached.xml",
+      "bytes": 77546,
+      "sha256": "8bce0bd9e9bca66b1c225d54e50e9e0abe6bb50c4ef4ada523bba3a79c3a6fa0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-12-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "0d73319ffc209d5dcfbe75b3cdc709474ff4ab7b944cfcaa0b4f55ba582908b4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-13-cached.xml",
+      "bytes": 77546,
+      "sha256": "0d73319ffc209d5dcfbe75b3cdc709474ff4ab7b944cfcaa0b4f55ba582908b4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-13-targetFocused-true.xml",
+      "bytes": 77534,
+      "sha256": "e29c910be8376c53b60282cce1ace5e777188cca6e5507fe38aa49b008ec0f41"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-14-cached.xml",
+      "bytes": 77534,
+      "sha256": "e29c910be8376c53b60282cce1ace5e777188cca6e5507fe38aa49b008ec0f41"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-14-targetFocused-true.xml",
+      "bytes": 77106,
+      "sha256": "e0323ba1e4ebfc7a6530eafdad612c4e2e14ab84638f5ef48c1d1e12d87b7698"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-15-cached.xml",
+      "bytes": 77106,
+      "sha256": "e0323ba1e4ebfc7a6530eafdad612c4e2e14ab84638f5ef48c1d1e12d87b7698"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-15-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "d581e413e4915c40f41fbbf98788aa8bfef13485c3b9d0176c23fde0a886caab"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-16-cached.xml",
+      "bytes": 76258,
+      "sha256": "d581e413e4915c40f41fbbf98788aa8bfef13485c3b9d0176c23fde0a886caab"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-16-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "1f542f8d77270eed38f88ef6a42e1f3d7dc7c7ce5de53e1830bcf3ef5facd5d6"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-17-cached.xml",
+      "bytes": 76258,
+      "sha256": "1f542f8d77270eed38f88ef6a42e1f3d7dc7c7ce5de53e1830bcf3ef5facd5d6"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-17-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "2d76cf2749569c4d720a34bd3a1445a402805ddfa58baa4e54a4f42d610b8733"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-18-cached.xml",
+      "bytes": 76258,
+      "sha256": "2d76cf2749569c4d720a34bd3a1445a402805ddfa58baa4e54a4f42d610b8733"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-18-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "9c1c687e869bfad641c1bf955984bd0093cf84710919cd87fc3afb73a9f22308"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-19-cached.xml",
+      "bytes": 76258,
+      "sha256": "9c1c687e869bfad641c1bf955984bd0093cf84710919cd87fc3afb73a9f22308"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-19-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "e3ab02175f393b180f9b7e12362a7ad3f257afbdc388d65764ad3fecfce1df63"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-2-cached.xml",
+      "bytes": 77546,
+      "sha256": "279a17eacf65fca6936718eceb8a2e05dbb8e6df74b9ff26a367cbfcf557efec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-2-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "233818667f96ce1c47a64dcd788e6f3bc80bf2b0b36b05396883b97793760a9d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-20-cached.xml",
+      "bytes": 76258,
+      "sha256": "e3ab02175f393b180f9b7e12362a7ad3f257afbdc388d65764ad3fecfce1df63"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-20-targetFocused-true.xml",
+      "bytes": 76258,
+      "sha256": "53f40931b9b54d8b1a3c1d24916ee5226ce1e78692ca3fc7ade327a0d0ef14c1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-3-cached.xml",
+      "bytes": 77546,
+      "sha256": "233818667f96ce1c47a64dcd788e6f3bc80bf2b0b36b05396883b97793760a9d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-3-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "0d1a2f067a793547188a443d3c1e583a6145db357b260a61d4791a8655057cc8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-4-cached.xml",
+      "bytes": 77546,
+      "sha256": "0d1a2f067a793547188a443d3c1e583a6145db357b260a61d4791a8655057cc8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-4-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "79b4c9999e2a0d9917513e57199c80faee0aad06d4afda993d5cfc62c830cfb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-5-cached.xml",
+      "bytes": 77546,
+      "sha256": "79b4c9999e2a0d9917513e57199c80faee0aad06d4afda993d5cfc62c830cfb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-5-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "124830a18ba1b2b5a729e3f5a2a968b73d550fa48b2444a4ae73d14d73008c65"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-6-cached.xml",
+      "bytes": 77546,
+      "sha256": "124830a18ba1b2b5a729e3f5a2a968b73d550fa48b2444a4ae73d14d73008c65"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-6-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "10dd277cc34f33a3848992fbed870cd80384fe8668e3f1c94bf4f1d75c63227b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-7-cached.xml",
+      "bytes": 77546,
+      "sha256": "10dd277cc34f33a3848992fbed870cd80384fe8668e3f1c94bf4f1d75c63227b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-7-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "28836b6d227ce869ee7e77767907a4d0f79e937d879280d1944acb9b8c398ded"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-8-cached.xml",
+      "bytes": 77546,
+      "sha256": "28836b6d227ce869ee7e77767907a4d0f79e937d879280d1944acb9b8c398ded"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-8-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "69cf3bdfb779eb9f84493f3d687a038fcb28e86fe0a398b4b632b449d60eee63"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-9-cached.xml",
+      "bytes": 77546,
+      "sha256": "69cf3bdfb779eb9f84493f3d687a038fcb28e86fe0a398b4b632b449d60eee63"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/overflow-right-9-targetFocused-true.xml",
+      "bytes": 77546,
+      "sha256": "f3ef15faf8969f75551799477e389521e4097ca1a7a6e72ac113ab5e641a7317"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-arrow-tab-new-worksheet-cached.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-arrow-tab-new-worksheet.xml",
+      "bytes": 77548,
+      "sha256": "f69419327cf7a2ea6ea02ac06121200db1696cf2fa55c28c2e7cd34642924e45"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-arrow-west-cached.xml",
+      "bytes": 77548,
+      "sha256": "f69419327cf7a2ea6ea02ac06121200db1696cf2fa55c28c2e7cd34642924e45"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-arrow-west.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-shift-tab-west-cached.xml",
+      "bytes": 77548,
+      "sha256": "f69419327cf7a2ea6ea02ac06121200db1696cf2fa55c28c2e7cd34642924e45"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-shift-tab-west.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-tab-new-worksheet-cached.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/pointer-tab-new-worksheet.xml",
+      "bytes": 77548,
+      "sha256": "f69419327cf7a2ea6ea02ac06121200db1696cf2fa55c28c2e7cd34642924e45"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/selected-trace.txt",
+      "bytes": 647,
+      "sha256": "c8db4b79adc2fe21c0195a29abc4d373e95d4ccf9dc07d62892c5aa8cc63e512"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/shift-tab-east-cached.xml",
+      "bytes": 77548,
+      "sha256": "fe43e628d456c7358c739344ed06e60ed1d03fcf4cabc95ce5873c5782dea908"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/shift-tab-east.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-1-cached.xml",
+      "bytes": 77547,
+      "sha256": "eade0b5067762470a3035567b372efd7450995cf3764f790922bdf88270cbfe5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-1-eastFocused-false.xml",
+      "bytes": 77548,
+      "sha256": "c192b8f819eb8d7fac8cc5b59e48420c198f3ab2df7f2cff89010e692628d6f7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-2-cached.xml",
+      "bytes": 77547,
+      "sha256": "f4b557ee4766e244566953b291a7c72bfb213ea69517ae8932b3612de7a36930"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-2-eastFocused-false.xml",
+      "bytes": 77548,
+      "sha256": "01c8f6cb68fe529c689bae8d29490ca1bf3be5a014ea88be30a4c59724295cf4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-3-cached.xml",
+      "bytes": 77547,
+      "sha256": "dd9e5d92b91c83e7fc89698bfd2ea764ec4cd055c5b3e52e337b9b1e87a4a128"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-3-eastFocused-false.xml",
+      "bytes": 77548,
+      "sha256": "4267fa9b51d6a760951fa9fbcb24744f85db5f69dfc196aca719c1420c705d8a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-4-cached.xml",
+      "bytes": 77547,
+      "sha256": "4bb4f630f1510004743071ad5f452e92aae317a0056ce0a82e6275245ac23634"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-4-eastFocused-false.xml",
+      "bytes": 77548,
+      "sha256": "bc696b415180139a5fabdd68fee20b93b84fbbda2a37f2ec958b25001c0a1fc9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-5-cached.xml",
+      "bytes": 77547,
+      "sha256": "b0aa3df164379ac3a9b1090d7cd0ff1a66a2cda3ac7f436975c32549be0918fc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-5-eastFocused-false.xml",
+      "bytes": 77548,
+      "sha256": "d0835263a5d0c2d41d43b8a3aa86c7b4b257ef0a1bfbfb78bf844d1b3ce82638"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-6-cached.xml",
+      "bytes": 77547,
+      "sha256": "e022ae656e68a289b01e94e66ecff3894c9b3172c36bdf0c49f269fea5c5d7a4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-6-eastFocused-true.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-new-worksheet-cached.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/tab-new-worksheet.xml",
+      "bytes": 77548,
+      "sha256": "fe43e628d456c7358c739344ed06e60ed1d03fcf4cabc95ce5873c5782dea908"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-arrow-reentered.json",
+      "bytes": 14385,
+      "sha256": "ece2f1f8d6517ad1b08d0d090dc8dcf3b3c9a1eaea120a52b04391c1bfa60c1c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-arrow-reentered.png",
+      "bytes": 118405,
+      "sha256": "b5869ed35288e5e20470ba739496e86b584bde2970903f7926493bf3efcd8465"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-arrow-reentered.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-focused-cached.xml",
+      "bytes": 77548,
+      "sha256": "d85c16c1270b514b5f865cb2195a7b3eae033047b7b73f1fe6883acc44408bb2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-focused-targetFocused-true.xml",
+      "bytes": 77548,
+      "sha256": "14ada24450cac87681cee9f274385754747585ea1f582ea77e769578472b8364"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-focused.json",
+      "bytes": 14371,
+      "sha256": "e80cff34c0d5ac2e14bd3c648822e965e4c487d315e65f859281021d7a8f7706"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-focused.png",
+      "bytes": 118909,
+      "sha256": "db736f0b19451a67803c14139de5ad49a8d0ddc2bc89fc892b596e90ee5d2432"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-focused.xml",
+      "bytes": 77548,
+      "sha256": "14ada24450cac87681cee9f274385754747585ea1f582ea77e769578472b8364"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-pointer-focused-cached.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-pointer-focused.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-pointer-selected.json",
+      "bytes": 14388,
+      "sha256": "04bdb6e0a720d47e765a5384b3e9511f8d0a0ea9b6b71e0530d270b9d80c9da0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-pointer-selected.png",
+      "bytes": 118405,
+      "sha256": "b5869ed35288e5e20470ba739496e86b584bde2970903f7926493bf3efcd8465"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-pointer-selected.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-reentered-after-pointer.json",
+      "bytes": 14402,
+      "sha256": "babbf7180a5f087bf85068ae996e79d8c8f06b87a7fd497636c67f53e79b58be"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-reentered-after-pointer.png",
+      "bytes": 118408,
+      "sha256": "3ce3b9a16ae52f51f348644c491dda0806821d32193d3fd2f6472534c9061d17"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-reentered-after-pointer.xml",
+      "bytes": 77546,
+      "sha256": "44d7d3b33a635a32fac4d95ead5be6e7eee119a0e93959cd0cbe01cc11b86146"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-selected.json",
+      "bytes": 14372,
+      "sha256": "036aff44e667dc31c7630f323dcd4f239db00008edd082fffaa1a5f8a9d9bbe4"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-selected.png",
+      "bytes": 118405,
+      "sha256": "b5869ed35288e5e20470ba739496e86b584bde2970903f7926493bf3efcd8465"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s026-overflow/roving/west-selected.xml",
+      "bytes": 77548,
+      "sha256": "3729ab9a60fae27253ded61d408af0ff84e5befbd3da46cb02f2fcb522214a01"
+    }
+  ]
+}
