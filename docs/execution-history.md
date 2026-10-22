@@ -1360,3 +1360,18 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   full emulator native suite 236/237. The only remaining failure is the
   pre-existing ShortcutIntentTest idle-Ctrl+S expectation, which also fails on
   untouched dfea76f and is unrelated to this slice.
+
+## 2026-10-22 — S02.5 idle-save shortcut contract
+
+- The pre-existing ShortcutIntentTest expected idle Ctrl+S to create a revision and
+  failed on both the roving slice and untouched dfea76f. The test was aligned with
+  the accepted coordinator contract: accepted commands are already persisted, and
+  idle Ctrl+S is a no-op rather than a fabricated save revision.
+- It now asserts checkpoint equality, unchanged revision and byte-identical
+  workbook.json for idle Ctrl+S, and adds a positive failed-edit retry oracle:
+  a real permission-denied commit leaves canonical bytes unchanged, then the actual
+  Ctrl+S chord retries the frozen Add Worksheet receipt and advances exactly one
+  revision. Independent review required this positive keyboard route before the
+  test-only correction was accepted.
+- Validation: ShortcutIntentTest 2/2; JVM 75/75; lint 0 errors/7 warnings; full
+  emulator native suite **238/238**.

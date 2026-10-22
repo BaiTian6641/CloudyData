@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** commits through `4c255fe`; `main` tracks `origin/main` after the
-S02.2/S02.4 roving worksheet-tab slice. Final source and result binding is in
-`qualification/evidence/2026-10-22-s02-roving-worksheet-tab-focus.md`.
+**Source:** commits through `71f1d92`; `main` tracks `origin/main`. The S02.5
+idle-save shortcut closure is in the next local commit.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -56,8 +55,7 @@ unless stated otherwise.
   preserves focus, deferred requests clear on blur and worksheet removal clamps
   the owner. The fresh East15/West20 native roving test passes with exact query,
   selected-state, role/focus, checkpoint, revision, receipt, history, CSV and
-  Parquet oracles; full emulator suite is **236/237** with only a pre-existing
-  idle-Ctrl+S test expectation failing on both the slice and untouched prior HEAD.
+  Parquet oracles; full emulator suite is **238/238** after idle-save closure.
   Physical keyboard/TalkBack, panel relationships, close/overflow and the full
   visual matrix remain open.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
@@ -570,23 +568,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S02.5 idle-save shortcut contract and full-suite closure.**
+**S02.6 overflow tab-strip roving scroll.**
 
-- IDs S02/F64; Q19/Q21 desktop shortcut and durability invariants. Prerequisites:
-  full 236/237 roving run, prior-HEAD proof that `ShortcutIntentTest` fails on
-  untouched `dfea76f`, and the current accepted-command persistence contract.
-- Files: `ShortcutIntentTest.kt`, applicable shortcut/save evidence, docs/state.
-- Action: distinguish idle Ctrl+S from failed/conflict retry. Align the stale
-  test with the accepted no-new-revision idle behavior without weakening revision,
-  checkpoint or command-journal oracles, and add a focused failed/conflict retry
-  path if the coordinator already supports one.
-- Acceptance: no production behavior changes unless a reviewed gap requires one;
-  the full emulator native suite passes **237/237** with idle Ctrl+S no-op and
-  failed/conflict retry semantics explicitly bounded. Any shortcut contract
-  change needs independent review and updated evidence.
-- Device gates remain: physical keyboard, full window matrix, TalkBack, Room,
-  source-version, hardware and licensed-reference qualification stay blocked or
-  partial as already recorded.
+- IDs S02/F64; CD04/CD05/CD06; Q19/Q21 local-selection and keyboard invariants.
+  Prerequisites: full 238/238 native suite, committed roving focus and idle-save
+  closure, existing emulator and exact fixture/oracle infrastructure.
+- Files: `WorkbookScreen.kt` tab strip, `WorkbookTabRovingFocusTest.kt`, docs,
+  parity/evidence.
+- Action: make arrow-driven roving focus bring the focused worksheet tab into
+  the horizontal scroll viewport without changing selection. Preserve one
+  selected tab, Tab exit to New worksheet, Shift+Tab reentry, pointer activation
+  and all state/byte oracles.
+- Acceptance: a fresh workbook with enough worksheets to overflow starts at the
+  selected tab; repeated Right/Left arrows keep each roving owner visible,
+  selected state changes only on Enter, and native captures verify focus ring and
+  bounds. Endpoint wrap remains unclaimed; close/overflow menu and physical
+  keyboard/TalkBack remain separate.
+- Independent combined-source and native focus/bounds review is required.
 
 ## Protected context
 
