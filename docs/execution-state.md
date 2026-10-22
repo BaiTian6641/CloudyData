@@ -2,8 +2,8 @@
 
 **Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** commits through `e8861d1`; `main` tracks `origin/main` after S02.6
-overflow roving scroll.
+**Source:** commits through `2b72f47`; `main` tracks `origin/main` after S02.7
+overflow menu and close focus transfer.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -48,17 +48,25 @@ unless stated otherwise.
   independent views, legacy/null/empty defaults and real Activity pointer controls.
   Five native captures qualify this wide light window only; the full tab contract,
   frame-level atomic rendering and complete Q19 remain open.
-- S02.2/S02.4/S02.6 worksheet/Data source tabs are a manual-activation roving
+- S02.2/S02.4/S02.6/S02.7 worksheet/Data source tabs are a manual-activation roving
   group. Arrows move focus without selection and bring each roving owner fully
   into the horizontal viewport; Enter activates, selection snaps the roving owner,
-  Tab leaves the selected tab for the pinned New worksheet action and Shift+Tab
-  reenters the selected tab. Pointer activation from a focused strip preserves
-  focus, deferred requests clear on blur, worksheet removal clamps the owner, and
-  the pinned action receives Enter normally. The overflow fixture opens on a far
-  selected tab and walks the far end with exact query/selection/bounds/byte
-  oracles. Full emulator suite is **240/240** after overflow/idle-save closure.
-  Physical keyboard/TalkBack, overflow menu, close focus transfer and the full
-  visual matrix remain open.
+  Tab leaves the selected tab for the pinned overflow action and then the pinned
+  New worksheet action, and Shift+Tab reenters through both. Pointer activation
+  from a focused strip preserves focus, deferred requests clear on blur, worksheet
+  removal clamps the owner, and the pinned actions receive Enter normally. A
+  pinned overflow menu lists every worksheet with per-entry close controls;
+  keyboard and pointer open/select/close qualify, close moves selection and focus
+  to the neighbor, and `RemoveWorksheet` is a journaled command with typed
+  receipts, undo snapshots, refusal of the final/unknown/malformed worksheet, and
+  exact byte oracles. The overflow fixture opens on a far selected tab and walks
+  the far end with exact query/selection/bounds/byte oracles. Full emulator suite
+  is **247/247** after overflow menu/close closure; the physical Googlebook
+  targeted tab/removal/worksheet suites pass **3×10/10** and **14/14**.
+  Physical keyboard/TalkBack and the full visual matrix remain open; two
+  physical-environment failures (dual-Activity visibility, also failing on the
+  unmodified baseline, and a 1 px chart export rounding) are recorded in the
+  S02.7 evidence.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -539,7 +547,23 @@ unless stated otherwise.
 - S11.C0 remains partial; S13.C0 and S15.C0 are absent. Their worker-backed
   dependency rules remain mandatory; none is promoted by this coordinator slice.
 
-## Last verification (2026-10-20)
+## Last verification (2026-10-22)
+
+- S02.7 overflow menu and close focus transfer committed as `2b72f47`. Full
+  emulator API36 suite **247/247**; physical Googlebook targeted tab/removal
+  suites **3×10/10** with AddWorksheetCommandTest **14/14**; JVM **75/75**; lint
+  **0 errors/7 warnings**. Evidence:
+  qualification/evidence/2026-10-22-s027-overflow-menu-close-focus.md and
+  `android-test-results/2026-10-22-s027-menu-close/`.
+- Two physical-environment failures are recorded and are not regressions:
+  `twoRealActivitiesShareSavedCommandsAndClosingOneRetainsOtherWindow` fails
+  identically on the unmodified `26c97dc` baseline (desktop window-focus noise),
+  and the chart PNG export differs by 1 px (803 vs 804) on this device.
+- The emulator `/data` partition required clearing stale packages and install
+  staging before reinstall; the full Gradle suite run removes the app under test
+  afterward, so capture evidence is pulled after standalone class runs instead.
+
+## Earlier verification (2026-10-20)
 
 - Final frozen source on existing API36 x86_64 emulator-5580: **157/157** native,
   no skips/failures, **78.775 s**. Focused keyboard case passes in 13.931 s;
@@ -569,20 +593,20 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S02.7 overflow menu and close focus transfer.**
+**S02.8 per-window worksheet restoration after process death.**
 
-- IDs S02/F64; CD05/CD06; Q19/Q21. Prerequisites: full **240/240** native suite,
-  committed roving scroll/pinned action, evidence and review.
-- Files: `WorkbookScreen.kt` tab strip/model commands, tests, parity/docs.
-- Action: add an overflow menu for clipped worksheets and optional close controls
-  with focus transfer to a neighbor after removal. Do not invent close behavior
-  before the overflow menu; preserve manual activation, scroll-to-focus, pinned
-  New action, selection/query identity and byte/history oracles.
-- Acceptance: keyboard and pointer open the overflow menu, focus the clipped tab,
-  Enter selects it, close returns focus to the neighbor, removal leaves one valid
-  selected tab, and full native coverage remains green. Endpoint wrap remains
-  unclaimed; physical keyboard/TalkBack/full matrix remain separate.
-- Independent combined-source and native focus/bounds review is required.
+- IDs S02/S03; CD05/CD06; Q19. Prerequisites met: committed overflow menu/close
+  slice, full **247/247** emulator suite, stable physical targeted suites.
+- Files: `MainActivity`/`WorkbookViewModel` restoration path, tab strip state,
+  tests, parity/docs.
+- Action: persist and restore each window's view-local selected worksheet across
+  process death so every reopened window returns to its own sheet without
+  rewriting the canonical reopen default; removal of the restored sheet falls
+  back to the same neighbor rule as S02.7.
+- Acceptance: killed-and-relaunched windows restore their own selected worksheet
+  with exact query identity, receipts/history/bytes unchanged by restoration
+  alone, and full native coverage remains green.
+- Independent combined-source and native restoration review is required.
 
 ## Protected context
 

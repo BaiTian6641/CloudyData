@@ -1390,3 +1390,29 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   checkpoint/revision/receipt/history/CSV/Parquet oracles.
 - Validation: WorkbookTabRovingFocusTest **3/3**; JVM **75/75**; lint **0 errors/
   7 warnings**; full emulator native suite **240/240**.
+
+## 2026-10-22 — S02.7 overflow menu and close focus transfer
+
+- Added a pinned worksheet overflow action between the scrollable tabs and the
+  pinned New worksheet action. The menu lists every worksheet with a close
+  control per entry; keyboard (Tab/Enter/arrows/Escape) and pointer open, select,
+  dismiss and close. Selecting a clipped tab returns focus to it; closing the
+  selected sheet moves selection and focus to the neighbor; closing an unselected
+  sheet keeps this view's selection and focus.
+- `RemoveWorksheet` is a journaled command with validation, idempotent receipt
+  replay, undo snapshots and exact byte oracles. The coordinator remaps the
+  canonical reopen hint to the previous/first neighbor; the ViewModel mirrors
+  that fallback for the view-local selection only when the removed sheet was
+  selected in this view. The final worksheet, unknown identities and malformed
+  requests are refused without writing or consuming command IDs.
+- Review-driven fixes: view-local fallback mirroring (canonical hint is not the
+  view selection); environment hardening after a system promo overlay and
+  leftover desktop windows stole window focus mid-run; menu entry lookup that no
+  longer depends on `scrollable` or full-span injected gestures; waiting for the
+  popup to hold key focus before sending arrows.
+- Validation: targeted tab/removal suites green on emulator (4/4 + 6/6, menu
+  5/5 solo) and physical Googlebook (3×10/10, add-command 14/14); full emulator
+  native suite **247/247**; JVM **75/75**; lint **0 errors/7 warnings**. Physical
+  full-suite residuals (dual-Activity visibility, also failing on the unmodified
+  `26c97dc` baseline; 1 px chart export rounding) are documented as
+  environmental in `qualification/evidence/2026-10-22-s027-overflow-menu-close-focus.md`.
