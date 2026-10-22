@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** commits through `2b72f47`; `main` tracks `origin/main` after S02.7
+**Source:** commits through `70af37b`; `main` tracks `origin/main` after S02.7
 overflow menu and close focus transfer.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
@@ -549,7 +549,7 @@ unless stated otherwise.
 
 ## Last verification (2026-10-22)
 
-- S02.7 overflow menu and close focus transfer committed as `2b72f47`. Full
+- S02.7 overflow menu and close focus transfer committed as `2b72f47` plus review-fix `70af37b`. Full
   emulator API36 suite **247/247**; physical Googlebook targeted tab/removal
   suites **3×10/10** with AddWorksheetCommandTest **14/14**; JVM **75/75**; lint
   **0 errors/7 warnings**. Evidence:
