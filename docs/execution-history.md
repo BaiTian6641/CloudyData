@@ -1337,3 +1337,26 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   ShiftTab selected reentry probe. Current per-tabTab routes require an explicit
   qualified contract migration; preserve all existing value/Data/byte oracles.
   Roving/panel/overflow/TalkBack/physical/fullmatrix and C0/Room/reference stay open.
+
+## 2026-10-22 — S02.2/S02.4 roving worksheet-tab focus
+
+- Replaced the per-tab Tab-stop strip with a manual-activation roving group: arrows
+  move focus without selection, Enter activates, the roving owner snaps to
+  selection, Tab leaves the selected tab for New worksheet, and Shift+Tab reenters
+  the selected tab. Pointer activation from a focused strip keeps focus; worksheet
+  removal clamps the roving owner; deferred focus requests are cleared on blur.
+- The old WorkbookTabKeyboardTest was deliberately superseded by a fresh
+  WorkbookTabRovingFocusTest using the East15/West20 fixture, fresh cache-clear
+  focus observations, selected/query oracles, native captures and complete
+  checkpoint/revision/receipt/history/CSV/Parquet byte checks. It also covers a
+  mixed pointer/keyboard focus-retention regression and Shift+Tab recovery from a
+  New-worksheet overshoot.
+- Independent review found pointer focus loss and stale roving index after sheet
+  removal; both were fixed. A full-suite accessibility race was diagnosed from the
+  retained fresh XML and handled through the group's native Shift+Tab route rather
+  than weakening the fresh-focus oracle.
+- Validation: JVM 75/75, lint 0 errors/7 warnings, roving native test 1/1
+  (15–17 s), WorkbookSelectionUiTest 1/1, WorkbookSelectionConsistencyTest 5/5,
+  full emulator native suite 236/237. The only remaining failure is the
+  pre-existing ShortcutIntentTest idle-Ctrl+S expectation, which also fails on
+  untouched dfea76f and is unrelated to this slice.

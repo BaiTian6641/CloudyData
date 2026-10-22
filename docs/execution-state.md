@@ -1,11 +1,10 @@
 # Execution state
 
-**Updated:** 2026-10-20
+**Updated:** 2026-10-22
 **Branch:** `main`
-**Source:** S02.2/S02.4 native worksheet-tab selected semantics and focus, implemented in
-`462745c1a0e3588df6390623573293d5bba6592d`, bound by all 136 source/fixture hashes
-in `qualification/evidence/artifacts/2026-10-20-s022-tab-keyboard/`;
-see `qualification/evidence/2026-10-20-s02-workbook-tab-keyboard.md`.
+**Source:** commits through `dfea76fe560915e829afd119270dbb50e2e1d943`. The
+S02.2/S02.4 roving worksheet-tab change is in the next local commit; final source
+and result binding is in `qualification/evidence/2026-10-22-s02-roving-worksheet-tab-focus.md`.
 `main` tracks `origin/main`; no release/distribution was created.
 **Active stage:** S00 partial; S01 partial; S02/S03 partial; early R1
 vertical slice. The owner-directed chart grammar/customization contract is in
@@ -50,17 +49,17 @@ unless stated otherwise.
   independent views, legacy/null/empty defaults and real Activity pointer controls.
   Five native captures qualify this wide light window only; the full tab contract,
   frame-level atomic rendering and complete Q19 remain open.
-- S02.2/S02.4 worksheet/Data source tabs bind Compose Role.Tab and a selection
-  group, with native selected state and the existing Cloudy 2dp focus border. One native
-  focused owner remains separate from the active tab; Tab/Shift+Tab/Enter selects
-  exact East 15 / West 20/Data source and preserves checkpoint/CSV/Parquet bytes. Nine
-  final native phases verify exactly one selected tab and visible selected and
-  unselected focus rings at 2880×1800/light/Comfortable/fontScale 1. The selected
-  native tab may omit its redundant click action while remaining focusable;
-  unselected tabs retain activation. Physical keyboard/TalkBack, roving entry/
-  arrows, panel relationships, close/overflow and the full visual matrix remain
-  open. Stable worksheet composition keys are implemented; removal focus transfer
-  is not separately qualified.
+- S02.2/S02.4 worksheet/Data source tabs are a manual-activation roving group.
+  Arrows move focus without selection, Enter activates the focused tab, the roving
+  owner snaps to selection, Tab leaves the selected tab for New worksheet and
+  Shift+Tab reenters the selected tab. Pointer activation from a focused strip
+  preserves focus, deferred requests clear on blur and worksheet removal clamps
+  the owner. The fresh East15/West20 native roving test passes with exact query,
+  selected-state, role/focus, checkpoint, revision, receipt, history, CSV and
+  Parquet oracles; full emulator suite is **236/237** with only a pre-existing
+  idle-Ctrl+S test expectation failing on both the slice and untouched prior HEAD.
+  Physical keyboard/TalkBack, panel relationships, close/overflow and the full
+  visual matrix remain open.
 - Rows/Values/Line- and Bar-Color placements, aggregate selection (SUM verified; others
   available), Table/Bar/Line marks, chart/table, row selection, exact-value
   inspector, generated SQL display.
@@ -571,29 +570,23 @@ unless stated otherwise.
 
 ## Next exact task
 
-**S02.2/S02.4 manual-activation roving worksheet-tab focus.**
+**S02.5 idle-save shortcut contract and full-suite closure.**
 
-- IDs F01/F64; Q21 with Q19 local-selection invariants. Prerequisites: final 157/157,
-  coherent local selection, exact query ownership, actual native Tab/selected
-  semantics, fresh focus observation and preserved checkpoint/source bytes.
-- CD05 requires roving focus and CD06 arrow navigation. Current individual native
-  Tab stops are only a bounded keyboard route; full tab acceptance remains open.
-  Close is optional and has no current command; do not invent close behavior first.
-- First exact action: fresh real East15/West20 fixture, bounded native focus to
-  East; Right must focus West without selecting, Enter selects West20; Left must
-  focus East without selecting, Enter restores East15. One Tab must leave the
-  group for New worksheet; Shift+Tab must reenter selected East. Keep exact
-  checkpoint/default/revision/receipts/history/CSV/Parquet unchanged and capture
-  native focused/selected owners and rings. Do not assume endpoint wrap policy.
-- Root owns narrow WorkbookScreen tab/strip implementation and docs/evidence;
-  a disjoint worker may own WorkbookTabRovingFocusTest. Existing keyboard test's
-  per-tab Tab/Shift+Tab route assertions must be deliberately superseded only by
-  this qualified roving contract, preserving all value/selection/Data/byte oracles.
-  Independent actual combined source and native focus-pixel review is required.
-- Existing emulator only. Physical keyboard/TalkBack, removal focus transfer,
-  overflow/panel relationships/full visual matrix and full Q19/Q21 remain separate.
-  S11.C0 partial and S13.C0/S15.C0 absent stay mandatory when applicable; Room,
-  source-version, hardware and licensed-reference gates are unchanged.
+- IDs S02/F64; Q19/Q21 desktop shortcut and durability invariants. Prerequisites:
+  full 236/237 roving run, prior-HEAD proof that `ShortcutIntentTest` fails on
+  untouched `dfea76f`, and the current accepted-command persistence contract.
+- Files: `ShortcutIntentTest.kt`, applicable shortcut/save evidence, docs/state.
+- Action: distinguish idle Ctrl+S from failed/conflict retry. Align the stale
+  test with the accepted no-new-revision idle behavior without weakening revision,
+  checkpoint or command-journal oracles, and add a focused failed/conflict retry
+  path if the coordinator already supports one.
+- Acceptance: no production behavior changes unless a reviewed gap requires one;
+  the full emulator native suite passes **237/237** with idle Ctrl+S no-op and
+  failed/conflict retry semantics explicitly bounded. Any shortcut contract
+  change needs independent review and updated evidence.
+- Device gates remain: physical keyboard, full window matrix, TalkBack, Room,
+  source-version, hardware and licensed-reference qualification stay blocked or
+  partial as already recorded.
 
 ## Protected context
 

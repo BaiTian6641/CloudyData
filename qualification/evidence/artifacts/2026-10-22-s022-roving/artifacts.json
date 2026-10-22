@@ -1,0 +1,1125 @@
+{
+  "date": "2026-10-22",
+  "stage": "S02.2/S02.4 roving worksheet-tab focus",
+  "sourceBase": "dfea76fe560915e829afd119270dbb50e2e1d943",
+  "sourceBinding": "hash is computed from the working-tree bytes committed by this slice",
+  "verification": {
+    "jvm": "75/75",
+    "lint": "0 errors / 7 warnings",
+    "rovingNative": "1/1",
+    "selectionPointer": "WorkbookSelectionUiTest 1/1; WorkbookSelectionConsistencyTest 5/5",
+    "fullNative": "236/237 (only pre-existing ShortcutIntentTest idle Ctrl+S failure)"
+  },
+  "files": [
+    {
+      "group": "source",
+      "path": "app/src/main/java/io/github/baitian6641/cloudydata/ui/WorkbookScreen.kt",
+      "bytes": 39719,
+      "sha256": "cedee5f15335378c25762f0f701eb40899fa86aadb9653d0e7bc7b15772f2369"
+    },
+    {
+      "group": "source",
+      "path": "app/src/androidTest/java/io/github/baitian6641/cloudydata/WorkbookTabRovingFocusTest.kt",
+      "bytes": 33949,
+      "sha256": "00f945ef177b4b0e2d67f549fa5c228c82e01d93f156c12f7c638dc1278cf263"
+    },
+    {
+      "group": "source",
+      "path": "parity/feature-catalog.yaml",
+      "bytes": 36428,
+      "sha256": "3198b27d66c279bc2e746c7e32621950a5261fa852f20d180867b65ae2db4e77"
+    },
+    {
+      "group": "source",
+      "path": "docs/execution-state.md",
+      "bytes": 42009,
+      "sha256": "0f622da6bf405986839e7a0189c5fe4a97fd9fb8b22f4e8feff782d074aa7150"
+    },
+    {
+      "group": "source",
+      "path": "docs/execution-history.md",
+      "bytes": 86035,
+      "sha256": "c5dcc2e7001a3420c6f47d4a4c74e2d85cce714aabf87c11b95fd91812fe52cb"
+    },
+    {
+      "group": "source",
+      "path": "qualification/evidence/2026-10-22-s02-roving-worksheet-tab-focus.md",
+      "bytes": 5953,
+      "sha256": "48bdab5fc02c790529f4b0a5a8ac404810c4627fb4a47ec749c585e59a22987b"
+    },
+    {
+      "group": "result",
+      "path": "app/build/outputs/androidTest-results/s022-roving/WorkbookTabRovingFocusTest.txt",
+      "bytes": 898,
+      "sha256": "8b084a915dc250cb1624940963ac74e82dc37a458f0c903b4dcb9ee7000a79bd"
+    },
+    {
+      "group": "result",
+      "path": "app/build/outputs/androidTest-results/s022-roving/full-native-final2.txt",
+      "bytes": 173434,
+      "sha256": "93e0c56c112cf71ce20de88f99a122521c23160f68882b58dfc80157a78a9428"
+    },
+    {
+      "group": "result",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/shortcut-intent-prior-head.txt",
+      "bytes": 1977,
+      "sha256": "7c977280f32fcc45b073b0ad4b108e5aaa456a2491df752ed3ebad84f43035ae"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/before-first-tab.xml",
+      "bytes": 60251,
+      "sha256": "77c4d8c250a7d1e179fa602a2d6cddf32bad6b100cfa8bae50b5df4a03d7650e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused-after-left-cached.xml",
+      "bytes": 60251,
+      "sha256": "77a92b3a74479a7c62eac3cbf4bcda81941aa9f5de09814b1b2e352ac9a36d7e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused-after-left-targetFocused-true.xml",
+      "bytes": 60251,
+      "sha256": "d6b13f19634773d0ec68fa54dd88fa81a6f5f0b6fb1db257ba3ced910df73758"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused-after-left.json",
+      "bytes": 3651,
+      "sha256": "99cf819d0fbe331ef29f1c4b1bf9628f61644318d38b58b5496c5591e02ed0e6"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused-after-left.png",
+      "bytes": 115848,
+      "sha256": "a15a2d5e3e1d1b154b8289fe7742d9e01fe81b5745508a67f930e8ff6c9808a3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused-after-left.xml",
+      "bytes": 60251,
+      "sha256": "d6b13f19634773d0ec68fa54dd88fa81a6f5f0b6fb1db257ba3ced910df73758"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused.json",
+      "bytes": 3629,
+      "sha256": "f2c4f604db0ecb0c490369dceafa21091f0baf5293df65eb937d535c2824df1c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused.png",
+      "bytes": 113973,
+      "sha256": "81602b28a90c70ce695ce53655167ad9519dc7f3bcb736040578f5d0718ee2d9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-focused.xml",
+      "bytes": 60251,
+      "sha256": "59fce073d132b4a7a59575e8faedb5b03498fe32d947ee7585be313216ff6e49"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-reentered.json",
+      "bytes": 3634,
+      "sha256": "e27db908607ad1581aaea157f62b8c447277fc1aefc75214fd60b9b0616f93e2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-reentered.png",
+      "bytes": 113965,
+      "sha256": "9cdd157a57e8ede81bd65c7c00325e59cbc237920b11c2612683971d28a61552"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-reentered.xml",
+      "bytes": 60250,
+      "sha256": "90373a1250ad0608def7d98fd87ba863701f21b21180a12251e978e919e981c8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-selected.json",
+      "bytes": 3632,
+      "sha256": "61c0d0e7554af5e198948a443cb82693850f169585b494d79c72d8c80dd9bcc2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-selected.png",
+      "bytes": 113973,
+      "sha256": "81602b28a90c70ce695ce53655167ad9519dc7f3bcb736040578f5d0718ee2d9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/east-selected.xml",
+      "bytes": 60251,
+      "sha256": "59fce073d132b4a7a59575e8faedb5b03498fe32d947ee7585be313216ff6e49"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/focus-trace.txt",
+      "bytes": 20913,
+      "sha256": "09a72b43f582da897a1413e2458e9a3bcc15b2992e6d850865d5bb1ee7482b51"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/initial.json",
+      "bytes": 3622,
+      "sha256": "deb7826b1a892a535d5c3862e97e522c664f73688cc2bd9dea987ffa115f851f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/initial.png",
+      "bytes": 113703,
+      "sha256": "683649f5dad5b49899e9266f7b3716e1ccebb6083ffc2d546ae26818535f7cbd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/initial.xml",
+      "bytes": 60251,
+      "sha256": "77c4d8c250a7d1e179fa602a2d6cddf32bad6b100cfa8bae50b5df4a03d7650e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/new-worksheet-focused.json",
+      "bytes": 3650,
+      "sha256": "ae0b99db7d5544fd65c99450d3597ba3422b4addd7f26942f19dcd97a415a0fb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/new-worksheet-focused.png",
+      "bytes": 114390,
+      "sha256": "f43519901f60f1d6f1fac6a502a7b92c7bc0a9d3a03e0da0a6c1a005512254c3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/new-worksheet-focused.xml",
+      "bytes": 60251,
+      "sha256": "b6eb2b35f25bcfec67f2ea0e78200f910ebb619f573c98bc0b57ec06afa5c66a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/pointer-shift-tab-west-cached.xml",
+      "bytes": 60250,
+      "sha256": "8ef07a853fcedee56edbf9946332b7c36d5394a2f919d58479229a7a64710502"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/pointer-shift-tab-west.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/pointer-tab-new-worksheet-cached.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/pointer-tab-new-worksheet.xml",
+      "bytes": 60250,
+      "sha256": "8ef07a853fcedee56edbf9946332b7c36d5394a2f919d58479229a7a64710502"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/selected-trace.txt",
+      "bytes": 494,
+      "sha256": "18cc8c30411f44ebd0d17ec80d0ddc84650fd27d0f9437c5946077c37207a3ae"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/shift-tab-east-cached.xml",
+      "bytes": 60251,
+      "sha256": "b6eb2b35f25bcfec67f2ea0e78200f910ebb619f573c98bc0b57ec06afa5c66a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/shift-tab-east.xml",
+      "bytes": 60250,
+      "sha256": "90373a1250ad0608def7d98fd87ba863701f21b21180a12251e978e919e981c8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-1-cached.xml",
+      "bytes": 60250,
+      "sha256": "a8520923ba7240d731a7c33c706f635dd8c5a925ca96450476ef3376d0f64cbc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-1-eastFocused-false.xml",
+      "bytes": 60251,
+      "sha256": "d68950d27a8e1cad6c69c841804144480866aefac1b2737b993bd061ca1c8d95"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-2-cached.xml",
+      "bytes": 60251,
+      "sha256": "d68950d27a8e1cad6c69c841804144480866aefac1b2737b993bd061ca1c8d95"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-2-eastFocused-false.xml",
+      "bytes": 60251,
+      "sha256": "91cf0ef7853c088859106418a30d5e93ea51def5d8b08ebfd9b302646c96aeec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-3-cached.xml",
+      "bytes": 60251,
+      "sha256": "91cf0ef7853c088859106418a30d5e93ea51def5d8b08ebfd9b302646c96aeec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-3-eastFocused-false.xml",
+      "bytes": 60251,
+      "sha256": "4430ce835f08971a4e9b9756b9835dde259f56d4ae110331cfde36cf980df928"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-4-cached.xml",
+      "bytes": 60251,
+      "sha256": "4430ce835f08971a4e9b9756b9835dde259f56d4ae110331cfde36cf980df928"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-4-eastFocused-false.xml",
+      "bytes": 60251,
+      "sha256": "99e3f0117e764735a4fdcd2b0649df5fce278d35fe5ead9c2bd651b6a97ef76f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-5-cached.xml",
+      "bytes": 60251,
+      "sha256": "99e3f0117e764735a4fdcd2b0649df5fce278d35fe5ead9c2bd651b6a97ef76f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-5-eastFocused-false.xml",
+      "bytes": 60251,
+      "sha256": "459ccc441edf1f22566ba6043746cbab2475719045adcac9d3a48ed72a37c91f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-6-cached.xml",
+      "bytes": 60251,
+      "sha256": "459ccc441edf1f22566ba6043746cbab2475719045adcac9d3a48ed72a37c91f"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-6-eastFocused-true.xml",
+      "bytes": 60251,
+      "sha256": "59fce073d132b4a7a59575e8faedb5b03498fe32d947ee7585be313216ff6e49"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-new-worksheet-cached.xml",
+      "bytes": 60251,
+      "sha256": "59fce073d132b4a7a59575e8faedb5b03498fe32d947ee7585be313216ff6e49"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/tab-new-worksheet.xml",
+      "bytes": 60251,
+      "sha256": "b6eb2b35f25bcfec67f2ea0e78200f910ebb619f573c98bc0b57ec06afa5c66a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-focused-cached.xml",
+      "bytes": 60251,
+      "sha256": "59fce073d132b4a7a59575e8faedb5b03498fe32d947ee7585be313216ff6e49"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-focused-targetFocused-true.xml",
+      "bytes": 60251,
+      "sha256": "9df046e6ce6238b3816f73c475006dad97042c06c03e951ca5d7f437f5e2d707"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-focused.json",
+      "bytes": 3630,
+      "sha256": "349c46fb9ff54104f21be3d5920d83b257c2aed15f4d55fe3a1a6d11ff608bc9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-focused.png",
+      "bytes": 114986,
+      "sha256": "bb8a353968987b820b69a15f6b754c16b0520471b1acfb988a8967ee018e7fe7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-focused.xml",
+      "bytes": 60251,
+      "sha256": "9df046e6ce6238b3816f73c475006dad97042c06c03e951ca5d7f437f5e2d707"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-pointer-focused-cached.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-pointer-focused.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-pointer-selected.json",
+      "bytes": 3648,
+      "sha256": "d3c46e2bad4693b07961b77d69d6d825e498f0678a6693ee18b178f888d4d09a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-pointer-selected.png",
+      "bytes": 114843,
+      "sha256": "e0f197157257103c375dad9ca7a8079dbf38aae4211f90ad683aa364f47d3533"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-pointer-selected.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-reentered-after-pointer.json",
+      "bytes": 3662,
+      "sha256": "dcaf21019c258df7a1f3abc99c6256841b115c9c54e6fc898245d68cf48e4db1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-reentered-after-pointer.png",
+      "bytes": 114843,
+      "sha256": "e0f197157257103c375dad9ca7a8079dbf38aae4211f90ad683aa364f47d3533"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-reentered-after-pointer.xml",
+      "bytes": 60250,
+      "sha256": "c13c355405ea8a2e1efed0bc00de09e44b46cbe333b0b999373bec649e49f6bc"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-selected.json",
+      "bytes": 3632,
+      "sha256": "a99c0433dab078dc84870d5fdd0bf178b1a11bede42245b8ac6c28a02d89ece0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-selected.png",
+      "bytes": 114849,
+      "sha256": "fe2340975e134f9e8b8313a7401a0b18de79f1bb9fc967712d292393b3248a79"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/final/west-selected.xml",
+      "bytes": 60251,
+      "sha256": "77a92b3a74479a7c62eac3cbf4bcda81941aa9f5de09814b1b2e352ac9a36d7e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/after-last-tab-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "b219382284685473beeab38eefa1cd47d5a15794429608c7f740be1b8d712362"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/before-first-tab.xml",
+      "bytes": 60254,
+      "sha256": "6d7e7b78a41b6cbffcb6f56eb35da8ad6098284ab49ef906692c4765146fd5e8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/east-focus-timeout.json",
+      "bytes": 3644,
+      "sha256": "bc170638fccc7adffddd6326b33c425be494af914b3c954190c2714690ff8a9c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/east-focus-timeout.png",
+      "bytes": 113211,
+      "sha256": "5bfaa736d8abac9a29a5863471cbf2791cacc39e9a9147ab3d7dd33f502bfa21"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/east-focus-timeout.xml",
+      "bytes": 60254,
+      "sha256": "b219382284685473beeab38eefa1cd47d5a15794429608c7f740be1b8d712362"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/focus-trace.txt",
+      "bytes": 38800,
+      "sha256": "a4f20e50b56a114221d326fe2fc6db3a365dd12dd81353598f9187148aa0e78d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/initial.json",
+      "bytes": 3622,
+      "sha256": "3e9dd78f1976d76cd052ab1534f18d3ac952acb0d5ee7b3b2d5e0cd93b4cca09"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/initial.png",
+      "bytes": 112417,
+      "sha256": "7c25730ab3f7b0aea884de4c1db769a72fecca80dbc1810c374c6f4b2ad2a9c8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/initial.xml",
+      "bytes": 60254,
+      "sha256": "6d7e7b78a41b6cbffcb6f56eb35da8ad6098284ab49ef906692c4765146fd5e8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/selected-trace.txt",
+      "bytes": 91,
+      "sha256": "643557903e24f240a99fcaada451de7a49ef7412885e75962df42e2a9900be14"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-1-cached.xml",
+      "bytes": 60254,
+      "sha256": "6d7e7b78a41b6cbffcb6f56eb35da8ad6098284ab49ef906692c4765146fd5e8"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-1-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "c3d777fcb1d180f1d683fe1132903b3168e6772c403c318518438804b724f490"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-10-cached.xml",
+      "bytes": 60254,
+      "sha256": "4bf64c2381799416ba72980567208d1af437c56528881084cceffbc1eff042d7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-10-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "5501ba66f595ff53207d375c743571184198afae8012c34487970bd15dc0b117"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-11-cached.xml",
+      "bytes": 60254,
+      "sha256": "5501ba66f595ff53207d375c743571184198afae8012c34487970bd15dc0b117"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-11-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "f86dddb187d1d53633e6f16cfb151743f8be9a80beca865c45daa497bcacf807"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-12-cached.xml",
+      "bytes": 60254,
+      "sha256": "f86dddb187d1d53633e6f16cfb151743f8be9a80beca865c45daa497bcacf807"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-12-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "95500022177a752ce4e1bc8fbeb526b7633ab5af0f55036fdb1da80d95eecd73"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-13-cached.xml",
+      "bytes": 60254,
+      "sha256": "95500022177a752ce4e1bc8fbeb526b7633ab5af0f55036fdb1da80d95eecd73"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-13-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "e9c00006b18687f6276ff4363e04f60dc154b57e24732e20177f6e5e312a090c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-14-cached.xml",
+      "bytes": 60254,
+      "sha256": "e9c00006b18687f6276ff4363e04f60dc154b57e24732e20177f6e5e312a090c"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-14-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "ab273a168daf082ccbd06e7bedc02cb1e1ed06aa592cbf3a91d2401f53396919"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-15-cached.xml",
+      "bytes": 60254,
+      "sha256": "ab273a168daf082ccbd06e7bedc02cb1e1ed06aa592cbf3a91d2401f53396919"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-15-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "544f3623c123dc960b11e37b249efa84e740a8eecc13464b49c3ef54db462686"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-16-cached.xml",
+      "bytes": 60254,
+      "sha256": "544f3623c123dc960b11e37b249efa84e740a8eecc13464b49c3ef54db462686"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-16-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "265d88a181c622299345664546285f62efab9399dd08c2c3adcbca043eee1918"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-17-cached.xml",
+      "bytes": 60254,
+      "sha256": "265d88a181c622299345664546285f62efab9399dd08c2c3adcbca043eee1918"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-17-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "e16c0f36d0c498d5a50b88f7c606f8eef9187932d5d1ff4c4dc062d98b1e6158"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-18-cached.xml",
+      "bytes": 60254,
+      "sha256": "e16c0f36d0c498d5a50b88f7c606f8eef9187932d5d1ff4c4dc062d98b1e6158"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-18-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "92b6cb2c6955c63ed209ba64961c1a28f4960842e38e26787b9e88f5ccd13f62"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-19-cached.xml",
+      "bytes": 60254,
+      "sha256": "92b6cb2c6955c63ed209ba64961c1a28f4960842e38e26787b9e88f5ccd13f62"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-19-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "f47ae9aca049a73ae443e303b87c5332b6602bb405fcac1a86526ea66bf4c6c1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-2-cached.xml",
+      "bytes": 60254,
+      "sha256": "c3d777fcb1d180f1d683fe1132903b3168e6772c403c318518438804b724f490"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-2-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "b65807592bedbaf4141fe8005e6f9019ee48b73e1b6f1fc9daf44a30b70e5df9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-20-cached.xml",
+      "bytes": 60254,
+      "sha256": "f47ae9aca049a73ae443e303b87c5332b6602bb405fcac1a86526ea66bf4c6c1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-20-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "125d06427cbfc158834152e2267bfce232a667cfe051a736a769c245df40f135"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-21-cached.xml",
+      "bytes": 60254,
+      "sha256": "125d06427cbfc158834152e2267bfce232a667cfe051a736a769c245df40f135"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-21-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "9f31092079532d240487d5182823e704c958e86e88767b6be12997232231de67"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-22-cached.xml",
+      "bytes": 60254,
+      "sha256": "9f31092079532d240487d5182823e704c958e86e88767b6be12997232231de67"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-22-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "2433d7f29d8381121f5f73f855ade9e4ef2199761921901c87cdab000a1e17af"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-23-cached.xml",
+      "bytes": 60254,
+      "sha256": "2433d7f29d8381121f5f73f855ade9e4ef2199761921901c87cdab000a1e17af"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-23-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "74fc523be3e9af2685ba82cf6b92ef348446d0eec8e01e00cd0fa7e194db7418"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-24-cached.xml",
+      "bytes": 60254,
+      "sha256": "74fc523be3e9af2685ba82cf6b92ef348446d0eec8e01e00cd0fa7e194db7418"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-24-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "b219382284685473beeab38eefa1cd47d5a15794429608c7f740be1b8d712362"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-3-cached.xml",
+      "bytes": 60254,
+      "sha256": "b65807592bedbaf4141fe8005e6f9019ee48b73e1b6f1fc9daf44a30b70e5df9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-3-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "31d1e778f03ddf9cdea5f1e9adf0f4e1e53fdc1030aec86b1657ec9d26f0a395"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-4-cached.xml",
+      "bytes": 60254,
+      "sha256": "31d1e778f03ddf9cdea5f1e9adf0f4e1e53fdc1030aec86b1657ec9d26f0a395"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-4-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "ccdfe56d87f104a76d3997ccd6b30cb3e63aafba18e83f37d9000182c9ee6786"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-5-cached.xml",
+      "bytes": 60254,
+      "sha256": "ccdfe56d87f104a76d3997ccd6b30cb3e63aafba18e83f37d9000182c9ee6786"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-5-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "4b05e2327e3701bfcc47eb49f09727961e7234265a641da8dee9dea5e5c88505"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-6-cached.xml",
+      "bytes": 60254,
+      "sha256": "4b05e2327e3701bfcc47eb49f09727961e7234265a641da8dee9dea5e5c88505"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-6-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "ca1e23da4c9efafa2e3fa24b1185df52a58ed3bc65e9f8ae69f9a868111b2d18"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-7-cached.xml",
+      "bytes": 60254,
+      "sha256": "ca1e23da4c9efafa2e3fa24b1185df52a58ed3bc65e9f8ae69f9a868111b2d18"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-7-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "4eed2b365ffa46d7323a8f14c357c6391af3a9d5c70f509f8be48c0968555948"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-8-cached.xml",
+      "bytes": 60254,
+      "sha256": "4eed2b365ffa46d7323a8f14c357c6391af3a9d5c70f509f8be48c0968555948"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-8-eastFocused-false.xml",
+      "bytes": 136842,
+      "sha256": "d0242b29a764333a66bb3146cc8be2336af0b8d86714de9f19da8701dd27962d"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-9-cached.xml",
+      "bytes": 60254,
+      "sha256": "4bf64c2381799416ba72980567208d1af437c56528881084cceffbc1eff042d7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/focus-race/tab-9-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "4bf64c2381799416ba72980567208d1af437c56528881084cceffbc1eff042d7"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/after-last-tab-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "c066c2ef94ecf9ea9dd2c19a5db27a1a010793404636fc01bf5f040ef73a39b3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/before-first-tab.xml",
+      "bytes": 60254,
+      "sha256": "e7cd3eff2c51a316584c7e55d6f388bbba7114681854a8d1b9d0590c8ebf2bef"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/east-focus-timeout.json",
+      "bytes": 3643,
+      "sha256": "846a7cedc0c116b85dee6d48e572e174eb77e89bba4ed00311b1ff93a58bf41e"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/east-focus-timeout.png",
+      "bytes": 115236,
+      "sha256": "2b533c7f99efc3df07107adad27821f470c811e3073efa637d9bf2ec1e87eb2b"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/east-focus-timeout.xml",
+      "bytes": 60254,
+      "sha256": "c066c2ef94ecf9ea9dd2c19a5db27a1a010793404636fc01bf5f040ef73a39b3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/focus-trace.txt",
+      "bytes": 38792,
+      "sha256": "2539cf8479a647cbad4dbaaa0af3925734d72ce176db14bafddbd1d569ccc166"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/initial.json",
+      "bytes": 3622,
+      "sha256": "68e43b4b4573870dce893e492b45072a8c5943f3c5bd8132fdc02b44d5a61ab2"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/initial.png",
+      "bytes": 114453,
+      "sha256": "dbd59cd7a91c7915060d86a4574417a53e4a09561045a28c5e224087839ba0ec"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/initial.xml",
+      "bytes": 60254,
+      "sha256": "e7cd3eff2c51a316584c7e55d6f388bbba7114681854a8d1b9d0590c8ebf2bef"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/selected-trace.txt",
+      "bytes": 91,
+      "sha256": "643557903e24f240a99fcaada451de7a49ef7412885e75962df42e2a9900be14"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-1-cached.xml",
+      "bytes": 60253,
+      "sha256": "6b5d857de48167a02d62a784bdeff870b186e0bc81a60f19cfad375c0cc93b28"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-1-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "fb5ed17fe08a03b6bb831ba303dc0f76b3fc6b2236c5fce539b3304742711991"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-10-cached.xml",
+      "bytes": 60254,
+      "sha256": "27c7dfe04e55b21ec3005ba965d5f8531365b2230fc1ea9cf6a2a6ec86134ceb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-10-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "37cffd81cf5e6cb543f2eb0fa8941f2fda91fae6fa53966aaaf360258fe8cab1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-11-cached.xml",
+      "bytes": 60254,
+      "sha256": "37cffd81cf5e6cb543f2eb0fa8941f2fda91fae6fa53966aaaf360258fe8cab1"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-11-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "63d94b24ed19163acce8f55129da92420b80807dc11d049368e3b7d80bb4b5de"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-12-cached.xml",
+      "bytes": 60254,
+      "sha256": "63d94b24ed19163acce8f55129da92420b80807dc11d049368e3b7d80bb4b5de"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-12-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "65e12816594f9d284e8db5fbc3abfb823b820cda671bc0b61afbfe2370dffd99"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-13-cached.xml",
+      "bytes": 60254,
+      "sha256": "65e12816594f9d284e8db5fbc3abfb823b820cda671bc0b61afbfe2370dffd99"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-13-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "af68fac289e646f358b07b7c59e746c21702a84deecfda76ed46d39550d8a8d0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-14-cached.xml",
+      "bytes": 60254,
+      "sha256": "af68fac289e646f358b07b7c59e746c21702a84deecfda76ed46d39550d8a8d0"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-14-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "4848939769f496b1be24933424264ab546ff0119f3ba3f081d84807d587fac55"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-15-cached.xml",
+      "bytes": 60254,
+      "sha256": "4848939769f496b1be24933424264ab546ff0119f3ba3f081d84807d587fac55"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-15-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "59402594b53ecd46ed5da4b0ab457d72e715db6a8e2734d3ace983c7eadaa0bd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-16-cached.xml",
+      "bytes": 60254,
+      "sha256": "59402594b53ecd46ed5da4b0ab457d72e715db6a8e2734d3ace983c7eadaa0bd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-16-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "12e8a1190032c65c2cb2417d4b7700e016432061cde18ad19fec751e47d1c920"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-17-cached.xml",
+      "bytes": 60254,
+      "sha256": "12e8a1190032c65c2cb2417d4b7700e016432061cde18ad19fec751e47d1c920"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-17-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "a6a5b30bcad60e56ffffeadbe1fa099c55c01c957b2a96ca0878dd6b0a77980a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-18-cached.xml",
+      "bytes": 60254,
+      "sha256": "a6a5b30bcad60e56ffffeadbe1fa099c55c01c957b2a96ca0878dd6b0a77980a"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-18-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "53349ae0494cd3d7fefb86f814732e8f9f964f1243e0824d1b5a765ada76a101"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-19-cached.xml",
+      "bytes": 60254,
+      "sha256": "53349ae0494cd3d7fefb86f814732e8f9f964f1243e0824d1b5a765ada76a101"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-19-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "e27cde9318c8f12240bbd70a41411d7b29d0c0194731e71d53a315fc9a5080cd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-2-cached.xml",
+      "bytes": 60254,
+      "sha256": "fb5ed17fe08a03b6bb831ba303dc0f76b3fc6b2236c5fce539b3304742711991"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-2-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "2ed2c2d81be06f046126466aac02327ae4ffffc3630b3fa1527f308115a67643"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-20-cached.xml",
+      "bytes": 60254,
+      "sha256": "e27cde9318c8f12240bbd70a41411d7b29d0c0194731e71d53a315fc9a5080cd"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-20-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "33a0f7846db1f36c5aaf51b39d1b8b19e99b0d43121e9cba44a3c06b2b48d6c5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-21-cached.xml",
+      "bytes": 60254,
+      "sha256": "33a0f7846db1f36c5aaf51b39d1b8b19e99b0d43121e9cba44a3c06b2b48d6c5"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-21-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "cf29abc948a2464becfd9ff6f58ea16f8fdd6b61c0c27213c46c4b062ec967bb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-22-cached.xml",
+      "bytes": 60254,
+      "sha256": "cf29abc948a2464becfd9ff6f58ea16f8fdd6b61c0c27213c46c4b062ec967bb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-22-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "36f0148e7de5096089c5f31d2d0a947d94ab93929cb814950a8aaa4bd1efd6b3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-23-cached.xml",
+      "bytes": 60254,
+      "sha256": "36f0148e7de5096089c5f31d2d0a947d94ab93929cb814950a8aaa4bd1efd6b3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-23-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "5eb0c79c3d77f4200c054119ee2763ace53b6cc866dad1dca06205ff9c1a9d67"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-24-cached.xml",
+      "bytes": 60254,
+      "sha256": "5eb0c79c3d77f4200c054119ee2763ace53b6cc866dad1dca06205ff9c1a9d67"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-24-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "c066c2ef94ecf9ea9dd2c19a5db27a1a010793404636fc01bf5f040ef73a39b3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-3-cached.xml",
+      "bytes": 60254,
+      "sha256": "2ed2c2d81be06f046126466aac02327ae4ffffc3630b3fa1527f308115a67643"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-3-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "f6d18da3bbd0b8289543dab3085afaeb9f8cab4bf159730f994c8df37993afa9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-4-cached.xml",
+      "bytes": 60254,
+      "sha256": "f6d18da3bbd0b8289543dab3085afaeb9f8cab4bf159730f994c8df37993afa9"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-4-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "f52a786a147601b228f61aa102ff86b29ec87415d1d045da82468549e0191247"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-5-cached.xml",
+      "bytes": 60254,
+      "sha256": "f52a786a147601b228f61aa102ff86b29ec87415d1d045da82468549e0191247"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-5-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "0050794cdf83c88758bf142b15d8676c96bf34fcb7cb3940c959d5ff8e628a04"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-6-cached.xml",
+      "bytes": 60254,
+      "sha256": "0050794cdf83c88758bf142b15d8676c96bf34fcb7cb3940c959d5ff8e628a04"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-6-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "8ee15486d9b117fa54563a73c02c0b0c1eabecb4e825429448bd9c5c14110500"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-7-cached.xml",
+      "bytes": 60254,
+      "sha256": "8ee15486d9b117fa54563a73c02c0b0c1eabecb4e825429448bd9c5c14110500"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-7-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "b1290e912600b32bc014c06f4be6cd1d0be8ad4d01d457b8c85b0abe13eb1d22"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-8-cached.xml",
+      "bytes": 60254,
+      "sha256": "b1290e912600b32bc014c06f4be6cd1d0be8ad4d01d457b8c85b0abe13eb1d22"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-8-eastFocused-false.xml",
+      "bytes": 136842,
+      "sha256": "ed674f78f4df94c48f4d06580764048e85970a66b7a19144009f078987d57840"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-9-cached.xml",
+      "bytes": 138049,
+      "sha256": "802250235300badad10780bed97bcf58ce6251bba975302442a7f0742bd51ec3"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/full-suite-focus/tab-9-eastFocused-false.xml",
+      "bytes": 60254,
+      "sha256": "27c7dfe04e55b21ec3005ba965d5f8531365b2230fc1ea9cf6a2a6ec86134ceb"
+    },
+    {
+      "group": "native-artifact",
+      "path": "qualification/evidence/android-test-results/2026-10-22-s022-roving/diagnostics/shortcut-intent-prior-head.txt",
+      "bytes": 1977,
+      "sha256": "7c977280f32fcc45b073b0ad4b108e5aaa456a2491df752ed3ebad84f43035ae"
+    }
+  ]
+}

@@ -63,8 +63,10 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
@@ -607,6 +609,8 @@ private fun SaveBadge(save: SaveState) {
     }
 }
 
+private data class WorkbookTabItem(val id: String, val label: String)
+
 @Composable
 private fun WorkbookTabStrip(
     document: WorkbookDocument,
@@ -616,28 +620,100 @@ private fun WorkbookTabStrip(
 ) {
     val colors = LocalCloudyColors.current
     val density = LocalCloudyDensity.current
+    val tabs = remember(document.worksheets) {
+        listOf(WorkbookTabItem(DATA_TAB, "Data source")) +
+            document.worksheets.map { WorkbookTabItem(it.id, it.name) }
+    }
+    val selectedIndex = tabs.indexOfFirst { it.id == activeTab }.coerceAtLeast(0)
+    var rovingIndex by remember { mutableIntStateOf(selectedIndex) }
+    var focusableIndex by remember { mutableIntStateOf(selectedIndex) }
+    var focusTransitionIndex by remember { mutableStateOf<Int?>(null) }
+    var pendingFocusIndex by remember { mutableStateOf<Int?>(null) }
+    var stripHasFocus by remember { mutableStateOf(false) }
+    LaunchedEffect(selectedIndex) {
+        rovingIndex = selectedIndex
+        if (stripHasFocus) {
+            focusTransitionIndex = selectedIndex
+            pendingFocusIndex = selectedIndex
+        } else {
+            focusableIndex = selectedIndex
+            focusTransitionIndex = null
+        }
+    }
+    LaunchedEffect(tabs.size) {
+        if (rovingIndex !in tabs.indices) {
+            rovingIndex = selectedIndex
+            focusableIndex = selectedIndex
+        }
+        if (focusTransitionIndex !in tabs.indices) focusTransitionIndex = null
+        if (pendingFocusIndex !in tabs.indices) pendingFocusIndex = null
+    }
+    val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
+    LaunchedEffect(pendingFocusIndex, rovingIndex) {
+        pendingFocusIndex?.let { index ->
+            if (index == rovingIndex) {
+                tabs.getOrNull(index)?.let { focusRequesters[it.id]?.requestFocus() }
+            }
+            pendingFocusIndex = null
+        }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp)
             .background(colors.surfaceMuted)
             .horizontalScroll(rememberScrollState())
+            .focusGroup()
             .selectableGroup()
+            .onPreviewKeyEvent { event ->
+                if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                val nextIndex = when (event.key) {
+                    Key.DirectionRight -> (rovingIndex + 1).coerceAtMost(tabs.lastIndex)
+                    Key.DirectionLeft -> (rovingIndex - 1).coerceAtLeast(0)
+                    else -> return@onPreviewKeyEvent false
+                }
+                if (nextIndex != rovingIndex) {
+                    rovingIndex = nextIndex
+                    focusTransitionIndex = nextIndex
+                    pendingFocusIndex = nextIndex
+                }
+                true
+            }
             .padding(horizontal = density.spaceSmall),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        WorkbookTab(
-            label = "Data source",
-            selected = activeTab == DATA_TAB,
-            onClick = { onSelect(DATA_TAB) },
-            leadingIcon = Icons.Default.List,
-        )
-        document.worksheets.forEach { sheet ->
-            key(sheet.id) {
+        tabs.forEachIndexed { index, tab ->
+            key(tab.id) {
+                val requester = remember(tab.id) {
+                    focusRequesters.getOrPut(tab.id) { FocusRequester() }
+                }
                 WorkbookTab(
-                    label = sheet.name,
-                    selected = activeTab == sheet.id,
-                    onClick = { onSelect(sheet.id) },
+                    label = tab.label,
+                    selected = activeTab == tab.id,
+                    canFocus = index == focusableIndex || index == focusTransitionIndex,
+                    focusRequester = requester,
+                    onFocused = { focused ->
+                        if (focused) {
+                            stripHasFocus = true
+                            rovingIndex = index
+                            focusableIndex = index
+                            focusTransitionIndex = null
+                        } else if (index == focusableIndex) {
+                            stripHasFocus = false
+                            pendingFocusIndex = null
+                            focusTransitionIndex = null
+                        }
+                    },
+                    onClick = {
+                        rovingIndex = index
+                        if (stripHasFocus) {
+                            focusTransitionIndex = index
+                            pendingFocusIndex = index
+                        } else {
+                            focusableIndex = index
+                        }
+                        onSelect(tab.id)
+                    },
                     leadingIcon = Icons.Default.List,
                 )
             }
@@ -650,6 +726,9 @@ private fun WorkbookTabStrip(
 private fun WorkbookTab(
     label: String,
     selected: Boolean,
+    canFocus: Boolean,
+    focusRequester: FocusRequester,
+    onFocused: (Boolean) -> Unit,
     onClick: () -> Unit,
     leadingIcon: androidx.compose.ui.graphics.vector.ImageVector,
 ) {
@@ -667,7 +746,12 @@ private fun WorkbookTab(
                 color = if (focused) colors.focus else androidx.compose.ui.graphics.Color.Transparent,
                 shape = shape,
             )
-            .onFocusChanged { focused = it.isFocused }
+            .focusProperties { this.canFocus = canFocus }
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                focused = it.isFocused
+                onFocused(it.isFocused)
+            }
             .selectable(selected = selected, role = Role.Tab, onClick = onClick)
             .padding(horizontal = density.spaceMedium),
         verticalAlignment = Alignment.CenterVertically,
