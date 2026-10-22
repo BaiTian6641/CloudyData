@@ -14,12 +14,12 @@
   "effectiveAppearance": "Light",
   "configurationNightMode": 16,
   "captionInsetsPx": "Insets{left=0, top=0, right=0, bottom=0}",
-  "taskId": 4428,
+  "taskId": 4469,
   "phase": "overflow-opens-selected-tab",
-  "workbookId": "6bb21641-a441-4880-8126-ff670a54e758",
-  "canonicalActiveWorksheetId": "e370fec4-598f-43dd-a368-86df86b89932",
-  "visibleActiveWorksheetId": "e370fec4-598f-43dd-a368-86df86b89932",
-  "queryWorksheetId": "e370fec4-598f-43dd-a368-86df86b89932",
+  "workbookId": "772e3029-451f-47b0-a7f0-1ec4864cf8bd",
+  "canonicalActiveWorksheetId": "c4d9a01b-4b8e-446b-aa36-88dd5c4d371e",
+  "visibleActiveWorksheetId": "c4d9a01b-4b8e-446b-aa36-88dd5c4d371e",
+  "queryWorksheetId": "c4d9a01b-4b8e-446b-aa36-88dd5c4d371e",
   "queryRows": "[[East, 15]]",
   "expectedSelectedTab": "Overflow 20",
   "tabs": [
@@ -434,8 +434,8 @@
     }
   ],
   "dataSourceSurfaceVisible": false,
-  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-618895d6-b253-4ce2-96bd-23a875d61c15\/overflow-opens-selected-tab.png",
-  "captureSha256": "f8a2c641f665382bdfef96bb5f275eccf4c31326986c1af41b3de56cc9b1efc6",
+  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-e54b58e5-23fc-4e51-a789-92bf031d9cdd\/overflow-opens-selected-tab.png",
+  "captureSha256": "6c96caf66c8bd35b4a571a602401bfe21deb4b5374993757161740b1d92926ca",
   "captureWidthPx": 2880,
   "captureHeightPx": 1800
 }

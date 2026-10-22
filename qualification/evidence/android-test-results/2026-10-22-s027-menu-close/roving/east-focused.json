@@ -14,12 +14,12 @@
   "effectiveAppearance": "Light",
   "configurationNightMode": 16,
   "captionInsetsPx": "Insets{left=0, top=0, right=0, bottom=0}",
-  "taskId": 4430,
+  "taskId": 4471,
   "phase": "east-focused",
-  "workbookId": "5016f65b-3cea-4fed-930a-783c17f077a2",
-  "canonicalActiveWorksheetId": "5243c221-4ff3-417c-8d5c-2f4e9d74b1e2",
-  "visibleActiveWorksheetId": "5243c221-4ff3-417c-8d5c-2f4e9d74b1e2",
-  "queryWorksheetId": "5243c221-4ff3-417c-8d5c-2f4e9d74b1e2",
+  "workbookId": "989d8770-e505-41f6-89e0-0dd1d3c3b60e",
+  "canonicalActiveWorksheetId": "0765770f-ac32-4b78-8286-15973c5d5e60",
+  "visibleActiveWorksheetId": "0765770f-ac32-4b78-8286-15973c5d5e60",
+  "queryWorksheetId": "0765770f-ac32-4b78-8286-15973c5d5e60",
   "queryRows": "[[East, 15]]",
   "expectedSelectedTab": "East15",
   "tabs": [
@@ -434,8 +434,8 @@
     }
   ],
   "dataSourceSurfaceVisible": false,
-  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-80286553-eec3-4c09-83e7-52d3b3d95f00\/east-focused.png",
-  "captureSha256": "bd72fdfcb925b04c850631379f4dda0cf44349aee3c88aa24ebc79a8df70e8c9",
+  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-02eca3c5-cdd3-4272-979c-67569e137cec\/east-focused.png",
+  "captureSha256": "720882cf4960ee81746daa4d40b6ef12a17995aace106f28a9d46c68e4e60777",
   "captureWidthPx": 2880,
   "captureHeightPx": 1800
 }

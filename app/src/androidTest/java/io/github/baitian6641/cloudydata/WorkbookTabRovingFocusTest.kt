@@ -292,6 +292,7 @@ class WorkbookTabRovingFocusTest {
         // scrolls, without changing the selected West20 worksheet and without
         // pressing an arrow at either endpoint.
         var farFocused = westReentered
+        val overflowBoundsBefore = tabPinnedBounds()
         repeat(20) { index ->
             val target = "Overflow %02d".format(index + 1)
             val poll = pressArrowAndRequireFocus(
@@ -318,6 +319,8 @@ class WorkbookTabRovingFocusTest {
             assertFocusedTabVisible(target, poll, "overflow-left-${index + 1}")
         }
         recordCapture("overflow-east-focused", farFocused, west.name)
+        assertEquals("The pinned overflow menu action must not move while tabs scroll",
+            overflowBoundsBefore, tabPinnedBounds())
 
         val reopened = store.loadCheckpoint(document.id)
         assertEquals("The persisted checkpoint must not change", checkpoint, reopened)
@@ -471,6 +474,10 @@ class WorkbookTabRovingFocusTest {
             SystemClock.sleep(200)
             instrumentation.waitForIdleSync()
         }
+        val eastRowSelector = By.clickable(true).focused(true).hasDescendant(By.text(east.name))
+        instrumentation.uiAutomation.clearCache()
+        assertTrue("The open overflow menu must focus the first worksheet entry",
+            device.wait(Until.hasObject(eastRowSelector), 3_000))
         val westRowSelector = By.clickable(true).focused(true).hasDescendant(By.text(west.name))
         instrumentation.uiAutomation.clearCache()
         var westRowFocused = device.hasObject(westRowSelector)
@@ -508,13 +515,22 @@ class WorkbookTabRovingFocusTest {
             device.pressKeyCode(KeyEvent.KEYCODE_ESCAPE))
         assertTrue("Escape must close the worksheet overflow menu",
             device.wait(Until.gone(menuOpenSelector()), UI_TIMEOUT_MS))
+        val escapeFocus = pollFreshFocus(::isOverflowMenuFocus, UI_TIMEOUT_MS, "menu-escape-focus")
+        recordFocusStep("menu-escape-focus", escapeFocus)
+        assertTrue("Escape must return focus to the pinned overflow menu action", escapeFocus.matched)
         assertEquals("Menu keyboard interaction must not persist anything",
             checkpoint, store.loadCheckpoint(document.id))
 
-        // Pointer route: activate the clipped Overflow 20 entry from the menu;
-        // selection changes and focus returns to the newly visible tab.
+        // Pointer route: the menu lists every worksheet; activating the clipped
+        // Overflow 20 entry selects it and returns focus to the newly visible tab.
         openOverflowMenu()
-        clickMenuEntry(overflow20.name)
+        val allNames = document.worksheets.map { it.name }.toSet()
+        val topLabels = visibleMenuLabels(allNames)
+        val overflow20Node = scrollMenuIntoView(overflow20.name)
+        assertNotNull("The overflow menu must expose the clipped Overflow 20 worksheet", overflow20Node)
+        assertEquals("The overflow menu must list every worksheet",
+            allNames, topLabels + visibleMenuLabels(allNames))
+        overflow20Node!!.click()
         val selected = requireSheet(overflow20.id, "East", "15")
         recordCapture("menu-selected-overflow-20", selected, overflow20.name)
         val selectedFocus = pollFreshFocus({ focusedTabLabel(it) == overflow20.name },
@@ -523,7 +539,8 @@ class WorkbookTabRovingFocusTest {
         assertTrue("Selecting a clipped tab from the overflow menu must return focus to that tab",
             selectedFocus.matched)
 
-        // Closing the unselected East15 keeps the Overflow 20 selection and focus.
+        // Pointer close of the unselected first worksheet East15 keeps the
+        // Overflow 20 selection and focus.
         openOverflowMenu()
         clickMenuEntryClose(east.name)
         val afterEastRemoval = awaitSavedDocument(checkpoint.document.revision + 1) { doc ->
@@ -537,10 +554,12 @@ class WorkbookTabRovingFocusTest {
         assertTrue("Closing an unselected worksheet must return focus to the selected tab",
             keptFocus.matched)
 
-        // Closing the selected Overflow 20 moves selection and focus to the
-        // Overflow 19 neighbor.
-        openOverflowMenu()
-        clickMenuEntryClose(overflow20.name)
+        // Keyboard close: Delete on the focused selected Overflow 20 tab removes
+        // it and moves selection and focus to the Overflow 19 neighbor.
+        recordFocusStep("menu-before-delete")
+        assertTrue("Native Delete must reach the focused Overflow 20 tab",
+            device.pressKeyCode(KeyEvent.KEYCODE_FORWARD_DEL))
+        recordFocusStep("menu-after-delete")
         val afterSelectedRemoval = awaitSavedDocument(afterEastRemoval.revision + 1) { doc ->
             doc.worksheets.none { it.id == overflow20.id }
         }
@@ -555,21 +574,48 @@ class WorkbookTabRovingFocusTest {
         assertTrue("Closing the selected worksheet must return focus to the newly selected neighbor",
             neighborFocus.matched)
 
+        // West is now the first worksheet: select it, then close it through the
+        // menu so the selected-first fallback selects the next neighbor.
+        val overflow01 = document.worksheets.single { it.name == "Overflow 01" }
+        openOverflowMenu()
+        clickMenuEntry(west.name)
+        val westSelected = requireSheet(west.id, "West", "20")
+        recordCapture("menu-selected-west-first", westSelected, west.name)
+        openOverflowMenu()
+        clickMenuEntryClose(west.name)
+        val afterWestRemoval = awaitSavedDocument(afterSelectedRemoval.revision + 1) { doc ->
+            doc.worksheets.none { it.id == west.id }
+        }
+        assertEquals(afterSelectedRemoval.worksheets.filterNot { it.id == west.id },
+            afterWestRemoval.worksheets)
+        assertEquals("Closing the first selected worksheet must select the next neighbor",
+            overflow01.id, afterWestRemoval.activeWorksheetId)
+        val first = requireSheet(overflow01.id, "East", "15")
+        recordCapture("menu-close-first-selected", first, overflow01.name)
+        val firstFocus = pollFreshFocus({ focusedTabLabel(it) == overflow01.name },
+            UI_TIMEOUT_MS, "menu-close-first-focus")
+        recordFocusStep("menu-close-first-focus", firstFocus)
+        assertTrue("Closing the first selected worksheet must focus the next neighbor",
+            firstFocus.matched)
+
         // Durable receipts, undo history, and the canonical byte oracle.
         val reopened = store.loadCheckpoint(document.id)
         // The persisted activeWorksheetId is the canonical reopen hint: East's
-        // removal moved it to West; the view-local Overflow selections are not persisted.
-        assertEquals(west.id, reopened.document.activeWorksheetId)
-        assertEquals(afterSelectedRemoval.copy(activeWorksheetId = west.id), reopened.document)
-        assertEquals(checkpoint.receipts.size + 2, reopened.receipts.size)
-        val removes = reopened.receipts.takeLast(2).map { it.command }
-        assertEquals(listOf(east.id, overflow20.id),
+        // removal moved it to West; West's removal moved it to Overflow 01. The
+        // view-local selection agrees after the final close.
+        assertEquals(overflow01.id, reopened.document.activeWorksheetId)
+        assertEquals(afterWestRemoval, reopened.document)
+        assertEquals(checkpoint.receipts.size + 3, reopened.receipts.size)
+        val removes = reopened.receipts.takeLast(3).map { it.command }
+        assertEquals(listOf(east.id, overflow20.id, west.id),
             removes.map { (it as WorkbookCommand.RemoveWorksheet).worksheetId })
-        assertEquals(listOf(checkpoint.document.revision, checkpoint.document.revision + 1),
+        assertEquals(listOf(checkpoint.document.revision, checkpoint.document.revision + 1,
+                checkpoint.document.revision + 2),
             removes.map { it.expectedRevision })
         assertEquals("Each removal must snapshot its predecessor for undo",
-            listOf(checkpoint.document, afterEastRemoval.copy(activeWorksheetId = west.id)),
-            reopened.undo.takeLast(2))
+            listOf(checkpoint.document, afterEastRemoval.copy(activeWorksheetId = west.id),
+                afterSelectedRemoval.copy(activeWorksheetId = west.id)),
+            reopened.undo.takeLast(3))
         val bytes = File(store.workbookDir(document.id), "workbook.json").readBytes()
         assertFalse("The removals must publish new canonical bytes", canonical.contentEquals(bytes))
         assertEquals(reopened.document, WorkbookDocument.fromJson(JSONObject(bytes.toString(Charsets.UTF_8))))
@@ -614,6 +660,26 @@ class WorkbookTabRovingFocusTest {
                     close.visibleBounds.left - node.visibleBounds.right in -20..300
             }
         }
+    }
+
+    /** Labels currently rendered as menu entries (row-mate to a Close control). */
+    private fun visibleMenuLabels(names: Set<String>): Set<String> {
+        val closes = device.findObjects(closeTextSelector()).map { it.visibleBounds }
+        if (closes.isEmpty()) return emptySet()
+        val labels = mutableSetOf<String>()
+        for (node in device.findObjects(By.pkg(context.packageName).clazz("android.widget.TextView"))) {
+            val text = node.text ?: continue
+            if (text !in names) continue
+            val bounds = node.visibleBounds
+            if (closes.any { close ->
+                    kotlin.math.abs(close.centerY() - bounds.centerY()) < 30 &&
+                        close.left - bounds.right in -20..300
+                }
+            ) {
+                labels += text
+            }
+        }
+        return labels
     }
 
     /** Find a menu entry label, swiping inside the popup bounds until it renders. */
@@ -832,12 +898,29 @@ class WorkbookTabRovingFocusTest {
         return false
     }
 
+    private fun tabPinnedBounds(): Rect {
+        val button = device.findObject(By.desc(OVERFLOW_MENU_LABEL))
+        assertNotNull("The pinned overflow menu action must exist", button)
+        return button!!.visibleBounds
+    }
+
     private fun isOverflowMenuFocus(node: AccessibilityNodeInfo): Boolean {
         var current: AccessibilityNodeInfo? = node
         var depth = 0
         while (current != null && depth++ < 12) {
             if (current.contentDescription?.toString() == OVERFLOW_MENU_LABEL && current.isClickable) return true
             current = current.parent
+        }
+        return false
+    }
+
+    /** True when the node or one of its descendants carries the exact label. */
+    private fun nodeHasText(node: AccessibilityNodeInfo?, label: String): Boolean {
+        if (node == null) return false
+        if (node.text?.toString() == label) return true
+        for (index in 0 until node.childCount) {
+            val child = node.getChild(index) ?: continue
+            if (nodeHasText(child, label)) return true
         }
         return false
     }

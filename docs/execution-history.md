@@ -1416,3 +1416,11 @@ Final emulator suite: 27 tests, 0 failures; JVM suite: 18 tests, 0 failures.
   full-suite residuals (dual-Activity visibility, also failing on the unmodified
   `26c97dc` baseline; 1 px chart export rounding) are documented as
   environmental in `qualification/evidence/2026-10-22-s027-overflow-menu-close-focus.md`.
+  - Independent review resolutions: identity-anchored focus remapping on every
+    tab-list change (no out-of-range focus hole), close disabled for the final
+    worksheet with no dead focus-transfer slot, single-focus menu rows with the
+    keyboard close on a strip Delete/Backspace shortcut, and tightened oracles
+    (first-entry menu focus, Escape focus return, full worksheet-set listing,
+    selected-first close, pinned overflow bounds constancy, empty/oversize
+    identity matrix with refusal-then-reuse). Post-review full emulator suite
+    **247/247** and targeted tab/removal suites **4/4 + 6/6** pass.

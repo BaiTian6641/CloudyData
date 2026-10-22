@@ -42,9 +42,10 @@ partial and S13.C0/S15.C0 absent; no worker-backed dependency is claimed.
   removing another sheet leaves the view's selection untouched.
 - The tab strip gains a pinned overflow action between the scrollable tabs and
   the pinned New worksheet action. The menu lists every worksheet with a close
-  control per entry; menu selection/close return focus through the existing
-  roving owner, deferred until the accepted document no longer contains the
-  removed sheet.
+  control per entry (one focus stop per row); menu selection/close return focus
+  through the existing roving owner, deferred until the accepted document no
+  longer contains the removed sheet. On the strip itself, Delete or Backspace on
+  a focused worksheet tab closes it through the same command path.
 
 ## Review-driven findings and fixes
 
@@ -68,14 +69,34 @@ partial and S13.C0/S15.C0 absent; no worker-backed dependency is claimed.
    unmodified `26c97dc` baseline, so both are recorded as environment/renderer
    precision issues, not regressions from this slice.
 
+## Independent review findings and resolutions
+
+1. Strip focus indices (`focusableIndex` unclamped; index-based anchors drifting
+   on external worksheet mutations) are now remapped by tab identity on every
+   tab-list change, with the close transfer owning the indices while pending.
+2. The close control is disabled and no focus-transfer slot is created when only
+   one worksheet remains; the ViewModel guard already refused the command.
+3. Menu rows now have exactly one focus stop; keyboard close moved to a strip
+   Delete/Backspace shortcut on the focused tab. Evidence: the physical Delete
+   key (KEYCODE_FORWARD_DEL) closes the selected tab and transfers focus.
+4. Assertion tightenings: the menu-open phase now asserts the first entry holds
+   keyboard focus before arrows; Escape asserts focus returns to the pinned
+   overflow action; the menu phase asserts the union of rendered labels equals
+   the full worksheet set; a selected-first-worksheet close is exercised; the
+   roving walk asserts the pinned overflow action's bounds never change; the
+   coordinator matrix adds empty/oversize identities and refusal-then-reuse.
+5. Reviewer-verified: coordinator ordering, idempotent replay, AddWorksheet
+   identity reservation, view-local vs canonical split, failure paths, and
+   regression-freedom of the updated Tab/arrow routes.
+
 ## Verification
 
 | Check | Result |
 | --- | --- |
-| Targeted tab suite, emulator API36 | WorkbookTabRovingFocusTest **4/4** + RemoveWorksheetCommandTest **6/6**; menu test 5/5 solo repeats |
-| Targeted tab suite, physical Googlebook (API37) | 3 × **10/10** tab+removal; AddWorksheetCommandTest **14/14** |
-| Full native suite, emulator | **247/247** |
-| Full native suite, physical Googlebook | 245/247 with the two recorded environmental failures above |
+| Targeted tab suite, emulator API36 | WorkbookTabRovingFocusTest **4/4** + RemoveWorksheetCommandTest **6/6** (post-review build) |
+| Targeted tab suite, physical Googlebook (API37, pre-review build) | 3 × **10/10** tab+removal; AddWorksheetCommandTest **14/14** |
+| Full native suite, emulator, post-review build | **247/247** |
+| Full native suite, physical Googlebook (pre-review build) | 245/247 with the two recorded environmental failures above |
 | JVM | **75/75** |
 | Lint | 0 errors / 7 warnings |
 
@@ -88,10 +109,12 @@ Final native evidence directories (emulator captures):
 - Full-suite summary: `qualification/evidence/android-test-results/2026-10-22-s027-menu-close/full-suite-emulator.txt`
 - Source/result manifest: `qualification/evidence/artifacts/2026-10-22-s027-menu-close/artifacts.json`
 
-The menu run covers keyboard open/arrow/Enter selection and Escape dismissal,
-pointer selection of the clipped Overflow 20 entry, close of an unselected sheet
-with focus retained, close of the selected sheet with neighbor selection/focus,
-and receipt/revision/undo/byte oracles on the persisted workbook.
+The menu run covers keyboard open/first-entry focus/arrow/Enter selection and
+Escape dismissal with focus returned to the pinned action, pointer selection of
+the clipped Overflow 20 entry, full worksheet-set listing, pointer close of an
+unselected sheet with focus retained, strip Delete close of the selected sheet
+with neighbor selection/focus, a selected-first-worksheet close through the
+menu, and receipt/revision/undo/byte oracles on the persisted workbook.
 
 ## Limits
 

@@ -640,6 +640,7 @@ private fun WorkbookTabStrip(
     var focusedTabIndex by remember { mutableStateOf<Int?>(null) }
     var overflowExpanded by remember { mutableStateOf(false) }
     var closeFocus by remember { mutableStateOf<Pair<String, String>?>(null) }
+    var lastTabIds by remember { mutableStateOf(tabs.map { it.id }) }
     LaunchedEffect(selectedIndex) {
         rovingIndex = selectedIndex
         if (stripHasFocus) {
@@ -650,13 +651,26 @@ private fun WorkbookTabStrip(
             focusTransitionIndex = null
         }
     }
-    LaunchedEffect(tabs.size) {
-        if (rovingIndex !in tabs.indices) {
-            rovingIndex = selectedIndex
-            focusableIndex = selectedIndex
+    LaunchedEffect(tabs) {
+        // Roving/focus state is index-based, so any worksheet add/remove (from
+        // this window's close action or another window's command) must re-anchor
+        // every index by tab identity; otherwise a shrink can leave no tab
+        // focusable or land the next Tab press on the wrong worksheet.
+        val oldIds = lastTabIds
+        val newIds = tabs.map { it.id }
+        if (oldIds == newIds) return@LaunchedEffect
+        lastTabIds = newIds
+        if (closeFocus != null) return@LaunchedEffect // the close transfer owns the indices
+        fun remap(index: Int): Int {
+            val id = oldIds.getOrNull(index) ?: return selectedIndex
+            val next = newIds.indexOf(id)
+            return if (next >= 0) next else selectedIndex
         }
-        if (focusTransitionIndex !in tabs.indices) focusTransitionIndex = null
-        if (pendingFocusIndex !in tabs.indices) pendingFocusIndex = null
+        fun remapNullable(index: Int?): Int? = index?.let { remap(it) }
+        rovingIndex = remap(rovingIndex)
+        focusableIndex = remap(focusableIndex)
+        focusTransitionIndex = remapNullable(focusTransitionIndex)
+        pendingFocusIndex = remapNullable(pendingFocusIndex)
     }
     val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
     val bringIntoViewRequesters = remember { mutableMapOf<String, BringIntoViewRequester>() }
@@ -697,6 +711,7 @@ private fun WorkbookTabStrip(
         overflowExpanded = false
         val index = tabs.indexOfFirst { it.id == tabId }
         if (index <= 0) return
+        if (tabs.size <= 2) return // the final worksheet cannot be removed
         val focusId = when {
             tabId == activeTab -> {
                 // Mirror the coordinator's selected-tab fallback so focus follows
@@ -719,6 +734,14 @@ private fun WorkbookTabStrip(
             .padding(horizontal = density.spaceSmall)
             .onPreviewKeyEvent { event ->
                 if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                if (event.key == Key.Delete || event.key == Key.Backspace) {
+                    val index = focusedTabIndex
+                    if (index != null && index > 0) {
+                        closeTab(tabs[index].id)
+                        return@onPreviewKeyEvent true
+                    }
+                    return@onPreviewKeyEvent false
+                }
                 val currentIndex = focusedTabIndex?.coerceIn(0, tabs.lastIndex) ?: rovingIndex.coerceIn(0, tabs.lastIndex)
                 val nextIndex = when {
                     focusedTabIndex == null && event.key == Key.DirectionLeft -> currentIndex
@@ -807,7 +830,13 @@ private fun WorkbookTabStrip(
                                     style = MaterialTheme.typography.bodyMedium,
                                     maxLines = 1,
                                 )
-                                TextButton(onClick = { closeTab(tab.id) }) {
+                                TextButton(
+                                    onClick = { closeTab(tab.id) },
+                                    enabled = tabs.size > 2,
+                                    // Keyboard close lives on the strip Delete
+                                    // shortcut; the menu stays one stop per row.
+                                    modifier = Modifier.focusProperties { canFocus = false },
+                                ) {
                                     Text("Close")
                                 }
                             }

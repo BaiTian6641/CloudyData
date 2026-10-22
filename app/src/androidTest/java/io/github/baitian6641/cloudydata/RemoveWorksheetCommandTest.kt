@@ -135,6 +135,7 @@ class RemoveWorksheetCommandTest {
         val (coordinator, book) = threeSheetBook(activeName = "East")
         val west = book.worksheets.single { it.name == "West" }
         val before = metadata(book.id).readBytes()
+        val receiptsBefore = WorkbookStore(root).loadCheckpoint(book.id).receipts.size
         assertTrue(runCatching {
             coordinator.execute(remove(book, "stale-revision", west.id).copy(expectedRevision = book.revision + 9))
         }.isFailure)
@@ -142,10 +143,21 @@ class RemoveWorksheetCommandTest {
             coordinator.execute(remove(book, "bad-identity", "../escape"))
         }.isFailure)
         assertTrue(runCatching {
+            coordinator.execute(remove(book, "empty-identity", ""))
+        }.isFailure)
+        assertTrue(runCatching {
+            coordinator.execute(remove(book, "oversize-identity", "x".repeat(129)))
+        }.isFailure)
+        assertTrue(runCatching {
             coordinator.execute(remove(book, "bad-workbook", west.id).copy(workbookId = "other"))
         }.isFailure)
         assertArrayEquals(before, metadata(book.id).readBytes())
-        assertEquals(book, reopen(book.id).state.value.document)
+        assertEquals(receiptsBefore, WorkbookStore(root).loadCheckpoint(book.id).receipts.size)
+        // Refused validations consume no command identity: the same IDs succeed once corrected.
+        val reused = coordinator.execute(remove(book, "empty-identity", west.id))
+        assertFalse(reused.duplicate)
+        assertEquals(book.worksheets.filterNot { it.id == west.id }, reused.document.worksheets)
+        assertEquals(reused.document, reopen(book.id).state.value.document)
     }
 
     private suspend fun threeSheetBook(activeName: String): Pair<WorkbookCoordinator, WorkbookDocument> {

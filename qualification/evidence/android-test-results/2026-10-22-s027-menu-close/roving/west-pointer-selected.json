@@ -14,12 +14,12 @@
   "effectiveAppearance": "Light",
   "configurationNightMode": 16,
   "captionInsetsPx": "Insets{left=0, top=0, right=0, bottom=0}",
-  "taskId": 4430,
+  "taskId": 4471,
   "phase": "west-pointer-selected",
-  "workbookId": "5016f65b-3cea-4fed-930a-783c17f077a2",
-  "canonicalActiveWorksheetId": "5243c221-4ff3-417c-8d5c-2f4e9d74b1e2",
-  "visibleActiveWorksheetId": "76ac9457-4258-43ee-b422-048ded8f728a",
-  "queryWorksheetId": "76ac9457-4258-43ee-b422-048ded8f728a",
+  "workbookId": "989d8770-e505-41f6-89e0-0dd1d3c3b60e",
+  "canonicalActiveWorksheetId": "0765770f-ac32-4b78-8286-15973c5d5e60",
+  "visibleActiveWorksheetId": "bc81534f-d07d-4281-9288-23d84777b36e",
+  "queryWorksheetId": "bc81534f-d07d-4281-9288-23d84777b36e",
   "queryRows": "[[West, 20]]",
   "expectedSelectedTab": "West20",
   "tabs": [
@@ -248,7 +248,7 @@
       "boundsPx": "[12,133][197,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@8ead8b1"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@7483189"
     },
     {
       "label": "East15",
@@ -261,7 +261,7 @@
       "boundsPx": "[197,133][334,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@3ea6196"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@1cb058e"
     },
     {
       "label": "West20",
@@ -274,7 +274,7 @@
       "boundsPx": "[334,133][478,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@48b7117"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@8f6d1af"
     },
     {
       "label": "Overflow 01",
@@ -287,7 +287,7 @@
       "boundsPx": "[478,133][666,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@a9e5904"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@154c9bc"
     },
     {
       "label": "Overflow 02",
@@ -300,7 +300,7 @@
       "boundsPx": "[666,133][854,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@1a34eed"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@9f95d45"
     },
     {
       "label": "Overflow 03",
@@ -313,7 +313,7 @@
       "boundsPx": "[854,133][1042,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@ce30122"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@1f5ec9a"
     },
     {
       "label": "Overflow 04",
@@ -326,7 +326,7 @@
       "boundsPx": "[1042,133][1230,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@94c07b3"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@ce8d9cb"
     },
     {
       "label": "Overflow 05",
@@ -339,7 +339,7 @@
       "boundsPx": "[1230,133][1418,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@72a0170"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@f82c5a8"
     },
     {
       "label": "Overflow 06",
@@ -352,7 +352,7 @@
       "boundsPx": "[1418,133][1606,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@5f2ece9"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@ad788c1"
     },
     {
       "label": "Overflow 07",
@@ -365,7 +365,7 @@
       "boundsPx": "[1606,133][1794,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@1d40d6e"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@fb63866"
     },
     {
       "label": "Overflow 08",
@@ -378,7 +378,7 @@
       "boundsPx": "[1794,133][1982,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@4756c0f"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@aa947a7"
     },
     {
       "label": "Overflow 09",
@@ -391,7 +391,7 @@
       "boundsPx": "[1982,133][2170,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@f85c49c"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@129454"
     },
     {
       "label": "Overflow 10",
@@ -404,7 +404,7 @@
       "boundsPx": "[2170,133][2358,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@a846ea5"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@e12effd"
     },
     {
       "label": "Overflow 11",
@@ -417,7 +417,7 @@
       "boundsPx": "[2358,133][2546,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@cb7927a"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@ddd74f2"
     },
     {
       "label": "Overflow 12",
@@ -430,12 +430,12 @@
       "boundsPx": "[2546,133][2724,205]",
       "extras": "Bundle[{androidx.view.accessibility.AccessibilityNodeInfoCompat.SPANS_START_KEY=[]}]",
       "collectionInfo": null,
-      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@d26ba2b"
+      "collectionItemInfo": "android.view.accessibility.AccessibilityNodeInfo$CollectionItemInfo@618b743"
     }
   ],
   "dataSourceSurfaceVisible": false,
-  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-80286553-eec3-4c09-83e7-52d3b3d95f00\/west-pointer-selected.png",
-  "captureSha256": "fff1205792f542839f0a11f8e7ca138b1b5e813b716781412aa28abed91fa17a",
+  "capturePath": "\/storage\/emulated\/0\/Android\/data\/io.github.baitian6641.cloudydata\/files\/qualification\/workbook-tab-roving-focus-02eca3c5-cdd3-4272-979c-67569e137cec\/west-pointer-selected.png",
+  "captureSha256": "ea9ed918ff9570e9fb6033e073df7b85cf40744663042561991fd6a5bbda226b",
   "captureWidthPx": 2880,
   "captureHeightPx": 1800
 }
